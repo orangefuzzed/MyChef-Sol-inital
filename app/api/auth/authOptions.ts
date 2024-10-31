@@ -2,8 +2,9 @@
 import { MongoClient } from 'mongodb';
 import CredentialsProvider from 'next-auth/providers/credentials';
 import bcrypt from 'bcryptjs';
+import { JWT } from 'next-auth/jwt'; // Import the correct type
+import { Session } from 'next-auth';
 
-const uri = process.env.MONGODB_URI; // MongoDB connection string
 
 export const authOptions = {
   providers: [
@@ -64,7 +65,7 @@ export const authOptions = {
   ],
   callbacks: {
     // Updated JWT Callback
-    async jwt({ token, user }: { token: any; user?: any }) {
+    async jwt({ token, user }: { token: JWT; user?: any }) {
       if (user) {
         token.id = user.id;
         token.email = user.email || '';
@@ -72,7 +73,7 @@ export const authOptions = {
       return token;
     },
     // Updated Session Callback
-    async session({ session, token }: { session: any; token: any }) {
+    async session({ session, token }: { session: Session; token: JWT }) {
       if (token) {
         session.user = {
           ...session.user,
