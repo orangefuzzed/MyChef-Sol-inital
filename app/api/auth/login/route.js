@@ -1,10 +1,12 @@
-import NextAuth from "next-auth/next";
+// Updated app/api/auth/login/route.js
+
+import NextAuth from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
 import clientPromise from '../../../../lib/mongodb';
 
-export const authOptions = {
+const authOptions = {
   providers: [
     CredentialsProvider({
       name: 'Credentials',
@@ -77,6 +79,7 @@ export const authOptions = {
   secret: process.env.JWT_SECRET,
 };
 
+// Correct the export for the route as a valid HTTP handler
 const handler = NextAuth(authOptions);
 
 export { handler as GET, handler as POST };
