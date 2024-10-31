@@ -3,7 +3,6 @@
 import React, { useState, useEffect, useRef, ChangeEvent, KeyboardEvent } from 'react';
 import ReactMarkdown from 'react-markdown';
 import rehypeRaw from 'rehype-raw';
-import { useAIContext } from '../contexts/AIContext';
 import { sendMessageToClaude } from '../services/claudeService';
 import { MicrophoneIcon } from '@heroicons/react/24/solid';
 import {
@@ -184,7 +183,7 @@ const handleSendMessage = async () => {
 
     interface AIResponse {
       message: string;
-      recipes: any[]; // Adjust as needed if you know the structure of recipes more specifically
+      recipes: Recipe[]; // Use the Recipe interface for typing the array of recipes
     }
     
     // Parse the AI's response
