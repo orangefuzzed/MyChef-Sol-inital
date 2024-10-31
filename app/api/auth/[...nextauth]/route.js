@@ -9,7 +9,7 @@ import bcrypt from 'bcryptjs';
 
 const uri = process.env.MONGODB_URI; // MongoDB connection string
 
-export const authOptions = {
+const authOptions = {
   providers: [
     CredentialsProvider({
       name: 'Credentials',
