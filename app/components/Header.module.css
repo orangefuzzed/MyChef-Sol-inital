@@ -1,0 +1,46 @@
+/* Header.module.css */
+
+.menuButton {
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.menuIconWrapper {
+  background-color: rgba(0, 0, 0, 0);
+  border-radius: 50%;
+  border: 1.25px solid white;
+  width: 44px;
+  height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.menuIcon {
+  width: 26px;
+  height: 26px;
+  filter: brightness(0) saturate(100%) invert(100%);
+}
+
+.greeting {
+  font-size: 1.2rem;
+  color: var(--text-primary);
+}
+
+.helpButton {
+  cursor: pointer;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  border: 0px solid var(--text-primary);
+  overflow: hidden;
+}
+
+.helpIcon {
+  color: var(--text-primary);
+}

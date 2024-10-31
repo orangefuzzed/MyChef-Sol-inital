@@ -1,0 +1,29 @@
+/* Footer.module.css */
+
+.footerContainer {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    padding: 1rem;
+    background-color: #121212;
+    border-top: 1px solid #2d2d2d;
+  }
+  
+  .footerItem {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    color: var(--text-primary);
+    cursor: pointer;
+    transition: color 0.3s;
+  }
+  
+  .footerItem:hover {
+    color: var(--accent);
+  }
+  
+  .footerItem span {
+    margin-top: 4px;
+    font-size: 0.75rem;
+  }
+  

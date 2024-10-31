@@ -1,0 +1,44 @@
+/* Onboarding.module.css */
+
+.modalContent {
+    background-color: #1a1a1a;
+    border-radius: 16px;
+    padding: 2rem;
+    max-width: 600px;
+    width: 100%;
+    text-align: center;
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+  }
+  
+  .slideContent {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 300px;
+  }
+  
+  .slideImage {
+    width: 64px;
+    height: 64px;
+    margin-bottom: 1rem;
+  }
+  
+  .slideText {
+    font-size: 1.25rem;
+    color: var(--text-primary);
+    margin-bottom: 1rem;
+  }
+  
+  .closeButton {
+    margin-top: 1rem;
+  }
+  
+  .swiper-pagination-bullet {
+    background: #888;
+  }
+  
+  .swiper-pagination-bullet-active {
+    background: #fff;
+  }
+  

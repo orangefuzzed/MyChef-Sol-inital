@@ -1,0 +1,109 @@
+/* preferences.module.css */
+
+/* Container Styles */
+.container {
+  min-height: 100vh;
+  background-color: #1a1a1a;
+  color: #f0f0f0;
+  padding: 24px;
+}
+
+.mainContent {
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+/* Section Styling */
+.sectionsContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+}
+
+.section {
+  background-color: #2a2a2a;
+  border-radius: 16px;
+  padding: 24px;
+  border: 1px solid #343333; /* Adds border similar to home screen cards */
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Adds slight shadow for card effect */
+}
+
+.sectionHeader {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 16px;
+}
+
+.sectionHeader h2 {
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: #fff;
+}
+
+.sectionIcon {
+  font-size: 1.75rem;
+  color: #34e1d0; /* Accent color for icons */
+}
+
+/* Preference Items Styling */
+.preferenceItem {
+  margin-bottom: 8px;
+  color: #e0e0e0;
+}
+
+.preferenceItem strong {
+  font-weight: 500;
+  color: #f0f0f0;
+}
+
+/* Edit Preferences Button */
+.editPreferencesContainer {
+  display: flex;
+  justify-content: flex-start;
+  margin-top: 16px;
+}
+
+.editButton {
+  background-color: #ca244d;
+  color: white;
+  border: none;
+  padding: 12px 24px;
+  border-radius: 9999px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.editButton:hover {
+  background-color: #dd005f;
+}
+
+/* Loading and No Preferences Found Containers */
+.loadingContainer,
+.noPreferencesContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+}
+
+.noPreferencesContainer p {
+  margin-bottom: 16px;
+}
+
+/* Additional Styling */
+.touch-friendly {
+  padding: 12px 16px;
+  min-width: 44px;
+  min-height: 44px;
+}
+
+.smooth-transition {
+  transition: all 0.3s ease-in-out;
+}

@@ -1,0 +1,82 @@
+/* PreferencesWalkthrough.module.css */
+
+.sliderContainer {
+    margin-bottom: 16px;
+  }
+  
+  .SliderRoot {
+    position: relative;
+    display: flex;
+    align-items: center;
+    width: 100%;
+    height: 25px;
+  }
+  
+  .SliderTrack {
+    position: relative;
+    flex-grow: 1;
+    height: 6px;
+    border-radius: 9999px;
+    background: linear-gradient(
+      90deg,
+      #ff4d4f 0%,
+      #faad14 33%,
+      #52c41a 66%,
+      #1890ff 100%
+    );
+  }
+  
+  .SliderRange {
+    position: absolute;
+    height: 100%;
+    border-radius: 9999px;
+    background-color: transparent;
+  }
+  
+  .SliderThumb {
+    display: block;
+    width: 24px;
+    height: 24px;
+    background-color: #fff;
+    border: 2px solid #1890ff;
+    border-radius: 50%;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+  }
+  
+  .sliderLabel {
+    margin-top: 8px;
+    color: #fff;
+    text-align: center;
+    font-weight: bold;
+  }
+  
+  .sliderIcon {
+    margin-right: 8px;
+    color: #1890ff;
+  }
+  
+  .sliderValue {
+    margin-top: 8px;
+    color: #fff;
+    text-align: center;
+  }
+
+  .progressBarContainer {
+    width: 100%;
+    height: 8px;
+    background-color: #2d3748;
+    border-radius: 4px;
+    overflow: hidden;
+    margin-bottom: 16px;
+  }
+  
+  .progressBar {
+    height: 100%;
+    background-color: #4299e1;
+    transition: width 0.3s ease;
+  }
+
+  .allergyLabel {
+    color: #f56565;
+    font-size: 0.875rem;
+  }

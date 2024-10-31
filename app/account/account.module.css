@@ -1,0 +1,191 @@
+/* Styling for Account Settings Page */
+
+.container {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+.mainContent {
+  flex: 1;
+  padding: 2rem;
+  background-color: #121212;
+}
+
+.sectionCard {
+  background-color: #1e1e1e;
+  border-radius: 8px;
+  padding: 2rem; /* Increased padding for more spacing */
+  margin-bottom: 2.5rem; /* Increased margin for more spacing between elements */
+  border: 1px solid #2a2a2a;
+}
+
+.sectionHeader {
+  display: flex;
+  align-items: center;
+  margin-bottom: 1.5rem; /* Increased margin for more spacing */
+}
+
+.icon {
+  margin-right: 0.5rem;
+  color: #00bcd4;
+}
+
+.sectionTitle {
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: #ffffff;
+  padding-top: 1rem; /* Added padding for better spacing */
+}
+
+.sectionContent {
+  display: flex;
+  flex-direction: column;
+}
+
+.label {
+  font-size: 1rem;
+  color: #cccccc;
+  margin-bottom: 0.75rem; /* Increased margin for better spacing */
+}
+
+.input {
+  padding: 0.75rem;
+  border-radius: 4px;
+  border: none;
+  background-color: #2a2a2a;
+  color: #ffffff;
+  margin-bottom: 1.5rem; /* Increased margin for better spacing */
+  outline: none;
+}
+
+.input:disabled {
+  background-color: #3a3a3a;
+}
+
+.placeholder {
+  font-size: 1rem;
+  color: #aaaaaa;
+}
+
+.actionButtons {
+  display: flex;
+  justify-content: center;
+  margin-top: 2.5rem; /* Increased margin for better spacing */
+}
+
+.editButton,
+.saveButton {
+  background-color: #00bcd4;
+  color: #ffffff;
+  padding: 0.75rem 1.5rem;
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+  font-size: 1rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.editButton:hover,
+.saveButton:hover {
+  background-color: #0097a7;
+}
+
+.buttonIcon {
+  margin-right: 0.5rem;
+}
+
+/* Avatar Styling */
+.avatarContainer {
+  display: flex;
+  align-items: center;
+  margin-bottom: 1.5rem; /* Increased margin for better spacing */
+}
+
+.avatarPreview {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  border: 1px solid #00bcd4;
+  object-fit: cover;
+}
+
+.avatarPlaceholder {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  background-color: #3a3a3a;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #aaaaaa;
+  font-size: 0.875rem;
+}
+
+.avatarUploadWrapper {
+  margin-left: 1.5rem; /* Increased margin for better spacing */
+}
+
+.avatarUploadLabel {
+  cursor: pointer;
+  color: #00bcd4;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.avatarUploadLabel:hover {
+  color: #0097a7;
+}
+
+.avatarUploadInput {
+  display: none;
+}
+
+/* Notifications and Privacy Settings */
+.checkbox {
+  transform: scale(1.8) !important; /* Increased size of checkboxes, added !important */
+  margin-right: 1rem !important; /* Added more margin for spacing between checkbox and label, added !important */
+}
+
+.checkboxLabel {
+  display: flex;
+  align-items: center;
+  margin-bottom: 1rem; /* Added margin to separate each checkbox */
+}
+
+.checkboxLabel input[type="checkbox"] {
+  transform: scale(1.8) !important; /* Further increased size of checkboxes to override any other styles */
+  margin-right: 1rem !important; /* Added margin between checkbox and label, added !important */
+}
+
+/* Linked Accounts Group */
+.checkboxGroup {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1.5rem; /* Added gap between checkboxes for better spacing */
+}
+
+.subscriptionDetails {
+  padding-top: 1.5rem; /* Added padding to Subscription Details title */
+}
+
+.linkIcon {
+  margin-left: 0.5rem;
+  color: #00bcd4;
+}
+
+.externalLink {
+  display: flex;
+  align-items: center;
+  color: #00bcd4;
+  cursor: pointer;
+}
+
+.externalLink:hover {
+  color: #0097a7;
+}
+
+/* Removed Delete Account Section */

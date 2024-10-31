@@ -1,0 +1,175 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@import '@radix-ui/colors/slate.css';
+@import '@radix-ui/colors/ruby.css';
+@import '@radix-ui/colors/cyan.css';
+@import '@radix-ui/colors/teal.css';
+
+:root {
+  --background: var(--slate-12);
+  --card-background: var(--slate-11);
+  --text-primary: var(--slate-1);
+  --text-secondary: var(--slate-7);
+  --accent-color: var(--teal-8);
+  --button-background: var(--slate-10);
+  --button-hover: var(--slate-9);
+
+  /* Radix UI theme variables */
+  --radius: 0.5rem;
+}
+
+.ruby {
+  --background: var(--ruby-1);
+  --card-background: var(--ruby-3);
+  --card-background-hover: var(--ruby-4);
+  --text-primary: var(--ruby-11);
+  --text-secondary: var(--ruby-9);
+  --accent-color: var(--ruby-9);
+}
+
+.cyan {
+  --background: var(--cyan-1);
+  --card-background: var(--cyan-3);
+  --card-background-hover: var(--cyan-4);
+  --text-primary: var(--cyan-11);
+  --text-secondary: var(--cyan-9);
+  --accent-color: var(--cyan-9);
+}
+
+.teal {
+  --background: var(--teal-1);
+  --card-background: var(--teal-3);
+  --card-background-hover: var(--teal-4);
+  --text-primary: var(--teal-11);
+  --text-secondary: var(--teal-9);
+  --accent-color: var(--teal-9);
+}
+
+body {
+  background-color: var(--background);
+  color: var(--text-primary);
+  font-family: var(--font-dm-sans), -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif !important;
+}
+
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
+}
+
+@layer components {
+  .collapsible-button {
+    @apply flex items-center cursor-pointer bg-gray-200 hover:bg-gray-300 rounded-md px-4 py-2 transition-colors duration-200 text-left w-full;
+  }
+
+  .collapsible-button::marker {
+    content: '▶ ';
+  }
+
+  details[open] > summary::marker {
+    content: '▼ ';
+  }
+
+  .ingredients-button {
+    @apply text-blue-600;
+  }
+
+  .instructions-button {
+    @apply text-green-600;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground;
+  }
+}
+.recipe-view-card {
+  background-color: var(--card-background);
+  color: var(--text-primary);
+}
+
+.recipe-view-button {
+  background-color: var(--button-background);
+  color: var(--text-primary);
+}
+
+.recipe-view-button:hover {
+  background-color: var(--button-hover);
+}
+
+@layer components {
+  .action-button {
+    @apply bg-gray-600 hover:bg-gray-500 text-white transition-colors duration-200;
+  }
+}
+
+.action-button span {
+  @apply text-xs sm:text-sm;
+}
+
+.action-button svg {
+  @apply h-5 w-5 mb-1;
+}
+
+:root {
+  --accent-9: #34e1d0;  /* Example blue color */
+  --accent-10: #33d0cb; /* Darker blue for hover */
+}
+
+.bg-accent {
+  background-color: var(--accent-9);
+}
+
+.hover\:bg-accent-dark:hover {
+  background-color: var(--accent-10);
+}
+
+/* Full-width header and footer */
+.header,
+.footer {
+  width: 100vw; /* Full viewport width */
+  background-color: var(--slate-11); /* Adjust as needed for your design */
+  margin: 0;
+ /* padding: 1rem 0;  Padding for breathing space */
+  border: none; /* Remove any previous borders */
+}
+
+
+/* Main content container for larger screens */
+.main-content {
+  max-width: 1200px; /* Adjust max-width as per design */
+  margin: 0 auto; /* Center the content */
+  padding: 1rem; /* Padding for spacing */
+}
+
+/* Adjustments for smaller screens */
+@media (max-width: 768px) {
+  .main-content {
+    max-width: 100vw; /* Full width on smaller screens */
+    padding: 0.5rem; /* Less padding for smaller screens */
+  }
+}
+
+.smooth-transition {
+  transition: all 0.3s ease-in-out;
+}
+
+.touch-friendly {
+  padding: 12px 16px; /* Ensures comfortable size for interaction */
+  min-width: 44px; /* Minimum touch target width */
+  min-height: 44px; /* Minimum touch target height */
+}
+
+html, body {
+  overflow-x: hidden; /* Prevents horizontal scrolling */
+}
+
+.no-scroll {
+  overflow: hidden; /* Can be used for modal open states, for example */
+}
