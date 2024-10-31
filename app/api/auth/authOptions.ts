@@ -16,51 +16,50 @@ export const authOptions = {
       },
       async authorize(credentials) {
         const uri = process.env.MONGODB_URI;
-
-            if (!uri) {
+    
+        if (!uri) {
+            console.error('MONGODB_URI is not defined in the environment variables.');
             throw new Error('MONGODB_URI is not defined in the environment variables.');
-            }
-
-            const client = new MongoClient(uri);
-
-        try {
-          await client.connect();
-          const db = client.db(); // Access your database
-
-          // Find the user in the 'users' collection by email
-          const authUser = await db.collection('users').findOne({ email: credentials?.email });
-
-          // If user is not found in 'users' collection
-          if (!authUser) {
-            console.error('No user found with this email');
-            throw new Error('No user found with this email');
-          }
-
-          // Ensure that the password is defined before proceeding
-          if (!credentials?.password) {
-            console.error('Password is not provided in the credentials');
-            throw new Error('Password is not provided');
-          }
-
-          // Verify password using bcrypt
-          const isValidPassword = await bcrypt.compare(credentials.password, authUser.password);
-          if (!isValidPassword) {
-            console.error('Invalid password');
-            throw new Error('Invalid password');
-          }
-
-          // Prepare the user object to return
-          return {
-            id: authUser._id.toString(),
-            email: authUser.email,
-          };
-        } catch (error) {
-          console.error('Error in authorize:', error);
-          return null;
-        } finally {
-          await client.close(); // Close the database connection
         }
-      },
+    
+        console.log('Authorize called with credentials:', credentials);
+        if (!credentials?.email || !credentials?.password) {
+            console.error('Missing email or password');
+            return null;
+        }
+    
+        const client = new MongoClient(uri);
+        try {
+            await client.connect();
+            const db = client.db(); // Access your database
+    
+            console.log('Looking up user in database for email:', credentials.email);
+            const authUser = await db.collection('users').findOne({ email: credentials.email });
+    
+            if (!authUser) {
+                console.error('No user found with this email');
+                return null;
+            }
+    
+            const isValidPassword = await bcrypt.compare(credentials.password, authUser.password);
+            console.log('Password validation result:', isValidPassword);
+            if (!isValidPassword) {
+                console.error('Invalid password');
+                return null;
+            }
+    
+            console.log('Login successful, returning user:', { id: authUser._id.toString(), email: authUser.email });
+            return {
+                id: authUser._id.toString(),
+                email: authUser.email,
+            };
+        } catch (error) {
+            console.error('Error in authorize:', error);
+            return null;
+        } finally {
+            await client.close(); // Close the database connection
+        }
+    }    
     }),
   ],
   callbacks: {
