@@ -48,7 +48,7 @@ const ShoppingListPage = () => {
 
       {/* Main Content */}
       <div className="flex-grow p-8 overflow-y-auto">
-        <h1 className="text-3xl font-bold mb-4">Shopping List for {selectedRecipe.title}</h1>
+        <h1 className="text-3xl font-bold mb-4">Shopping List for {selectedRecipe.recipeTitle}</h1>
         <ul className="list-disc pl-5 space-y-2">
           {selectedRecipe.ingredients.map((ingredient, index) => (
             <li key={index}>{ingredient}</li>
