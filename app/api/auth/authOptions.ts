@@ -65,13 +65,13 @@ export const authOptions = {
   ],
   callbacks: {
     // Updated JWT Callback
-    async jwt({ token, user }: { token: JWT; user?: any }) {
-      if (user) {
-        token.id = user.id;
-        token.email = user.email || '';
-      }
-      return token;
-    },
+async jwt({ token, user }: { token: JWT; user?: Record<string, unknown> }) {
+    if (user) {
+      token.id = user.id as string; // Cast to string since id is a string
+      token.email = user.email as string || '';
+    }
+    return token;
+  },
     // Updated Session Callback
     async session({ session, token }: { session: Session; token: JWT }) {
       if (token) {
