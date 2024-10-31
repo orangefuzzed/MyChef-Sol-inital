@@ -56,7 +56,7 @@ const CookModePage = () => {
     <div className="h-screen flex flex-col bg-gray-900 text-white overflow-hidden">
       {/* Header with contextual Back Button */}
       <Header
-        centralText={`Cook Mode: ${selectedRecipe.title}`}
+        centralText={`Cook Mode: ${selectedRecipe.recipeTitle}`}
         backButton={{
           label: 'Back to Recipe',
           icon: <ArrowLeftCircle size={24} />,
@@ -66,7 +66,7 @@ const CookModePage = () => {
 
       {/* Main Content */}
       <div className="flex-grow p-8 overflow-y-auto">
-        <h2 className="text-4xl font-bold mb-4">Cook Mode: {selectedRecipe.title}</h2>
+        <h2 className="text-4xl font-bold mb-4">Cook Mode: {selectedRecipe.recipeTitle}</h2>
         <ReactMarkdown>{selectedRecipe.instructions.join('\n')}</ReactMarkdown>
       </div>
 
