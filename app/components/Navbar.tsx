@@ -18,6 +18,9 @@ const Navbar = () => {
           <Link href="/saved-recipes" className="text-white hover:text-gray-300">
             Saved Recipes
           </Link>
+          <Link href="/saved-recipes" className="text-white hover:text-gray-300">
+            Saved Recipe stuffs
+          </Link>
           <Link href="/meal-planning" className="text-white hover:text-gray-300">
             Meal Planning
           </Link>
