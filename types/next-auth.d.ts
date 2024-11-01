@@ -1,15 +1,11 @@
 // types/next-auth.d.ts
 
-import 'next-auth';
+import { DefaultSession, DefaultUser } from "next-auth";
 
-declare module 'next-auth' {
-  interface User {
+declare module "next-auth" {
+  interface User extends DefaultUser {
     id: string;
-    email: string; // Make email a required property
-    name?: string | null;
-    image?: string | null;
     username?: string | null;
-    displayName?: string | null;
   }
 
   interface Session {
@@ -17,11 +13,9 @@ declare module 'next-auth' {
   }
 }
 
-declare module 'next-auth/jwt' {
+declare module "next-auth/jwt" {
   interface JWT {
     id: string;
-    email: string; // Make email a required property
     username?: string | null;
-    displayName?: string | null;
   }
 }
