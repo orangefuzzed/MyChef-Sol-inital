@@ -2,7 +2,7 @@
 
 import React, { useState, /*useEffect*/ } from 'react';
 import { useSession } from 'next-auth/react';
-import { useRouter } from 'next/navigation';
+/*import { useRouter } from 'next/navigation';*/
 import { PaperPlaneIcon } from '@radix-ui/react-icons';
 import styles from './HomeScreen.module.css';
 import HamburgerMenu from '../components/HamburgerMenu';
