@@ -22,7 +22,7 @@ export const authOptions = {
         email: { label: 'Email', type: 'text' },
         password: { label: 'Password', type: 'password' },
       },
-      async authorize(credentials) {
+      async authorize(credentials): Promise<User | null> {
         if (!credentials) {
           throw new Error('Missing credentials');
         }
@@ -32,28 +32,44 @@ export const authOptions = {
           await client.connect();
           const db = client.db(); // Access your database
 
-          // Find the user in the 'users' collection by email
-          const authUser = await db.collection('users').findOne({ email: credentials.email });
+          // Find the user in the 'accounts' collection by userEmail
+          const authUser = await db
+            .collection('accounts')
+            .findOne({ userEmail: credentials.email });
 
-          // If user is not found in 'users' collection
+          // If user is not found in 'accounts' collection
           if (!authUser) {
             console.error('No user found with this email');
             return null;
           }
 
+          // Ensure that passwordHash is present
+          if (!authUser.passwordHash) {
+            console.error('User does not have a password set');
+            return null;
+          }
+
           // Verify password using bcrypt
-          const isValidPassword = await bcrypt.compare(credentials.password, authUser.password);
+          const isValidPassword = await bcrypt.compare(
+            credentials.password,
+            authUser.passwordHash
+          );
           if (!isValidPassword) {
             console.error('Invalid password');
             return null;
           }
 
           // Prepare the user object to return
-          return {
+          const user: User = {
             id: authUser._id.toString(),
-            email: authUser.email,
+            email: authUser.userEmail,
             displayName: authUser.displayName || '',
+            username: authUser.username || '',
+            name: authUser.displayName || '', // Include if needed
+            image: authUser.avatarUrl || null, // Include if needed
           };
+
+          return user;
         } catch (error) {
           console.error('Error in authorize:', error);
           return null;
@@ -68,8 +84,9 @@ export const authOptions = {
     async jwt({ token, user }: { token: JWT; user?: User }) {
       if (user) {
         token.id = user.id;
-        token.email = user.email || '';
+        token.email = user.email;
         token.displayName = user.displayName || '';
+        token.username = user.username || '';
       }
       return token;
     },
