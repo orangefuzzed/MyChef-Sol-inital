@@ -21,11 +21,11 @@ const HomeScreen: React.FC = () => {
   const [isAvatarMenuOpen, setIsAvatarMenuOpen] = useState(false);
 
   // Redirect to login page if not authenticated
-  useEffect(() => {
+  {/*useEffect(() => {
     if (status === 'unauthenticated') {
       router.push('/login');
     }
-  }, [status, router]);
+  }, [status, router]);*/}
 
   if (status === 'loading') {
     return <div>Loading...</div>; // You can replace this with a loading spinner if preferred
