@@ -13,8 +13,8 @@ interface FooterProps {
 const Footer: React.FC<FooterProps> = ({ actions, contextualActions }) => {
   const actionItems: { [key: string]: { icon: JSX.Element; label: string; link: string } } = {
     home: { icon: <Home size={24} />, label: 'Home', link: '/' },
-    save: { icon: <Bookmark size={24} />, label: 'Save', link: '/saved-recipes' },
-    favorite: { icon: <Heart size={24} />, label: 'Favorite', link: '/favorites' },
+    save: { icon: <Bookmark size={24} />, label: 'Save', link: '/' },
+    favorite: { icon: <Heart size={24} />, label: 'Favorite', link: '/' },
     send: { icon: <Send size={24} />, label: 'Send', link: '/ai-chat' },
   };
 

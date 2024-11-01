@@ -4,7 +4,6 @@ const urlsToCache = [
   '/',
   '/profile',
   '/preferences',
-  '/saved-recipes',
   '/styles/global.css',
   '/scripts/main.js',
 ];
