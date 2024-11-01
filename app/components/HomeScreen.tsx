@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, /*useEffect*/ } from 'react';
 import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 import { PaperPlaneIcon } from '@radix-ui/react-icons';
@@ -14,7 +14,7 @@ type IconName = 'apple' | 'avocado' | 'axe' | 'beer 1' | 'cake 1' | 'carrot' | '
 
 const HomeScreen: React.FC = () => {
   const { data: session, status } = useSession();
-  const router = useRouter();
+  {/*const router = useRouter();*/}
   
   // State hooks
   const [isHamburgerMenuOpen, setIsHamburgerMenuOpen] = useState(false);
