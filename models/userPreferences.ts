@@ -1,3 +1,5 @@
+// Updated file: userPreferences.ts
+
 import { Db } from 'mongodb';
 
 export interface IPreference {
@@ -43,4 +45,27 @@ export const getUserPreferencesCollection = async (db: Db) => {
   return db.collection<IUserPreferences>('userPreferences');
 };
 
-// You can add CRUD methods here if needed, e.g., createUserPreferences, updateUserPreferences, etc.
+// CRUD methods
+export const createUserPreferences = async (db: Db, userPreferences: IUserPreferences) => {
+  const collection = await getUserPreferencesCollection(db);
+  return await collection.insertOne(userPreferences);
+};
+
+export const getUserPreferences = async (db: Db, userEmail: string) => {
+  const collection = await getUserPreferencesCollection(db);
+  return await collection.findOne({ userEmail });
+};
+
+export const updateUserPreferences = async (db: Db, userEmail: string, updatedPreferences: Partial<IUserPreferences>) => {
+  const collection = await getUserPreferencesCollection(db);
+  return await collection.updateOne(
+    { userEmail },
+    { $set: updatedPreferences },
+    { upsert: true }
+  );
+};
+
+export const deleteUserPreferences = async (db: Db, userEmail: string) => {
+  const collection = await getUserPreferencesCollection(db);
+  return await collection.deleteOne({ userEmail });
+};

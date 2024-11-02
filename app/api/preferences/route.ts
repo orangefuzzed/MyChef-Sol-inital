@@ -1,5 +1,3 @@
-// app/api/preferences/route.ts
-
 import { NextResponse } from 'next/server';
 import { getServerSession } from 'next-auth/next';
 import { connectToDatabase } from '@/app/utils/dbConnect';
@@ -57,44 +55,29 @@ export async function POST(request: Request) {
     const userEmail = session.user.email;
     const body = await request.json();
 
-    // Map incoming data to IPreference format if needed
-    const mapToIPreference = (preferences: string[] | undefined): IPreference[] => {
-      return preferences ? preferences.map((name) => ({ name, ranking: 1 })) : [];
-    };
-
-    interface DietaryRestriction {
-      name: string;
-      isAllergy: boolean;
-    }
-
     // Extract preferences data from the body and assign default values to ensure compatibility with IUserPreferences
     const updatedPreferences: IUserPreferences = {
       userEmail,
-      cuisinePreferences: mapToIPreference(body.cuisinePreferences),
-      dietaryPreferences: mapToIPreference(body.dietaryPreferences),
-      cookingDifficultyPreferences: mapToIPreference(body.cookingDifficultyPreferences),
-      interactionPreferences: mapToIPreference(body.interactionPreferences),
-      dietaryRestrictions: body.dietaryRestrictions
-        ? body.dietaryRestrictions.map((restriction: DietaryRestriction) => ({
-            name: restriction.name,
-            isAllergy: restriction.isAllergy,
-          }))
-        : [],
-      mealPlanning: body.mealPlanning || '',
-      diets: body.diets || '',
-      familyConsiderations: body.familyConsiderations || '',
-      cookingMethods: body.cookingMethods || [],
-      wholeFood: body.wholeFood || '',
-      seasonality: body.seasonality || '',
-      userGoals: body.userGoals || '',
-      wellnessImportance: body.wellnessImportance || 0,
-      interactionImportance: body.interactionImportance || 0,
-      experienceMapping: body.experienceMapping || [],
-      generalPreferencesNotes: body.generalPreferencesNotes || '',
-      mealPlanningNotes: body.mealPlanningNotes || '',
-      cookingPreferencesNotes: body.cookingPreferencesNotes || '',
-      wellnessNotes: body.wellnessNotes || '',
-      experienceMappingNotes: body.experienceMappingNotes || '',
+      cuisinePreferences: body.cuisinePreferences ?? [],
+      dietaryPreferences: body.dietaryPreferences ?? [],
+      cookingDifficultyPreferences: body.cookingDifficultyPreferences ?? [],
+      interactionPreferences: body.interactionPreferences ?? [],
+      dietaryRestrictions: body.dietaryRestrictions ?? [],
+      mealPlanning: body.mealPlanning ?? '',
+      diets: body.diets ?? '',
+      familyConsiderations: body.familyConsiderations ?? '',
+      cookingMethods: body.cookingMethods ?? [],
+      wholeFood: body.wholeFood ?? '',
+      seasonality: body.seasonality ?? '',
+      userGoals: body.userGoals ?? '',
+      wellnessImportance: body.wellnessImportance ?? 0,
+      interactionImportance: body.interactionImportance ?? 0,
+      experienceMapping: body.experienceMapping ?? [],
+      generalPreferencesNotes: body.generalPreferencesNotes ?? '',
+      mealPlanningNotes: body.mealPlanningNotes ?? '',
+      cookingPreferencesNotes: body.cookingPreferencesNotes ?? '',
+      wellnessNotes: body.wellnessNotes ?? '',
+      experienceMappingNotes: body.experienceMappingNotes ?? '',
     };
 
     // Check if user preferences already exist
