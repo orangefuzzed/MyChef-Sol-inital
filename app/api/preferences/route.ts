@@ -3,7 +3,7 @@ import { getServerSession } from 'next-auth/next';
 import { connectToDatabase } from '@/app/utils/dbConnect';
 import { getUserPreferencesCollection } from '../../../models/userPreferences';
 import { authOptions } from '@/lib/auth';
-import { IUserPreferences, IPreference } from '../../../models/userPreferences';
+import { IUserPreferences } from '../../../models/userPreferences';
 
 export async function GET() {
   try {
