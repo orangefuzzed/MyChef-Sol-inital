@@ -49,7 +49,7 @@ export const authOptions = {
           }
 
           // Find the user's profile data in the 'accounts' collection
-          const userAccount = await db.collection('accounts').findOne({ userEmail: credentials.email });
+          {/*const userAccount = await db.collection('accounts').findOne({ userEmail: credentials.email });*/}
 
           console.log('Login successful, returning user:', { id: authUser._id.toString(), email: authUser.email });
           return {
