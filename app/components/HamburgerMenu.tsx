@@ -1,15 +1,14 @@
-// components/HamburgerMenu.tsx
 import React, { useEffect, useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
   Settings,
-  BookMarked,
   Heart,
   ShoppingCart,
   History,
   Calendar,
   User,
   LogOut,
+  Bookmark
 } from 'lucide-react';
 import Link from 'next/link';
 import { signOut, useSession } from 'next-auth/react';
@@ -26,12 +25,12 @@ const HamburgerMenu: React.FC<HamburgerMenuProps> = ({ isOpen, onClose }) => {
   const { data: session } = useSession();
   const [userImage, setUserImage] = useState<string | null>(null);
 
-  // Fetch user's avatar URL from the MongoDB
+  // Fetch user's avatar URL from the API endpoint
   useEffect(() => {
     const fetchUserAvatar = async () => {
       if (session?.user?.email) {
         try {
-          const response = await axios.get('/api/account');
+          const response = await axios.get('/api/account'); // This endpoint will handle fetching from the DB
           if (response.status === 200) {
             const account = response.data.account;
             if (account.avatarUrl) {
@@ -49,7 +48,7 @@ const HamburgerMenu: React.FC<HamburgerMenuProps> = ({ isOpen, onClose }) => {
 
   const menuItems = [
     { icon: <Settings size={20} />, text: 'Preferences', link: '/preferences' },
-    { icon: <BookMarked size={20} />, text: 'Saved Recipes', link: '/' },
+    { icon: <Bookmark size={20} />, text: 'Saved Recipes', link: '/saved-recipes' },
     { icon: <Heart size={20} />, text: 'Favorites', link: '/favorites' },
     { icon: <ShoppingCart size={20} />, text: 'Shopping Lists', link: '/shopping-lists' },
     { icon: <History size={20} />, text: 'History', link: '/history' },

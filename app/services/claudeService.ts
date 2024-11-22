@@ -1,5 +1,6 @@
 import axios from 'axios';
 import { UserPreferencesInterface } from '@/types/interfaces';
+import { Recipe } from '../../types/Recipe';
 
 export const sendMessageToClaude = async (
   message: string,
@@ -36,5 +37,25 @@ export const sendMessageToClaude = async (
       console.error('Error communicating with Claude:', (error as Error).message);
     }
     throw error;
+  }
+};
+
+export const saveRecipeToDatabase = async (recipe: Recipe) => {
+  try {
+    const response = await fetch('/api/recipes', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ recipe }),
+    });
+
+    if (!response.ok) {
+      throw new Error('Failed to save recipe to database');
+    }
+
+    console.log('Recipe saved successfully to MongoDB');
+  } catch (error) {
+    console.error('Error saving recipe to MongoDB:', error);
   }
 };

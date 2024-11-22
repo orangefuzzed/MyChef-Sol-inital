@@ -1,10 +1,23 @@
 import React from 'react';
-import { ClipLoader } from 'react-spinners';  // Import spinner from react-spinners
+import { Flex, Text } from '@radix-ui/themes';
+import { PuffLoader } from 'react-spinners';
 
-const LoadingSpinner = () => {
+interface LoadingSpinnerProps {
+  isLoading: boolean;
+  loadingMessage: string;
+}
+
+const LoadingSpinner: React.FC<LoadingSpinnerProps> = ({ isLoading, loadingMessage }) => {
+  if (!isLoading) return null;
+
   return (
-    <div className="flex justify-center items-center h-full">
-      <ClipLoader size={35} color="#DD005F" />  {/* Customize size and color as needed */}
+    <div className="flex justify-start">
+      <Flex align="center" gap="4">
+        <PuffLoader size={24} color="#15f992" />
+        <Text size="2" style={{ color: 'white' }}>
+          {loadingMessage}
+        </Text>
+      </Flex>
     </div>
   );
 };

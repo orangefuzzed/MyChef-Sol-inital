@@ -5,6 +5,7 @@ import './globals.css';
 import { Providers } from './providers'; // Import the Providers component
 import { RecipeProvider } from './contexts/RecipeContext'; // Import the RecipeProvider
 import { UserProvider } from './contexts/UserContext';
+import { ChatProvider } from './contexts/ChatContext'; // Import the ChatProvider
 import { DM_Sans } from 'next/font/google';
 
 const dmSans = DM_Sans({ 
@@ -34,8 +35,10 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       <body>
         <Providers> {/* Wrap the entire app with the Providers component */}
           <RecipeProvider> {/* Wrap the entire app with the RecipeProvider */}
-          <UserProvider>
-            {children}
+            <UserProvider> {/* Wrap the entire app with the UserProvider */}
+              <ChatProvider> {/* Wrap the entire app with the ChatProvider */}
+                {children}
+              </ChatProvider>
             </UserProvider>
           </RecipeProvider>
         </Providers>

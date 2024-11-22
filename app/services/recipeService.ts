@@ -1,59 +1,83 @@
-const getBaseUrl = () => {
-  if (typeof window !== 'undefined') return ''; // browser should use relative url
-  if (process.env.VERCEL_URL) return `https://${process.env.VERCEL_URL}`; // SSR should use vercel url
-  return `http://localhost:${process.env.PORT ?? 3000}`; // dev SSR should use localhost
-}
-
 import { RecipeDocument } from '../../types/RecipeDocument';
+import { connectToDatabase } from '../utils/dbConnect';
+import { Db, ObjectId } from 'mongodb';
 
+// Fetch a recipe by its ID
+export async function fetchRecipeById(recipeId: string): Promise<RecipeDocument | null> {
+  try {
+    const db: Db = await connectToDatabase();
+    const collection = db.collection('recipes');
+    const recipe = await collection.findOne({ _id: new ObjectId(recipeId) });
+
+    if (!recipe) {
+      throw new Error(`Recipe with ID ${recipeId} not found`);
+    }
+
+    return recipe as RecipeDocument;
+  } catch (error) {
+    console.error('Failed to fetch recipe:', error);
+    throw new Error('Failed to fetch recipe from the database');
+  }
+}
+
+// Fetch saved recipes for a specific user
 export async function getSavedRecipes(userEmail: string): Promise<RecipeDocument[]> {
-  const url = `${getBaseUrl()}/api/recipes?userEmail=${encodeURIComponent(userEmail)}`;
-
-  const response = await fetch(url, {
-    method: 'GET',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-  });
-
-  if (!response.ok) {
-    throw new Error(`Failed to fetch recipes: ${response.statusText}`);
+  try {
+    const db: Db = await connectToDatabase();
+    const collection = db.collection('recipes');
+    const recipes = await collection.find({ userEmail }).toArray();
+    return recipes as RecipeDocument[];
+  } catch (error) {
+    console.error('Failed to fetch saved recipes:', error);
+    throw new Error('Failed to fetch saved recipes from the database');
   }
-
-  return response.json();
 }
 
-export async function saveRecipe(userEmail: string, recipe: RecipeDocument): Promise<RecipeDocument> {
-  const url = `${getBaseUrl()}/api/recipes`;
+// Save a new recipe for a user
+export async function saveRecipe(userEmail: string, recipeData: RecipeDocument): Promise<RecipeDocument> {
+  try {
+    const db: Db = await connectToDatabase();
+    const collection = db.collection('recipes');
+    const { _id, ...recipe } = recipeData;
 
-  const response = await fetch(url, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify({ userEmail, recipe }),
-  });
+    if (_id) {
+      await collection.updateOne(
+        { _id: new ObjectId(_id) },
+        { $set: { ...recipe, updatedAt: new Date() } },
+        { upsert: true }
+      );
+    } else {
+      const newRecipe = { ...recipe, userEmail, createdAt: new Date(), updatedAt: new Date() };
+      const insertResult = await collection.insertOne(newRecipe);
+      return { ...recipeData, _id: insertResult.insertedId } as RecipeDocument;
+    }
 
-  if (!response.ok) {
-    throw new Error(`Failed to save recipe: ${response.statusText}`);
+    return { ...recipeData, _id } as RecipeDocument;
+  } catch (error) {
+    console.error('Failed to save recipe:', error);
+    throw new Error('Failed to save recipe to the database');
   }
-
-  return response.json();
 }
 
-export async function deleteRecipe(id: string, userEmail: string): Promise<{ message: string }> {
-  const url = `${getBaseUrl()}/api/recipes?id=${encodeURIComponent(id)}&userEmail=${encodeURIComponent(userEmail)}`;
+// Delete a recipe by its ID for a specific user
+export async function deleteRecipe(recipeId: string, userEmail: string): Promise<{ message: string }> {
+  try {
+    const db: Db = await connectToDatabase();
+    const collection = db.collection('recipes');
+    const deletedRecipe = await collection.findOneAndDelete({ _id: new ObjectId(recipeId), userEmail });
 
-  const response = await fetch(url, {
-    method: 'DELETE',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-  });
+    if (!deletedRecipe) {
+      throw new Error(`Recipe with ID ${recipeId} not found for user ${userEmail}`);
+    }
+    
+    if (!deletedRecipe.value) {
+      throw new Error(`Recipe with ID ${recipeId} is missing value for user ${userEmail}`);
+    }
+    
 
-  if (!response.ok) {
-    throw new Error(`Failed to delete recipe: ${response.statusText}`);
+    return { message: 'Recipe successfully deleted' };
+  } catch (error) {
+    console.error('Failed to delete recipe:', error);
+    throw new Error('Failed to delete recipe from the database');
   }
-
-  return response.json();
 }

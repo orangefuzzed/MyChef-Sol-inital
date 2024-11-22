@@ -1,88 +1,154 @@
+// RecipeViewPage.tsx - Without Save Shopping List Toggle
 'use client';
 
-import React from 'react';
-import { useRecipeContext } from './../contexts/RecipeContext';
-import { useRouter } from 'next/navigation';
+import React, { useEffect, useState } from 'react';
+import { useRecipeContext } from '../contexts/RecipeContext';
+import { useRouter, useSearchParams } from 'next/navigation';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
-import { ArrowLeftCircle } from 'lucide-react'; // Importing the arrow icon
+import RecipeDetails from '../components/AIChatInterface/RecipeDetails';
+import { ArrowLeftCircle, Bookmark, Heart } from 'lucide-react';
+import { saveRecipeToDB, deleteRecipeFromDB, getSavedRecipesFromDB } from '../utils/indexedDBUtils';
+import { saveRecipeToFavorites, deleteRecipeFromFavorites, getFavoriteRecipesFromDB } from '../utils/favoritesUtils';
 
 const RecipeViewPage = () => {
-  const { selectedRecipe, recipeSuggestions } = useRecipeContext();
+  const { selectedRecipe } = useRecipeContext();
   const router = useRouter();
+  const searchParams = useSearchParams();
+  const recipeId = searchParams.get('recipeId');
+  const [isSaved, setIsSaved] = useState(false);
+  const [isFavorited, setIsFavorited] = useState(false);
 
-  if (!selectedRecipe) {
+  useEffect(() => {
+    if (!recipeId) return;
+
+    const checkIfSaved = async () => {
+      const savedRecipes = await getSavedRecipesFromDB();
+      const found = savedRecipes.find((recipe) => recipe.recipeId === recipeId);
+      setIsSaved(!!found);
+    };
+
+    const checkIfFavorited = async () => {
+      const favoriteRecipes = await getFavoriteRecipesFromDB();
+      const found = favoriteRecipes.find((recipe) => recipe.recipeId === recipeId);
+      setIsFavorited(!!found);
+    };
+
+    checkIfSaved();
+    checkIfFavorited();
+  }, [recipeId]);
+
+  if (!recipeId) {
     return <div className="text-white p-4">No recipe selected. Please go back and select a recipe.</div>;
   }
+
+  const handleBackToSuggestions = () => {
+    router.push('/recipe-suggestions');
+  };
+
+  const handleSaveToggle = async () => {
+    if (!selectedRecipe) return;
+
+    try {
+      if (isSaved) {
+        await deleteRecipeFromDB(recipeId);
+        setIsSaved(false);
+        const response = await fetch(`/api/recipes/saved?recipeId=${recipeId}`, {
+          method: 'DELETE',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        });
+        if (!response.ok) {
+          console.error('Failed to delete recipe from MongoDB:', await response.text());
+        }
+      } else {
+        await saveRecipeToDB(selectedRecipe);
+        setIsSaved(true);
+        const response = await fetch('/api/recipes/saved', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(selectedRecipe),
+        });
+        if (!response.ok) {
+          console.error('Failed to save recipe to MongoDB:', await response.text());
+        }
+      }
+    } catch (error) {
+      console.error('Error while toggling save:', error);
+    }
+  };
+
+  const handleFavoriteToggle = async () => {
+    if (!selectedRecipe) return;
+
+    try {
+      if (isFavorited) {
+        await deleteRecipeFromFavorites(recipeId);
+        setIsFavorited(false);
+        const response = await fetch(`/api/recipes/favorites?recipeId=${recipeId}`, {
+          method: 'DELETE',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        });
+        if (!response.ok) {
+          console.error('Failed to delete favorite from MongoDB:', await response.text());
+        }
+      } else {
+        await saveRecipeToFavorites(selectedRecipe);
+        setIsFavorited(true);
+        const response = await fetch('/api/recipes/favorites', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(selectedRecipe),
+        });
+        if (!response.ok) {
+          console.error('Failed to save favorite to MongoDB:', await response.text());
+        }
+      }
+    } catch (error) {
+      console.error('Error while toggling favorite:', error);
+    }
+  };
 
   return (
     <div className="h-screen flex flex-col bg-gray-900 text-white overflow-hidden">
       {/* Header */}
       <Header
         centralText="Recipe Details"
-        backButton={
-          recipeSuggestions.length > 0
-            ? {
-                label: 'Back to Suggestions',
-                icon: <ArrowLeftCircle size={24} />,
-                onClick: () => router.push('/recipe-suggestions'),
-              }
-            : undefined
-        }
+        backButton={{
+          label: 'Back to Suggestions',
+          icon: <ArrowLeftCircle size={24} />,
+          onClick: handleBackToSuggestions,
+        }}
       />
 
       {/* Main Content */}
       <div className="flex-grow p-8 overflow-y-auto">
-        <h2 className="text-4xl font-bold mb-4">{selectedRecipe.recipeTitle}</h2>
-        <p className="text-lg mb-4">{selectedRecipe.description}</p>
-        {selectedRecipe.rating !== undefined && (
-          <p className="mb-4">Rating: {selectedRecipe.rating}</p>
-        )}
-        {selectedRecipe.protein !== undefined && (
-          <p className="mb-4">Protein: {selectedRecipe.protein}g</p>
-        )}
-
-        <h3 className="text-2xl font-bold mb-2">Ingredients:</h3>
-        {selectedRecipe.ingredients && selectedRecipe.ingredients.length > 0 ? (
-          <ul className="list-disc pl-6 space-y-2">
-            {selectedRecipe.ingredients.map((ingredient, index) => (
-              <li key={index}>{ingredient}</li>
-            ))}
-          </ul>
-        ) : (
-          <p>No ingredients available for this recipe.</p>
-        )}
-
-        <h3 className="text-2xl font-bold mt-6 mb-2">Instructions:</h3>
-        {selectedRecipe.instructions && selectedRecipe.instructions.length > 0 ? (
-          <ol className="list-decimal pl-6 space-y-2">
-            {selectedRecipe.instructions.map((instruction, index) => (
-              <li key={index}>{instruction}</li>
-            ))}
-          </ol>
-        ) : (
-          <p>No instructions available for this recipe.</p>
-        )}
-
-        {/* Navigation Buttons */}
-        <div className="mt-8 flex gap-4">
-          <button
-            onClick={() => router.push('/cook-mode')}
-            className="p-2 bg-green-500 rounded-full text-white"
-          >
-            Cook Mode
-          </button>
-          <button
-            onClick={() => router.push('/shopping-list')}
-            className="p-2 bg-blue-500 rounded-full text-white"
-          >
-            Create Shopping List
-          </button>
-        </div>
+        <RecipeDetails />
       </div>
 
-      {/* Footer */}
-      <Footer actions={['home', 'save', 'favorite', 'send']} />
+      {/* Footer with Save and Favorite Toggles */}
+      <Footer
+        actions={['home', 'send']}
+        contextualActions={[
+          {
+            label: isSaved ? 'Saved' : 'Save',
+            icon: <Bookmark size={24} color={isSaved ? 'green' : 'white'} />,
+            onClick: handleSaveToggle,
+          },
+          {
+            label: isFavorited ? 'Favorited' : 'Favorite',
+            icon: <Heart size={24} color={isFavorited ? 'red' : 'white'} />,
+            onClick: handleFavoriteToggle,
+          },
+        ]}
+      />
     </div>
   );
 };

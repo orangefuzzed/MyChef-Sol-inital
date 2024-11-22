@@ -19,16 +19,16 @@ const Footer: React.FC<FooterProps> = ({ actions, contextualActions }) => {
   };
 
   return (
-    <footer className={`${styles.footer} footer`}>
-      <div className={`${styles.footerContainer} p-4 border-t border-gray-700 border-solid border-[1px]`}>
+    <footer className={`${styles.footer} sticky bottom-0 w-full bg-gray-900 text-white`}>
+      <div className={`${styles.footerContainer} flex justify-around items-center p-4 border-t border-gray-700`}>
         {/* Static Actions */}
         {actions.map((action, index) => {
           const item = actionItems[action];
           return (
             <Link key={index} href={item.link} passHref>
-              <div className={styles.footerItem}>
+              <div className={`${styles.footerItem} flex flex-col items-center`}>
                 {item.icon}
-                <span>{item.label}</span>
+                <span className="text-sm mt-1">{item.label}</span>
               </div>
             </Link>
           );
@@ -36,11 +36,11 @@ const Footer: React.FC<FooterProps> = ({ actions, contextualActions }) => {
 
         {/* Contextual Actions */}
         {contextualActions && contextualActions.length > 0 && (
-          <div className={`${styles.contextualActions} flex gap-4 mt-2`}>
+          <div className={`${styles.contextualActions} flex gap-4`}>
             {contextualActions.map((action, index) => (
-              <button key={index} onClick={action.onClick} className="p-2 bg-gray-700 rounded-full text-white">
+              <button key={index} onClick={action.onClick} className="flex items-center p-2 bg-gray-700 rounded-full">
                 {action.icon}
-                <span className="ml-2">{action.label}</span>
+                <span className="ml-2 text-sm">{action.label}</span>
               </button>
             ))}
           </div>

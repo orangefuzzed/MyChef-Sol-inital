@@ -3,21 +3,22 @@
 import React, { useState, useEffect } from 'react';
 import { Text } from '@radix-ui/themes';
 import Image from 'next/image';
-import { Bot } from 'lucide-react'; // Importing icons
+import { Bot, ArrowLeft } from 'lucide-react'; // Importing icons
 import HamburgerMenu from './HamburgerMenu';
 import styles from './Header.module.css';
 import axios from 'axios';
 
 interface HeaderProps {
   centralText: string;
+  onBackClick?: () => void; // Add optional onBackClick prop for back button handling
   backButton?: {
-    label: string;
-    icon: JSX.Element;
-    onClick: () => void;
+    label?: string; // Optional label for the back button
+    icon?: JSX.Element; // Optional icon for the back button
+    onClick?: () => void; // Optional custom click handler for the back button
   };
 }
 
-const Header: React.FC<HeaderProps> = ({ backButton }) => {
+const Header: React.FC<HeaderProps> = ({ centralText, onBackClick, backButton }) => {
   const [user, setUser] = useState<{ displayName: string; avatarUrl?: string } | null>(null);
   const [isHamburgerMenuOpen, setIsHamburgerMenuOpen] = useState(false);
 
@@ -50,18 +51,19 @@ const Header: React.FC<HeaderProps> = ({ backButton }) => {
   return (
     <header className={`${styles.header} header`}>
       <div className="flex justify-between items-center p-4 border-b border-gray-700 border-solid border-[1px] bg-gray-800">
-        {/* Back Button (if provided) */}
-        {backButton && (
-          <button onClick={backButton.onClick} className={styles.backButton}>
-            <div className={styles.backButtonWrapper}>
-              {backButton.icon}
-              <span className="ml-2">{backButton.label}</span>
-            </div>
+        {/* Back Button (if onBackClick or backButton is provided) */}
+        {(onBackClick || backButton) && (
+          <button
+            onClick={backButton?.onClick || onBackClick}
+            className={`${styles.backButton} text-white hover:text-gray-400`}
+          >
+            {backButton?.icon || <ArrowLeft size={24} className="mr-2" />}
+            {backButton?.label || 'Back'}
           </button>
         )}
 
-        {/* Hamburger Menu Button */}
-        {!backButton && (
+        {/* Hamburger Menu Button (if no back button is provided) */}
+        {!onBackClick && !backButton && (
           <button
             className={styles.menuButton}
             onClick={() => setIsHamburgerMenuOpen(!isHamburgerMenuOpen)}
@@ -83,18 +85,8 @@ const Header: React.FC<HeaderProps> = ({ backButton }) => {
           <Text className={styles.greeting}>
             {getTimeBasedGreeting()}, {user ? user.displayName || 'Guest' : 'Guest'}
           </Text>
+          <span className="text-lg font-semibold">{centralText}</span>
         </div>
-
-        {/* Avatar Image (if user is logged in and has an avatar) 
-        {user?.avatarUrl && (
-          <Image
-            src={user.avatarUrl}
-            alt="User Avatar"
-            width={40}
-            height={40}
-            className="rounded-full border border-gray-700"
-          />
-        )}*/}
 
         {/* Help Icon Button */}
         <button className={styles.helpButton}>

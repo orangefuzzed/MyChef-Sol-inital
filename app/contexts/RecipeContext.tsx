@@ -1,51 +1,139 @@
 import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
-import { Recipe } from '../../types/Recipe'; // Importing Recipe type from shared file
+import { Recipe } from '../../types/Recipe';
+import { ShoppingListItem } from '../../types/ShoppingListItem';
+import { useSession } from 'next-auth/react';
+import { saveRecipeToDB, getPendingRecipes, deletePendingRecipe } from '../utils/indexedDBUtils';
+
+interface ShoppingList {
+  ingredients: ShoppingListItem[];
+  totalItems: number;
+}
+
+interface RecipeSuggestionSet {
+  responseId: string;
+  message: string;
+  suggestions: Recipe[];
+}
 
 interface RecipeContextProps {
   selectedRecipe: Recipe | null;
   setSelectedRecipe: (recipe: Recipe | null) => void;
-  recipeSuggestions: Recipe[];
-  setRecipeSuggestions: (suggestions: Recipe[]) => void;
+  recipeSuggestionSets: RecipeSuggestionSet[];
+  addRecipeSuggestionSet: (suggestionSet: RecipeSuggestionSet) => void;
+  savedRecipes: Recipe[];
+  setSavedRecipes: (recipes: Recipe[]) => void;
+  currentShoppingList: ShoppingList | null;
+  setCurrentShoppingList: (shoppingList: ShoppingList | null) => void;
+  currentCookMode: string | null;
+  setCurrentCookMode: (cookMode: string | null) => void;
+  saveRecipe: (recipe: Recipe) => Promise<void>;
 }
 
 const RecipeContext = createContext<RecipeContextProps | undefined>(undefined);
 
 export const RecipeProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
-  const [selectedRecipe, setSelectedRecipe] = useState<Recipe | null>(() => {
-    if (typeof window !== 'undefined') {
-      const storedRecipe = localStorage.getItem('selectedRecipe');
-      return storedRecipe ? JSON.parse(storedRecipe) : null;
-    }
-    return null;
-  });
+  const { data: session } = useSession();
+  const userEmail = session?.user?.email;
 
-  const [recipeSuggestions, setRecipeSuggestions] = useState<Recipe[]>(() => {
-    if (typeof window !== 'undefined') {
-      const storedSuggestions = localStorage.getItem('recipeSuggestions');
-      return storedSuggestions ? JSON.parse(storedSuggestions) : [];
-    }
-    return [];
-  });
+  const [selectedRecipe, setSelectedRecipe] = useState<Recipe | null>(null);
+  const [recipeSuggestionSets, setRecipeSuggestionSets] = useState<RecipeSuggestionSet[]>([]);
+  const [savedRecipes, setSavedRecipes] = useState<Recipe[]>([]);
+  const [currentShoppingList, setCurrentShoppingList] = useState<ShoppingList | null>(null);
+  const [currentCookMode, setCurrentCookMode] = useState<string | null>(null);
 
+  // Remove automatic loading of saved recipes on mount to prevent loading them during the initial mount
+  // We can add a function to load saved recipes when explicitly needed
+
+  const loadSavedRecipes = async () => {
+    if (!userEmail) return;
+
+    try {
+      const response = await fetch('/api/recipes/saved', {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+
+      if (response.ok) {
+        const data = await response.json();
+        if (data && Array.isArray(data)) {
+          setSavedRecipes(data);
+        } else {
+          console.error('Invalid response format: recipes not found');
+        }
+      } else {
+        console.error('Failed to load saved recipes:', await response.text());
+      }
+    } catch (error) {
+      console.error('Failed to load saved recipes:', error);
+    }
+  };
+
+  const saveRecipe = async (recipe: Recipe) => {
+    try {
+      await saveRecipeToDB(recipe); // Save to IndexedDB
+
+      // Save to MongoDB via API
+      const response = await fetch('/api/recipes/save', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ recipe, userEmail }),
+      });
+
+      if (!response.ok) {
+        throw new Error('Failed to save recipe to MongoDB');
+      }
+
+      // Update saved recipes in the state
+      setSavedRecipes((prevRecipes) => [...prevRecipes, recipe]);
+    } catch (error) {
+      console.error('Error saving recipe:', error);
+    }
+  };
+
+  // Sync offline saved recipes when back online
   useEffect(() => {
-    if (selectedRecipe) {
-      localStorage.setItem('selectedRecipe', JSON.stringify(selectedRecipe));
-    } else {
-      localStorage.removeItem('selectedRecipe');
-    }
-  }, [selectedRecipe]);
+    const syncPendingRecipes = async () => {
+      const pendingRecipes = await getPendingRecipes();
+      for (const recipe of pendingRecipes) {
+        try {
+          await saveRecipe(recipe);
+          await deletePendingRecipe(recipe.recipeId);
+        } catch (error) {
+          console.error('Error syncing recipe:', error);
+        }
+      }
+    };
 
-  useEffect(() => {
-    if (recipeSuggestions.length > 0) {
-      localStorage.setItem('recipeSuggestions', JSON.stringify(recipeSuggestions));
-    } else {
-      localStorage.removeItem('recipeSuggestions');
-    }
-  }, [recipeSuggestions]);
+    window.addEventListener('online', syncPendingRecipes);
+    return () => {
+      window.removeEventListener('online', syncPendingRecipes);
+    };
+  }, []);
+
+  // Function to add a new recipe suggestion set
+  const addRecipeSuggestionSet = (suggestionSet: RecipeSuggestionSet) => {
+    setRecipeSuggestionSets((prevSets) => [...prevSets, suggestionSet]);
+  };
 
   return (
     <RecipeContext.Provider
-      value={{ selectedRecipe, setSelectedRecipe, recipeSuggestions, setRecipeSuggestions }}
+      value={{
+        selectedRecipe,
+        setSelectedRecipe,
+        recipeSuggestionSets,
+        addRecipeSuggestionSet,
+        savedRecipes,
+        setSavedRecipes,
+        currentShoppingList,
+        setCurrentShoppingList,
+        currentCookMode,
+        setCurrentCookMode,
+        saveRecipe,
+      }}
     >
       {children}
     </RecipeContext.Provider>

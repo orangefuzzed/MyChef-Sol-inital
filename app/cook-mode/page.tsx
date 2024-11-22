@@ -2,21 +2,44 @@
 
 import React, { useEffect, useState } from 'react';
 import { useRecipeContext } from './../contexts/RecipeContext';
-import ReactMarkdown from 'react-markdown';
-import { useRouter } from 'next/navigation';
+import CookMode from '../components/AIChatInterface/CookMode';
+import { useRouter, useSearchParams } from 'next/navigation';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
 import { ArrowLeftCircle } from 'lucide-react'; // Import back icon
 
 const CookModePage = () => {
-  const { selectedRecipe } = useRecipeContext();
+  const { selectedRecipe, setSelectedRecipe } = useRecipeContext();
   const router = useRouter();
+  const searchParams = useSearchParams();
   const [hydrationReady, setHydrationReady] = useState(false);
+  const recipeId = searchParams.get('recipeId');
 
   useEffect(() => {
     // Set hydration state to true once component mounts to avoid hydration issues
     setHydrationReady(true);
   }, []);
+
+  useEffect(() => {
+    // If there's a recipeId in the URL and no selectedRecipe, fetch the recipe
+    if (recipeId && !selectedRecipe) {
+      const fetchRecipe = async () => {
+        try {
+          const response = await fetch(`/api/recipes/saved?recipeId=${recipeId}`);
+          if (response.ok) {
+            const fetchedRecipe = await response.json();
+            setSelectedRecipe(fetchedRecipe);
+          } else {
+            console.error('Failed to fetch recipe:', await response.text());
+          }
+        } catch (error) {
+          console.error('Failed to fetch recipe:', error);
+        }
+      };
+
+      fetchRecipe();
+    }
+  }, [recipeId, selectedRecipe, setSelectedRecipe]);
 
   if (!hydrationReady) {
     return null; // Prevent rendering until hydration is ready
@@ -60,15 +83,16 @@ const CookModePage = () => {
         backButton={{
           label: 'Back to Recipe',
           icon: <ArrowLeftCircle size={24} />,
-          onClick: () => router.push('/recipe-view'),
+          onClick: () => router.push(`/recipe-view?recipeId=${selectedRecipe.recipeId}`),
         }}
       />
 
       {/* Main Content */}
-      <div className="flex-grow p-8 overflow-y-auto">
-        <h2 className="text-4xl font-bold mb-4">Cook Mode: {selectedRecipe.recipeTitle}</h2>
-        <ReactMarkdown>{selectedRecipe.instructions.join('\n')}</ReactMarkdown>
-      </div>
+      {/* Main Content */}
+        <div className="flex-grow p-8 overflow-y-auto">
+          <CookMode cookModeData={selectedRecipe.instructions.join('\n')} />
+        </div>
+
 
       {/* Footer with standard actions */}
       <Footer actions={['home', 'save', 'favorite', 'send']} />

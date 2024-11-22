@@ -1,14 +1,15 @@
-export interface RecipeObject {
-  id: string; 
-  recipeTitle: string; 
+import { ObjectId } from 'mongodb';
+
+export interface RecipeDocument {
+  _id?: ObjectId; // MongoDB ObjectId
+  recipeId: string; // Unique user-friendly recipe ID
+  recipeTitle: string;
   description?: string;
-  mainIngredient?: string;
-  spicinessLevel?: string;
   ingredients: string[];
   instructions: string[];
   imageURL?: string;
   userEmail: string;
   isSuggestion?: boolean;
+  createdAt?: Date;
+  updatedAt?: Date;
 }
-
-export type RecipeDocument = RecipeObject & Document;
