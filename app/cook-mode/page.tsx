@@ -7,7 +7,6 @@ import { useRouter, useSearchParams } from 'next/navigation';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
 import { ArrowLeftCircle } from 'lucide-react'; // Import back icon
-
 const CookModePage = () => {
   const { selectedRecipe, setSelectedRecipe } = useRecipeContext();
   const router = useRouter();
