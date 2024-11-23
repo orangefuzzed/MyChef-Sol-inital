@@ -5,7 +5,7 @@ export interface ChatMessage {
   messageId: string;
   sessionId: string;
   timestamp: Date;
-  sender: 'user' | 'ai';
+  sender: 'user' | 'ai'; // Allow "system" as a valid sender type
   text: string;
   suggestions?: Recipe[];  // Updated type
 }

@@ -2,6 +2,7 @@
 
 import { Recipe } from '../../types/Recipe';
 import { ShoppingListItem } from '../../types/ShoppingListItem';
+import { ShoppingList } from '../../types/ShoppingList';
 
 const DB_NAME = 'MyChefDB';
 const DB_VERSION = 6; // Updated version to reflect new shopping list features
@@ -91,15 +92,15 @@ export const getSavedShoppingListsFromDB = async (recipeId: string): Promise<{ i
 };
 
 // Fetch all saved shopping lists from IndexedDB
-export const getAllSavedShoppingListsFromDB = async (): Promise<ShoppingListItem[] | null> => {
+export const getAllSavedShoppingListsFromDB = async (): Promise<ShoppingList[] | null> => {
   const db = await openShoppingListDB();
   const transaction = db.transaction(SHOPPING_LISTS_STORE, 'readonly');
   const store = transaction.objectStore(SHOPPING_LISTS_STORE);
   const request = store.getAll();
 
-  return new Promise<ShoppingListItem[] | null>((resolve, reject) => {
+  return new Promise<ShoppingList[] | null>((resolve, reject) => {
     request.onsuccess = () => {
-      resolve(request.result as ShoppingListItem[]);
+      resolve(request.result as ShoppingList[]);
     };
     request.onerror = () => {
       reject(request.error);

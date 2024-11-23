@@ -6,7 +6,6 @@ import { Recipe } from '../../types/Recipe';
 import { useChat } from '../contexts/ChatContext';
 import MessageList from '../components/AIChatInterface/MessageList';
 import MessageInput from '../components/AIChatInterface/MessageInput';
-import ActionCards from '../components/AIChatInterface/ActionCards';
 import LoadingSpinner from '../components/LoadingSpinner';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
@@ -32,10 +31,6 @@ const AIChatInterface = () => {
 
   const {
     recipeSuggestionSets,
-    
-    currentShoppingList,
-    
-    currentCookMode,
     setCurrentCookMode,
   } = useRecipeContext(); // Extract RecipeContext
 
