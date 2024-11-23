@@ -46,7 +46,7 @@ const RecipeSuggestions: React.FC<RecipeSuggestionsProps> = ({ recipes, onSelect
   return (
     <div className="recipe-suggestions grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
       {recipes.map((recipe, index) => (
-        <div key={recipe.id} className="recipe-card bg-gray-800 p-4 rounded-lg">
+        <div key={recipe.recipeId} className="recipe-card bg-gray-800 p-4 rounded-lg">
           <h3 className="text-xl font-bold mb-2">{recipe.recipeTitle}</h3>
           <p className="text-sm mb-2">{recipe.description}</p>
           {recipe.imageURL && (
@@ -61,7 +61,7 @@ const RecipeSuggestions: React.FC<RecipeSuggestionsProps> = ({ recipes, onSelect
         </div>
       ))}
 
-      {/* Modal for viewing the full recipe */}
+      {/* Modal for viewing the full recipe 
       {isModalOpen && currentRecipeIndex !== null && (
         <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
           <div className="bg-white text-black p-6 rounded-lg w-11/12 md:w-2/3 lg:w-1/2">
@@ -117,7 +117,7 @@ const RecipeSuggestions: React.FC<RecipeSuggestionsProps> = ({ recipes, onSelect
             </button>
           </div>
         </div>
-      )}
+      )}*/}
     </div>
   );
 };
