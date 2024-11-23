@@ -14,7 +14,7 @@ const FavoritesPage = () => {
 
   useEffect(() => {
     const fetchFavoriteRecipes = async () => {
-      const recipes = await getFavoriteRecipesFromDB();
+      const recipes =  getFavoriteRecipesFromDB();
       setFavoriteRecipes(recipes);
     };
 
