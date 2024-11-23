@@ -261,7 +261,7 @@ const handleSaveSession = async () => {
           {/* Loading Spinner */}
           <LoadingSpinner isLoading={isLoading} loadingMessage={inputMessage} />
 
-          {/* Action Cards */}
+          {/* Action Cards 
           {!isLoading && (
             <ActionCards
               currentRecipe={null}
@@ -271,7 +271,7 @@ const handleSaveSession = async () => {
                 handleSendMessage('Can you add the last provided recipe to my meal plan?')
               }
             />
-          )}
+          )}*/}
 
           {/* Scroll to Bottom Reference */}
           <div ref={messagesEndRef} />

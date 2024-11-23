@@ -27,6 +27,7 @@ interface RecipeContextProps {
   currentCookMode: string | null;
   setCurrentCookMode: (cookMode: string | null) => void;
   saveRecipe: (recipe: Recipe) => Promise<void>;
+  loadSavedRecipes: () => Promise<void>;
 }
 
 const RecipeContext = createContext<RecipeContextProps | undefined>(undefined);
@@ -133,6 +134,7 @@ export const RecipeProvider: React.FC<{ children: ReactNode }> = ({ children }) 
         currentCookMode,
         setCurrentCookMode,
         saveRecipe,
+        loadSavedRecipes,
       }}
     >
       {children}

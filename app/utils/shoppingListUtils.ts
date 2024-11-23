@@ -91,21 +91,22 @@ export const getSavedShoppingListsFromDB = async (recipeId: string): Promise<{ i
 };
 
 // Fetch all saved shopping lists from IndexedDB
-export const getAllSavedShoppingListsFromDB = async (): Promise<any[] | null> => {
+export const getAllSavedShoppingListsFromDB = async (): Promise<ShoppingListItem[] | null> => {
   const db = await openShoppingListDB();
   const transaction = db.transaction(SHOPPING_LISTS_STORE, 'readonly');
   const store = transaction.objectStore(SHOPPING_LISTS_STORE);
   const request = store.getAll();
 
-  return new Promise<any[] | null>((resolve, reject) => {
+  return new Promise<ShoppingListItem[] | null>((resolve, reject) => {
     request.onsuccess = () => {
-      resolve(request.result);
+      resolve(request.result as ShoppingListItem[]);
     };
     request.onerror = () => {
       reject(request.error);
     };
   });
 };
+
 
 // Delete a shopping list from IndexedDB by recipeId
 export const deleteShoppingListFromDB = async (recipeId: string): Promise<void> => {

@@ -2,10 +2,11 @@ import React from 'react';
 import Link from 'next/link';
 import { ExternalLinkIcon } from '@radix-ui/react-icons';
 import { Recipe } from '../../../types/Recipe';
+import { ShoppingListItem } from './../../../types/ShoppingListItem';
 
 interface ActionCardsProps {
   currentRecipe: Recipe | null;
-  currentShoppingList: any; // Adjust type based on actual structure
+  currentShoppingList: ShoppingListItem[]; // Adjust type based on actual structure
   currentCookMode: string | null;
   handleAddToMealPlan: () => void;
 }

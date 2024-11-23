@@ -15,7 +15,7 @@ const ShoppingList: React.FC<ShoppingListProps> = ({ shoppingListData }) => {
       <ul className="list-disc pl-6 space-y-2">
         {shoppingListData.ingredients.map((item, index) => (
           <li key={index}>
-            {item.name} - {item.quantity} {item.unit}
+            {item.name} {/*- {item.quanity} {item.unit}*/}
           </li>
         ))}
       </ul>

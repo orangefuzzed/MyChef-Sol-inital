@@ -6,9 +6,10 @@ import Header from '../components/Header';
 import Footer from '../components/Footer';
 import { getFavoriteRecipesFromDB } from '../utils/favoritesUtils';
 import { useRouter } from 'next/navigation';
+import { Recipe } from '../../types/Recipe'; // Make sure Recipe is imported
 
 const FavoritesPage = () => {
-  const [favoriteRecipes, setFavoriteRecipes] = useState<any[]>([]);
+  const [favoriteRecipes, setFavoriteRecipes] = useState<Recipe[]>([]);
   const router = useRouter();
 
   useEffect(() => {

@@ -38,7 +38,7 @@ const CookMode: React.FC<CookModeProps> = ({ recipeTitle, instructions, onClose 
 
         {/* Current Step */}
         <div className="cook-mode-step">
-          <p>Step {currentStep + 1} of {instructions.length}</p>
+        <p>Step {currentStep + 1} of {instructions.length}</p>
           <p>{instructions[currentStep]}</p>
         </div>
 

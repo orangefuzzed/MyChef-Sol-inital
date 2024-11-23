@@ -1,11 +1,10 @@
-// utils/indexedDBUtils.ts
-
-// Setting up IndexedDB utilities for storing saved recipes, favorite recipes, shopping lists, chat messages, and chat sessions
 import { ChatSession } from '../../types/ChatSession'; // Importing ChatSession type
 import { ChatMessage } from '../../types/ChatMessage';
+import { Recipe } from '../../types/Recipe'; // Assuming Recipe type is defined here
 
 const DB_NAME = 'MyChefDB';
 const DB_VERSION = 6; // Updated version to match and reflect changes
+
 // Store names that use simple configurations
 const STORE_NAMES = ['savedRecipes', 'favoriteRecipes', 'shoppingLists', 'recipeSuggestions'];
 
@@ -15,7 +14,6 @@ const SAVED_SESSIONS_STORE = { name: 'savedSessions', keyPath: 'sessionId', auto
 // Store configuration for 'chatMessages'
 const CHAT_STORE_NAME = { name: 'chatMessages', keyPath: 'messageId', autoIncrement: false };
 
-// Open IndexedDB connection
 // Open IndexedDB connection
 export const openDBWithChat = (): Promise<IDBDatabase> => {
   return new Promise<IDBDatabase>((resolve, reject) => {
@@ -78,7 +76,7 @@ export const saveSessionToDB = async (session: ChatSession): Promise<void> => {
 };
 
 // Save a recipe to IndexedDB
-export const saveRecipeToDB = async (recipe: any): Promise<void> => {
+export const saveRecipeToDB = async (recipe: Recipe): Promise<void> => {
   const db = await openDBWithChat();
   const transaction = db.transaction('savedRecipes', 'readwrite');
   const store = transaction.objectStore('savedRecipes');
@@ -100,15 +98,15 @@ export const saveRecipeToDB = async (recipe: any): Promise<void> => {
 };
 
 // Fetch all chat messages from IndexedDB
-export const getChatMessagesFromDB = async (): Promise<any[]> => {
+export const getChatMessagesFromDB = async (): Promise<ChatMessage[]> => {
   const db = await openDBWithChat();
   const transaction = db.transaction(CHAT_STORE_NAME.name, 'readonly');
   const store = transaction.objectStore(CHAT_STORE_NAME.name);
   const request = store.getAll();
 
-  return new Promise<any[]>((resolve, reject) => {
+  return new Promise<ChatMessage[]>((resolve, reject) => {
     request.onsuccess = () => {
-      resolve(request.result);
+      resolve(request.result as ChatMessage[]);
     };
     request.onerror = () => {
       reject(request.error);
@@ -125,7 +123,7 @@ export const getSavedSessionsFromDB = async (): Promise<ChatSession[]> => {
 
   return new Promise<ChatSession[]>((resolve, reject) => {
     request.onsuccess = () => {
-      resolve(request.result);
+      resolve(request.result as ChatSession[]);
     };
     request.onerror = () => {
       reject(request.error);
@@ -133,6 +131,66 @@ export const getSavedSessionsFromDB = async (): Promise<ChatSession[]> => {
   });
 };
 
+// Retrieve pending recipes from IndexedDB
+export const getPendingRecipes = async (): Promise<Recipe[]> => {
+  const db = await openDBWithChat();
+  const transaction = db.transaction('savedRecipes', 'readonly');
+  const store = transaction.objectStore('savedRecipes');
+  const request = store.getAll();
+
+  return new Promise<Recipe[]>((resolve, reject) => {
+    request.onsuccess = () => {
+      resolve(request.result as Recipe[]);
+    };
+    request.onerror = () => {
+      reject(request.error);
+    };
+  });
+};
+
+// Fetch all saved recipes from IndexedDB
+export const getSavedRecipesFromDB = async (): Promise<Recipe[]> => {
+  const db = await openDBWithChat();
+  const transaction = db.transaction('savedRecipes', 'readonly');
+  const store = transaction.objectStore('savedRecipes');
+  const request = store.getAll();
+
+  return new Promise<Recipe[]>((resolve, reject) => {
+    request.onsuccess = () => {
+      resolve(request.result as Recipe[]);
+    };
+    request.onerror = () => {
+      reject(request.error);
+    };
+  });
+};
+
+// Save a chat message to IndexedDB
+export const saveChatMessageToDB = async (message: ChatMessage): Promise<void> => {
+  const db = await openDBWithChat();
+  const transaction = db.transaction(CHAT_STORE_NAME.name, 'readwrite');
+  const store = transaction.objectStore(CHAT_STORE_NAME.name);
+
+  console.log('[saveChatMessageToDB] Saving chat message to IndexedDB:', message);
+
+  // Ensure the message includes a valid sessionId
+  if (!message.sessionId || message.sessionId === 'current_session_id') {
+    throw new Error('Chat message is missing a valid session ID');
+  }
+
+  store.put(message); // Save the message object to IndexedDB
+
+  return new Promise<void>((resolve, reject) => {
+    transaction.oncomplete = () => {
+      console.log('[saveChatMessageToDB] Chat message saved successfully');
+      resolve();
+    };
+    transaction.onerror = () => {
+      console.error('[saveChatMessageToDB] Error saving chat message:', transaction.error);
+      reject(transaction.error);
+    };
+  });
+};
 // Delete a chat session from IndexedDB
 export const deleteChatSessionFromDB = async (sessionId: string): Promise<void> => {
   const db = await openDBWithChat();
@@ -166,24 +224,6 @@ export const deleteChatMessageFromDB = async (messageId: string): Promise<void> 
     };
   });
 };
-
-// Retrieve pending recipes from IndexedDB
-export const getPendingRecipes = async (): Promise<any[]> => {
-  const db = await openDBWithChat();
-  const transaction = db.transaction('savedRecipes', 'readonly');
-  const store = transaction.objectStore('savedRecipes');
-  const request = store.getAll();
-
-  return new Promise<any[]>((resolve, reject) => {
-    request.onsuccess = () => {
-      resolve(request.result);
-    };
-    request.onerror = () => {
-      reject(request.error);
-    };
-  });
-};
-
 // Delete pending recipe from IndexedDB after successful sync
 export const deletePendingRecipe = async (recipeId: string): Promise<void> => {
   const db = await openDBWithChat();
@@ -197,50 +237,6 @@ export const deletePendingRecipe = async (recipeId: string): Promise<void> => {
     };
     transaction.onerror = () => {
       reject(transaction.error);
-    };
-  });
-};
-
-// Save a chat message to IndexedDB
-export const saveChatMessageToDB = async (message: ChatMessage): Promise<void> => {
-  const db = await openDBWithChat();
-  const transaction = db.transaction(CHAT_STORE_NAME.name, 'readwrite');
-  const store = transaction.objectStore(CHAT_STORE_NAME.name);
-
-  console.log('[saveChatMessageToDB] Saving chat message to IndexedDB:', message);
-
-  // Ensure the message includes a valid sessionId
-  if (!message.sessionId || message.sessionId === 'current_session_id') {
-    throw new Error('Chat message is missing a valid session ID');
-  }
-
-  store.put(message); // Save the message object to IndexedDB
-
-  return new Promise<void>((resolve, reject) => {
-    transaction.oncomplete = () => {
-      console.log('[saveChatMessageToDB] Chat message saved successfully');
-      resolve();
-    };
-    transaction.onerror = () => {
-      console.error('[saveChatMessageToDB] Error saving chat message:', transaction.error);
-      reject(transaction.error);
-    };
-  });
-};
-
-// Fetch all saved recipes from IndexedDB
-export const getSavedRecipesFromDB = async (): Promise<any[]> => {
-  const db = await openDBWithChat();
-  const transaction = db.transaction('savedRecipes', 'readonly');
-  const store = transaction.objectStore('savedRecipes');
-  const request = store.getAll();
-
-  return new Promise<any[]>((resolve, reject) => {
-    request.onsuccess = () => {
-      resolve(request.result);
-    };
-    request.onerror = () => {
-      reject(request.error);
     };
   });
 };

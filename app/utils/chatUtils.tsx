@@ -1,5 +1,6 @@
 // chatUtils.tsx
 
+
 // Utility to handle errors centrally
 export const handleError = (error: unknown, messageId: number, setMessages: Function, setIsLoading: Function) => {
     console.error('An error occurred:', error);

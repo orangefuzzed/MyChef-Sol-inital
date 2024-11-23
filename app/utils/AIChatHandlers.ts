@@ -11,9 +11,7 @@ export const useAIChatHandlers = () => {
     messages,
     addMessage,
     setMessages,
-    
     setIsLoading,
-    
     setLastAIResponse,
     sessionId, // Add sessionId from ChatContext
   } = useChat();
@@ -30,10 +28,11 @@ export const useAIChatHandlers = () => {
       // Ensure the sessionId is properly set
       const newSessionId = sessionId ?? Date.now().toString();
 
+      // Use `newSessionId` instead of `sessionId`
       const newMessage: ChatMessage & { id: number } = {
         id: Date.now(),
         messageId: Date.now().toString(),
-        sessionId,
+        sessionId: newSessionId, // <-- Use `newSessionId` here
         timestamp: new Date(),
         sender: 'user',
         text: inputMessage,
@@ -56,7 +55,7 @@ export const useAIChatHandlers = () => {
       const aiMessage: ChatMessage & { suggestions?: Recipe[] } = {
         id: Date.now() + 1,
         messageId: (Date.now() + 1).toString(),
-        sessionId,
+        sessionId: newSessionId, // <-- Use `newSessionId` here
         timestamp: new Date(),
         sender: 'ai',
         text: parsedResponse.message,
