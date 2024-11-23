@@ -109,7 +109,7 @@ export const handleError = (
   };
   
   // Utility to format conversation history
-  export const formatConversationHistory = (messages: any[]): string => {
+  export const formatConversationHistory = (messages: ChatMessage[]): string => {
     return messages
       .map((msg) => `${msg.sender === 'user' ? 'Human' : 'Assistant'}: ${msg.text}`)
       .join('\n');
