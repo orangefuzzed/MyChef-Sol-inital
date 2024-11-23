@@ -21,7 +21,7 @@ const CookModePage = () => {
   }, []);
 
   useEffect(() => {
-    // If a recipeId in the URL and no selectedRecipe, fetch the recipe
+    // If there is a recipeId in the URL and no selectedRecipe, fetch the recipe
     if (recipeId && !selectedRecipe) {
       const fetchRecipe = async () => {
         try {
