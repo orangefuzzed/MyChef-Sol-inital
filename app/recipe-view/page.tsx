@@ -28,24 +28,24 @@ const RecipeViewPage = () => {
 
   useEffect(() => {
     if (!recipeId) return;
-
+  
     const checkIfSaved = async () => {
       const savedRecipes = await getSavedRecipesFromDB();
       const found = savedRecipes.find((recipe) => recipe.recipeId === recipeId);
       setIsSaved(!!found);
     };
-
+  
     const checkIfFavorited = async () => {
       const favoriteRecipes = await getFavoriteRecipesFromDB();
       const found = favoriteRecipes.find((recipe) => recipe.recipeId === recipeId);
       setIsFavorited(!!found);
     };
-
-    if (hydrationReady) {
-      checkIfSaved();
-      checkIfFavorited();
-    }
-  }, [recipeId, hydrationReady]);
+  
+    // Remove the hydrationReady condition temporarily for debugging
+    checkIfSaved();
+    checkIfFavorited();
+  }, [recipeId]);
+  
 
   if (!hydrationReady) {
     return null; // Prevent rendering until hydration is ready

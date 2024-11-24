@@ -13,27 +13,29 @@ const RecipeSuggestions: React.FC<RecipeSuggestionsProps> = ({ currentRecipeList
 
   return (
     <div className="recipe-suggestions">
-      {currentRecipeList.map((recipe, index) => (
-        <div key={`${recipe.recipeTitle}-${index}`} className="bg-gray-800 p-4 rounded-lg mb-4">
-          <h3 className="text-xl font-bold">{recipe.recipeTitle}</h3>
-          <p className="text-yellow-400">Rating: {recipe.rating}</p>
-          <p className="text-gray-400">Protein: {recipe.protein}</p>
-          <p className="mt-2">{recipe.description}</p>
+      {currentRecipeList.map((recipe, index) => {
+        console.log('Recipe ID:', recipe.recipeId); // Add this log to verify
+        return (
+          <div key={`${recipe.recipeTitle}-${index}`} className="bg-gray-800 p-4 rounded-lg mb-4">
+            <h3 className="text-xl font-bold">{recipe.recipeTitle}</h3>
+            <p className="text-yellow-400">Rating: {recipe.rating}</p>
+            <p className="text-gray-400">Protein: {recipe.protein}</p>
+            <p className="mt-2">{recipe.description}</p>
+            <Link
+              href={{
+                pathname: `/recipe-view`,
+                query: { recipeId: recipe.recipeId },
+              }}
+            >
+                <button className="mt-4 ml-4 p-2 px-6 bg-slate-700 rounded-full text-white flex items-center gap-2">
+                  View Recipe Now!!
+                  <ExternalLinkIcon className="w-5 h-5" />
+                </button>
+            </Link>
+          </div>
+        );
+      })}
 
-          {/* Link to view the recipe - only passing recipeId now */}
-          <Link
-            href={{
-              pathname: `/recipe-view`,
-              query: { recipeId: recipe.recipeId },
-            }}
-          >
-            <button className="mt-4 ml-4 p-2 px-6 bg-slate-700 rounded-full text-white flex items-center gap-2">
-              View Recipe Now!!
-              <ExternalLinkIcon className="w-5 h-5" />
-            </button>
-          </Link>
-        </div>
-      ))}
     </div>
   );
 };
