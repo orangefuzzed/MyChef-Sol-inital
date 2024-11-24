@@ -80,10 +80,24 @@ export const useAIChatHandlers = () => {
         await saveRecipeToDatabase(recipe);
       }
     } catch (error) {
-      handleError(error, setMessages, setIsLoading);
-    } finally {
+      setMessages([
+          ...messages,
+          {
+              id: Date.now() + 1,
+              messageId: Date.now().toString(),
+              sessionId: sessionId ?? 'unknown', // Fallback if `sessionId` isn't set
+              timestamp: new Date(),
+              sender: 'ai',
+              text: 'An error occurred while processing your request. Please try again.',
+          },
+      ]);
+  
+      handleError(error, setIsLoading);
+  } finally {
       setIsLoading(false);
-    }
+  }
+   
+  
   };
 
   // Placeholder functions for other handlers

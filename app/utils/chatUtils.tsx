@@ -2,63 +2,15 @@
 
 import { ChatMessage } from '../../types/ChatMessage'; // Assuming there's a ChatMessage type defined
 
-// Utility to handle errors centrally
 export const handleError = (
   error: unknown,
-  updateMessages: (callback: (prevMessages: ChatMessage[]) => ChatMessage[]) => void,
   setIsLoading: (loading: boolean) => void
 ) => {
   console.error('An error occurred:', error);
-
-  const defaultSystemMessage: Omit<ChatMessage, 'messageId' | 'sessionId' | 'timestamp'> = {
-    id: Date.now(),
-    text: '',
-    sender: 'ai', // Set to 'system' to provide more explicit context
-  };
-
-  if (typeof error === 'object' && error !== null && 'response' in error) {
-    const errorResponse = (error as { response: { status: number } }).response;
-
-    if (errorResponse.status === 529) {
-      updateMessages((prevMessages) => [
-        ...prevMessages,
-        {
-          ...defaultSystemMessage,
-          messageId: Date.now().toString(),
-          sessionId: 'current_session', // Replace with the actual sessionId if available
-          timestamp: new Date(),
-          text: 'Woops, looks like we ran into some heavy traffic. Click Get More Suggestions again to retry...',
-        },
-      ]);
-    }
-  } else if (error instanceof Error && error.message.includes('Invalid response structure')) {
-    updateMessages((prevMessages) => [
-      ...prevMessages,
-      {
-        ...defaultSystemMessage,
-        messageId: Date.now().toString(),
-        sessionId: 'current_session', // Replace with the actual sessionId if available
-        timestamp: new Date(),
-        text: 'Whoops! It seems the chef was cut off mid-sentence. Click "Continue" to let the chef finish its response.',
-      },
-    ]);
-  } else {
-    updateMessages((prevMessages) => [
-      ...prevMessages,
-      {
-        ...defaultSystemMessage,
-        messageId: Date.now().toString(),
-        sessionId: 'current_session', // Replace with the actual sessionId if available
-        timestamp: new Date(),
-        text: 'An error occurred while processing your request. Please try again.',
-      },
-    ]);
-  }
-
   setIsLoading(false);
 };
 
-  
+
   // Utility to generate prompts for AI interaction
   export const generatePrompt = (conversationHistory: string, message: string, promptType: string): string => {
     const commonPromptPart = `
