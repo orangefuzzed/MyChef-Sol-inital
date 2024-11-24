@@ -17,7 +17,6 @@ import { ChatMessage } from '../../types/ChatMessage';
 import { useRouter } from 'next/navigation';
 
 
-const router = useRouter();
 const AIChatInterface = () => {
   const [sessionId, setSessionId] = useState<string>(() => Date.now().toString());
   const {
@@ -35,7 +34,8 @@ const AIChatInterface = () => {
     setSelectedRecipe,
   } = useRecipeContext(); // Extract RecipeContext
   
-
+  const router = useRouter();
+  
   const messagesEndRef = useRef<null | HTMLDivElement>(null);
   {/*const router = useRouter(); // To capture navigation events*/}
 
