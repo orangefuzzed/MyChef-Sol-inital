@@ -80,7 +80,7 @@ export const useAIChatHandlers = () => {
         await saveRecipeToDatabase(recipe);
       }
     } catch (error) {
-      handleError(error, Date.now() + 1, setMessages, setIsLoading);
+      handleError(error, setMessages, setIsLoading);
     } finally {
       setIsLoading(false);
     }
