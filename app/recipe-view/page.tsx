@@ -13,7 +13,7 @@ import { saveRecipeToFavorites, deleteRecipeFromFavorites, getFavoriteRecipesFro
 import { Suspense } from 'react';
 
 const RecipeViewPage = () => {
-  const { selectedRecipe, setSelectedRecipe } = useRecipeContext();
+  const { selectedRecipe } = useRecipeContext();
   const router = useRouter();
   const searchParams = useSearchParams();
   const recipeId = searchParams.get('recipeId');
