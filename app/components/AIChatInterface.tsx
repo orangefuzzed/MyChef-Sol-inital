@@ -14,9 +14,10 @@ import { saveSessionToDB, saveChatMessageToDB } from '../utils/indexedDBUtils'; 
 import RecipeSuggestions from '../components/AIChatInterface/RecipeSuggestions';
 import { ChatSession } from '../../types/ChatSession'; // Add this import for the ChatSession type
 import { ChatMessage } from '../../types/ChatMessage';
+import { useRouter } from 'next/navigation';
 
 
-
+const router = useRouter();
 const AIChatInterface = () => {
   const [sessionId, setSessionId] = useState<string>(() => Date.now().toString());
   const {
@@ -31,8 +32,9 @@ const AIChatInterface = () => {
 
   const {
     recipeSuggestionSets,
-    setCurrentCookMode,
+    setSelectedRecipe,
   } = useRecipeContext(); // Extract RecipeContext
+  
 
   const messagesEndRef = useRef<null | HTMLDivElement>(null);
   {/*const router = useRouter(); // To capture navigation events*/}
@@ -142,19 +144,14 @@ const AIChatInterface = () => {
   };
 
   // Handle recipe selection
-  const handleRecipeSelect = async (recipe: Recipe) => {
-    setCurrentCookMode(recipe.recipeTitle); // Example of setting cook mode based on selected recipe
-    setIsLoading(true);
-
-    try {
-      await handleSendMessage(`Can you save the following recipe: ${recipe.recipeTitle}?`);
-      console.log('Recipe saved to database');
-    } catch (error) {
-      console.error('Error saving recipe:', error);
-    }
-
-    setIsLoading(false);
+  const handleRecipeSelect = (recipe: Recipe) => {
+    console.log("Setting selected recipe:", recipe); // Log the selected recipe for debugging
+    setSelectedRecipe(recipe); // Set the selected recipe in the RecipeContext
+  
+    // Navigate to the recipe view page with the recipeId in the URL
+    router.push(`/recipe-view?recipeId=${recipe.recipeId}`);
   };
+  
   
   
   
