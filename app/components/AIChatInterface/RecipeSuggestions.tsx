@@ -24,7 +24,7 @@ const RecipeSuggestions: React.FC<RecipeSuggestionsProps> = ({ currentRecipeList
           <Link
             href={{
               pathname: `/recipe-view`,
-              query: { recipeId: recipe.id },
+              query: { recipeId: recipe.recipeId },
             }}
           >
             <button className="mt-4 ml-4 p-2 px-6 bg-slate-700 rounded-full text-white flex items-center gap-2">
