@@ -1,8 +1,6 @@
-// Chat View Page - app/chat-view/page.tsx
-
 'use client';
 
-import React, { useEffect, useState } from 'react';
+import React, { Suspense, useEffect, useState } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import Header from '../components/Header';
 import MessageList from '../components/AIChatInterface/MessageList';
@@ -16,6 +14,13 @@ import { ChatMessage } from '../../types/ChatMessage';
 import { RecipeSuggestionSet } from '../../types/Recipe';
 import RecipeSuggestions from '../components/AIChatInterface/RecipeSuggestions';
 
+const ChatViewPageWrapper = () => {
+  return (
+    <Suspense fallback={<div>Loading Chat View...</div>}>
+      <ChatViewPage />
+    </Suspense>
+  );
+};
 
 const ChatViewPage: React.FC = () => {
   const { messages, setMessages, isLoading, setIsLoading, inputMessage, setInputMessage } = useChat();
@@ -24,6 +29,12 @@ const ChatViewPage: React.FC = () => {
   const sessionId = searchParams.get('sessionId');
   const [recipeSuggestionSets, setRecipeSuggestionSets] = useState<RecipeSuggestionSet[]>([]);
   const [sessionTitle, setSessionTitle] = useState<string>('Chat Session');
+  const [hydrationReady, setHydrationReady] = useState(false);
+
+  // Set hydration ready once component mounts to prevent rendering issues
+  useEffect(() => {
+    setHydrationReady(true);
+  }, []);
 
   // Load session messages on component mount
   useEffect(() => {
@@ -53,7 +64,7 @@ const ChatViewPage: React.FC = () => {
         if (session) {
           setMessages(session.messages);
           setSessionTitle(session.sessionTitle || 'Chat Session');
-        
+
           // Extract recipe suggestions from messages, ensuring suggestions is always an array
           const recipeSets: RecipeSuggestionSet[] = session.messages
             .filter((message: ChatMessage) => message.suggestions && message.suggestions.length > 0)
@@ -62,10 +73,9 @@ const ChatViewPage: React.FC = () => {
               message: message.text,
               suggestions: message.suggestions ?? [], // Provide an empty array if undefined
             }));
-        
+
           setRecipeSuggestionSets(recipeSets);
         }
-        
       } catch (error) {
         console.error('Error loading session messages:', error);
       } finally {
@@ -96,8 +106,8 @@ const ChatViewPage: React.FC = () => {
         // Set the updated messages array to state
         setMessages(updatedMessages);
 
-        // Add missing arguments for sendMessageToClaude
-        await sendMessageToClaude(inputMessage, 'chat'); // You can replace 'chat' with the appropriate request type
+        // Send message to Claude
+        await sendMessageToClaude(inputMessage, 'chat');
       } catch (error) {
         console.error('Error sending message:', error);
       } finally {
@@ -106,6 +116,10 @@ const ChatViewPage: React.FC = () => {
       }
     }
   };
+
+  if (!hydrationReady) {
+    return null; // Prevent rendering until hydration is ready
+  }
 
   return (
     <div className="h-screen flex flex-col bg-gray-900 text-white overflow-hidden">
@@ -154,4 +168,4 @@ const ChatViewPage: React.FC = () => {
   );
 };
 
-export default ChatViewPage;
+export default ChatViewPageWrapper;

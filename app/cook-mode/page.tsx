@@ -1,12 +1,21 @@
 'use client';
 
-import React, { useEffect, useState } from 'react';
+import React, { Suspense, useEffect, useState } from 'react';
 import { useRecipeContext } from './../contexts/RecipeContext';
 import CookMode from '../components/AIChatInterface/CookMode';
 import { useRouter, useSearchParams } from 'next/navigation';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
 import { ArrowLeftCircle } from 'lucide-react'; // Import back icon
+
+// Wrapping the entire page in Suspense
+const CookModePageWrapper = () => {
+  return (
+    <Suspense fallback={<div>Loading Cook Mode...</div>}>
+      <CookModePage />
+    </Suspense>
+  );
+};
 
 const CookModePage = () => {
   const { selectedRecipe, setSelectedRecipe } = useRecipeContext();
@@ -88,11 +97,9 @@ const CookModePage = () => {
       />
 
       {/* Main Content */}
-      {/* Main Content */}
-        <div className="flex-grow p-8 overflow-y-auto">
-          <CookMode cookModeData={selectedRecipe.instructions.join('\n')} />
-        </div>
-
+      <div className="flex-grow p-8 overflow-y-auto">
+        <CookMode cookModeData={selectedRecipe.instructions.join('\n')} />
+      </div>
 
       {/* Footer with standard actions */}
       <Footer actions={['home', 'save', 'favorite', 'send']} />
@@ -100,4 +107,4 @@ const CookModePage = () => {
   );
 };
 
-export default CookModePage;
+export default CookModePageWrapper;
