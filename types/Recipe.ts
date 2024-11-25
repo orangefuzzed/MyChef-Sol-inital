@@ -1,7 +1,7 @@
 import { ShoppingListItem } from './../types/ShoppingListItem';
 
 export interface Recipe {
-  recipeId: string; // Unique identifier for a recipe
+  id: string; // Unique identifier for a recipe (formerly `recipId`)
   recipeTitle: string;
   description?: string;
   mainIngredient?: string;

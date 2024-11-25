@@ -35,7 +35,7 @@ const AIChatInterface = () => {
   } = useRecipeContext(); // Extract RecipeContext
   
   const router = useRouter();
-  
+
   const messagesEndRef = useRef<null | HTMLDivElement>(null);
   {/*const router = useRouter(); // To capture navigation events*/}
 
@@ -148,13 +148,12 @@ const AIChatInterface = () => {
     console.log("Setting selected recipe:", recipe); // Log the selected recipe for debugging
     setSelectedRecipe(recipe); // Set the selected recipe in the RecipeContext
   
-    // Navigate to the recipe view page with the recipeId in the URL
-    router.push(`/recipe-view?recipeId=${recipe.recipeId}`);
+    // Navigate to the recipe view page with the recipId in the URL
+    router.push(`/recipe-view?id=${recipe.id}`);
   };
   
   
-  
-  
+
   /// Handle saving session
 const handleSaveSession = async () => {
   try {

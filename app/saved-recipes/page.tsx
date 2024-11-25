@@ -38,8 +38,8 @@ const SavedRecipesPage = () => {
     fetchSavedRecipes();
   }, []);
 
-  const handleRecipeClick = (recipeId: string) => {
-    router.push(`/recipe-view?recipeId=${recipeId}`);
+  const handleRecipeClick = (id: string) => { // Updated `recipeId` to `id`
+    router.push(`/recipe-view?id=${id}`); // Updated query param from `recipeId` to `id`
   };
 
   return (
@@ -53,9 +53,9 @@ const SavedRecipesPage = () => {
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
             {savedRecipes.map((recipe) => (
               <div
-                key={recipe.recipeId}
+                key={recipe.id} // Updated `recipeId` to `id`
                 className="bg-gray-800 p-4 rounded-lg cursor-pointer hover:bg-gray-700"
-                onClick={() => handleRecipeClick(recipe.recipeId)}
+                onClick={() => handleRecipeClick(recipe.id)} // Updated `recipeId` to `id`
               >
                 <h3 className="text-lg font-semibold mb-2">{recipe.recipeTitle}</h3>
                 <p className="text-sm text-gray-400">{recipe.description}</p>
@@ -66,6 +66,7 @@ const SavedRecipesPage = () => {
           <div className="text-center text-gray-400">No saved recipes yet. Start saving your favorites!</div>
         )}
       </div>
+
 
       {/* Footer */}
       <Footer actions={['home', 'favorite', 'send']} />

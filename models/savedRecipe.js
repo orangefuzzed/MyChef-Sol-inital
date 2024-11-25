@@ -1,6 +1,6 @@
 const savedRecipeSchema = {
     userId: { type: 'ObjectId', required: true },
-    recipeId: { type: 'string', required: true },
+    id: { type: 'string', required: true },
     title: { type: 'string', required: true },
     ingredients: { type: 'array', items: { type: 'string' }, required: true },
     instructions: { type: 'array', items: { type: 'string' }, required: true },

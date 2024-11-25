@@ -22,7 +22,7 @@ const RecipeView: React.FC<RecipeViewProps> = ({ currentRecipeList }) => {
           <Link
             href={{
               pathname: `/recipe-view`,
-              query: { recipeId: recipe.recipeId }, // Use `recipeId` instead of `id`
+              query: { id: recipe.id }, 
             }}
           >
             <button className="mt-4 p-2 px-6 bg-slate-700 rounded-full text-white flex items-center gap-2">

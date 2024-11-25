@@ -25,13 +25,13 @@ const ShoppingListsPage = () => {
     fetchShoppingLists();
   }, []);
 
-  const handleViewShoppingList = (recipeId: string) => {
-    router.push(`/shopping-list?recipeId=${recipeId}`);
+  const handleViewShoppingList = (id: string) => {
+    router.push(`/shopping-list?id=${id}`); // Updated `recipeId` to `id`
   };
 
-  const handleDeleteShoppingList = async (recipeId: string) => {
-    await deleteShoppingListFromDB(recipeId);
-    setShoppingLists((prevLists) => prevLists.filter((list) => list.recipeId !== recipeId));
+  const handleDeleteShoppingList = async (id: string) => {
+    await deleteShoppingListFromDB(id); // Updated `recipeId` to `id`
+    setShoppingLists((prevLists) => prevLists.filter((list) => list.recipeId !== id)); // Updated `recipeId` to `id`
   };
 
   return (
@@ -45,19 +45,19 @@ const ShoppingListsPage = () => {
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
             {shoppingLists.map((list) => (
               <div
-                key={list.recipeId}
+                key={list.recipeId} // Updated `recipeId` to `id`
                 className="bg-gray-800 p-4 rounded-lg cursor-pointer hover:bg-gray-700 relative"
               >
                 <h3 className="text-lg font-semibold mb-2">Shopping List for {list.recipeTitle || 'Recipe'}</h3>
                 <p className="text-sm text-gray-400">Items: {list.items.length}</p>
                 <button
-                  onClick={() => handleViewShoppingList(list.recipeId)}
+                  onClick={() => handleViewShoppingList(list.recipeId)} // Updated `recipeId` to `id`
                   className="absolute top-2 right-2 p-2 bg-blue-600 text-white rounded-full"
                 >
                   View
                 </button>
                 <button
-                  onClick={() => handleDeleteShoppingList(list.recipeId)}
+                  onClick={() => handleDeleteShoppingList(list.recipeId)} // Updated `recipeId` to `id`
                   className="absolute bottom-2 right-2 p-2 bg-red-600 text-white rounded-full"
                 >
                   <Trash2 size={16} />
@@ -69,6 +69,7 @@ const ShoppingListsPage = () => {
           <div className="text-center text-gray-400">No shopping lists saved yet. Start by creating one!</div>
         )}
       </div>
+
   
       {/* Footer */}
       <Footer actions={['home', 'save', 'send']} />

@@ -225,11 +225,11 @@ export const deleteChatMessageFromDB = async (messageId: string): Promise<void> 
   });
 };
 // Delete pending recipe from IndexedDB after successful sync
-export const deletePendingRecipe = async (recipeId: string): Promise<void> => {
+export const deletePendingRecipe = async (id: string): Promise<void> => {
   const db = await openDBWithChat();
   const transaction = db.transaction('savedRecipes', 'readwrite');
   const store = transaction.objectStore('savedRecipes');
-  store.delete(recipeId);
+  store.delete(id);
 
   return new Promise<void>((resolve, reject) => {
     transaction.oncomplete = () => {
@@ -241,11 +241,11 @@ export const deletePendingRecipe = async (recipeId: string): Promise<void> => {
   });
 };
 // Delete a recipe from IndexedDB
-export const deleteRecipeFromDB = async (recipeId: string): Promise<void> => {
+export const deleteRecipeFromDB = async (id: string): Promise<void> => {
   const db = await openDBWithChat();
   const transaction = db.transaction('savedRecipes', 'readwrite');
   const store = transaction.objectStore('savedRecipes');
-  store.delete(recipeId);
+  store.delete(id);
 
   return new Promise<void>((resolve, reject) => {
     transaction.oncomplete = () => {

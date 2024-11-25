@@ -18,7 +18,7 @@ export const openShoppingListDB = (): Promise<IDBDatabase> => {
 
       // Create shoppingLists object store if it doesn't exist
       if (!db.objectStoreNames.contains(SHOPPING_LISTS_STORE)) {
-        db.createObjectStore(SHOPPING_LISTS_STORE, { keyPath: 'recipeId' });
+        db.createObjectStore(SHOPPING_LISTS_STORE, { keyPath: 'id' });
       }
     };
 
@@ -54,14 +54,14 @@ export const generateShoppingList = (recipe: Recipe): { ingredients: ShoppingLis
 
 // Save a shopping list to IndexedDB
 export const saveShoppingListToDB = async (
-  recipeId: string,
+  id: string,
   shoppingList: { ingredients: ShoppingListItem[], totalItems: number },
   recipeTitle: string
 ): Promise<void> => {
   const db = await openShoppingListDB();
   const transaction = db.transaction(SHOPPING_LISTS_STORE, 'readwrite');
   const store = transaction.objectStore(SHOPPING_LISTS_STORE);
-  store.put({ recipeId, shoppingList, recipeTitle });  // Add recipeTitle here
+  store.put({ id, shoppingList, recipeTitle });  // Add recipeTitle here
 
   return new Promise<void>((resolve, reject) => {
     transaction.oncomplete = () => {
@@ -75,11 +75,11 @@ export const saveShoppingListToDB = async (
 ;
 
 // Fetch a shopping list from IndexedDB by recipeId
-export const getSavedShoppingListsFromDB = async (recipeId: string): Promise<{ ingredients: ShoppingListItem[], totalItems: number } | null> => {
+export const getSavedShoppingListsFromDB = async (id: string): Promise<{ ingredients: ShoppingListItem[], totalItems: number } | null> => {
   const db = await openShoppingListDB();
   const transaction = db.transaction(SHOPPING_LISTS_STORE, 'readonly');
   const store = transaction.objectStore(SHOPPING_LISTS_STORE);
-  const request = store.get(recipeId);
+  const request = store.get(id);
 
   return new Promise<{ ingredients: ShoppingListItem[], totalItems: number } | null>((resolve, reject) => {
     request.onsuccess = () => {
@@ -110,11 +110,11 @@ export const getAllSavedShoppingListsFromDB = async (): Promise<ShoppingList[] |
 
 
 // Delete a shopping list from IndexedDB by recipeId
-export const deleteShoppingListFromDB = async (recipeId: string): Promise<void> => {
+export const deleteShoppingListFromDB = async (id: string): Promise<void> => {
   const db = await openShoppingListDB();
   const transaction = db.transaction(SHOPPING_LISTS_STORE, 'readwrite');
   const store = transaction.objectStore(SHOPPING_LISTS_STORE);
-  store.delete(recipeId);
+  store.delete(id);
 
   return new Promise<void>((resolve, reject) => {
     transaction.oncomplete = () => {

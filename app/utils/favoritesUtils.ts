@@ -18,17 +18,17 @@ export const openDB = (): Promise<IDBDatabase> => {
 
       // Create savedRecipes object store if it doesn't exist
       if (!db.objectStoreNames.contains(SAVED_RECIPES_STORE)) {
-        db.createObjectStore(SAVED_RECIPES_STORE, { keyPath: 'recipeId' });
+        db.createObjectStore(SAVED_RECIPES_STORE, { keyPath: 'id' });
       }
 
       // Create favoriteRecipes object store if it doesn't exist
       if (!db.objectStoreNames.contains(FAVORITES_STORE)) {
-        db.createObjectStore(FAVORITES_STORE, { keyPath: 'recipeId' });
+        db.createObjectStore(FAVORITES_STORE, { keyPath: 'id' });
       }
 
       // Create shoppingLists object store if it doesn't exist
       if (!db.objectStoreNames.contains(SHOPPING_LISTS_STORE)) {
-        db.createObjectStore(SHOPPING_LISTS_STORE, { keyPath: 'recipeId' });
+        db.createObjectStore(SHOPPING_LISTS_STORE, { keyPath: 'id' });
       }
     };
 
@@ -77,11 +77,11 @@ export const getSavedRecipesFromDB = async (): Promise<Recipe[]> => {
 };
 
 // Delete a recipe from IndexedDB (savedRecipes)
-export const deleteRecipeFromDB = async (recipeId: string): Promise<void> => {
+export const deleteRecipeFromDB = async (id: string): Promise<void> => {
   const db = await openDB();
   const transaction = db.transaction(SAVED_RECIPES_STORE, 'readwrite');
   const store = transaction.objectStore(SAVED_RECIPES_STORE);
-  store.delete(recipeId);
+  store.delete(id);
 
   return new Promise<void>((resolve, reject) => {
     transaction.oncomplete = () => {
@@ -128,11 +128,11 @@ export const getFavoriteRecipesFromDB = async (): Promise<Recipe[]> => {
 };
 
 // Delete a recipe from Favorites in IndexedDB (favoriteRecipes)
-export const deleteRecipeFromFavorites = async (recipeId: string): Promise<void> => {
+export const deleteRecipeFromFavorites = async (id: string): Promise<void> => {
   const db = await openDB();
   const transaction = db.transaction(FAVORITES_STORE, 'readwrite');
   const store = transaction.objectStore(FAVORITES_STORE);
-  store.delete(recipeId);
+  store.delete(id);
 
   return new Promise<void>((resolve, reject) => {
     transaction.oncomplete = () => {

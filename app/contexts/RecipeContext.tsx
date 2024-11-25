@@ -102,7 +102,7 @@ export const RecipeProvider: React.FC<{ children: ReactNode }> = ({ children }) 
       for (const recipe of pendingRecipes) {
         try {
           await saveRecipe(recipe);
-          await deletePendingRecipe(recipe.recipeId);
+          await deletePendingRecipe(recipe.id);
         } catch (error) {
           console.error('Error syncing recipe:', error);
         }

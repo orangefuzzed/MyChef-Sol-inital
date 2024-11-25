@@ -16,11 +16,12 @@ export async function POST(req: NextRequest) {
 
     // Iterate through each recipe and either insert or update it in MongoDB
     for (const recipe of recipes) {
-      const query = { recipeId: recipe.recipeId, userEmail: recipe.userEmail };
+      const query = { id: recipe.id, userEmail: recipe.userEmail }; 
       const update = { $set: recipe };
       const options = { upsert: true };
       await collection.updateOne(query, update, options);
     }
+
 
     return NextResponse.json({ message: 'Recipes synced successfully' }, { status: 200 });
   } catch (error) {

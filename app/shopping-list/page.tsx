@@ -13,7 +13,7 @@ const ShoppingListPage = () => {
   const { selectedRecipe, setSelectedRecipe, currentShoppingList, setCurrentShoppingList } = useRecipeContext();
   const router = useRouter();
   const searchParams = useSearchParams();
-  const recipeId = searchParams.get('recipeId');
+  const id = searchParams.get('id'); // Updated `recipeId` to `id`
   const [isShoppingListSaved, setIsShoppingListSaved] = useState(false);
   const [hydrationReady, setHydrationReady] = useState(false);
 
@@ -23,12 +23,12 @@ const ShoppingListPage = () => {
   }, []);
 
   useEffect(() => {
-    // If there's a recipeId in the URL, fetch the recipe and shopping list
-    if (hydrationReady && recipeId && !selectedRecipe) {
+    // If there's an id in the URL, fetch the recipe and shopping list
+    if (hydrationReady && id && !selectedRecipe) {
       const fetchRecipe = async () => {
         try {
           // Fetch the recipe details
-          const response = await fetch(`/api/recipes/saved?recipeId=${recipeId}`);
+          const response = await fetch(`/api/recipes/saved?id=${id}`); // Updated `recipeId` to `id`
           if (response.ok) {
             const fetchedRecipe = await response.json();
             setSelectedRecipe(fetchedRecipe);
@@ -36,8 +36,8 @@ const ShoppingListPage = () => {
             console.error('Failed to fetch recipe:', await response.text());
           }
   
-          // Fetch the shopping list for this recipeId
-          const savedShoppingList = await getSavedShoppingListsFromDB(recipeId);
+          // Fetch the shopping list for this id
+          const savedShoppingList = await getSavedShoppingListsFromDB(id); // Updated `recipeId` to `id`
           if (savedShoppingList) {
             setCurrentShoppingList(savedShoppingList);
           }
@@ -48,14 +48,14 @@ const ShoppingListPage = () => {
   
       fetchRecipe();
     }
-  }, [hydrationReady, recipeId, selectedRecipe, setSelectedRecipe, setCurrentShoppingList]);
+  }, [hydrationReady, id, selectedRecipe, setSelectedRecipe, setCurrentShoppingList]);
   
 
   useEffect(() => {
-    if (hydrationReady && recipeId) {
+    if (hydrationReady && id) {
       const checkIfShoppingListSaved = async () => {
         try {
-          const savedShoppingList = await getSavedShoppingListsFromDB(recipeId);
+          const savedShoppingList = await getSavedShoppingListsFromDB(id); // Updated `recipeId` to `id`
           setIsShoppingListSaved(savedShoppingList !== null);
         } catch (error) {
           console.error('Failed to check if shopping list is saved:', error);
@@ -64,7 +64,7 @@ const ShoppingListPage = () => {
 
       checkIfShoppingListSaved();
     }
-  }, [hydrationReady, recipeId]);
+  }, [hydrationReady, id]);
 
   if (!hydrationReady) {
     return null; // Prevent rendering until hydration is ready
@@ -95,16 +95,16 @@ const ShoppingListPage = () => {
 
   // Adjust the handleShoppingListSaveToggle function
   const handleShoppingListSaveToggle = async () => {
-    if (!currentShoppingList || !recipeId || !selectedRecipe) return;
+    if (!currentShoppingList || !id || !selectedRecipe) return;
 
     try {
       if (isShoppingListSaved) {
         // Delete from IndexedDB
-        await deleteShoppingListFromDB(recipeId);
+        await deleteShoppingListFromDB(id); // Updated `recipeId` to `id`
         setIsShoppingListSaved(false);
 
         // Delete from MongoDB
-        const response = await fetch(`/api/shopping-lists?recipeId=${recipeId}`, {
+        const response = await fetch(`/api/shopping-lists?id=${id}`, { // Updated `recipeId` to `id`
           method: 'DELETE',
           headers: {
             'Content-Type': 'application/json',
@@ -115,7 +115,7 @@ const ShoppingListPage = () => {
         }
       } else {
         // Save to IndexedDB with recipeTitle
-        await saveShoppingListToDB(recipeId, currentShoppingList, selectedRecipe.recipeTitle);
+        await saveShoppingListToDB(id, currentShoppingList, selectedRecipe.recipeTitle); // Updated `recipeId` to `id`
         setIsShoppingListSaved(true);
 
         // Save to MongoDB with recipeTitle
@@ -124,7 +124,7 @@ const ShoppingListPage = () => {
           headers: {
             'Content-Type': 'application/json',
           },
-          body: JSON.stringify({ recipeId, shoppingList: currentShoppingList, recipeTitle: selectedRecipe.recipeTitle }),
+          body: JSON.stringify({ id, shoppingList: currentShoppingList, recipeTitle: selectedRecipe.recipeTitle }), // Updated `recipeId` to `id`
         });
 
         if (!response.ok) {
@@ -145,7 +145,7 @@ const ShoppingListPage = () => {
           backButton={{
             label: 'Back to Recipe',
             icon: <ArrowLeftCircle size={24} />,
-            onClick: () => router.push(`/recipe-view?recipeId=${selectedRecipe.recipeId}`),
+            onClick: () => router.push(`/recipe-view?id=${selectedRecipe.id}`), // Updated `recipeId` to `id`
           }}
         />
 

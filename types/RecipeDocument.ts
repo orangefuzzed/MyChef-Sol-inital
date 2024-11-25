@@ -2,7 +2,7 @@ import { ObjectId } from 'mongodb';
 
 export interface RecipeDocument {
   _id?: ObjectId; // MongoDB ObjectId
-  recipeId: string; // Unique user-friendly recipe ID
+  id: string; // User-friendly recipe ID, i.e., what Claude sends
   recipeTitle: string;
   description?: string;
   ingredients: string[];
@@ -13,3 +13,4 @@ export interface RecipeDocument {
   createdAt?: Date;
   updatedAt?: Date;
 }
+

@@ -17,15 +17,15 @@ export async function GET(request: Request) {
 
     const userEmail = session.user.email;
     const { searchParams } = new URL(request.url);
-    const recipeId = searchParams.get('recipeId');
+    const id = searchParams.get('id');
 
     const db = await connectToDatabase();
     let collection;
 
-    // Determine which collection to search based on whether a recipeId is provided
-    if (recipeId) {
+    // Determine which collection to search based on whether an id is provided
+    if (id) {
       collection = db.collection('recipes');
-      const recipe = await collection.findOne({ recipeId });
+      const recipe = await collection.findOne({ id });
       if (!recipe) {
         return NextResponse.json({ error: 'Recipe not found' }, { status: 404 });
       }
@@ -64,7 +64,7 @@ export async function POST(request: Request) {
 
     // Upsert the recipe to handle duplicates
     await collection.updateOne(
-      { recipeId: recipe.recipeId, userEmail },
+      { id: recipe.id, userEmail },
       { $set: recipe },
       { upsert: true }
     );
@@ -92,16 +92,16 @@ export async function DELETE(request: Request) {
 
     const userEmail = session.user.email;
     const { searchParams } = new URL(request.url);
-    const recipeId = searchParams.get('recipeId');
+    const id = searchParams.get('id');
 
-    if (!recipeId) {
+    if (!id) {
       return NextResponse.json({ error: 'Recipe ID is required' }, { status: 400 });
     }
 
     const db = await connectToDatabase();
     const collection = db.collection('savedRecipes');
 
-    const result = await collection.deleteOne({ recipeId, userEmail });
+    const result = await collection.deleteOne({ id, userEmail });
 
     if (result.deletedCount === 0) {
       return NextResponse.json({ error: 'Recipe not found' }, { status: 404 });

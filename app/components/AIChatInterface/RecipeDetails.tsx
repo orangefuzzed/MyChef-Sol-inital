@@ -8,15 +8,15 @@ import { generateShoppingList } from '../../utils/shoppingListUtils';
 
 const RecipeDetails: React.FC = () => {
   const searchParams = useSearchParams();
-  const recipeId = searchParams.get('recipeId');
+  const id = searchParams.get('id'); // 
   const { selectedRecipe, setSelectedRecipe, setCurrentShoppingList } = useRecipeContext();
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const loadRecipe = async () => {
-      if (recipeId) {
+      if (id) {
         try {
-          const response = await fetch(`/api/recipes/saved?recipeId=${recipeId}`);
+          const response = await fetch(`/api/recipes/saved?id=${id}`); // 
           if (response.ok) {
             const fetchedRecipe: Recipe = await response.json();
             setSelectedRecipe(fetchedRecipe);
@@ -32,7 +32,7 @@ const RecipeDetails: React.FC = () => {
     };
 
     loadRecipe();
-  }, [recipeId, setSelectedRecipe]);
+  }, [id, setSelectedRecipe]);
 
   const handleCreateShoppingList = () => {
     if (selectedRecipe) {
@@ -74,14 +74,14 @@ const RecipeDetails: React.FC = () => {
       </section>
 
       <div className="action-buttons flex gap-4 mt-6">
-        <Link href={{ pathname: `/cook-mode`, query: { recipeId: selectedRecipe.recipeId } }}>
+        <Link href={{ pathname: `/cook-mode`, query: { id: selectedRecipe.id } }}> {/* Updated recieId to id */}
           <button className="p-2 px-6 bg-blue-600 text-white rounded-full flex items-center gap-2">
             View in Cook Mode
             <ExternalLinkIcon className="w-5 h-5" />
           </button>
         </Link>
         <Link
-          href={{ pathname: `/shopping-list`, query: { recipeId: selectedRecipe.recipeId } }}
+          href={{ pathname: `/shopping-list`, query: { id: selectedRecipe.id } }} // Updated recpeId to id
           onClick={handleCreateShoppingList}
         >
           <button className="p-2 px-6 bg-green-600 text-white rounded-full flex items-center gap-2">

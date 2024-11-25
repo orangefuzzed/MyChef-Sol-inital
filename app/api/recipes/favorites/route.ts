@@ -19,15 +19,15 @@ export async function GET(request: Request) {
 
     const userEmail = session.user.email;
     const { searchParams } = new URL(request.url);
-    const recipeId = searchParams.get('recipeId');
+    const id = searchParams.get('id');
 
     const db = await connectToDatabase();
     const collection = db.collection('favorites');
 
     let favorites;
-    if (recipeId) {
-      // Fetch a single favorite by `recipeId`
-      const favorite = await collection.findOne({ recipeId, userEmail });
+    if (id) {
+      // Fetch a single favorite by `id`
+      const favorite = await collection.findOne({ id, userEmail });
       if (!favorite) {
         return NextResponse.json({ error: 'Favorite not found' }, { status: 404 });
       }
@@ -95,16 +95,16 @@ export async function DELETE(request: Request) {
 
     const userEmail = session.user.email;
     const { searchParams } = new URL(request.url);
-    const recipeId = searchParams.get('recipeId');
+    const id = searchParams.get('id');
 
-    if (!recipeId) {
-      return NextResponse.json({ error: 'Recipe ID is required' }, { status: 400 });
+    if (!id) {
+      return NextResponse.json({ error: 'ID is required' }, { status: 400 });
     }
 
     const db = await connectToDatabase();
     const collection = db.collection('favorites');
 
-    const result = await collection.deleteOne({ recipeId, userEmail });
+    const result = await collection.deleteOne({ id, userEmail });
 
     if (result.deletedCount === 0) {
       return NextResponse.json({ error: 'Favorite not found' }, { status: 404 });

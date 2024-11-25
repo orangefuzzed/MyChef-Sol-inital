@@ -3,7 +3,7 @@ import { Button, Flex, Text, Heading, Box, Card, Container, ScrollArea } from '@
 import { ShoppingCart, Heart, Plus, ChefHat, RefreshCw } from 'lucide-react';
 
 interface Recipe {
-  recipeId: string;
+  id: string;
   title: string;
   rating?: number;
   protein?: number;

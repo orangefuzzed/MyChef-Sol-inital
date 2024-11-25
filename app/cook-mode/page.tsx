@@ -22,7 +22,7 @@ const CookModePage = () => {
   const router = useRouter();
   const searchParams = useSearchParams();
   const [hydrationReady, setHydrationReady] = useState(false);
-  const recipeId = searchParams.get('recipeId');
+  const recipeId = searchParams.get('id'); // Updated recipeId to id
 
   useEffect(() => {
     // Set hydration state to true once component mounts to avoid hydration issues
@@ -30,11 +30,11 @@ const CookModePage = () => {
   }, []);
 
   useEffect(() => {
-    // If there is a recipeId in the URL and no selectedRecipe, fetch the recipe
+    // If there is an id in the URL and no selectedRecipe, fetch the recipe
     if (recipeId && !selectedRecipe) {
       const fetchRecipe = async () => {
         try {
-          const response = await fetch(`/api/recipes/saved?recipeId=${recipeId}`);
+          const response = await fetch(`/api/recipes/saved?id=${recipeId}`); // Updated recipeId to id
           if (response.ok) {
             const fetchedRecipe = await response.json();
             setSelectedRecipe(fetchedRecipe);
@@ -92,7 +92,7 @@ const CookModePage = () => {
         backButton={{
           label: 'Back to Recipe',
           icon: <ArrowLeftCircle size={24} />,
-          onClick: () => router.push(`/recipe-view?recipeId=${selectedRecipe.recipeId}`),
+          onClick: () => router.push(`/recipe-view?id=${selectedRecipe.id}`), // Updated recipeId to id
         }}
       />
 

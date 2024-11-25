@@ -6,11 +6,11 @@ export const insertRecipe = async (recipe: RecipeDocument): Promise<void> => {
   const db: Db = await connectToDatabase();
   const collection = db.collection('recipes');
 
-  // Ensure recipeId is set properly
-const recipeToInsert = {
-  ...recipe,
-  recipeId: recipe.recipeId ?? (recipe._id?.toString() ?? ''),  // Use existing recipeId, or fallback to `_id` as `recipeId`, converting ObjectId to string
-};
+  // Ensure Id is set properly
+  const recipeToInsert = {
+    ...recipe,
+    id: recipe.id ?? (recipe._id?.toString() ?? ''), 
+  };
 
 
   // If the recipe has an `_id` already, treat it as an update
@@ -30,7 +30,7 @@ const recipeToInsert = {
 export function convertToRecipeDocument(recipe: any): RecipeDocument {
   return {
     _id: recipe._id ? new ObjectId(recipe._id) : undefined,
-    recipeId: recipe.recipeId, // Use recipeId consistently
+    id: recipe.id, // Change recieId to id for consistency
     recipeTitle: recipe.recipeTitle,
     description: recipe.description,
     ingredients: recipe.ingredients,
@@ -42,3 +42,4 @@ export function convertToRecipeDocument(recipe: any): RecipeDocument {
     updatedAt: recipe.updatedAt,
   };
 }
+

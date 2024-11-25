@@ -21,24 +21,24 @@ const FavoritesPage = () => {
     fetchFavoriteRecipes();
   }, []);
 
-  const handleRecipeClick = (recipeId: string) => {
-    router.push(`/recipe-view?recipeId=${recipeId}`);
+  const handleRecipeClick = (id: string) => {
+    router.push(`/recipe-view?id=${id}`); 
   };
-
+  
   return (
     <div className="h-screen flex flex-col bg-gray-900 text-white overflow-hidden">
       {/* Header */}
       <Header centralText="Favorite Recipes" />
-
+  
       {/* Main Content */}
       <div className="flex-grow p-8 overflow-y-auto">
         {favoriteRecipes.length > 0 ? (
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
             {favoriteRecipes.map((recipe) => (
               <div
-                key={recipe.recipeId}
+                key={recipe.id} // 
                 className="bg-gray-800 p-4 rounded-lg cursor-pointer hover:bg-gray-700"
-                onClick={() => handleRecipeClick(recipe.recipeId)}
+                onClick={() => handleRecipeClick(recipe.id)} // 
               >
                 <h3 className="text-lg font-semibold mb-2">{recipe.recipeTitle}</h3>
                 <p className="text-sm text-gray-400">{recipe.description}</p>
@@ -49,6 +49,7 @@ const FavoritesPage = () => {
           <div className="text-center text-gray-400">No favorite recipes yet. Start adding your favorites!</div>
         )}
       </div>
+  
 
       {/* Footer */}
       <Footer actions={['home', 'save', 'send']} />
