@@ -1,35 +1,56 @@
 // public/sw.js
 
-const CACHE_NAME = 'mychef-cache-v1';
-const STATIC_ASSETS = [
+const CACHE_NAME = 'dishcovery-cache-v1';
+const urlsToCache = [
   '/',
-  '/icons/apple.png',
-  '/icons/chefshat.png',
-  '/icons/avocado.png',
-  // Add other essential assets here
+  '/manifest.json',
+  '/icons/icon-192x192.png',
+  '/icons/icon-512x512.png',
+  // Add other assets and routes here that you want available offline
 ];
 
-self.addEventListener('install', (event) => {
+const STATIC_ASSETS = [
+  '/',
+  '/manifest.json',
+  '/icons/icon-192x192.png',
+  '/icons/icon-512x512.png',
+  // Add any additional static assets here
+];
+
+self.addEventListener('install', event => {
   event.waitUntil(
-    caches.open(CACHE_NAME).then((cache) => {
-      return cache.addAll(STATIC_ASSETS);
-    })
+    caches.open(CACHE_NAME)
+      .then(cache => {
+        console.log('Opened cache');
+        return cache.addAll(urlsToCache);
+      })
   );
 });
 
-self.addEventListener('activate', (event) => {
+self.addEventListener('fetch', event => {
+  event.respondWith(
+    caches.match(event.request)
+      .then(response => {
+        return response || fetch(event.request);
+      })
+  );
+});
+
+self.addEventListener('activate', event => {
+  const cacheWhitelist = [CACHE_NAME];
   event.waitUntil(
-    caches.keys().then((cacheNames) => {
+    caches.keys().then(cacheNames => {
       return Promise.all(
-        cacheNames.map((cache) => {
-          if (cache !== CACHE_NAME) {
-            return caches.delete(cache);
+        cacheNames.map(cacheName => {
+          if (!cacheWhitelist.includes(cacheName)) {
+            return caches.delete(cacheName);
           }
         })
       );
     })
   );
 });
+
 
 self.addEventListener('fetch', (event) => {
   const url = new URL(event.request.url);
