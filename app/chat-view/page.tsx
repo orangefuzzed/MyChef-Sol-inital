@@ -1,3 +1,4 @@
+// ChatViewPage.tsx - Updated for SearchParams Handling and Best Practices
 'use client';
 
 import React, { Suspense, useEffect, useState } from 'react';
@@ -7,7 +8,7 @@ import MessageList from '../components/AIChatInterface/MessageList';
 import MessageInput from '../components/AIChatInterface/MessageInput';
 import LoadingSpinner from '../components/LoadingSpinner';
 import Footer from '../components/Footer';
-import { getSavedSessionsFromDB } from '../utils/indexedDBUtils'; // Consolidated session loading utility
+import { getSavedSessionsFromDB } from '../utils/indexedDBUtils';
 import { useChat } from '../contexts/ChatContext';
 import { sendMessageToClaude } from '../services/claudeService';
 import { ChatMessage } from '../../types/ChatMessage';
@@ -26,7 +27,7 @@ const ChatViewPage: React.FC = () => {
   const { messages, setMessages, isLoading, setIsLoading, inputMessage, setInputMessage } = useChat();
   const router = useRouter();
   const searchParams = useSearchParams();
-  const sessionId = searchParams.get('sessionId');
+  const sessionId = searchParams ? searchParams.get('sessionId') : null; // Null-check for `searchParams`
   const [recipeSuggestionSets, setRecipeSuggestionSets] = useState<RecipeSuggestionSet[]>([]);
   const [sessionTitle, setSessionTitle] = useState<string>('Chat Session');
   const [hydrationReady, setHydrationReady] = useState(false);

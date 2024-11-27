@@ -1,3 +1,4 @@
+// RecipeDetails.tsx - Updated for SearchParams Handling and Best Practices
 import React, { useEffect, useState } from 'react';
 import { useSearchParams } from 'next/navigation';
 import { ExternalLinkIcon } from '@radix-ui/react-icons';
@@ -8,7 +9,7 @@ import { generateShoppingList } from '../../utils/shoppingListUtils';
 
 const RecipeDetails: React.FC = () => {
   const searchParams = useSearchParams();
-  const id = searchParams.get('id'); // 
+  const id = searchParams ? searchParams.get('id') : null; // Null-check for searchParams
   const { selectedRecipe, setSelectedRecipe, setCurrentShoppingList } = useRecipeContext();
   const [loading, setLoading] = useState(true);
 
@@ -16,7 +17,7 @@ const RecipeDetails: React.FC = () => {
     const loadRecipe = async () => {
       if (id) {
         try {
-          const response = await fetch(`/api/recipes/saved?id=${id}`); // 
+          const response = await fetch(`/api/recipes/saved?id=${id}`);
           if (response.ok) {
             const fetchedRecipe: Recipe = await response.json();
             setSelectedRecipe(fetchedRecipe);
@@ -28,6 +29,8 @@ const RecipeDetails: React.FC = () => {
         } finally {
           setLoading(false);
         }
+      } else {
+        setLoading(false);
       }
     };
 
@@ -46,7 +49,7 @@ const RecipeDetails: React.FC = () => {
   }
 
   if (!selectedRecipe) {
-    return <div>Recipe not found</div>;
+    return <div className="text-white p-4">Recipe not found. Please go back and select a recipe.</div>;
   }
 
   return (
@@ -74,18 +77,18 @@ const RecipeDetails: React.FC = () => {
       </section>
 
       <div className="action-buttons flex gap-4 mt-6">
-        <Link href={{ pathname: `/cook-mode`, query: { id: selectedRecipe.id } }}> {/* Updated recieId to id */}
+        <Link href={{ pathname: `/cook-mode`, query: { id: selectedRecipe.id } }}>
           <button className="p-2 px-6 bg-blue-600 text-white rounded-full flex items-center gap-2">
             View in Cook Mode
             <ExternalLinkIcon className="w-5 h-5" />
           </button>
         </Link>
         <Link
-          href={{ pathname: `/shopping-list`, query: { id: selectedRecipe.id } }} // Updated recpeId to id
+          href={{ pathname: `/shopping-list`, query: { id: selectedRecipe.id } }}
           onClick={handleCreateShoppingList}
         >
           <button className="p-2 px-6 bg-green-600 text-white rounded-full flex items-center gap-2">
-            View Shopping List RecipeDetails
+            View Shopping List
             <ExternalLinkIcon className="w-5 h-5" />
           </button>
         </Link>

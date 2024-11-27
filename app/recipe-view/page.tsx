@@ -16,7 +16,7 @@ const RecipeViewPage = () => {
   const { selectedRecipe } = useRecipeContext();
   const router = useRouter();
   const searchParams = useSearchParams();
-  const id = searchParams.get('id'); // Updated `recipeId` to `id`
+  const id = searchParams ? searchParams.get('id') : null; // Add null check for searchParams
   const [isSaved, setIsSaved] = useState(false);
   const [isFavorited, setIsFavorited] = useState(false);
   const [hydrationReady, setHydrationReady] = useState(false);
@@ -27,24 +27,23 @@ const RecipeViewPage = () => {
   }, []);
 
   useEffect(() => {
-    if (!id) return; // Updated to check for `id`
+    if (!id) return; // Add null check for `id`
 
     const checkIfSaved = async () => {
       const savedRecipes = await getSavedRecipesFromDB();
-      const found = savedRecipes.find((recipe) => recipe.id === id); // Updated `recipeId` to `id`
+      const found = savedRecipes.find((recipe) => recipe.id === id);
       setIsSaved(!!found);
     };
 
     const checkIfFavorited = async () => {
       const favoriteRecipes = await getFavoriteRecipesFromDB();
-      const found = favoriteRecipes.find((recipe) => recipe.id === id); // Updated `recipeId` to `id`
+      const found = favoriteRecipes.find((recipe) => recipe.id === id);
       setIsFavorited(!!found);
     };
 
-    // Remove the hydrationReady condition temporarily for debugging
     checkIfSaved();
     checkIfFavorited();
-  }, [id]); // Updated dependency from `recipeId` to `id`
+  }, [id]);
 
   if (!hydrationReady) {
     return null; // Prevent rendering until hydration is ready
@@ -59,13 +58,13 @@ const RecipeViewPage = () => {
   };
 
   const handleSaveToggle = async () => {
-    if (!selectedRecipe) return;
+    if (!selectedRecipe || !id) return; // Ensure `id` is not null before proceeding
 
     try {
       if (isSaved) {
-        await deleteRecipeFromDB(id); // Updated `recipeId` to `id`
+        await deleteRecipeFromDB(id);
         setIsSaved(false);
-        const response = await fetch(`/api/recipes/saved?id=${id}`, { // Updated `recipeId` to `id`
+        const response = await fetch(`/api/recipes/saved?id=${id}`, {
           method: 'DELETE',
           headers: {
             'Content-Type': 'application/json',
@@ -94,13 +93,13 @@ const RecipeViewPage = () => {
   };
 
   const handleFavoriteToggle = async () => {
-    if (!selectedRecipe) return;
+    if (!selectedRecipe || !id) return; // Ensure `id` is not null before proceeding
 
     try {
       if (isFavorited) {
-        await deleteRecipeFromFavorites(id); // Updated `recipeId` to `id`
+        await deleteRecipeFromFavorites(id);
         setIsFavorited(false);
-        const response = await fetch(`/api/recipes/favorites?id=${id}`, { // Updated `recipeId` to `id`
+        const response = await fetch(`/api/recipes/favorites?id=${id}`, {
           method: 'DELETE',
           headers: {
             'Content-Type': 'application/json',

@@ -1,3 +1,4 @@
+// cook-mode/page.tsx - Updated to Handle SearchParams and Hydration Issues
 'use client';
 
 import React, { Suspense, useEffect, useState } from 'react';
@@ -22,7 +23,7 @@ const CookModePage = () => {
   const router = useRouter();
   const searchParams = useSearchParams();
   const [hydrationReady, setHydrationReady] = useState(false);
-  const recipeId = searchParams.get('id'); // Updated recipeId to id
+  const id = searchParams ? searchParams.get('id') : null; // Null-check for searchParams
 
   useEffect(() => {
     // Set hydration state to true once component mounts to avoid hydration issues
@@ -31,10 +32,10 @@ const CookModePage = () => {
 
   useEffect(() => {
     // If there is an id in the URL and no selectedRecipe, fetch the recipe
-    if (recipeId && !selectedRecipe) {
+    if (id && !selectedRecipe) {
       const fetchRecipe = async () => {
         try {
-          const response = await fetch(`/api/recipes/saved?id=${recipeId}`); // Updated recipeId to id
+          const response = await fetch(`/api/recipes/saved?id=${id}`);
           if (response.ok) {
             const fetchedRecipe = await response.json();
             setSelectedRecipe(fetchedRecipe);
@@ -48,7 +49,7 @@ const CookModePage = () => {
 
       fetchRecipe();
     }
-  }, [recipeId, selectedRecipe, setSelectedRecipe]);
+  }, [id, selectedRecipe, setSelectedRecipe]);
 
   if (!hydrationReady) {
     return null; // Prevent rendering until hydration is ready
@@ -92,7 +93,13 @@ const CookModePage = () => {
         backButton={{
           label: 'Back to Recipe',
           icon: <ArrowLeftCircle size={24} />,
-          onClick: () => router.push(`/recipe-view?id=${selectedRecipe.id}`), // Updated recipeId to id
+          onClick: () => {
+            if (!selectedRecipe?.id) {
+              console.error('No recipe ID found to navigate back to the recipe view.');
+              return;
+            }
+            router.push(`/recipe-view?id=${selectedRecipe.id}`);
+          },
         }}
       />
 
