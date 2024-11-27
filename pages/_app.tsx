@@ -22,7 +22,7 @@ function MyApp({ Component, pageProps }: AppProps) {
     return (
       <>
         <Head>
-          <link rel="manifest" href="/manifest.json?v=1" />
+          <link rel="manifest" href="/manifest.json?v=2" />
           <link rel="apple-touch-icon" href="/icons/icon-192x192.png" />
           <meta name="theme-color" content="#FFA500" />
         </Head>
