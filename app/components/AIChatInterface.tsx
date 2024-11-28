@@ -15,7 +15,7 @@ import RecipeSuggestions from '../components/AIChatInterface/RecipeSuggestions';
 import { ChatSession } from '../../types/ChatSession'; // Add this import for the ChatSession type
 import { ChatMessage } from '../../types/ChatMessage';
 import { useRouter } from 'next/navigation';
-import { Heart } from 'lucide-react'
+import { Heart, Bot } from 'lucide-react'
 
 
 const AIChatInterface = () => {
@@ -28,6 +28,7 @@ const AIChatInterface = () => {
     inputMessage,
     setInputMessage,
     lastAIResponse,
+    startNewSession, // Use the updated function from ChatContext
   } = useChat(); // Extract chat state from ChatContext
 
   const {
@@ -55,6 +56,11 @@ const AIChatInterface = () => {
 
   useEffect(scrollToBottom, [messages]);
 
+  // Clear messages if we're starting a new chat session
+  const handleStartNewSession = () => {
+    startNewSession(); // This will generate a new session ID and clear messages
+  };
+  
   useEffect(() => {
     // Clear messages if we're starting a new chat
     if (!sessionId || sessionId === 'current_session_id') {
@@ -225,7 +231,7 @@ const handleSaveSession = async () => {
     };
   }, [messages]);
 
-  return (
+    return (
     <>
       <Header centralText="MyChef AI Chat" />
       <div className="flex flex-col h-screen bg-gray-900 text-white">
@@ -286,6 +292,11 @@ const handleSaveSession = async () => {
               label: 'Save Chat',
               icon: <Heart size={24} color={'white'} />,
               onClick: handleSaveSession,
+            },
+            {
+              label: 'Start New Session',
+              icon: <Bot size={24} color={'white'} />,
+              onClick: handleStartNewSession,
             },
           ]}
         />

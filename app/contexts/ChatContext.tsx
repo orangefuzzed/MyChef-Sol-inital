@@ -1,5 +1,6 @@
 import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
 import { getChatMessagesFromDB, saveChatMessageToDB } from '../utils/indexedDBUtils';
+import { generateNewSessionId } from '../utils/sessionUtils'; // Importing the session utility function
 import { Recipe } from '../../types/Recipe';  // Importing Recipe from the correct source
 
 export interface ChatMessage {
@@ -22,10 +23,11 @@ interface ChatContextType {
   setInputMessage: (message: string) => void;
   lastAIResponse: ChatMessage | null;
   setLastAIResponse: (response: ChatMessage | null) => void;
-  recipeSuggestions: Recipe[];  // Using the correct Recipe type here as well
+  recipeSuggestions: Recipe[];
   setRecipeSuggestions: (recipes: Recipe[]) => void;
-  sessionId: string;  // <-- Add this line
-  setSessionId: (id: string) => void; // <-- Add setSessionId if you need to modify it
+  sessionId: string;
+  setSessionId: (id: string) => void;
+  startNewSession: () => void; // <-- Adding startNewSession function
 }
 
 const ChatContext = createContext<ChatContextType | undefined>(undefined);
@@ -36,7 +38,16 @@ export const ChatProvider = ({ children }: { children: ReactNode }) => {
   const [inputMessage, setInputMessage] = useState('');
   const [lastAIResponse, setLastAIResponse] = useState<ChatMessage | null>(null);
   const [recipeSuggestions, setRecipeSuggestions] = useState<Recipe[]>([]);  // Updated to use the correct type
-  const [sessionId, setSessionId] = useState<string>(() => Date.now().toString());  // <-- Add sessionId state
+  const [sessionId, setSessionId] = useState<string>(() => generateNewSessionId()); // <-- Use the utility function for sessionId
+
+  // Function to start a new session
+  const startNewSession = () => {
+    const newId = generateNewSessionId(); // Generate a new session ID
+    setSessionId(newId);
+    setMessages([]); // Clear chat messages for the new session
+    setLastAIResponse(null); // Reset the AI response state
+    setRecipeSuggestions([]); // Clear any existing recipe suggestions
+  };
 
   useEffect(() => {
     const loadMessages = async () => {
@@ -67,6 +78,7 @@ export const ChatProvider = ({ children }: { children: ReactNode }) => {
         setRecipeSuggestions,
         sessionId, // <-- Provide sessionId in the context
         setSessionId, // <-- Provide setSessionId if modifications are needed
+        startNewSession, // <-- Provide startNewSession function in the context
       }}
     >
       {children}

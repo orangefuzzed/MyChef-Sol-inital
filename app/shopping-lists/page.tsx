@@ -49,7 +49,10 @@ const ShoppingListsPage = () => {
                 className="bg-gray-800 p-4 rounded-lg cursor-pointer hover:bg-gray-700 relative"
               >
                 <h3 className="text-lg font-semibold mb-2">Shopping List for {list.recipeTitle || 'Recipe'}</h3>
-                <p className="text-sm text-gray-400">Items: {list.items.length}</p>
+                <p className="text-sm text-gray-400">
+                  Items: {Array.isArray(list.items) ? list.items.length : 0}
+                </p>
+
                 <button
                   onClick={() => handleViewShoppingList(list.recipeId)} // Updated `recipeId` to `id`
                   className="absolute top-2 right-2 p-2 bg-blue-600 text-white rounded-full"
