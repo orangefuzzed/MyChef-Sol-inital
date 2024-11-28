@@ -4,16 +4,16 @@ const CACHE_NAME = 'dishcovery-cache-v1';
 const urlsToCache = [
   '/',
   '/manifest.json',
-  '/icons/icon-192x192.png',
-  '/icons/icon-512x512.png',
+  '/icons/dishcovery_icon-192x192.png',
+  '/icons/dishcovery_icon-512x512.png',
   // Add other assets and routes here that you want available offline
 ];
 
 const STATIC_ASSETS = [
   '/',
   '/manifest.json',
-  '/icons/icon-192x192.png',
-  '/icons/icon-512x512.png',
+  '/icons/dishcovery_icon-192x192.png',
+  '/icons/dishcovery_icon-512x512.png',
   // Add any additional static assets here
 ];
 
