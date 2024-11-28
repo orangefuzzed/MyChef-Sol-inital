@@ -144,7 +144,7 @@ const ShoppingListPage = () => {
         <Header
           centralText="Shopping List"
           backButton={{
-            label: 'Back to Recipe',
+            label: '',
             icon: <ArrowLeftCircle size={24} />,
             onClick: () => {
               if (!selectedRecipe?.id) {

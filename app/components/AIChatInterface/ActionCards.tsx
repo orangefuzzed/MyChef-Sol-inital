@@ -43,7 +43,7 @@ const ActionCards: React.FC<ActionCardsProps> = ({
           }}
         >
           <button className="p-2 px-6 bg-slate-700 rounded-full text-white flex items-center gap-2">
-            View in Cook Mode
+            View in Cook Mode biff
             <ExternalLinkIcon className="w-5 h-5" />
           </button>
         </Link>

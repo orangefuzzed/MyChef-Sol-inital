@@ -38,7 +38,7 @@ const Footer: React.FC<FooterProps> = ({ actions, contextualActions }) => {
         {contextualActions && contextualActions.length > 0 && (
           <div className={`${styles.contextualActions} flex gap-4`}>
             {contextualActions.map((action, index) => (
-              <button key={index} onClick={action.onClick} className="flex items-center p-2 bg-gray-700 rounded-full">
+              <button key={index} onClick={action.onClick} className="flex items-center p-2 bg-black rounded-full">
                 {action.icon}
                 <span className="ml-2 text-sm">{action.label}</span>
               </button>

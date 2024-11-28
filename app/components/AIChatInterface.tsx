@@ -15,6 +15,7 @@ import RecipeSuggestions from '../components/AIChatInterface/RecipeSuggestions';
 import { ChatSession } from '../../types/ChatSession'; // Add this import for the ChatSession type
 import { ChatMessage } from '../../types/ChatMessage';
 import { useRouter } from 'next/navigation';
+import { Heart } from 'lucide-react'
 
 
 const AIChatInterface = () => {
@@ -278,15 +279,16 @@ const handleSaveSession = async () => {
         />
 
         {/* Footer Section with Save Session Button */}
-        <Footer actions={['home', 'favorite', 'send']} />
-        <div className="flex justify-center mt-4">
-          <button
-            onClick={handleSaveSession}
-            className="bg-blue-500 px-4 py-2 rounded text-white hover:bg-blue-700"
-          >
-            Save Session
-          </button>
-        </div>
+        <Footer
+          actions={['home', 'send']}
+          contextualActions={[
+            {
+              label: 'Save Chat',
+              icon: <Heart size={24} color={'white'} />,
+              onClick: handleSaveSession,
+            },
+          ]}
+        />
       </div>
     </>
   );

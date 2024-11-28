@@ -53,9 +53,9 @@ const RecipeViewPage = () => {
     return <div className="text-white p-4">No recipe selected. Please go back and select a recipe.</div>;
   }
 
-  const handleBackToSuggestions = () => {
+  {/*const handleBackToSuggestions = () => {
     router.push('/recipe-suggestions');
-  };
+  };*/}
 
   const handleSaveToggle = async () => {
     if (!selectedRecipe || !id) return; // Ensure `id` is not null before proceeding
@@ -134,10 +134,8 @@ const RecipeViewPage = () => {
         <Header
           centralText="Recipe Details"
           backButton={{
-            label: 'Back to Suggestions',
-            icon: <ArrowLeftCircle size={24} />,
-            onClick: handleBackToSuggestions,
-          }}
+            label: '',
+            icon: <ArrowLeftCircle size={24} />, onClick: () => router.back() }}
         />
 
         {/* Main Content */}

@@ -78,11 +78,12 @@ const RecipeDetails: React.FC = () => {
 
       <div className="action-buttons flex gap-4 mt-6">
         <Link href={{ pathname: `/cook-mode`, query: { id: selectedRecipe.id } }}>
-          <button className="p-2 px-6 bg-blue-600 text-white rounded-full flex items-center gap-2">
+          <button className="p-2 px-6 my-4 bg-blue-600 text-white rounded-full flex items-center gap-2">
             View in Cook Mode
             <ExternalLinkIcon className="w-5 h-5" />
           </button>
         </Link>
+        </div>
         <Link
           href={{ pathname: `/shopping-list`, query: { id: selectedRecipe.id } }}
           onClick={handleCreateShoppingList}
@@ -92,10 +93,8 @@ const RecipeDetails: React.FC = () => {
             <ExternalLinkIcon className="w-5 h-5" />
           </button>
         </Link>
-        <button onClick={() => window.history.back()} className="p-2 px-6 bg-gray-700 text-white rounded-full">
-          Back to Suggestions
-        </button>
-      </div>
+
+      
     </div>
   );
 };

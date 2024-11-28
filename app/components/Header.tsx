@@ -85,7 +85,7 @@ const Header: React.FC<HeaderProps> = ({ centralText, onBackClick, backButton })
           <Text className={styles.greeting}>
             {getTimeBasedGreeting()}, {user ? user.displayName || 'Guest' : 'Guest'}
           </Text>
-          <span className="text-lg font-semibold">{centralText}</span>
+          {/* <span className="text-lg font-semibold">{centralText}</span>*/}
         </div>
 
         {/* Help Icon Button */}
