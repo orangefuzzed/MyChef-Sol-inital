@@ -51,7 +51,7 @@ const HamburgerMenu: React.FC<HamburgerMenuProps> = ({ isOpen, onClose }) => {
     { icon: <Bookmark size={20} />, text: 'Saved Recipes', link: '/saved-recipes' },
     { icon: <Heart size={20} />, text: 'Favorites', link: '/favorites' },
     { icon: <ShoppingCart size={20} />, text: 'Shopping Lists', link: '/shopping-lists' },
-    { icon: <History size={20} />, text: 'History', link: '/history' },
+    { icon: <History size={20} />, text: 'Recent History', link: '/history' },
     { icon: <Calendar size={20} />, text: 'Saved Meal Plans', link: '/saved-meal-plans' },
   ];
 
