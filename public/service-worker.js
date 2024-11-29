@@ -1,4 +1,4 @@
-// public/sw.js
+// public/service-worker.js
 
 const CACHE_NAME = 'dishcovery-cache-v1';
 const urlsToCache = [
