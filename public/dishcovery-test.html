@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dishcovery Install Test</title>
+  <link rel="manifest" href="https://my-chef-sol-inital-orangefuzzeds-projects.vercel.app/manifest.json">
+  <script>
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.register('https://my-chef-sol-inital-orangefuzzeds-projects.vercel.app/service-worker.js')
+        .then(reg => console.log('Service Worker registered:', reg))
+        .catch(err => console.error('Service Worker registration failed:', err));
+    }
+  </script>
+</head>
+<body>
+  <h1>Test Dishcovery PWA Install</h1>
+  <p>Click the button below to install Dishcovery on your device:</p>
+  <button id="install-btn" style="padding: 10px; font-size: 18px;">Install Dishcovery</button>
+
+  <script>
+    let installPromptEvent;
+
+    window.addEventListener('beforeinstallprompt', (event) => {
+      event.preventDefault();
+      installPromptEvent = event;
+      document.getElementById('install-btn').style.display = 'block';
+    });
+
+    document.getElementById('install-btn').addEventListener('click', () => {
+      if (installPromptEvent) {
+        installPromptEvent.prompt();
+        installPromptEvent.userChoice.then((choiceResult) => {
+          console.log('User choice:', choiceResult.outcome);
+          installPromptEvent = null; // Clear the event
+        });
+      } else {
+        alert('Install prompt not available.');
+      }
+    });
+  </script>
+</body>
+</html>
