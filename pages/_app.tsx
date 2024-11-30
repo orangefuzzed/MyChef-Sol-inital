@@ -20,26 +20,28 @@ function MyApp({ Component, pageProps }: AppProps) {
       });
     }
 
-    window.addEventListener('beforeinstallprompt', (e: Event) => {
-      console.log('beforeinstallprompt event fired'); // Debugging
+    const handleBeforeInstallPrompt = (e: Event) => {
+      console.log('beforeinstallprompt event fired');
       e.preventDefault();
-      deferredPrompt = e as BeforeInstallPromptEvent; // Cast to the correct type
+      deferredPrompt = e as BeforeInstallPromptEvent;
       const installButton = document.getElementById('installButton');
       if (installButton) {
         installButton.style.display = 'block'; // Show the button
       }
-    });
+    };
+
+    window.addEventListener('beforeinstallprompt', handleBeforeInstallPrompt);
 
     const handleInstallClick = () => {
       if (deferredPrompt) {
         deferredPrompt.prompt();
-        deferredPrompt.userChoice.then((choiceResult: { outcome: 'accepted' | 'dismissed' }) => {
+        deferredPrompt.userChoice.then((choiceResult) => {
           if (choiceResult.outcome === 'accepted') {
             console.log('User accepted the install prompt');
           } else {
             console.log('User dismissed the install prompt');
           }
-          deferredPrompt = null; // Reset the prompt
+          deferredPrompt = null;
         });
       }
     };
@@ -48,6 +50,13 @@ function MyApp({ Component, pageProps }: AppProps) {
     if (installButton) {
       installButton.addEventListener('click', handleInstallClick);
     }
+
+    return () => {
+      window.removeEventListener('beforeinstallprompt', handleBeforeInstallPrompt);
+      if (installButton) {
+        installButton.removeEventListener('click', handleInstallClick);
+      }
+    };
   }, []);
 
   return (

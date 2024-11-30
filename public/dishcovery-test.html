@@ -4,10 +4,10 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Dishcovery Install Test</title>
-  <link rel="manifest" href="https://my-chef-sol-inital-orangefuzzeds-projects.vercel.app/manifest.json">
+  <link rel="manifest" href="/manifest.json">
   <script>
     if ('serviceWorker' in navigator) {
-      navigator.serviceWorker.register('https://my-chef-sol-inital-orangefuzzeds-projects.vercel.app/service-worker.js')
+      navigator.serviceWorker.register('/service-worker.js')
         .then(reg => console.log('Service Worker registered:', reg))
         .catch(err => console.error('Service Worker registration failed:', err));
     }
@@ -24,15 +24,15 @@
     window.addEventListener('beforeinstallprompt', (event) => {
       event.preventDefault();
       installPromptEvent = event;
-      document.getElementById('install-btn').style.display = 'block';
+      document.getElementById('installButton').style.display = 'block';
     });
 
-    document.getElementById('install-btn').addEventListener('click', () => {
+    document.getElementById('installButton').addEventListener('click', () => {
       if (installPromptEvent) {
         installPromptEvent.prompt();
         installPromptEvent.userChoice.then((choiceResult) => {
           console.log('User choice:', choiceResult.outcome);
-          installPromptEvent = null; // Clear the event
+          installPromptEvent = null;
         });
       } else {
         alert('Install prompt not available.');
