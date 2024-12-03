@@ -36,7 +36,10 @@ const MessageInput: React.FC<MessageInputProps> = ({
             <ChevronRightIcon className="h-5 w-5" />
           </button>
         </div>
-        <button onClick={handleSendMessage} className="p-3 rounded-full bg-[#CA244D] text-white ml-2">
+        <button
+          onClick={handleSendMessage}
+          className="p-3 rounded-full bg-[#CA244D] text-white ml-2"
+        >
           <PaperPlaneIcon className="h-4 w-4" />
         </button>
         <button className="p-2 rounded-full bg-[#ffffff] text-black ml-2">

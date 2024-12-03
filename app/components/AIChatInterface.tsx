@@ -15,7 +15,7 @@ import RecipeSuggestions from '../components/AIChatInterface/RecipeSuggestions';
 import { ChatSession } from '../../types/ChatSession'; // Add this import for the ChatSession type
 import { ChatMessage } from '../../types/ChatMessage';
 import { useRouter } from 'next/navigation';
-import { Heart, Bot } from 'lucide-react'
+import { Heart } from 'lucide-react'
 
 
 const AIChatInterface = () => {
@@ -28,7 +28,6 @@ const AIChatInterface = () => {
     inputMessage,
     setInputMessage,
     lastAIResponse,
-    startNewSession, // Use the updated function from ChatContext
   } = useChat(); // Extract chat state from ChatContext
 
   const {
@@ -56,22 +55,15 @@ const AIChatInterface = () => {
 
   useEffect(scrollToBottom, [messages]);
 
-  // Clear messages if we're starting a new chat session
-  const handleStartNewSession = () => {
-    startNewSession(); // This will generate a new session ID and clear messages
-  };
-  
   useEffect(() => {
     // Clear messages if we're starting a new chat
     if (!sessionId || sessionId === 'current_session_id') {
       setMessages([]); // Clear the messages to start with an empty state
-      // Avoid fetching messages from IndexedDB for a new session
-      console.log("New session started, clearing messages.");
     }
   }, [sessionId, setMessages]);
-  
-  const [loadingMessage, setLoadingMessage] = useState<string>('');
 
+  const [loadingMessage, setLoadingMessage] = useState<string>('');
+  
   // Loading messages rotation
   useEffect(() => {
     let interval: number | null = null;
@@ -100,8 +92,7 @@ const AIChatInterface = () => {
         clearInterval(interval);
       }
     };
-  }, [isLoading]);
-  
+  }, [isLoading]);  
 
   // Handle sending a message and saving it with the correct sessionId
   const handleSendMessageClick = async () => {
@@ -236,7 +227,7 @@ const handleSaveSession = async () => {
     };
   }, [messages]);
 
-    return (
+  return (
     <>
       <Header centralText="MyChef AI Chat" />
       <div className="flex flex-col h-screen bg-gray-900 text-white">
@@ -252,10 +243,9 @@ const handleSaveSession = async () => {
 
           {/* Recipe Suggestions in Context with Messages */}
           {recipeSuggestionSets.map((suggestionSet) => (
-            <div key={`${sessionId}-${suggestionSet.responseId}`} className="mt-4">
-              <p className="max-w-lg p-3 rounded-3xl bg-gray-700 text-green-200 border-solid border border-gray-500 mb-4">{suggestionSet.message}</p>
-              <RecipeSuggestions
-                key={sessionId}  // Adding key to force re-mount when sessionId changes
+            <div key={suggestionSet.responseId} className="mt-4">
+            <p className="max-w-lg p-3 rounded-3xl bg-gray-700 text-green-200 border-solid border border-gray-500 mb-4">{suggestionSet.message}</p>
+            <RecipeSuggestions
                 currentRecipeList={suggestionSet.suggestions}
                 handleRecipeSelect={handleRecipeSelect}
               />
@@ -287,19 +277,6 @@ const handleSaveSession = async () => {
               icon: <Heart size={24} color={'white'} />,
               onClick: handleSaveSession,
             },
-            {
-              label: 'Start New Session',
-              icon: <Bot size={24} color={'white'} />,
-              onClick: async () => {
-                console.log('Start New Session Button Clicked.');
-                try {
-                  await handleStartNewSession(); // This will trigger the full session reset
-                  console.log('Session successfully reset.');
-                } catch (error) {
-                  console.error('Error starting a new session:', error);
-                }
-              },
-            }
           ]}
         />
       </div>

@@ -192,44 +192,6 @@ export const saveChatMessageToDB = async (message: ChatMessage): Promise<void> =
   });
 };
 
-// Clear all chat data from IndexedDB
-export const clearAllChatDataFromDB = async (): Promise<void> => {
-  const db = await openDBWithChat();
-  const transaction = db.transaction([CHAT_STORE_NAME.name, SAVED_SESSIONS_STORE.name, 'recipeSuggestions'], 'readwrite');
-
-  try {
-    // Clear all chat messages
-    const chatStore = transaction.objectStore(CHAT_STORE_NAME.name);
-    await chatStore.clear();
-    console.log('[clearAllChatDataFromDB] All chat messages cleared from IndexedDB.');
-
-    // Clear all saved sessions
-    const sessionStore = transaction.objectStore(SAVED_SESSIONS_STORE.name);
-    await sessionStore.clear();
-    console.log('[clearAllChatDataFromDB] All saved sessions cleared from IndexedDB.');
-
-    // Clear recipe suggestions (if any are stored)
-    const recipeStore = transaction.objectStore('recipeSuggestions');
-    await recipeStore.clear();
-    console.log('[clearAllChatDataFromDB] All recipe suggestions cleared from IndexedDB.');
-
-  } catch (error) {
-    console.error('[clearAllChatDataFromDB] Error while clearing data:', error);
-  }
-
-  return new Promise<void>((resolve, reject) => {
-    transaction.oncomplete = () => {
-      console.log('[clearAllChatDataFromDB] IndexedDB cleared successfully.');
-      resolve();
-    };
-    transaction.onerror = () => {
-      console.error('[clearAllChatDataFromDB] IndexedDB transaction failed:', transaction.error);
-      reject(transaction.error);
-    };
-  });
-};
-
-
 // Delete a chat session from IndexedDB
 export const deleteChatSessionFromDB = async (sessionId: string): Promise<void> => {
   const db = await openDBWithChat();
