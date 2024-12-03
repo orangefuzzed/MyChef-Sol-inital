@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
+import React, { createContext, useContext, useState, ReactNode } from 'react';
 import { saveChatMessageToDB, clearAllChatDataFromDB } from '../utils/indexedDBUtils';
 import { generateNewSessionId } from '../utils/sessionUtils'; // Importing the session utility function
 import { Recipe } from '../../types/Recipe';  // Importing Recipe from the correct source
