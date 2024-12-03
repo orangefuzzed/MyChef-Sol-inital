@@ -7,7 +7,7 @@ interface MessageInputProps {
   handleInputChange: (event: ChangeEvent<HTMLInputElement>) => void;
   handleKeyPress: (event: KeyboardEvent<HTMLInputElement>) => void;
   handleSendMessage: () => void;
-  isLoading: boolean;
+  isLoading: boolean; // Still present in case it's needed elsewhere, but we won't use it for disabling.
 }
 
 const MessageInput: React.FC<MessageInputProps> = ({
@@ -15,7 +15,6 @@ const MessageInput: React.FC<MessageInputProps> = ({
   handleInputChange,
   handleKeyPress,
   handleSendMessage,
-  isLoading,
 }) => {
   return (
     <div className="p-4 bg-gray-800">
@@ -27,21 +26,17 @@ const MessageInput: React.FC<MessageInputProps> = ({
           onKeyPress={handleKeyPress}
           placeholder="...ask me for a great recipe"
           className="flex-1 bg-transparent text-black placeholder-gray-400 focus:outline-none"
-          disabled={isLoading}
+          // Removed `disabled` to keep the input field active during loading
         />
         <div className="flex space-x-2">
-          <button className="p-1 text-gray-400" disabled={isLoading}>
+          <button className="p-1 text-gray-400">
             <ChevronLeftIcon className="h-5 w-5" />
           </button>
-          <button className="p-1 text-gray-400" disabled={isLoading}>
+          <button className="p-1 text-gray-400">
             <ChevronRightIcon className="h-5 w-5" />
           </button>
         </div>
-        <button
-          onClick={handleSendMessage}
-          className="p-3 rounded-full bg-[#CA244D] text-white ml-2"
-          disabled={isLoading}
-        >
+        <button onClick={handleSendMessage} className="p-3 rounded-full bg-[#CA244D] text-white ml-2">
           <PaperPlaneIcon className="h-4 w-4" />
         </button>
         <button className="p-2 rounded-full bg-[#ffffff] text-black ml-2">

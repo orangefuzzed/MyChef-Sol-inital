@@ -44,3 +44,10 @@
 .helpIcon {
   color: var(--text-primary);
 }
+.header {
+  position: sticky;  /* Make header stick at the top of the viewport */
+  top: 0;            /* Stick to the very top of the viewport */
+  z-index: 10;       /* Ensure it stays above other components */
+  background-color: rgba(31, 41, 55, 0.9); /* Add a semi-transparent background */
+  width: 100%;       /* Full width to prevent any gaps */
+}

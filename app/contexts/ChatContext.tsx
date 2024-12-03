@@ -1,5 +1,5 @@
 import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
-import { getChatMessagesFromDB, saveChatMessageToDB } from '../utils/indexedDBUtils';
+import { saveChatMessageToDB, clearAllChatDataFromDB } from '../utils/indexedDBUtils';
 import { generateNewSessionId } from '../utils/sessionUtils'; // Importing the session utility function
 import { Recipe } from '../../types/Recipe';  // Importing Recipe from the correct source
 
@@ -27,7 +27,7 @@ interface ChatContextType {
   setRecipeSuggestions: (recipes: Recipe[]) => void;
   sessionId: string;
   setSessionId: (id: string) => void;
-  startNewSession: () => void; // <-- Adding startNewSession function
+  startNewSession: () => Promise<void>; // Updated to be async
 }
 
 const ChatContext = createContext<ChatContextType | undefined>(undefined);
@@ -40,22 +40,44 @@ export const ChatProvider = ({ children }: { children: ReactNode }) => {
   const [recipeSuggestions, setRecipeSuggestions] = useState<Recipe[]>([]);  // Updated to use the correct type
   const [sessionId, setSessionId] = useState<string>(() => generateNewSessionId()); // <-- Use the utility function for sessionId
 
-  // Function to start a new session
-  const startNewSession = () => {
-    const newId = generateNewSessionId(); // Generate a new session ID
-    setSessionId(newId);
-    setMessages([]); // Clear chat messages for the new session
-    setLastAIResponse(null); // Reset the AI response state
-    setRecipeSuggestions([]); // Clear any existing recipe suggestions
-  };
+  // Updated startNewSession function to ensure complete reset
+const startNewSession = async () => {
+  console.log('Starting a brand new session...');
 
-  useEffect(() => {
+  // Step 1: Clear Persistent Storage (IndexedDB)
+  await clearAllChatDataFromDB(); // Clear all chat messages, sessions, and recipe suggestions
+  console.log('Persistent storage cleared.');
+
+  // Step 2: Clear State Variables
+  setSessionId(generateNewSessionId());
+  setMessages([]);
+  setLastAIResponse(null);
+  setRecipeSuggestions([]);  // Clear the recipe suggestions explicitly from React state
+  setInputMessage('');
+
+  // Step 3: Trigger a Re-Render of Recipe Suggestions Component
+  setRecipeSuggestions([...[]]);  // Explicitly "reset" recipe suggestions by setting to a fresh array
+
+  // Step 4: Add a small delay to ensure state updates are properly reflected
+  await new Promise((resolve) => setTimeout(resolve, 100));
+
+  console.log('Session completely reset.');
+};
+
+
+
+  {/*useEffect(() => {
     const loadMessages = async () => {
-      const savedMessages = await getChatMessagesFromDB();
-      setMessages(savedMessages);
+      if (sessionId !== 'current_session_id') { // Only load if this is NOT a new session
+        const savedMessages = await getChatMessagesFromDB();
+        setMessages(savedMessages);
+      } else {
+        console.log("Skipping message load for a new session.");
+      }
     };
     loadMessages();
-  }, []);
+  }, [sessionId]);*/}
+  
 
   const addMessage = async (message: ChatMessage) => {
     setMessages((prevMessages) => [...prevMessages, message]);

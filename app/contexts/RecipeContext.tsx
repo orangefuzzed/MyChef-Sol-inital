@@ -9,7 +9,7 @@ interface ShoppingList {
   totalItems: number;
 }
 
-interface RecipeSuggestionSet {
+export interface RecipeSuggestionSet {  // Export this interface
   responseId: string;
   message: string;
   suggestions: Recipe[];
@@ -42,9 +42,6 @@ export const RecipeProvider: React.FC<{ children: ReactNode }> = ({ children }) 
   const [currentShoppingList, setCurrentShoppingList] = useState<ShoppingList | null>(null);
   const [currentCookMode, setCurrentCookMode] = useState<string | null>(null);
 
-  // Remove automatic loading of saved recipes on mount to prevent loading them during the initial mount
-  // We can add a function to load saved recipes when explicitly needed
-
   const loadSavedRecipes = async () => {
     if (!userEmail) return;
 
@@ -73,9 +70,8 @@ export const RecipeProvider: React.FC<{ children: ReactNode }> = ({ children }) 
 
   const saveRecipe = async (recipe: Recipe) => {
     try {
-      await saveRecipeToDB(recipe); // Save to IndexedDB
+      await saveRecipeToDB(recipe);
 
-      // Save to MongoDB via API
       const response = await fetch('/api/recipes/save', {
         method: 'POST',
         headers: {
@@ -88,7 +84,6 @@ export const RecipeProvider: React.FC<{ children: ReactNode }> = ({ children }) 
         throw new Error('Failed to save recipe to MongoDB');
       }
 
-      // Update saved recipes in the state
       setSavedRecipes((prevRecipes) => [...prevRecipes, recipe]);
     } catch (error) {
       console.error('Error saving recipe:', error);

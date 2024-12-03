@@ -140,7 +140,7 @@ const ChatViewPage: React.FC = () => {
         {/* Recipe Suggestions in Context with Messages */}
         {recipeSuggestionSets.map((suggestionSet) => (
           <div key={suggestionSet.responseId} className="mt-4">
-            <p className="text-sm text-gray-400">{suggestionSet.message}</p>
+            <p className="max-w-lg p-3 rounded-3xl bg-gray-700 text-green-200 border-solid border border-gray-500 mb-4">{suggestionSet.message}</p>
             <RecipeSuggestions
               currentRecipeList={suggestionSet.suggestions}
               handleRecipeSelect={() => {}} // No selection action needed for saved sessions

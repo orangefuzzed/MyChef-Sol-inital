@@ -14,7 +14,7 @@ const RecipeSuggestions: React.FC<RecipeSuggestionsProps> = ({ currentRecipeList
   return (
     <div className="recipe-suggestions">
       {currentRecipeList.map((recipe, index) => {
-        console.log('Recipe ID:', recipe.id); // Updated log to verify id
+        /*console.log('Recipe ID:', recipe.id); // Updated log to verify id*/
         return (
           <div key={`${recipe.recipeTitle}-${index}`} className="bg-gray-800 p-4 rounded-lg mb-4">
             <h3 className="text-xl font-bold">{recipe.recipeTitle}</h3>

@@ -13,7 +13,7 @@ export const useAIChatHandlers = () => {
     setMessages,
     setIsLoading,
     setLastAIResponse,
-    sessionId, // Add sessionId from ChatContext
+    sessionId, 
   } = useChat();
 
   const { addRecipeSuggestionSet } = useRecipeContext();
@@ -25,37 +25,34 @@ export const useAIChatHandlers = () => {
     setIsLoading(true);
 
     try {
-      // Ensure the sessionId is properly set
       const newSessionId = sessionId ?? Date.now().toString();
-
-      // Use `newSessionId` instead of `sessionId`
-      const newMessage: ChatMessage & { id: number } = {
+      
+      // Create user message object
+      const newMessage: ChatMessage = {
         id: Date.now(),
         messageId: Date.now().toString(),
-        sessionId: newSessionId, // <-- Use `newSessionId` here
+        sessionId: newSessionId,
         timestamp: new Date(),
         sender: 'user',
         text: inputMessage,
       };
 
+      // Add message to the context state without duplication
       addMessage(newMessage);
-      await saveChatMessageToDB(newMessage); // Save user message to IndexedDB
+      await saveChatMessageToDB(newMessage); // Save message to IndexedDB
 
-      // Generate the prompt using the utility functions
+      // Generate and send prompt
       const conversationHistory = formatConversationHistory(messages);
       const fullPrompt = generatePrompt(conversationHistory, inputMessage, 'sendMessage');
 
-      // Send the message to Claude and get AI response
+      // Send to Claude and handle response
       const aiResponse = await sendMessageToClaude(fullPrompt, 'recipe suggestions');
-
-      // Parse AI response
       const parsedResponse = parseAIResponse(aiResponse);
 
-      // Update messages and store the recipe suggestions
       const aiMessage: ChatMessage & { suggestions?: Recipe[] } = {
         id: Date.now() + 1,
         messageId: (Date.now() + 1).toString(),
-        sessionId: newSessionId, // <-- Use `newSessionId` here
+        sessionId: newSessionId,
         timestamp: new Date(),
         sender: 'ai',
         text: parsedResponse.message,
@@ -64,9 +61,9 @@ export const useAIChatHandlers = () => {
 
       addMessage(aiMessage);
       setLastAIResponse(aiMessage);
-      await saveChatMessageToDB(aiMessage); // Save AI response with suggestions to IndexedDB
+      await saveChatMessageToDB(aiMessage); // Save AI response to IndexedDB
 
-      // Add the recipe suggestion set to RecipeContext
+      // Add recipe suggestions if present
       if (parsedResponse.recipes) {
         addRecipeSuggestionSet({
           responseId: aiMessage.messageId,
@@ -75,29 +72,27 @@ export const useAIChatHandlers = () => {
         });
       }
 
-      // Save recipes to the database
+      // Save each recipe to database
       for (const recipe of parsedResponse.recipes) {
         await saveRecipeToDatabase(recipe);
       }
     } catch (error) {
       setMessages([
-          ...messages,
-          {
-              id: Date.now() + 1,
-              messageId: Date.now().toString(),
-              sessionId: sessionId ?? 'unknown', // Fallback if `sessionId` isn't set
-              timestamp: new Date(),
-              sender: 'ai',
-              text: 'An error occurred while processing your request. Please try again.',
-          },
+        ...messages,
+        {
+          id: Date.now() + 1,
+          messageId: Date.now().toString(),
+          sessionId: sessionId ?? 'unknown',
+          timestamp: new Date(),
+          sender: 'ai',
+          text: 'An error occurred while processing your request. Please try again.',
+        },
       ]);
   
       handleError(error, setIsLoading);
-  } finally {
+    } finally {
       setIsLoading(false);
-  }
-   
-  
+    }
   };
 
   // Placeholder functions for other handlers

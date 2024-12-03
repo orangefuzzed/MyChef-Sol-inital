@@ -65,13 +65,17 @@ const AIChatInterface = () => {
     // Clear messages if we're starting a new chat
     if (!sessionId || sessionId === 'current_session_id') {
       setMessages([]); // Clear the messages to start with an empty state
+      // Avoid fetching messages from IndexedDB for a new session
+      console.log("New session started, clearing messages.");
     }
   }, [sessionId, setMessages]);
+  
+  const [loadingMessage, setLoadingMessage] = useState<string>('');
 
   // Loading messages rotation
   useEffect(() => {
     let interval: number | null = null;
-
+  
     if (isLoading) {
       const messages = [
         'Thinking...',
@@ -84,19 +88,20 @@ const AIChatInterface = () => {
       ];
       let index = 0;
       interval = window.setInterval(() => {
-        setInputMessage(messages[index % messages.length]);
+        setLoadingMessage(messages[index % messages.length]);
         index++;
       }, 3000);
     } else {
-      setInputMessage('');
+      setLoadingMessage(''); // Clear the loading message once done
     }
-
+  
     return () => {
       if (interval !== null) {
         clearInterval(interval);
       }
     };
-  }, [isLoading, setInputMessage]);
+  }, [isLoading]);
+  
 
   // Handle sending a message and saving it with the correct sessionId
   const handleSendMessageClick = async () => {
@@ -247,9 +252,10 @@ const handleSaveSession = async () => {
 
           {/* Recipe Suggestions in Context with Messages */}
           {recipeSuggestionSets.map((suggestionSet) => (
-            <div key={suggestionSet.responseId} className="mt-4">
-              <p className="text-sm text-gray-400">{suggestionSet.message}</p>
+            <div key={`${sessionId}-${suggestionSet.responseId}`} className="mt-4">
+              <p className="max-w-lg p-3 rounded-3xl bg-gray-700 text-green-200 border-solid border border-gray-500 mb-4">{suggestionSet.message}</p>
               <RecipeSuggestions
+                key={sessionId}  // Adding key to force re-mount when sessionId changes
                 currentRecipeList={suggestionSet.suggestions}
                 handleRecipeSelect={handleRecipeSelect}
               />
@@ -257,19 +263,7 @@ const handleSaveSession = async () => {
           ))}
 
           {/* Loading Spinner */}
-          <LoadingSpinner isLoading={isLoading} loadingMessage={inputMessage} />
-
-          {/* Action Cards 
-          {!isLoading && (
-            <ActionCards
-              currentRecipe={null}
-              currentShoppingList={currentShoppingList}
-              currentCookMode={currentCookMode}
-              handleAddToMealPlan={() =>
-                handleSendMessage('Can you add the last provided recipe to my meal plan?')
-              }
-            />
-          )}*/}
+          <LoadingSpinner isLoading={isLoading} loadingMessage={loadingMessage} />
 
           {/* Scroll to Bottom Reference */}
           <div ref={messagesEndRef} />
@@ -296,8 +290,16 @@ const handleSaveSession = async () => {
             {
               label: 'Start New Session',
               icon: <Bot size={24} color={'white'} />,
-              onClick: handleStartNewSession,
-            },
+              onClick: async () => {
+                console.log('Start New Session Button Clicked.');
+                try {
+                  await handleStartNewSession(); // This will trigger the full session reset
+                  console.log('Session successfully reset.');
+                } catch (error) {
+                  console.error('Error starting a new session:', error);
+                }
+              },
+            }
           ]}
         />
       </div>
