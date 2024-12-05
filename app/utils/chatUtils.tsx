@@ -32,8 +32,10 @@ export const handleError = (
               {
                 "id": "unique_recipe_id",
                 "recipeTitle": "Recipe Title",
-                "rating": "★★★★☆",
+                "cookTime": "X min"
+                "calories: "X Kcal"
                 "protein": "X g",
+                "rating": "★★★★☆",
                 "description": "Brief description",
                 "ingredients": ["Ingredient 1", "Ingredient 2"],
                 "instructions": ["Step 1", "Step 2"]

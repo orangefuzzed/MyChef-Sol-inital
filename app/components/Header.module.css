@@ -13,23 +13,23 @@
 .menuIconWrapper {
   background-color: rgba(0, 0, 0, 0);
   border-radius: 50%;
-  border: 1.25px solid white;
-  width: 44px;
-  height: 44px;
+  border: 1.25px solid #000;
+  width: 40px;
+  height: 40px;
   display: flex;
   align-items: center;
   justify-content: center;
 }
 
 .menuIcon {
-  width: 26px;
-  height: 26px;
-  filter: brightness(0) saturate(100%) invert(100%);
+  width: 24px;
+  height: 24px;
+  
 }
 
 .greeting {
-  font-size: 1.2rem;
-  color: var(--text-primary);
+  font-size: 1rem;
+  color: #000;
 }
 
 .helpButton {
@@ -42,12 +42,12 @@
 }
 
 .helpIcon {
-  color: var(--text-primary);
+  color: #000;
 }
 .header {
   position: sticky;  /* Make header stick at the top of the viewport */
   top: 0;            /* Stick to the very top of the viewport */
   z-index: 10;       /* Ensure it stays above other components */
-  background-color: rgba(31, 41, 55, 0.9); /* Add a semi-transparent background */
+  
   width: 100%;       /* Full width to prevent any gaps */
 }

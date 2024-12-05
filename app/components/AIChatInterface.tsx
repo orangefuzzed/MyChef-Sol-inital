@@ -16,6 +16,7 @@ import { ChatSession } from '../../types/ChatSession'; // Add this import for th
 import { ChatMessage } from '../../types/ChatMessage';
 import { useRouter } from 'next/navigation';
 import { Heart } from 'lucide-react'
+import ActionButtons from '../components/AIChatInterface/ActionButtons';
 
 
 const AIChatInterface = () => {
@@ -157,8 +158,8 @@ const AIChatInterface = () => {
   
   
 
-  /// Handle saving session
-const handleSaveSession = async () => {
+  // Handle saving session
+  const handleSaveSession = async () => {
   try {
     const sessionSummary = messages.length > 0 ? messages[0].text.slice(0, 100) : 'No summary available';
 
@@ -193,11 +194,14 @@ const handleSaveSession = async () => {
     }
 
     console.log('Session saved successfully to MongoDB!');
+    setIsChatSaved(true); // Mark the session as saved
   } catch (error) {
     console.error('Error saving session:', error);
   }
-};
+  };
 
+
+  const [isChatSaved, setIsChatSaved] = useState<boolean>(false);
 
   // Function to save chat messages to IndexedDB with the correct sessionId
   const saveChatMessage = async (message: ChatMessage) => {
@@ -212,6 +216,7 @@ const handleSaveSession = async () => {
       console.error('Error saving chat message:', error);
     }
   }
+
   // Handle end session actions
   useEffect(() => {
     const handleBeforeUnload = () => {
@@ -229,8 +234,11 @@ const handleSaveSession = async () => {
 
   return (
     <>
-      <Header centralText="MyChef AI Chat" />
-      <div className="flex flex-col h-screen bg-gray-900 text-white">
+    <div
+        className="flex flex-col h-screen bg-cover bg-center text-white"
+        style={{ backgroundImage: "url('/images/chef-1.png')" }}
+      >
+      <Header centralText="" />
         <div className="flex-1 overflow-y-auto p-4 space-y-4">
           {/* Messages Section */}
           <MessageList
@@ -241,10 +249,17 @@ const handleSaveSession = async () => {
             handleRegenerateResponse={handleRegenerateResponse}
           />
 
+          <ActionButtons
+          lastAIResponse={lastAIResponse}
+          handleContinueResponse={handleContinueResponse}
+          handleRetryOverload={handleRetryOverload}
+          handleRegenerateResponse={handleRegenerateResponse}
+          />    
+
           {/* Recipe Suggestions in Context with Messages */}
           {recipeSuggestionSets.map((suggestionSet) => (
             <div key={suggestionSet.responseId} className="mt-4">
-            <p className="max-w-lg p-3 rounded-3xl bg-gray-700 text-green-200 border-solid border border-gray-500 mb-4">{suggestionSet.message}</p>
+            <p className="max-w-lg px-8 py-4 rounded-r-3xl rounded-b-3xl bg-gradient-to-r from-[#00a39e] from-20% to-[#00f5d0] to-95% text-white font-bold border border-white shadow-lg ring-1 ring-black/5 mb-4">{suggestionSet.message}</p>
             <RecipeSuggestions
                 currentRecipeList={suggestionSet.suggestions}
                 handleRecipeSelect={handleRecipeSelect}
@@ -260,6 +275,7 @@ const handleSaveSession = async () => {
         </div>
 
         {/* Input Section */}
+        <>
         <MessageInput
           inputMessage={inputMessage}
           handleInputChange={handleInputChange}
@@ -267,14 +283,15 @@ const handleSaveSession = async () => {
           handleSendMessage={handleSendMessageClick}
           isLoading={isLoading}
         />
+      </>
 
         {/* Footer Section with Save Session Button */}
         <Footer
           actions={['home', 'send']}
           contextualActions={[
             {
-              label: 'Save Chat',
-              icon: <Heart size={24} color={'white'} />,
+              label: isChatSaved ? 'Saved' : 'Save',
+              icon: <Heart size={20} color={isChatSaved ? '#27ff52' : 'white'} />,
               onClick: handleSaveSession,
             },
           ]}

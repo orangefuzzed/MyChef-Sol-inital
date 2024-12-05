@@ -27,7 +27,7 @@ const ActionButtons: React.FC<ActionButtonsProps> = ({
           {lastAIResponse.text.includes('cut off') && (
             <button
               onClick={handleContinueResponse}
-              className="p-2 px-4 bg-green-600 text-white rounded-full"
+              className="p-2 px-4 bg-teal-600 text-white rounded-full"
             >
               Continue Response
             </button>
@@ -35,7 +35,7 @@ const ActionButtons: React.FC<ActionButtonsProps> = ({
           {lastAIResponse.text.includes('overloaded') && (
             <button
               onClick={handleRetryOverload}
-              className="p-2 px-4 bg-orange-600 text-white rounded-full flex items-center gap-2"
+              className="p-2 px-4 bg-orange-400 text-white rounded-full flex items-center gap-2"
             >
               Retry
             </button>
@@ -45,7 +45,7 @@ const ActionButtons: React.FC<ActionButtonsProps> = ({
       {lastAIResponse.sender === 'ai' && (
         <button
           onClick={handleRegenerateResponse}
-          className="p-2 px-4 bg-blue-600 text-white rounded-full flex items-center gap-2"
+          className="p-2 px-4 bg-sky-500 text-white rounded-full flex items-center gap-2"
         >
           <ReloadIcon className="w-5 h-5" />
           Get More Suggestions

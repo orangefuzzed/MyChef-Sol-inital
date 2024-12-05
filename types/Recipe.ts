@@ -11,6 +11,8 @@ export interface Recipe {
   imageURL?: string;
   userEmail: string;
   isSuggestion?: boolean;
+  calories?: number; // Adding rating as an optional property
+  cookTime?: number; // Adding rating as an optional property
   rating?: number; // Adding rating as an optional property
   protein?: number; // Adding protein as an optional property
   createdAt?: Date; // Adding createdAt as optional

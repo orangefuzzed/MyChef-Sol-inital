@@ -134,7 +134,7 @@ body {
 .header,
 .footer {
   width: 100vw; /* Full viewport width */
-  background-color: var(--slate-11); /* Adjust as needed for your design */
+  
   margin: 0;
  /* padding: 1rem 0;  Padding for breathing space */
   border: none; /* Remove any previous borders */

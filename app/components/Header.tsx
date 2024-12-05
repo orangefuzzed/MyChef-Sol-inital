@@ -50,7 +50,7 @@ const Header: React.FC<HeaderProps> = ({ centralText, onBackClick, backButton })
 
   return (
     <header className={`${styles.header} header`}>
-      <div className="flex justify-between items-center p-4 border-b border-gray-700 border-solid border-[1px] bg-gray-800">
+      <div className="flex justify-between items-center p-2 bg-white/30 backdrop-blur-lg shadow-lg ring-1 ring-black/5">
         {/* Back Button (if onBackClick or backButton is provided) */}
         {(onBackClick || backButton) && (
           <button
@@ -85,7 +85,7 @@ const Header: React.FC<HeaderProps> = ({ centralText, onBackClick, backButton })
           <Text className={styles.greeting}>
             {getTimeBasedGreeting()}, {user ? user.displayName || 'Guest' : 'Guest'}
           </Text>
-          <span className="text-lg font-semibold">{centralText}</span>
+          <span className="text-lg text-black font-semibold">{centralText}</span>
         </div>
 
         {/* Help Icon Button */}
