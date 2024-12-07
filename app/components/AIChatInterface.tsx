@@ -235,7 +235,7 @@ const AIChatInterface = () => {
   return (
     <>
     <div
-        className="flex flex-col h-screen bg-fixed bg-cover bg-center text-white"
+        className="flex flex-col h-screen text-white"
         /*style={{ backgroundImage: "url('/images/summer-deck-1.png')" }}*/
       >
       <Header centralText="" />
