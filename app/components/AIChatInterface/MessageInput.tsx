@@ -1,5 +1,5 @@
 import React, { ChangeEvent, KeyboardEvent } from 'react';
-import { ChevronLeftIcon, ChevronRightIcon, PaperPlaneIcon } from '@radix-ui/react-icons';
+import { PaperPlaneIcon } from '@radix-ui/react-icons';
 import { Mic } from 'lucide-react';
 
 interface MessageInputProps {
@@ -48,7 +48,7 @@ const MessageInput: React.FC<MessageInputProps> = ({
         {/* Send Button */}
         <button
           onClick={handleSendMessage}
-          className="p-2 rounded-full bg-[#27ff52] text-black border border-slate-400 shadow-lg hover:shadow-xl transition-shadow duration-300 ease-in-out"
+          className="p-2 rounded-full bg-[#27ff52] text-black border border-slate-400 shadow-lg hover:shadow-xl transition-shadow"
           disabled={isLoading}
         >
           <PaperPlaneIcon className="h-4 w-4" />
