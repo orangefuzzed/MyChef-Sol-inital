@@ -48,7 +48,7 @@ const Message: React.FC<MessageProps> = ({
     <div className={`flex ${message.sender === 'user' ? 'justify-end' : 'justify-start'} relative`}>
       {/* Icon positioned beside the message bubble */}
       <div
-        className={`absolute ${message.sender === 'user' ? 'right-0 mr-0' : '-left-2'} top-1/2 transform -translate-y-1/2 z-10 bg-[#00a39e] w-10 h-10 border border-white rounded-full flex items-center justify-center`}
+        className={`absolute ${message.sender === 'user' ? 'right-0 mr-0' : '-left-2'} top-1/2 transform -translate-y-1/2 z-10 bg-black w-10 h-10 border border-white rounded-full flex items-center justify-center`}
       >
         {message.sender === 'user' ? (
           userImage ? (
@@ -63,7 +63,13 @@ const Message: React.FC<MessageProps> = ({
             <CircleUserRound className="w-6 h-6 text-white" />
           )
         ) : (
-          <BotMessageSquare strokeWidth={1.5} className="w-6 h-6 text-white" />
+          /*<BotMessageSquare strokeWidth={1.5} className="w-6 h-6 text-white" />*/
+          <Image
+                src="/images/food-bot-1.png"
+                alt="disher"
+                width={30}
+                height={30}
+              />
         )}
       </div>
   
