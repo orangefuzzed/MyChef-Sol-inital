@@ -18,7 +18,6 @@ import { useRouter } from 'next/navigation';
 import { Heart } from 'lucide-react'
 
 
-
 const AIChatInterface = () => {
   const [sessionId, setSessionId] = useState<string>(() => Date.now().toString());
   const {
@@ -158,8 +157,8 @@ const AIChatInterface = () => {
   
   
 
-  // Handle saving session
-  const handleSaveSession = async () => {
+  /// Handle saving session
+const handleSaveSession = async () => {
   try {
     const sessionSummary = messages.length > 0 ? messages[0].text.slice(0, 100) : 'No summary available';
 
@@ -194,14 +193,11 @@ const AIChatInterface = () => {
     }
 
     console.log('Session saved successfully to MongoDB!');
-    setIsChatSaved(true); // Mark the session as saved
   } catch (error) {
     console.error('Error saving session:', error);
   }
-  };
+};
 
-
-  const [isChatSaved, setIsChatSaved] = useState<boolean>(false);
 
   // Function to save chat messages to IndexedDB with the correct sessionId
   const saveChatMessage = async (message: ChatMessage) => {
@@ -216,7 +212,6 @@ const AIChatInterface = () => {
       console.error('Error saving chat message:', error);
     }
   }
-
   // Handle end session actions
   useEffect(() => {
     const handleBeforeUnload = () => {
@@ -248,10 +243,9 @@ const AIChatInterface = () => {
 
           {/* Recipe Suggestions in Context with Messages */}
           {recipeSuggestionSets.map((suggestionSet) => (
-            <div key={`${sessionId}-${suggestionSet.responseId}`} className="mt-4">
-              <p className="max-w-lg p-3 rounded-3xl bg-gray-700 text-green-200 border-solid border border-gray-500 mb-4">{suggestionSet.message}</p>
-              <RecipeSuggestions
-                key={sessionId}  // Adding key to force re-mount when sessionId changes
+            <div key={suggestionSet.responseId} className="mt-4">
+            <p className="max-w-lg p-3 rounded-3xl bg-gray-700 text-green-200 border-solid border border-gray-500 mb-4">{suggestionSet.message}</p>
+            <RecipeSuggestions
                 currentRecipeList={suggestionSet.suggestions}
                 handleRecipeSelect={handleRecipeSelect}
               />
@@ -283,7 +277,6 @@ const AIChatInterface = () => {
               icon: <Heart size={24} color={'white'} />,
               onClick: handleSaveSession,
             },
-            
           ]}
         />
       </div>
