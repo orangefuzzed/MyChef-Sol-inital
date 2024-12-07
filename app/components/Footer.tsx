@@ -19,7 +19,7 @@ const Footer: React.FC<FooterProps> = ({ actions, contextualActions }) => {
   };
 
   return (
-    <footer className={`${styles.footer} sticky bottom-0 w-full bg-[#00a39e]/40 backdrop-blur-lg shadow-[rgba(0,0,25,0.5)_0px_-5px_10px_0px] text-white`}>
+    <footer className={`${styles.footer} sticky bottom-0 w-full bg-[#00a39e] text-white`}>
       <div className={`${styles.footerContainer} flex justify-around items-center p-2`}>
         {/* Static Actions */}
         {actions.map((action, index) => {
