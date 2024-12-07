@@ -16,7 +16,7 @@ import { ChatSession } from '../../types/ChatSession'; // Add this import for th
 import { ChatMessage } from '../../types/ChatMessage';
 import { useRouter } from 'next/navigation';
 import { Heart } from 'lucide-react'
-import ActionButtons from '../components/AIChatInterface/ActionButtons';
+
 
 
 const AIChatInterface = () => {
@@ -234,11 +234,8 @@ const AIChatInterface = () => {
 
   return (
     <>
-    <div
-        className="flex flex-col h-screen text-white"
-        /*style={{ backgroundImage: "url('/images/summer-deck-1.png')" }}*/
-      >
-      <Header centralText="" />
+      <Header centralText="MyChef AI Chat" />
+      <div className="flex flex-col h-screen bg-gray-900 text-white">
         <div className="flex-1 overflow-y-auto p-4 space-y-4">
           {/* Messages Section */}
           <MessageList
@@ -249,18 +246,12 @@ const AIChatInterface = () => {
             handleRegenerateResponse={handleRegenerateResponse}
           />
 
-          <ActionButtons
-          lastAIResponse={lastAIResponse}
-          handleContinueResponse={handleContinueResponse}
-          handleRetryOverload={handleRetryOverload}
-          handleRegenerateResponse={handleRegenerateResponse}
-          />    
-
           {/* Recipe Suggestions in Context with Messages */}
           {recipeSuggestionSets.map((suggestionSet) => (
-            <div key={suggestionSet.responseId} className="mt-4">
-            <p className="max-w-lg px-8 py-4 rounded-r-3xl rounded-b-3xl bg-gradient-to-r from-[#00a39e] from-20% to-[#00f5d0] to-95% text-white font-bold border border-white shadow-lg ring-1 ring-black/5 mb-4">{suggestionSet.message}</p>
-            <RecipeSuggestions
+            <div key={`${sessionId}-${suggestionSet.responseId}`} className="mt-4">
+              <p className="max-w-lg p-3 rounded-3xl bg-gray-700 text-green-200 border-solid border border-gray-500 mb-4">{suggestionSet.message}</p>
+              <RecipeSuggestions
+                key={sessionId}  // Adding key to force re-mount when sessionId changes
                 currentRecipeList={suggestionSet.suggestions}
                 handleRecipeSelect={handleRecipeSelect}
               />
@@ -275,7 +266,6 @@ const AIChatInterface = () => {
         </div>
 
         {/* Input Section */}
-        <>
         <MessageInput
           inputMessage={inputMessage}
           handleInputChange={handleInputChange}
@@ -283,17 +273,17 @@ const AIChatInterface = () => {
           handleSendMessage={handleSendMessageClick}
           isLoading={isLoading}
         />
-      </>
 
         {/* Footer Section with Save Session Button */}
         <Footer
           actions={['home', 'send']}
           contextualActions={[
             {
-              label: isChatSaved ? 'Saved' : 'Save',
-              icon: <Heart size={20} color={isChatSaved ? '#27ff52' : 'white'} />,
+              label: 'Save Chat',
+              icon: <Heart size={24} color={'white'} />,
               onClick: handleSaveSession,
             },
+            
           ]}
         />
       </div>
