@@ -3,7 +3,7 @@
 import React, { useState, useEffect } from 'react';
 import { Text } from '@radix-ui/themes';
 import Image from 'next/image';
-import { Bot, ArrowLeft } from 'lucide-react'; // Importing icons
+import { Menu, ArrowLeft } from 'lucide-react'; // Importing icons
 import HamburgerMenu from './HamburgerMenu';
 import styles from './Header.module.css';
 import axios from 'axios';
@@ -51,32 +51,27 @@ const Header: React.FC<HeaderProps> = ({ centralText, onBackClick, backButton })
   return (
     <header className={`${styles.header} header`}>
       <div className="flex justify-between items-center p-2 bg-white/30 backdrop-blur-lg shadow-lg ring-1 ring-black/5">
+        {/* Help Icon (moved to the upper-left corner) */}
+        {!onBackClick && !backButton && (
+          <button className={`${styles.helpButton}`}>
+            <Image
+              src="/images/food-bot-1.png"
+              alt="Help"
+              width={30}
+              height={30}
+              className="rounded-full"
+            />
+          </button>
+        )}
+
         {/* Back Button (if onBackClick or backButton is provided) */}
         {(onBackClick || backButton) && (
           <button
             onClick={backButton?.onClick || onBackClick}
-            className={`${styles.backButton} text-white hover:text-gray-400`}
+            className={`${styles.backButton} text-black hover:text-gray-600`}
           >
             {backButton?.icon || <ArrowLeft size={24} className="mr-2" />}
-            {backButton?.label || 'Back'}
-          </button>
-        )}
-
-        {/* Hamburger Menu Button (if no back button is provided) */}
-        {!onBackClick && !backButton && (
-          <button
-            className={styles.menuButton}
-            onClick={() => setIsHamburgerMenuOpen(!isHamburgerMenuOpen)}
-          >
-            <div className={styles.menuIconWrapper}>
-              <Image
-                src="/icons/burger.png"
-                alt="Menu"
-                width={24}
-                height={24}
-                className={styles.menuIcon}
-              />
-            </div>
+            {backButton?.label || ''}
           </button>
         )}
 
@@ -88,14 +83,15 @@ const Header: React.FC<HeaderProps> = ({ centralText, onBackClick, backButton })
           <span className="text-lg text-black font-semibold">{centralText}</span>
         </div>
 
-        {/* Help Icon Button */}
-        <button className={styles.helpButton}>
-          <div className={styles.menuIconWrapper}>
-            <Bot size={28} strokeWidth={1} className={styles.helpIcon} />
-          </div>
+        {/* Menu Button (moved to the upper-right corner) */}
+        <button
+          className={`${styles.menuButton}`}
+          onClick={() => setIsHamburgerMenuOpen(!isHamburgerMenuOpen)}
+        >
+          <Menu size={28} strokeWidth={1} className="text-black" />
         </button>
 
-        {/* Menus */}
+        {/* Hamburger Menu */}
         <HamburgerMenu
           isOpen={isHamburgerMenuOpen}
           onClose={() => setIsHamburgerMenuOpen(false)}

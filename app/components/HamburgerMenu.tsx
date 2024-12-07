@@ -1,15 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import {
-  Settings,
-  Heart,
-  ShoppingCart,
-  History,
-  Calendar,
-  User,
-  LogOut,
-  Bookmark
-} from 'lucide-react';
+import { Settings, Heart, ShoppingCart, History, Calendar, User, LogOut, Bookmark, CircleX } from 'lucide-react';
 import Link from 'next/link';
 import { signOut, useSession } from 'next-auth/react';
 import Image from 'next/image';
@@ -59,6 +50,7 @@ const HamburgerMenu: React.FC<HamburgerMenuProps> = ({ isOpen, onClose }) => {
     <AnimatePresence>
       {isOpen && (
         <>
+          {/* Overlay */}
           <motion.div
             className={styles.overlay}
             initial={{ opacity: 0 }}
@@ -66,13 +58,23 @@ const HamburgerMenu: React.FC<HamburgerMenuProps> = ({ isOpen, onClose }) => {
             exit={{ opacity: 0 }}
             onClick={onClose}
           />
+          
+          {/* Sliding Menu */}
           <motion.div
             className={styles.menuContainer}
-            initial={{ opacity: 0, y: -10 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -10 }}
-            transition={{ duration: 0.2 }}
+            initial={{ opacity: 0, x: '100%' }}
+            animate={{ opacity: 1, x: '0%' }}
+            exit={{ opacity: 0, x: '100%' }}
+            transition={{ duration: 0.3 }}
           >
+            {/* Close Icon */}
+            <button
+              onClick={onClose}
+              className="absolute top-4 right-4 p-2 text-slate-500 hover:text-slate-700 transition-colors"
+            >
+              <CircleX size={24} />
+            </button>
+
             {/* User Avatar */}
             <div className={styles.avatar}>
               {userImage ? (
@@ -108,26 +110,34 @@ const HamburgerMenu: React.FC<HamburgerMenuProps> = ({ isOpen, onClose }) => {
                 <span>Account</span>
               </div>
             </Link>
-            <div className={styles.menuItem} onClick={async () => {
-              try {
-                await signOut({ callbackUrl: '/login' });
-              } catch (error) {
-                console.error("Error during sign out:", error);
-              } finally {
-                onClose();
-              }
-            }}>
+            <div
+              className={styles.menuItem}
+              onClick={async () => {
+                try {
+                  await signOut({ callbackUrl: '/login' });
+                } catch (error) {
+                  console.error("Error during sign out:", error);
+                } finally {
+                  onClose();
+                }
+              }}
+            >
               <LogOut size={20} />
               <span>Sign Out</span>
             </div>
 
-            {/* Dark/Light Mode Toggle */}
+            {/* Divider */}
+            <div className={styles.divider}></div>
+
+            <img className={styles.logo} src="/images/dishcovery-full-logo.png" alt="Dishcovery"></img>
+
+            {/* Dark/Light Mode Toggle 
             <div className={styles.menuItem}>
               <span>Dark/Light Mode</span>
               <div className={styles.toggleSwitch}>
                 <div className={styles.toggleButton} />
               </div>
-            </div>
+            </div>*/}
           </motion.div>
         </>
       )}

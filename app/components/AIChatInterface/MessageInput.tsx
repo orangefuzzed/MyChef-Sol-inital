@@ -51,13 +51,13 @@ const MessageInput: React.FC<MessageInputProps> = ({
         {/* Send Button */}
         <button
           onClick={handleSendMessageWithReset} // Use the new handler
-          className="p-2 rounded-full bg-[#27ff52] text-black border border-slate-400 shadow-lg hover:shadow-xl transition-shadow"
+          className="p-2 rounded-full bg-[#27ff52] text-black shadow-lg hover:shadow-xl transition-shadow"
           disabled={isLoading}
         >
           <PaperPlaneIcon className="h-4 w-4" />
         </button>
         {/* Microphone Button */}
-        <button className="text-black ml-2 mr-2">
+        <button className="text-slate-300 ml-2 mr-2">
           <Mic strokeWidth={1.5} className="h-6 w-6" />
         </button>
       </div>
