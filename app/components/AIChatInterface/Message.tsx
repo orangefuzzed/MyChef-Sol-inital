@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import ReactMarkdown from 'react-markdown';
 import rehypeRaw from 'rehype-raw';
 import { Message as MessageType } from '../../../types/Message';
-import { BotMessageSquare, CircleUserRound, } from 'lucide-react';
+import { CircleUserRound, } from 'lucide-react';
 import Image from 'next/image';
 import axios from 'axios';
 import styles from '../HamburgerMenu.module.css'; // Import the styles for avatar
