@@ -27,7 +27,7 @@ const MessageInput: React.FC<MessageInputProps> = ({
         onChange={handleInputChange}
         onKeyPress={handleKeyPress}
         placeholder="  ...ask me for a great recipe"
-        className="flex-1 bg-transparent text-white text-xs ml-2 placeholder-gray-400 focus:outline-none"
+        className="flex-1 bg-transparent text-white text-base ml-2 placeholder-gray-400 focus:outline-none"
         disabled={isLoading}
       />
       <div className="flex space-x-2 mr-10">
