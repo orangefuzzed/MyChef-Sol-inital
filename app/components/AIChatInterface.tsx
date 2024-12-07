@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useEffect, useRef, ChangeEvent, KeyboardEvent } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useRecipeContext } from '../contexts/RecipeContext';
 import { Recipe } from '../../types/Recipe';
 import { useChat } from '../contexts/ChatContext';
