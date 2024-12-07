@@ -136,16 +136,18 @@ const AIChatInterface = () => {
   };
 
   // Handle input field changes
-  const handleInputChange = (event: ChangeEvent<HTMLInputElement>) => {
+  const handleInputChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
     setInputMessage(event.target.value);
-  };
+  };  
 
   // Handle Enter key press
-  const handleKeyPress = (event: KeyboardEvent<HTMLInputElement>) => {
-    if (event.key === 'Enter') {
-      handleSendMessageClick();
-    }
-  };
+    const handleKeyPress = (event: React.KeyboardEvent<HTMLTextAreaElement>) => {
+      if (event.key === 'Enter' && !event.shiftKey) {
+        event.preventDefault(); // Prevent newline insertion
+        handleSendMessageClick();
+      }
+    };
+
 
   // Handle recipe selection
   const handleRecipeSelect = (recipe: Recipe) => {
