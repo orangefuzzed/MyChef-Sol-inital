@@ -7,7 +7,7 @@ import ShoppingList from '../components/AIChatInterface/ShoppingList';
 import { useRouter, useSearchParams } from 'next/navigation';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
-import { ArrowLeftCircle, ShoppingCart } from 'lucide-react';
+import { ShoppingCart } from 'lucide-react';
 import { saveShoppingListToDB, deleteShoppingListFromDB, getSavedShoppingListsFromDB } from '../utils/shoppingListUtils';
 
 const ShoppingListPage = () => {

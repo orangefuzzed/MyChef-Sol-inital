@@ -7,7 +7,7 @@ import CookMode from '../components/AIChatInterface/CookMode';
 import { useRouter, useSearchParams } from 'next/navigation';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
-import { ArrowLeftCircle } from 'lucide-react'; // Import back icon
+
 
 // Wrapping the entire page in Suspense
 const CookModePageWrapper = () => {

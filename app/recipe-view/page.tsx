@@ -3,18 +3,18 @@
 
 import React, { useEffect, useState } from 'react';
 import { useRecipeContext } from '../contexts/RecipeContext';
-import { useRouter, useSearchParams } from 'next/navigation';
+import { useSearchParams } from 'next/navigation';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
 import RecipeDetails from '../components/AIChatInterface/RecipeDetails';
-import { ArrowLeftCircle, Bookmark, Heart } from 'lucide-react';
+import { Bookmark, Heart } from 'lucide-react';
 import { saveRecipeToDB, deleteRecipeFromDB, getSavedRecipesFromDB } from '../utils/indexedDBUtils';
 import { saveRecipeToFavorites, deleteRecipeFromFavorites, getFavoriteRecipesFromDB } from '../utils/favoritesUtils';
 import { Suspense } from 'react';
 
 const RecipeViewPage = () => {
   const { selectedRecipe } = useRecipeContext();
-  const router = useRouter();
+  
   const searchParams = useSearchParams();
   const id = searchParams ? searchParams.get('id') : null; // Add null check for searchParams
   const [isSaved, setIsSaved] = useState(false);
