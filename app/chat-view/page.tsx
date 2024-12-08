@@ -2,7 +2,7 @@
 'use client';
 
 import React, { Suspense, useEffect, useState } from 'react';
-import { useRouter, useSearchParams } from 'next/navigation';
+import { useSearchParams } from 'next/navigation';
 import Header from '../components/Header';
 import MessageList from '../components/AIChatInterface/MessageList';
 import MessageInput from '../components/AIChatInterface/MessageInput';
@@ -25,7 +25,7 @@ const ChatViewPageWrapper = () => {
 
 const ChatViewPage: React.FC = () => {
   const { messages, setMessages, isLoading, setIsLoading, inputMessage, setInputMessage } = useChat();
-  const router = useRouter();
+  
   const searchParams = useSearchParams();
   const sessionId = searchParams ? searchParams.get('sessionId') : null; // Null-check for `searchParams`
   const [recipeSuggestionSets, setRecipeSuggestionSets] = useState<RecipeSuggestionSet[]>([]);
