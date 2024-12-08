@@ -8,7 +8,7 @@
     border: 1px solid rgb(53, 53, 53);
     padding: 16px;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    z-index: 1000;
+    z-index: 1;
   }
 
   .menuContainer {
@@ -40,7 +40,7 @@
     right: 0;
     bottom: 0;
     background-color: rgba(0, 0, 0, 0.5);
-    z-index: 999;
+    z-index: 1;
   }
   
   .toggleSwitch {

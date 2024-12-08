@@ -1,11 +1,22 @@
+'use client';
+
 import React, { useEffect, useState } from 'react';
+import { createPortal } from 'react-dom';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Settings, Heart, ShoppingCart, History, Calendar, User, LogOut, Bookmark, CircleX } from 'lucide-react';
+import {
+  Settings,
+  Heart,
+  ShoppingCart,
+  History,
+  Calendar,
+  User,
+  LogOut,
+  Bookmark,
+  CircleX,
+} from 'lucide-react';
 import Link from 'next/link';
 import { signOut, useSession } from 'next-auth/react';
 import Image from 'next/image';
-import axios from 'axios';
-import styles from './HamburgerMenu.module.css';
 
 interface HamburgerMenuProps {
   isOpen: boolean;
@@ -16,24 +27,21 @@ const HamburgerMenu: React.FC<HamburgerMenuProps> = ({ isOpen, onClose }) => {
   const { data: session } = useSession();
   const [userImage, setUserImage] = useState<string | null>(null);
 
-  // Fetch user's avatar URL from the API endpoint
+  // Fetch user avatar
   useEffect(() => {
     const fetchUserAvatar = async () => {
       if (session?.user?.email) {
         try {
-          const response = await axios.get('/api/account'); // This endpoint will handle fetching from the DB
-          if (response.status === 200) {
-            const account = response.data.account;
-            if (account.avatarUrl) {
-              setUserImage(account.avatarUrl);
-            }
+          const response = await fetch('/api/account');
+          const data = await response.json();
+          if (response.ok && data.account.avatarUrl) {
+            setUserImage(data.account.avatarUrl);
           }
         } catch (error) {
-          console.error('Failed to fetch user avatar:', error);
+          console.error('Error fetching user avatar:', error);
         }
       }
     };
-
     fetchUserAvatar();
   }, [session]);
 
@@ -46,102 +54,106 @@ const HamburgerMenu: React.FC<HamburgerMenuProps> = ({ isOpen, onClose }) => {
     { icon: <Calendar size={20} />, text: 'Saved Meal Plans', link: '/saved-meal-plans' },
   ];
 
-  return (
+  if (!isOpen) return null;
+
+  return createPortal(
     <AnimatePresence>
-      {isOpen && (
-        <>
-          {/* Overlay */}
-          <motion.div
-            className={styles.overlay}
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            onClick={onClose}
-          />
-          
-          {/* Sliding Menu */}
-          <motion.div
-            className={styles.menuContainer}
-            initial={{ opacity: 0, x: '100%' }}
-            animate={{ opacity: 1, x: '0%' }}
-            exit={{ opacity: 0, x: '100%' }}
-            transition={{ duration: 0.3 }}
-          >
-            {/* Close Icon */}
-            <button
-              onClick={onClose}
-              className="absolute top-4 right-4 p-2 text-slate-500 hover:text-slate-700 transition-colors"
-            >
-              <CircleX size={24} />
-            </button>
+      {/* Overlay */}
+      <motion.div
+        className="fixed inset-0 bg-black bg-opacity-50 z-40"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        exit={{ opacity: 0 }}
+        onClick={onClose}
+      />
 
-            {/* User Avatar */}
-            <div className={styles.avatar}>
-              {userImage ? (
-                <Image
-                  src={userImage}
-                  alt="User Avatar"
-                  width={60}
-                  height={60}
-                  className={styles.avatarImage}
-                />
-              ) : (
-                <User size={40} />
-              )}
-            </div>
+      {/* Sliding Menu */}
+      <motion.div
+        className="fixed top-0 right-0 w-4/5 max-w-sm h-full bg-gray-950 z-50 shadow-lg flex flex-col p-4"
+        initial={{ opacity: 0, x: '100%' }}
+        animate={{ opacity: 1, x: '0%' }}
+        exit={{ opacity: 0, x: '100%' }}
+        transition={{ duration: 0.3 }}
+      >
+        {/* Close Button */}
+        <button
+          onClick={onClose}
+          className="absolute top-4 right-4 p-2 text-slate-500 hover:text-gray-300 transition"
+        >
+          <CircleX size={24} />
+        </button>
 
-            {/* Main Menu Items */}
-            {menuItems.map((item, index) => (
-              <Link key={index} href={item.link} passHref>
-                <div className={styles.menuItem} onClick={onClose}>
-                  {item.icon}
-                  <span>{item.text}</span>
-                </div>
-              </Link>
-            ))}
+        {/* User Avatar */}
+        <div className="flex items-center justify-center mt-4">
+          {userImage ? (
+            <Image
+              src={userImage}
+              alt="User Avatar"
+              width={60}
+              height={60}
+              className="rounded-full border border-gray-400"
+            />
+          ) : (
+            <User size={40} className="text-gray-300" />
+          )}
+        </div>
 
-            {/* Divider */}
-            <div className={styles.divider}></div>
-
-            {/* Account and Sign Out */}
-            <Link href="/account" passHref>
-              <div className={styles.menuItem} onClick={onClose}>
-                <User size={20} />
-                <span>Account</span>
+        {/* Menu Items */}
+        <nav className="flex-grow mt-6 space-y-4">
+          {menuItems.map((item, index) => (
+            <Link key={index} href={item.link} passHref>
+              <div
+                className="flex items-center space-x-3 p-2 text-gray-200 hover:text-teal-400 cursor-pointer transition"
+                onClick={onClose}
+              >
+                {item.icon}
+                <span className="text-md">{item.text}</span>
               </div>
             </Link>
+          ))}
+        </nav>
+
+        {/* Divider */}
+        <div className="my-4 border-t border-gray-600"></div>
+
+        {/* Account & Sign Out */}
+        <div className="space-y-4">
+          <Link href="/account" passHref>
             <div
-              className={styles.menuItem}
-              onClick={async () => {
-                try {
-                  await signOut({ callbackUrl: '/login' });
-                } catch (error) {
-                  console.error("Error during sign out:", error);
-                } finally {
-                  onClose();
-                }
-              }}
+              className="flex items-center space-x-3 text-gray-200 hover:text-teal-400 cursor-pointer transition"
+              onClick={onClose}
             >
-              <LogOut size={20} />
-              <span>Sign Out</span>
+              <User size={20} />
+              <span>Account</span>
             </div>
+          </Link>
+          <div
+            className="flex items-center space-x-3 text-gray-200 hover:text-teal-400 cursor-pointer transition"
+            onClick={async () => {
+              try {
+                await signOut({ callbackUrl: '/login' });
+              } catch (error) {
+                console.error('Error during sign out:', error);
+              } finally {
+                onClose();
+              }
+            }}
+          >
+            <LogOut size={20} />
+            <span>Sign Out</span>
+          </div>
+        </div>
 
-            {/* Divider */}
-            <div className={styles.divider}></div>
+        {/* Divider */}
+        <div className="my-4 border-t border-gray-600"></div>
 
-            <img className={styles.logo} src="/images/dishcovery-full-logo.png" alt="Dishcovery"></img>
-
-            {/* Dark/Light Mode Toggle 
-            <div className={styles.menuItem}>
-              <span>Dark/Light Mode</span>
-              <div className={styles.toggleSwitch}>
-                <div className={styles.toggleButton} />
-              </div>
-            </div>*/}
-          </motion.div>
-        </>
-      )}
-    </AnimatePresence>
+        {/* Logo */}
+        <div className="flex items-center justify-center mt-6">
+          <img src="/images/dishcovery-full-logo.png" alt="Dishcovery" className="w-3/4" />
+        </div>
+      </motion.div>
+    </AnimatePresence>,
+    document.body
   );
 };
 

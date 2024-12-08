@@ -1,15 +1,4 @@
 /* Styling for Hamburger Menu */
-/*.menuContainer {
-  position: fixed;
-  top: 10px; Adjust this value based on your top bar height 
-  width: 260px;
-  background-color: var(--background);
-  border-radius: 8px;
-  border: 1px solid rgb(53, 53, 53);
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  padding: 16px;
-  z-index: 1000;
-}*/
 
 .menuContainer {
   position: fixed;
@@ -20,9 +9,8 @@
   background-color: var(--background);
   border-radius: 8px;
   border: 1px solid rgb(53, 53, 53);
-  z-index: 1000;
+  z-index: 10000;
   box-shadow: -4px 0 8px rgba(0, 0, 0, 0.1);
-  /*overflow-y: auto;*/
   display: flex;
   flex-direction: column;
   padding: 1rem;
@@ -53,10 +41,10 @@
   position: fixed;
   top: 0;
   left: 0;
-  right: 0;
-  bottom: 0;
-  background-color: rgba(0, 0, 0, 0.5);
-  z-index: 999;
+  width: 100%;
+  height: 100%; /* Ensure it covers the entire viewport */
+  background-color: rgba(0, 0, 0, 0.5); /* Dim effect */
+  z-index: 999; /* Lower than the sliding menu */
 }
 
 .avatar {

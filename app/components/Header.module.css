@@ -1,5 +1,12 @@
 /* Header.module.css */
 
+.header {
+  position: sticky;  /* Make header stick at the top of the viewport */
+  top: 0;            /* Stick to the very top of the viewport */
+  z-index: 50;       /* Ensure it stays above other components */
+  width: 100%;       /* Full width to prevent any gaps */
+}
+
 .menuButton {
   background: transparent;
   border: none;
@@ -29,7 +36,7 @@
 
 .greeting {
   font-size: 1rem;
-  color: #000;
+  color: #ffffff;
 }
 
 .helpButton {
@@ -43,11 +50,4 @@
 
 .helpIcon {
   color: #000;
-}
-.header {
-  position: sticky;  /* Make header stick at the top of the viewport */
-  top: 0;            /* Stick to the very top of the viewport */
-  z-index: 10;       /* Ensure it stays above other components */
-  
-  width: 100%;       /* Full width to prevent any gaps */
 }

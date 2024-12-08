@@ -8,7 +8,7 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    z-index: 1000; /* Ensure it appears above everything else */
+    z-index: 2; /* Ensure it appears above everything else */
 }
 
 

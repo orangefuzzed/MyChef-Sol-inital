@@ -211,7 +211,7 @@
 /* Add this new class */
 .cardIcon {
   margin-right: 8px;
-  z-index: 100;
+  z-index: 40;
   flex-shrink: 0; /* Prevent icon from shrinking */
   width: 24px; /* Set width for the icons */
   height: 24px; /* Set height for the icons */
@@ -220,7 +220,7 @@
 
 .pngCardIcon {
   margin-right: 8px;
-  z-index: 100;
+  z-index: 40;
   flex-shrink: 0;
   width: 24px;
   height: 24px;

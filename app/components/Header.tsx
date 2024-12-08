@@ -3,24 +3,21 @@
 import React, { useState, useEffect } from 'react';
 import { Text } from '@radix-ui/themes';
 import Image from 'next/image';
-import { Menu, ArrowLeft } from 'lucide-react'; // Importing icons
+import { useRouter } from 'next/navigation'; // Importing Next.js router
+import { Menu, CircleArrowLeft } from 'lucide-react'; // Importing icons
 import HamburgerMenu from './HamburgerMenu';
 import styles from './Header.module.css';
 import axios from 'axios';
 
 interface HeaderProps {
   centralText: string;
-  onBackClick?: () => void; // Add optional onBackClick prop for back button handling
-  backButton?: {
-    label?: string; // Optional label for the back button
-    icon?: JSX.Element; // Optional icon for the back button
-    onClick?: () => void; // Optional custom click handler for the back button
-  };
+  onBackClick?: () => void; // Optional custom back button handler
 }
 
-const Header: React.FC<HeaderProps> = ({ centralText, onBackClick, backButton }) => {
+const Header: React.FC<HeaderProps> = ({ onBackClick }) => {
   const [user, setUser] = useState<{ displayName: string; avatarUrl?: string } | null>(null);
   const [isHamburgerMenuOpen, setIsHamburgerMenuOpen] = useState(false);
+  const router = useRouter(); // Next.js router for default navigation
 
   useEffect(() => {
     const fetchUserData = async () => {
@@ -37,58 +34,45 @@ const Header: React.FC<HeaderProps> = ({ centralText, onBackClick, backButton })
     fetchUserData();
   }, []);
 
-  const getTimeBasedGreeting = () => {
-    const currentHour = new Date().getHours();
-    if (currentHour < 12) {
-      return 'Good morning';
-    } else if (currentHour < 18) {
-      return 'Good afternoon';
+  const handleBackClick = () => {
+    if (onBackClick) {
+      onBackClick(); // Use the custom handler if provided
     } else {
-      return 'Good evening';
+      router.back(); // Default behavior: navigate back in history
     }
   };
 
   return (
     <header className={`${styles.header} header`}>
       <div className="flex justify-between items-center p-2 bg-white/30 backdrop-blur-lg shadow-lg ring-1 ring-black/5">
-        {/* Help Icon (moved to the upper-left corner) */}
-        {!onBackClick && !backButton && (
-          <button className={`${styles.helpButton}`}>
-            <Image
-              src="/images/food-bot-1.png"
-              alt="Help"
-              width={30}
-              height={30}
-              className="rounded-full"
-            />
-          </button>
-        )}
+        {/* Back Button */}
+        <button
+          onClick={handleBackClick}
+          className={`${styles.backButton} text-white`}
+        >
+          <CircleArrowLeft size={24} />
+        </button>
 
-        {/* Back Button (if onBackClick or backButton is provided) */}
-        {(onBackClick || backButton) && (
-          <button
-            onClick={backButton?.onClick || onBackClick}
-            className={`${styles.backButton} text-black hover:text-gray-600`}
-          >
-            {backButton?.icon || <ArrowLeft size={24} className="mr-2" />}
-            {backButton?.label || ''}
-          </button>
-        )}
-
-        {/* Central Text Area */}
-        <div className="flex flex-col items-center">
-          <Text className={styles.greeting}>
-            {getTimeBasedGreeting()}, {user ? user.displayName || 'Guest' : 'Guest'}
+        {/* Central Greeting */}
+        <div className="flex items-center gap-2">
+          <Image
+            src="/images/food-bot-1.png"
+            alt="Food Bot"
+            width={30}
+            height={30}
+            className="rounded-full"
+          />
+          <Text className={`${styles.greeting} text-md text-black`}>
+            Hiya, {user ? user.displayName || 'Guest' : 'Guest'}!
           </Text>
-          <span className="text-lg text-black font-semibold">{centralText}</span>
         </div>
 
-        {/* Menu Button (moved to the upper-right corner) */}
+        {/* Menu Button */}
         <button
           className={`${styles.menuButton}`}
           onClick={() => setIsHamburgerMenuOpen(!isHamburgerMenuOpen)}
         >
-          <Menu size={28} strokeWidth={1} className="text-black" />
+          <Menu size={28} strokeWidth={1} className="text-white" />
         </button>
 
         {/* Hamburger Menu */}
