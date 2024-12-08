@@ -125,7 +125,7 @@ const ChatViewPage: React.FC = () => {
   return (
     <div className="h-screen flex flex-col bg-gray-900 text-white overflow-hidden">
       {/* Header */}
-      <Header centralText={sessionTitle} backButton={{ label: 'Back', onClick: () => router.back() }} />
+      <Header centralText={sessionTitle} />
 
       {/* Main Content */}
       <div className="flex-grow p-8 overflow-y-auto">

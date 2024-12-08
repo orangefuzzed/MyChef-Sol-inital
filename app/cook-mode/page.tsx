@@ -61,7 +61,7 @@ const CookModePage = () => {
         {/* Header with contextual Back Button */}
         <Header
           centralText="Cook Mode"
-          backButton={{ label: '', onClick: () => router.back() }}
+          
         />
 
         {/* Main Content */}
@@ -86,17 +86,7 @@ const CookModePage = () => {
       {/* Header with contextual Back Button */}
       <Header
         centralText={`Cook Mode: ${selectedRecipe.recipeTitle}`}
-        backButton={{
-          label: '',
-          icon: <ArrowLeftCircle size={24} />, 
-          onClick: () => {
-            if (!selectedRecipe?.id) {
-              console.error('No recipe ID found to navigate back to the recipe view.');
-              return;
-            }
-            router.push(`/recipe-view?id=${selectedRecipe.id}`);
-          },
-        }}
+        
       />
 
       {/* Main Content */}

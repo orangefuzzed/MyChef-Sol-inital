@@ -143,17 +143,6 @@ const ShoppingListPage = () => {
         {/* Header with Back Button */}
         <Header
           centralText="Shopping List"
-          backButton={{
-            label: '',
-            icon: <ArrowLeftCircle size={24} />,
-            onClick: () => {
-              if (!selectedRecipe?.id) {
-                console.error('No recipe ID found to navigate back to the recipe view.');
-                return;
-              }
-              router.push(`/recipe-view?id=${selectedRecipe.id}`);
-            },
-          }}
         />
 
         {/* Main Content */}

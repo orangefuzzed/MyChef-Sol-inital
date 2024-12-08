@@ -133,10 +133,7 @@ const RecipeViewPage = () => {
         {/* Header */}
         <Header
           centralText="Recipe Details"
-          backButton={{
-            label: '',
-            icon: <ArrowLeftCircle size={24} />, onClick: () => router.back() }}
-        />
+         />
 
         {/* Main Content */}
         <div className="flex-grow p-8 overflow-y-auto">
