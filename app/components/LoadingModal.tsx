@@ -103,7 +103,7 @@ const LoadingModal: React.FC<LoadingModalProps> = ({ isOpen }) => {
           {receivedMessages.map((message, index) => (
             <motion.div
               key={index}
-              className="p-4 mx-10 bg-gray-700/80 backdrop-blur-lg shadow-lg rounded-r-3xl rounded-b-3xl text-white border border-gray-400 flex items-center space-x-3"
+              className="p-4 mx-4 bg-gray-700/80 backdrop-blur-lg shadow-lg rounded-r-3xl rounded-b-3xl text-white border border-gray-400 flex items-center space-x-3"
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5, ease: "easeOut" }}
