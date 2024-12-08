@@ -6,7 +6,7 @@ import { Recipe } from '../../types/Recipe';
 import { useChat } from '../contexts/ChatContext';
 import MessageList from '../components/AIChatInterface/MessageList';
 import MessageInput from '../components/AIChatInterface/MessageInput';
-import LoadingSpinner from '../components/LoadingSpinner';
+/*import LoadingSpinner from '../components/LoadingSpinner';*/
 import Header from '../components/Header';
 import Footer from '../components/Footer';
 import { useAIChatHandlers } from '../utils/AIChatHandlers';
@@ -17,6 +17,7 @@ import { ChatMessage } from '../../types/ChatMessage';
 import { useRouter } from 'next/navigation';
 import { Heart } from 'lucide-react'
 import ActionButtons from '../components/AIChatInterface/ActionButtons';
+import LoadingModal from '../components/LoadingModal';
 
 
 const AIChatInterface = () => {
@@ -63,7 +64,7 @@ const AIChatInterface = () => {
     }
   }, [sessionId, setMessages]);
 
-  const [loadingMessage, setLoadingMessage] = useState<string>('');
+  {/*const [setLoadingMessage] = useState<string>('');
   
   // Loading messages rotation
   useEffect(() => {
@@ -93,7 +94,7 @@ const AIChatInterface = () => {
         clearInterval(interval);
       }
     };
-  }, [isLoading]);  
+  }, [isLoading]);*/}
 
   // Handle sending a message and saving it with the correct sessionId
   const handleSendMessageClick = async () => {
@@ -236,6 +237,8 @@ const AIChatInterface = () => {
 
   return (
     <>
+    {/* Loading Modal */}
+    <LoadingModal isOpen={isLoading} />
     <div
         className="flex flex-col h-screen bg-fixed bg-cover bg-center text-white"
         style={{ backgroundImage: "url('/images/summer-deck-1.png')" }}
@@ -269,8 +272,8 @@ const AIChatInterface = () => {
             </div>
           ))}
 
-          {/* Loading Spinner */}
-          <LoadingSpinner isLoading={isLoading} loadingMessage={loadingMessage} />
+          {/* Loading Spinner 
+          <LoadingSpinner isLoading={isLoading} loadingMessage={loadingMessage} />*/}
 
           {/* Scroll to Bottom Reference */}
           <div ref={messagesEndRef} />
