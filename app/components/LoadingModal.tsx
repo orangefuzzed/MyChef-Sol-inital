@@ -4,6 +4,7 @@ import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { PuffLoader } from 'react-spinners';
 import Image from 'next/image';
+import { CheckCircle } from 'lucide-react'; // Importing the CircleCheck icon
 
 interface LoadingModalProps {
   isOpen: boolean;
@@ -16,11 +17,14 @@ const LoadingModal: React.FC<LoadingModalProps> = ({ isOpen }) => {
   // Rotating loading messages
   const loadingMessages = [
     "Thinking...",
-    "Cooking up something special...",
+    "Gathering ingredients...",
     "Whisking ideas...",
+    "Cooking up something special...",
     "Simmering thoughts...",
+    "Baking up something special...",
+    "Blending inspiration...",
     "Just a moment...",
-  ];
+  ];;
 
   // Static recipe received messages
   const recipeReceivedMessages = [
@@ -29,14 +33,21 @@ const LoadingModal: React.FC<LoadingModalProps> = ({ isOpen }) => {
     "Third recipe baked to perfection!",
   ];
 
-  // Cycle through loading messages every 3 seconds
+  // Clear received messages when modal opens
+  useEffect(() => {
+    if (isOpen) {
+      setReceivedMessages([]); // Reset the message list
+    }
+  }, [isOpen]);
+
+  // Cycle through loading messages every 5 seconds
   useEffect(() => {
     let interval: NodeJS.Timeout | null = null;
 
     if (isOpen) {
       interval = setInterval(() => {
         setLoadingMessageIndex((prevIndex) => (prevIndex + 1) % loadingMessages.length);
-      }, 3000);
+      }, 5000);
     }
 
     return () => {
@@ -48,7 +59,7 @@ const LoadingModal: React.FC<LoadingModalProps> = ({ isOpen }) => {
   useEffect(() => {
     if (!isOpen) return;
 
-    const recipeInterval = setInterval(() => { // Changed 'let' to 'const'
+    const recipeInterval = setInterval(() => {
       const nextIndex = receivedMessages.length;
       if (nextIndex < recipeReceivedMessages.length) {
         setReceivedMessages((prevMessages) => [...prevMessages, recipeReceivedMessages[nextIndex]]);
@@ -57,7 +68,6 @@ const LoadingModal: React.FC<LoadingModalProps> = ({ isOpen }) => {
 
     return () => clearInterval(recipeInterval);
   }, [isOpen, receivedMessages]);
-
 
   if (!isOpen) return null;
 
@@ -91,12 +101,17 @@ const LoadingModal: React.FC<LoadingModalProps> = ({ isOpen }) => {
         {/* Bottom Container: Recipe Received Messages */}
         <div className="w-full max-w-md space-y-2">
           {receivedMessages.map((message, index) => (
-            <div
+            <motion.div
               key={index}
-              className="p-4 mx-10 bg-gray-700/80 backdrop-blur-lg shadow-lg rounded-r-3xl rounded-b-3xl text-white border border-gray-400"
+              className="p-4 mx-10 bg-gray-700/80 backdrop-blur-lg shadow-lg rounded-r-3xl rounded-b-3xl text-white border border-gray-400 flex items-center space-x-3"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, ease: "easeOut" }}
             >
-              {message}
-            </div>
+              {/* CircleCheck Icon */}
+              <CheckCircle size={20} color="#27ff52" />
+              <span>{message}</span>
+            </motion.div>
           ))}
         </div>
       </motion.div>
