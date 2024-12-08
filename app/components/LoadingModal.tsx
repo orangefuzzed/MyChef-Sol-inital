@@ -48,7 +48,7 @@ const LoadingModal: React.FC<LoadingModalProps> = ({ isOpen }) => {
   useEffect(() => {
     if (!isOpen) return;
 
-    let recipeInterval = setInterval(() => {
+    const recipeInterval = setInterval(() => { // Changed 'let' to 'const'
       const nextIndex = receivedMessages.length;
       if (nextIndex < recipeReceivedMessages.length) {
         setReceivedMessages((prevMessages) => [...prevMessages, recipeReceivedMessages[nextIndex]]);
@@ -57,6 +57,7 @@ const LoadingModal: React.FC<LoadingModalProps> = ({ isOpen }) => {
 
     return () => clearInterval(recipeInterval);
   }, [isOpen, receivedMessages]);
+
 
   if (!isOpen) return null;
 
