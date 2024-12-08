@@ -62,7 +62,7 @@ const Header: React.FC<HeaderProps> = ({ onBackClick }) => {
             height={30}
             className="rounded-full"
           />
-          <Text className={`${styles.greeting} text-md text-black`}>
+          <Text className="text-md text-black">
             Hiya, {user ? user.displayName || 'Guest' : 'Guest'}!
           </Text>
         </div>
