@@ -1,10 +1,9 @@
 import React from 'react';
-import { ReloadIcon } from '@radix-ui/react-icons';
+import { RefreshCw, RotateCw} from 'lucide-react';
 
 interface ActionButtonsProps {
   handleRegenerateResponse: () => void;
-  handleContinueResponse: () => void;
-  handleRetryOverload: () => void;
+  handleRetry: () => void;
   lastAIResponse: {
     id: number;
     text: string;
@@ -14,41 +13,30 @@ interface ActionButtonsProps {
 
 const ActionButtons: React.FC<ActionButtonsProps> = ({
   handleRegenerateResponse,
-  handleContinueResponse,
-  handleRetryOverload,
+  handleRetry,
   lastAIResponse,
 }) => {
   if (!lastAIResponse) return null;
 
   return (
     <div className="flex gap-2 mt-2">
-      {lastAIResponse.sender === 'system' && (
-        <>
-          {lastAIResponse.text.includes('cut off') && (
-            <button
-              onClick={handleContinueResponse}
-              className="p-2 px-4 bg-teal-600 text-white rounded-full"
-            >
-              Continue Response
-            </button>
-          )}
-          {lastAIResponse.text.includes('overloaded') && (
-            <button
-              onClick={handleRetryOverload}
-              className="p-2 px-4 bg-orange-400 text-white rounded-full flex items-center gap-2"
-            >
-              Retry
-            </button>
-          )}
-        </>
+      {lastAIResponse?.sender === 'system' && lastAIResponse.text.toLowerCase().includes('chaotic') && (
+        <button
+          onClick={handleRetry}
+          className="p-2 px-4 bg-orange-500 text-white rounded-full flex items-center gap-2 hover:bg-orange-600 transition"
+          >
+            <RefreshCw className="w-5 h-5" />
+            Retry my last request!
+        </button>
       )}
+
       {lastAIResponse.sender === 'ai' && (
         <button
           onClick={handleRegenerateResponse}
           className="p-2 px-4 bg-sky-500 text-white rounded-full flex items-center gap-2"
         >
-          <ReloadIcon className="w-5 h-5" />
-          Get More Suggestions
+          <RotateCw className="w-5 h-5" />
+          These are great! Can I get some more suggestions?
         </button>
       )}
     </div>

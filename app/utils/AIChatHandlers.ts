@@ -3,7 +3,7 @@ import { useRecipeContext } from '../contexts/RecipeContext';
 import { sendMessageToClaude } from '../services/claudeService';
 import { handleError, generatePrompt, formatConversationHistory, parseAIResponse } from '../utils/chatUtils';
 import { saveRecipeToDatabase } from '../services/claudeService';
-import { saveChatMessageToDB } from '../utils/indexedDBUtils';
+import { saveChatMessageToDB, getLastUserMessageObjectFromDB } from '../utils/indexedDBUtils';
 import { Recipe } from '../../types/Recipe';
 
 export const useAIChatHandlers = () => {
@@ -12,13 +12,13 @@ export const useAIChatHandlers = () => {
     addMessage,
     setMessages,
     setIsLoading,
+    lastAIResponse,
     setLastAIResponse,
-    sessionId, 
+    sessionId,
   } = useChat();
 
   const { addRecipeSuggestionSet } = useRecipeContext();
 
-  // Handle Send Message
   const handleSendMessage = async (inputMessage: string) => {
     if (!inputMessage || inputMessage.trim() === '') return;
 
@@ -26,8 +26,7 @@ export const useAIChatHandlers = () => {
 
     try {
       const newSessionId = sessionId ?? Date.now().toString();
-      
-      // Create user message object
+
       const newMessage: ChatMessage = {
         id: Date.now(),
         messageId: Date.now().toString(),
@@ -37,15 +36,12 @@ export const useAIChatHandlers = () => {
         text: inputMessage,
       };
 
-      // Add message to the context state without duplication
       addMessage(newMessage);
-      await saveChatMessageToDB(newMessage); // Save message to IndexedDB
+      await saveChatMessageToDB(newMessage);
 
-      // Generate and send prompt
       const conversationHistory = formatConversationHistory(messages);
       const fullPrompt = generatePrompt(conversationHistory, inputMessage, 'sendMessage');
 
-      // Send to Claude and handle response
       const aiResponse = await sendMessageToClaude(fullPrompt, 'recipe suggestions');
       const parsedResponse = parseAIResponse(aiResponse);
 
@@ -61,9 +57,8 @@ export const useAIChatHandlers = () => {
 
       addMessage(aiMessage);
       setLastAIResponse(aiMessage);
-      await saveChatMessageToDB(aiMessage); // Save AI response to IndexedDB
+      await saveChatMessageToDB(aiMessage);
 
-      // Add recipe suggestions if present
       if (parsedResponse.recipes) {
         addRecipeSuggestionSet({
           responseId: aiMessage.messageId,
@@ -72,46 +67,201 @@ export const useAIChatHandlers = () => {
         });
       }
 
-      // Save each recipe to database
       for (const recipe of parsedResponse.recipes) {
         await saveRecipeToDatabase(recipe);
       }
     } catch (error) {
-      setMessages([
-        ...messages,
-        {
-          id: Date.now() + 1,
-          messageId: Date.now().toString(),
-          sessionId: sessionId ?? 'unknown',
-          timestamp: new Date(),
-          sender: 'ai',
-          text: 'An error occurred while processing your request. Please try again.',
-        },
-      ]);
+      console.error('Error during sendMessage:', error);
+    
+      // Create a unified error message
+      const errorMessage: ChatMessage = {
+        id: Date.now(),
+        messageId: Date.now().toString(),
+        sessionId: sessionId ?? 'unknown',
+        timestamp: new Date(),
+        sender: 'system',
+        text: 'Whoa, the kitchen’s a little chaotic right now! Let’s retry that request and get things back on track.',
+      };
+
+      // Ensure setMessages works with a callback function
+      setMessages((prevMessages: ChatMessage[]) => {
+        const updatedMessages: ChatMessage[] = [...prevMessages, errorMessage];
+        return updatedMessages;
+      });
+
+      // Update lastAIResponse
+      setLastAIResponse(errorMessage);
+      handleError(error, setIsLoading);
+    }
+  };
+
+  const handleRegenerateResponse = async () => {
+    if (!lastAIResponse || !sessionId) return;
   
+    setIsLoading(true);
+  
+    try {
+      // Generate conversation history and regenerate prompt
+      const conversationHistory = formatConversationHistory(messages);
+      const regeneratePrompt = `
+        ${conversationHistory}
+        Assistant:
+  
+        Please provide additional recipe suggestions, ensuring they are unique, varied, and avoid duplicating previous suggestions.
+  
+        Respond in the following JSON format:
+  
+        {
+          "message": "Brief assistant message introducing the suggestions.",
+          "recipes": [
+            {
+                "id": "unique_recipe_id",
+                "recipeTitle": "Recipe Title",
+                "cookTime": "X min"
+                "calories: "X Kcal"
+                "protein": "X g",
+                "rating": "★★★★☆",
+                "description": "Brief description",
+                "ingredients": ["Ingredient 1", "Ingredient 2"],
+                "instructions": ["Step 1", "Step 2"]
+              }
+          ]
+        }
+  
+        Ensure the response is valid JSON with no additional text or commentary outside of the JSON structure.
+      `;
+  
+      // Send the prompt to Claude and parse the response
+      const aiResponse = await sendMessageToClaude(regeneratePrompt, 'get more suggestions');
+      const parsedResponse = parseAIResponse(aiResponse);
+  
+      if (!parsedResponse || !parsedResponse.recipes) {
+        throw new Error('Invalid response structure from Claude API');
+      }
+  
+      // Create AI message and update context
+      const regenerateMessage: ChatMessage = {
+        id: Date.now(),
+        messageId: Date.now().toString(),
+        sessionId,
+        timestamp: new Date(),
+        sender: 'ai',
+        text: parsedResponse.message,
+      };
+  
+      addMessage(regenerateMessage);
+      setLastAIResponse(regenerateMessage);
+  
+      // Update the recipe suggestions
+      addRecipeSuggestionSet({
+        responseId: regenerateMessage.messageId,
+        message: parsedResponse.message,
+        suggestions: parsedResponse.recipes,
+      });
+  
+      // Save recipes to the database
+      for (const recipe of parsedResponse.recipes) {
+        await saveRecipeToDatabase(recipe);
+      }
+    } catch (error) {
+      console.error('Error during regenerate response:', error);
+      handleError(error, setIsLoading);
+    } finally {
+      setIsLoading(false);
+    }
+  };  
+
+  const handleRetry = async () => {
+    if (!sessionId) return;
+  
+    setIsLoading(true);
+  
+    try {
+      // Fetch the full last user message from IndexedDB
+      const lastUserMessage = await getLastUserMessageObjectFromDB(sessionId);
+      if (!lastUserMessage || !lastUserMessage.text) {
+        throw new Error('No user message found to retry.');
+      }
+  
+      // Generate conversation history and construct retry prompt
+      const conversationHistory = formatConversationHistory(messages);
+      const retryPrompt = `
+        ${conversationHistory}
+        Assistant:
+  
+        Please retry the user's last request:
+        "${lastUserMessage.text}"
+  
+        Please provide 3 recipe suggestions based on the following user input. 
+        
+        Respond in the following JSON format:
+  
+        {
+          "message": "Brief assistant message introducing the suggestions.",
+          "recipes": [
+            {
+                "id": "unique_recipe_id",
+                "recipeTitle": "Recipe Title",
+                "cookTime": "X min"
+                "calories: "X Kcal"
+                "protein": "X g",
+                "rating": "★★★★☆",
+                "description": "Brief description",
+                "ingredients": ["Ingredient 1", "Ingredient 2"],
+                "instructions": ["Step 1", "Step 2"]
+              }
+          ]
+        }
+  
+        Ensure the response is valid JSON with no additional text or commentary outside of the JSON structure.
+      `;
+  
+      // Send the prompt to Claude and parse the response
+      const aiResponse = await sendMessageToClaude(retryPrompt, 'retry response');
+      const parsedResponse = parseAIResponse(aiResponse);
+  
+      if (!parsedResponse || !parsedResponse.recipes) {
+        throw new Error('Invalid response structure from Claude API');
+      }
+  
+      // Create a new AI message
+      const retryMessage: ChatMessage = {
+        id: Date.now(),
+        messageId: Date.now().toString(),
+        sessionId,
+        timestamp: new Date(),
+        sender: 'ai',
+        text: parsedResponse.message,
+      };
+  
+      addMessage(retryMessage);
+      setLastAIResponse(retryMessage);
+  
+      // Update the recipe suggestions if provided
+      if (parsedResponse.recipes) {
+        addRecipeSuggestionSet({
+          responseId: retryMessage.messageId,
+          message: parsedResponse.message,
+          suggestions: parsedResponse.recipes,
+        });
+  
+        // Save recipes to the database
+        for (const recipe of parsedResponse.recipes) {
+          await saveRecipeToDatabase(recipe);
+        }
+      }
+    } catch (error) {
+      console.error('Error during retry:', error);
       handleError(error, setIsLoading);
     } finally {
       setIsLoading(false);
     }
   };
-
-  // Placeholder functions for other handlers
-  const handleRegenerateResponse = async () => {
-    console.warn('handleRegenerateResponse is not yet implemented.');
-  };
-
-  const handleContinueResponse = async () => {
-    console.warn('handleContinueResponse is not yet implemented.');
-  };
-
-  const handleRetryOverload = async () => {
-    console.warn('handleRetryOverload is not yet implemented.');
-  };
-
+  
   return {
     handleSendMessage,
     handleRegenerateResponse,
-    handleContinueResponse,
-    handleRetryOverload,
+    handleRetry,
   };
 };
+

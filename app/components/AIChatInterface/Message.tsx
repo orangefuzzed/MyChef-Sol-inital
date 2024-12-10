@@ -2,25 +2,26 @@ import React, { useEffect, useState } from 'react';
 import ReactMarkdown from 'react-markdown';
 import rehypeRaw from 'rehype-raw';
 import { Message as MessageType } from '../../../types/Message';
-import { CircleUserRound, } from 'lucide-react';
+import { CircleUserRound } from 'lucide-react';
 import Image from 'next/image';
 import axios from 'axios';
 import styles from '../HamburgerMenu.module.css'; // Import the styles for avatar
 
+
 interface MessageProps {
   message: MessageType;
-  lastAIResponse: MessageType | null;
+  /*lastAIResponse: MessageType | null;
   handleContinueResponse: () => void;
   handleRetryOverload: () => void;
-  handleRegenerateResponse: () => void;
+  handleRegenerateResponse: () => void;*/
 }
 
 const Message: React.FC<MessageProps> = ({
   message,
-  lastAIResponse,
+  /*lastAIResponse,
   handleContinueResponse,
   handleRetryOverload,
-  /*handleRegenerateResponse,*/
+  handleRegenerateResponse*/
 }) => {
 
   const [userImage, setUserImage] = useState<string | null>(null);
@@ -87,43 +88,8 @@ const Message: React.FC<MessageProps> = ({
           <ReactMarkdown rehypePlugins={[rehypeRaw]}>{message.text}</ReactMarkdown>
         )}
       </div>
-  
-      {/* Render buttons for the last AI response 
-      {message.id === lastAIResponse?.id && message.sender === 'ai' && (
-        <div className="flex gap-2 mt-2 ml-14">
-          <button
-            onClick={handleRegenerateResponse}
-            className="p-2 px-4 bg-sky-500 text-white rounded-full flex items-center gap-2"
-          >
-            <RefreshCw className="w-5 h-5" />
-            Get More Suggestions
-          </button>
-        </div>
-      )}*/}
-  
-      {message.id === lastAIResponse?.id && message.sender === 'system' && (
-        <div className="flex gap-2 mt-2">
-          {lastAIResponse.text.includes('cut off') && (
-            <button
-              onClick={handleContinueResponse}
-              className="p-2 px-4 bg-teal-600 text-white rounded-full"
-            >
-              Continue Response
-            </button>
-          )}
-          {lastAIResponse.text.includes('overloaded') && (
-            <button
-              onClick={handleRetryOverload}
-              className="p-2 px-4 bg-orange-400 text-white rounded-full flex items-center gap-2"
-            >
-              Retry
-            </button>
-          )}
-        </div>
-      )}
     </div>
   );
-  ;  
 };
 
 export default Message;

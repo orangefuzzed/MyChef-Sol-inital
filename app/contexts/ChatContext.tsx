@@ -8,7 +8,7 @@ export interface ChatMessage {
   messageId: string;
   sessionId: string;
   timestamp: Date;
-  sender: 'user' | 'ai';
+  sender: 'user' | 'ai' | 'system';
   text: string;
   suggestions?: Recipe[];  // Using the correct Recipe type here
 }
@@ -16,7 +16,7 @@ export interface ChatMessage {
 interface ChatContextType {
   messages: ChatMessage[];
   addMessage: (message: ChatMessage) => void;
-  setMessages: (messages: ChatMessage[]) => void;
+  setMessages: React.Dispatch<React.SetStateAction<ChatMessage[]>>; // Updated type for setMessages
   isLoading: boolean;
   setIsLoading: (loading: boolean) => void;
   inputMessage: string;

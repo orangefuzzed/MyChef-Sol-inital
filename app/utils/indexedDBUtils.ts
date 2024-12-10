@@ -257,3 +257,43 @@ export const deleteRecipeFromDB = async (id: string): Promise<void> => {
     };
   });
 };
+
+// Fetch the last user message for a specific session ID
+export const getLastUserMessageFromDB = async (sessionId: string): Promise<string | null> => {
+  const db = await openDBWithChat();
+  const transaction = db.transaction('chatMessages', 'readonly');
+  const store = transaction.objectStore('chatMessages');
+
+  const messages: ChatMessage[] = await new Promise((resolve, reject) => {
+    const request = store.getAll();
+
+    request.onsuccess = () => resolve(request.result as ChatMessage[]); // Safely cast here
+    request.onerror = () => reject(request.error);
+  });
+
+  // Find the last user message within the session
+  const lastMessage = messages
+    .filter((msg: ChatMessage) => msg.sessionId === sessionId && msg.sender === 'user') // Explicit type
+    .pop();
+
+  return lastMessage ? lastMessage.text : null;
+};
+
+// Fetch the last user message object for a specific session ID
+export const getLastUserMessageObjectFromDB = async (sessionId: string): Promise<ChatMessage | null> => {
+  const db = await openDBWithChat();
+  const transaction = db.transaction('chatMessages', 'readonly');
+  const store = transaction.objectStore('chatMessages');
+
+  const messages: ChatMessage[] = await new Promise((resolve, reject) => {
+    const request = store.getAll();
+
+    request.onsuccess = () => resolve(request.result as ChatMessage[]); // Safely cast here
+    request.onerror = () => reject(request.error);
+  });
+
+  // Find the last user message within the session
+  return messages
+    .filter((msg: ChatMessage) => msg.sessionId === sessionId && msg.sender === 'user') // Explicit type
+    .pop() || null;
+};

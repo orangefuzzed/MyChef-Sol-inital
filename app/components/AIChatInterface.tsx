@@ -6,7 +6,6 @@ import { Recipe } from '../../types/Recipe';
 import { useChat } from '../contexts/ChatContext';
 import MessageList from '../components/AIChatInterface/MessageList';
 import MessageInput from '../components/AIChatInterface/MessageInput';
-/*import LoadingSpinner from '../components/LoadingSpinner';*/
 import Header from '../components/Header';
 import Footer from '../components/Footer';
 import { useAIChatHandlers } from '../utils/AIChatHandlers';
@@ -18,6 +17,8 @@ import { useRouter } from 'next/navigation';
 import { Heart } from 'lucide-react'
 import ActionButtons from '../components/AIChatInterface/ActionButtons';
 import LoadingModal from '../components/LoadingModal';
+import RetryModal from '../components/RetryModal'; // Import the RetryModal
+
 
 
 const AIChatInterface = () => {
@@ -46,8 +47,7 @@ const AIChatInterface = () => {
   const {
     handleSendMessage,
     handleRegenerateResponse,
-    handleContinueResponse,
-    handleRetryOverload,
+    handleRetry,
   } = useAIChatHandlers();
 
   // Scroll to bottom when messages update
@@ -64,39 +64,7 @@ const AIChatInterface = () => {
     }
   }, [sessionId, setMessages]);
 
-  {/*const [setLoadingMessage] = useState<string>('');
-  
-  // Loading messages rotation
-  useEffect(() => {
-    let interval: number | null = null;
-  
-    if (isLoading) {
-      const messages = [
-        'Thinking...',
-        'Cooking up something special...',
-        'Gathering ingredients...',
-        'Whisking ideas...',
-        'Simmering thoughts...',
-        'Just a moment...',
-        'Almost ready...',
-      ];
-      let index = 0;
-      interval = window.setInterval(() => {
-        setLoadingMessage(messages[index % messages.length]);
-        index++;
-      }, 3000);
-    } else {
-      setLoadingMessage(''); // Clear the loading message once done
-    }
-  
-    return () => {
-      if (interval !== null) {
-        clearInterval(interval);
-      }
-    };
-  }, [isLoading]);*/}
-
-  // Handle sending a message and saving it with the correct sessionId
+    // Handle sending a message and saving it with the correct sessionId
   const handleSendMessageClick = async () => {
     if (inputMessage.trim()) {
       // Ensure we have a consistent sessionId
@@ -158,8 +126,6 @@ const AIChatInterface = () => {
     // Navigate to the recipe view page with the recipId in the URL
     router.push(`/recipe-view?id=${recipe.id}`);
   };
-  
-  
 
   // Handle saving session
   const handleSaveSession = async () => {
@@ -203,7 +169,6 @@ const AIChatInterface = () => {
   }
   };
 
-
   const [isChatSaved, setIsChatSaved] = useState<boolean>(false);
 
   // Function to save chat messages to IndexedDB with the correct sessionId
@@ -235,8 +200,43 @@ const AIChatInterface = () => {
     };
   }, [messages]);
 
+  const [showRetryModal, setShowRetryModal] = useState(false); // Correct declaration
+
+  const handleRetryModal = async () => {
+    setShowRetryModal(false); // Close the Retry Modal
+    setIsLoading(true); // Show LoadingModal
+    try {
+      await handleRetry(); // Retry logic from handlers
+    } catch (error) {
+      console.error('Retry failed:', error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  // Open Retry Modal on error response
+  useEffect(() => {
+    console.log('lastAIResponse:', lastAIResponse); // Debugging
+    if (
+      lastAIResponse?.sender === 'system' &&
+      lastAIResponse.text.toLowerCase().includes('chaotic')
+    ) {
+      console.log('Error detected. Showing RetryModal.');
+      setShowRetryModal(true); // Trigger the modal when error occurs
+    }
+  }, [lastAIResponse]);
+
   return (
     <>
+    {/* Retry Modal */}
+    {showRetryModal && (
+        <RetryModal
+          isOpen={showRetryModal}
+          onRetry={handleRetryModal}
+          onClose={() => setShowRetryModal(false)}
+        />
+      )}
+
     {/* Loading Modal */}
     <LoadingModal isOpen={isLoading} />
     <div
@@ -248,18 +248,17 @@ const AIChatInterface = () => {
           {/* Messages Section */}
           <MessageList
             messages={messages}
-            lastAIResponse={lastAIResponse}
+            /*lastAIResponse={lastAIResponse}
             handleContinueResponse={handleContinueResponse}
             handleRetryOverload={handleRetryOverload}
-            handleRegenerateResponse={handleRegenerateResponse}
+            handleRegenerateResponse={handleRegenerateResponse}*/
           />
 
           <ActionButtons
           lastAIResponse={lastAIResponse}
-          handleContinueResponse={handleContinueResponse}
-          handleRetryOverload={handleRetryOverload}
+          handleRetry={handleRetry}
           handleRegenerateResponse={handleRegenerateResponse}
-          />    
+          />   
 
           {/* Recipe Suggestions in Context with Messages */}
           {recipeSuggestionSets.map((suggestionSet) => (
@@ -271,9 +270,6 @@ const AIChatInterface = () => {
               />
             </div>
           ))}
-
-          {/* Loading Spinner 
-          <LoadingSpinner isLoading={isLoading} loadingMessage={loadingMessage} />*/}
 
           {/* Scroll to Bottom Reference */}
           <div ref={messagesEndRef} />

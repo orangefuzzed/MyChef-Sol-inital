@@ -4,33 +4,31 @@ import { Message as MessageType } from '../../../types/Message';
 
 interface MessageListProps {
   messages: MessageType[];
-  lastAIResponse: MessageType | null;
+  /*lastAIResponse: MessageType | null;
   handleContinueResponse: () => void;
   handleRetryOverload: () => void;
-  handleRegenerateResponse: () => void;
+  handleRegenerateResponse: () => void;*/
 }
 
 const MessageList: React.FC<MessageListProps> = ({
   messages,
-  lastAIResponse,
+  /*lastAIResponse,
   handleContinueResponse,
   handleRetryOverload,
-  handleRegenerateResponse,
-}) => {
-  return (
-    <>
-      {messages.map((message) => (
-        <Message
-          key={message.id}
-          message={message}
-          lastAIResponse={lastAIResponse}
-          handleContinueResponse={handleContinueResponse}
-          handleRetryOverload={handleRetryOverload}
-          handleRegenerateResponse={handleRegenerateResponse}
-        />
-      ))}
-    </>
-  );
-};
+  handleRegenerateResponse,*/
+}) => (
+  <>
+    {messages.map((message) => (
+      <Message
+        key={message.id}
+        message={message}
+        /*lastAIResponse={lastAIResponse}
+        handleContinueResponse={handleContinueResponse}
+        handleRetryOverload={handleRetryOverload}
+        handleRegenerateResponse={handleRegenerateResponse}*/
+      />
+    ))}
+  </>
+);
 
 export default MessageList;

@@ -73,8 +73,14 @@ const HamburgerMenu: React.FC<HamburgerMenuProps> = ({ isOpen, onClose }) => {
         initial={{ opacity: 0, x: '100%' }}
         animate={{ opacity: 1, x: '0%' }}
         exit={{ opacity: 0, x: '100%' }}
-        transition={{ duration: 0.3 }}
+        transition={{ duration: 0.3, ease: 'easeInOut' }}
+        onAnimationComplete={(definition) => {
+          if (definition === 'exit') {
+            onClose(); // Ensure proper cleanup after animation
+          }
+        }}
       >
+
         {/* Close Button */}
         <button
           onClick={onClose}
@@ -100,8 +106,8 @@ const HamburgerMenu: React.FC<HamburgerMenuProps> = ({ isOpen, onClose }) => {
 
         {/* Menu Items */}
         <nav className="flex-grow mt-6 space-y-4">
-          {menuItems.map((item, index) => (
-            <Link key={index} href={item.link} passHref>
+        {menuItems.map((item) => (
+            <Link key={item.text} href={item.link} passHref>
               <div
                 className="flex items-center space-x-3 p-2 text-gray-200 hover:text-teal-400 cursor-pointer transition"
                 onClick={onClose}
