@@ -23,11 +23,11 @@ export const handleError = (
       case 'sendMessage':
         return `
           ${commonPromptPart}
-          Please provide 3 recipe suggestions based on the following user input.
+          Please provide 2 recipe suggestions based on the following user input.
           
           Respond in the following JSON format:
           {
-            "message": "Brief assistant message introducing the suggestions.",
+            "message": "A brief conversational and friendly assistant message introducing the suggestions.",
             "recipes": [
               {
                 "id": "unique_recipe_id",
@@ -43,7 +43,7 @@ export const handleError = (
             ]
           }
           
-          Ensure the response is valid JSON with no additional text or commentary outside of the JSON structure.
+          Ensure the response is valid JSON with no additional text or commentary outside of the JSON structure. Also ensure that the instructions include the amount of the ingredient in each of the steps.
         `;
       case 'regenerateResponse':
         return `

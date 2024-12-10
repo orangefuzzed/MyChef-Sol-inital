@@ -7,7 +7,7 @@ import AIChatInterface from '../components/AIChatInterface'; // Adjust the path 
 
 const AIChatPage: React.FC = () => {
   return (
-    <div className="h-screen flex flex-col bg-green-900 text-white overflow-hidden">
+    <div className="h-screen flex flex-col #00a39e text-white overflow-hidden">
       <AIChatInterface />
     </div>
   );

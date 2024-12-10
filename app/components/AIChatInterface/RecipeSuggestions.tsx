@@ -51,7 +51,7 @@ const RecipeSuggestions: React.FC<RecipeSuggestionsProps> = ({ currentRecipeList
                 query: { id: recipe.id }, // Updated from recipeId to id
               }}
             >
-              <button className="mt-4 p-2 px-6 bg-sky-50/20 border border-sky-50 shadow-lg ring-1 ring-black/5 rounded-full text-slate-950 flex items-center gap-2">
+              <button className="mt-4 p-2 px-6 bg-sky-50/20 border border-gray-300 shadow-lg ring-1 ring-black/5 rounded-full text-ky-50 flex items-center gap-2">
                 View Recipe
                 <ChefHat strokeWidth={1.5} className="w-5 h-5" />
               </button>

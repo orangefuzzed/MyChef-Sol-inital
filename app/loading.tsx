@@ -22,7 +22,7 @@ const Loading = () => {
           </div>
 
           {/* Rotating Loading Text */}
-          <p className="text-white text-lg font-medium text-center">Loading... Please hold tight!</p>
+          <p className="text-white text-md font-normal text-center">Loading... Please hold tight!</p>
         </div>
         </div>
   );

@@ -107,14 +107,13 @@ export const useAIChatHandlers = () => {
         ${conversationHistory}
         Assistant:
   
-        Please provide additional recipe suggestions, ensuring they are unique, varied, and avoid duplicating previous suggestions.
+        Please provide 2 additional recipe suggestions, ensuring they are unique, varied, and avoid duplicating previous suggestions.
   
         Respond in the following JSON format:
-  
-        {
-          "message": "Brief assistant message introducing the suggestions.",
-          "recipes": [
-            {
+          {
+            "message": "A brief conversational and friendly assistant message introducing the suggestions.",
+            "recipes": [
+              {
                 "id": "unique_recipe_id",
                 "recipeTitle": "Recipe Title",
                 "cookTime": "X min"
@@ -125,10 +124,10 @@ export const useAIChatHandlers = () => {
                 "ingredients": ["Ingredient 1", "Ingredient 2"],
                 "instructions": ["Step 1", "Step 2"]
               }
-          ]
-        }
-  
-        Ensure the response is valid JSON with no additional text or commentary outside of the JSON structure.
+            ]
+          }
+          
+          Ensure the response is valid JSON with no additional text or commentary outside of the JSON structure. Also ensure that the instructions include the amount of the ingredient in each of the steps.
       `;
   
       // Send the prompt to Claude and parse the response
@@ -192,14 +191,13 @@ export const useAIChatHandlers = () => {
         Please retry the user's last request:
         "${lastUserMessage.text}"
   
-        Please provide 3 recipe suggestions based on the following user input. 
-        
-        Respond in the following JSON format:
-  
-        {
-          "message": "Brief assistant message introducing the suggestions.",
-          "recipes": [
-            {
+        Please provide 2 recipe suggestions based on the following user input.
+          
+          Respond in the following JSON format:
+          {
+            "message": "A brief conversational and friendly assistant message introducing the suggestions.",
+            "recipes": [
+              {
                 "id": "unique_recipe_id",
                 "recipeTitle": "Recipe Title",
                 "cookTime": "X min"
@@ -210,10 +208,10 @@ export const useAIChatHandlers = () => {
                 "ingredients": ["Ingredient 1", "Ingredient 2"],
                 "instructions": ["Step 1", "Step 2"]
               }
-          ]
-        }
-  
-        Ensure the response is valid JSON with no additional text or commentary outside of the JSON structure.
+            ]
+          }
+          
+          Ensure the response is valid JSON with no additional text or commentary outside of the JSON structure. Also ensure that the instructions include the amount of the ingredient in each of the steps.
       `;
   
       // Send the prompt to Claude and parse the response

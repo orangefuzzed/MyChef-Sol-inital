@@ -241,7 +241,7 @@ const AIChatInterface = () => {
     <LoadingModal isOpen={isLoading} />
     <div
         className="flex flex-col h-screen bg-fixed bg-cover bg-center text-white"
-        style={{ backgroundImage: "url('/images/summer-deck-1.png')" }}
+        style={{ backgroundImage: "url('/images/breakfast-2.png')" }}
       >
       <Header centralText="" />
         <div className="flex-1 overflow-y-auto p-4 space-y-4">

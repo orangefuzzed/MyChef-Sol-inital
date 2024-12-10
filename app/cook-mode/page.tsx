@@ -57,7 +57,9 @@ const CookModePage = () => {
 
   if (!selectedRecipe) {
     return (
-      <div className="h-screen flex flex-col bg-gray-900 text-white overflow-hidden">
+      <div className="flex flex-col h-screen bg-fixed bg-cover bg-center text-white"
+        style={{ backgroundImage: "url('/images/pizza-1.png')" }}
+        >
         {/* Header with contextual Back Button */}
         <Header
           centralText="Cook Mode"
@@ -82,7 +84,9 @@ const CookModePage = () => {
   }
 
   return (
-    <div className="h-screen flex flex-col bg-gray-900 text-white overflow-hidden">
+    <div className="flex flex-col h-screen bg-fixed bg-cover bg-center text-white"
+        style={{ backgroundImage: "url('/images/pizza-1.png')" }}
+        >
       {/* Header with contextual Back Button */}
       <Header
         centralText={`Cook Mode: ${selectedRecipe.recipeTitle}`}
@@ -91,7 +95,7 @@ const CookModePage = () => {
 
       {/* Main Content */}
       <div className="flex-grow p-8 overflow-y-auto">
-        <CookMode cookModeData={selectedRecipe.instructions.join('\n')} />
+      <CookMode cookModeData={selectedRecipe.instructions} /> {/* Pass array directly */}
       </div>
 
       {/* Footer with standard actions */}

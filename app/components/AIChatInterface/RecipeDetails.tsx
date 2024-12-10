@@ -1,18 +1,27 @@
-// RecipeDetails.tsx - Updated for SearchParams Handling and Best Practices
-import React, { useEffect, useState } from 'react';
+// RecipeDetails.tsx - Updated for Suspense and Loading Component
+import React, { Suspense, useEffect, useState } from 'react';
 import { useSearchParams } from 'next/navigation';
 import Link from 'next/link';
 import { useRecipeContext } from '../../contexts/RecipeContext';
 import { Recipe } from '../../../types/Recipe';
 import { generateShoppingList } from '../../utils/shoppingListUtils';
 import { Flame, Clock, Soup, ShoppingCart, ChefHat } from 'lucide-react';
+import Loading from '../../loading'; // Use your existing Loading component
 
+// Wrapping the entire page in Suspense
+const RecipeDetailsPageWrapper = () => {
+  return (
+    <Suspense fallback={<Loading />}>
+      <RecipeDetails />
+    </Suspense>
+  );
+};
 
 const RecipeDetails: React.FC = () => {
   const searchParams = useSearchParams();
   const id = searchParams ? searchParams.get('id') : null; // Null-check for searchParams
   const { selectedRecipe, setSelectedRecipe, setCurrentShoppingList } = useRecipeContext();
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(true); // Proper destructuring
 
   useEffect(() => {
     const loadRecipe = async () => {
@@ -28,10 +37,10 @@ const RecipeDetails: React.FC = () => {
         } catch (error) {
           console.error('Failed to fetch recipe by ID:', error);
         } finally {
-          setLoading(false);
+          setLoading(false); // Stop the loading state
         }
       } else {
-        setLoading(false);
+        setLoading(false); // Stop the loading state
       }
     };
 
@@ -45,9 +54,10 @@ const RecipeDetails: React.FC = () => {
     }
   };
 
-  /*if (loading) {
-    return <div>Loading...</div>;
-  }*/
+  // Show loading state if still fetching
+  if (loading) {
+    return <Loading />;
+  }
 
   if (!selectedRecipe) {
     return <div className="text-white p-4">Recipe not found. Please go back and select a recipe.</div>;
@@ -60,19 +70,19 @@ const RecipeDetails: React.FC = () => {
 
       {/* Icons for kcal, time, protein */}
       <div className="flex items-center space-x-4 mb-4">
-              <div className="flex flex-col items-center text-xs text-black">
-                <Flame className="w-5 h-5 text-pink-800 mb-1" />
-                <span> {selectedRecipe.calories}</span>
-              </div>
-              <div className="flex flex-col items-center text-xs text-black">
-                <Clock className="w-5 h-5 text-pink-800 mb-1" />
-                <span> {selectedRecipe.cookTime} </span>
-              </div>
-              <div className="flex flex-col items-center text-xs text-black">
-                <Soup className="w-5 h-5 text-pink-800 mb-1" />
-                <span> {selectedRecipe.protein} protein</span>
-              </div>
-            </div>
+        <div className="flex flex-col items-center text-xs text-black">
+          <Flame className="w-5 h-5 text-pink-800 mb-1" />
+          <span> {selectedRecipe.calories}</span>
+        </div>
+        <div className="flex flex-col items-center text-xs text-black">
+          <Clock className="w-5 h-5 text-pink-800 mb-1" />
+          <span> {selectedRecipe.cookTime} </span>
+        </div>
+        <div className="flex flex-col items-center text-xs text-black">
+          <Soup className="w-5 h-5 text-pink-800 mb-1" />
+          <span> {selectedRecipe.protein} protein</span>
+        </div>
+      </div>
 
       <section className="ingredients mb-6">
         <h3 className="text-2xl text-black font-semibold mb-2">Ingredients</h3>
@@ -99,20 +109,18 @@ const RecipeDetails: React.FC = () => {
             <ChefHat className="w-5 h-5" />
           </button>
         </Link>
-        </div>
-        <Link
-          href={{ pathname: `/shopping-list`, query: { id: selectedRecipe.id } }}
-          onClick={handleCreateShoppingList}
-        >
-          <button className="mt-4 p-2 px-6 bg-pink-800/50 border border-sky-50 shadow-lg ring-1 ring-black/5 rounded-full text-sky-50 flex items-center gap-2">
-            View Shopping List
-            <ShoppingCart className="w-5 h-5" />
-          </button>
-        </Link>
-
-      
+      </div>
+      <Link
+        href={{ pathname: `/shopping-list`, query: { id: selectedRecipe.id } }}
+        onClick={handleCreateShoppingList}
+      >
+        <button className="mt-4 p-2 px-6 bg-pink-800/50 border border-sky-50 shadow-lg ring-1 ring-black/5 rounded-full text-sky-50 flex items-center gap-2">
+          View Shopping List
+          <ShoppingCart className="w-5 h-5" />
+        </button>
+      </Link>
     </div>
   );
 };
 
-export default RecipeDetails;
+export default RecipeDetailsPageWrapper;
