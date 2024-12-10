@@ -131,10 +131,10 @@ const ChatViewPage: React.FC = () => {
       <div className="flex-grow p-8 overflow-y-auto">
         <MessageList
           messages={messages}
-          lastAIResponse={null} // Since we're viewing a past session, lastAIResponse can be null or not needed
+          /*lastAIResponse={null} // Since we're viewing a past session, lastAIResponse can be null or not needed
           handleContinueResponse={() => {}} // Provide a no-op function or you can remove this functionality for session viewing
           handleRetryOverload={() => {}}
-          handleRegenerateResponse={() => {}}
+          handleRegenerateResponse={() => {}}*/
         />
 
         {/* Recipe Suggestions in Context with Messages */}
