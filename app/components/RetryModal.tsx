@@ -1,7 +1,7 @@
 import React from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import Image from 'next/image';
-import { RefreshCw, RotateCw} from 'lucide-react';
+import { RefreshCw } from 'lucide-react';
 
 interface RetryModalProps {
   isOpen: boolean;
