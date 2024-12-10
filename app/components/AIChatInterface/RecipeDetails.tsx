@@ -45,9 +45,9 @@ const RecipeDetails: React.FC = () => {
     }
   };
 
-  if (loading) {
+  /*if (loading) {
     return <div>Loading...</div>;
-  }
+  }*/
 
   if (!selectedRecipe) {
     return <div className="text-white p-4">Recipe not found. Please go back and select a recipe.</div>;
@@ -55,27 +55,27 @@ const RecipeDetails: React.FC = () => {
 
   return (
     <div className="recipe-details-container bg-white/30 backdrop-blur-lg border-white border shadow-lg ring-1 ring-black/5 p-6 rounded-2xl">
-      <h2 className="text-xl text-slate-950 font-bold">{selectedRecipe.recipeTitle}</h2>
+      <h2 className="text-xl text-white font-bold">{selectedRecipe.recipeTitle}</h2>
       <div className="rating text-amber-400 mb-2">Rating: {selectedRecipe.rating}</div>
 
       {/* Icons for kcal, time, protein */}
       <div className="flex items-center space-x-4 mb-4">
-              <div className="flex flex-col items-center text-xs text-slate-700">
+              <div className="flex flex-col items-center text-xs text-black">
                 <Flame className="w-5 h-5 text-pink-800 mb-1" />
                 <span> {selectedRecipe.calories}</span>
               </div>
-              <div className="flex flex-col items-center text-xs text-slate-700">
+              <div className="flex flex-col items-center text-xs text-black">
                 <Clock className="w-5 h-5 text-pink-800 mb-1" />
                 <span> {selectedRecipe.cookTime} </span>
               </div>
-              <div className="flex flex-col items-center text-xs text-slate-700">
+              <div className="flex flex-col items-center text-xs text-black">
                 <Soup className="w-5 h-5 text-pink-800 mb-1" />
                 <span> {selectedRecipe.protein} protein</span>
               </div>
             </div>
 
       <section className="ingredients mb-6">
-        <h3 className="text-2xl font-semibold mb-2">Ingredients</h3>
+        <h3 className="text-2xl text-black font-semibold mb-2">Ingredients</h3>
         <ul className="list-disc list-inside">
           {selectedRecipe.ingredients.map((ingredient, index) => (
             <li key={index}>{typeof ingredient === 'string' ? ingredient : ingredient.name}</li>
@@ -84,7 +84,7 @@ const RecipeDetails: React.FC = () => {
       </section>
 
       <section className="instructions mb-6">
-        <h3 className="text-2xl font-semibold mb-2">Instructions</h3>
+        <h3 className="text-2xl text-black font-semibold mb-2">Instructions</h3>
         <ol className="list-decimal list-inside">
           {selectedRecipe.instructions.map((step, index) => (
             <li key={index} className="mb-2">{step}</li>

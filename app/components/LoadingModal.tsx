@@ -18,11 +18,12 @@ const LoadingModal: React.FC<LoadingModalProps> = ({ isOpen }) => {
   const loadingMessages = [
     "Thinking...",
     "Gathering ingredients...",
-    "Whisking ideas...",
+    "Creating shopping list...",
+    "Whisking up cook mode...",
     "Cooking up something special...",
-    "Simmering thoughts...",
+    "Simmering recipe view...",
     "Baking up something special...",
-    "Blending inspiration...",
+    "Blending shopping list...",
     "Just a moment...",
   ];;
 

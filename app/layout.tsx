@@ -6,11 +6,11 @@ import { Providers } from './providers'; // Import the Providers component
 import { RecipeProvider } from './contexts/RecipeContext'; // Import the RecipeProvider
 import { UserProvider } from './contexts/UserContext';
 import { ChatProvider } from './contexts/ChatContext'; // Import the ChatProvider
-import { DM_Sans } from 'next/font/google';
+import { Montserrat } from 'next/font/google';
 
-const dmSans = DM_Sans({ 
+const montserrat = Montserrat({ 
   subsets: ['latin'],
-  weight: ['400', '500', '700'] // Add the weights you need
+  weight: ['100', '200', '300', '400', '500', '600', '700', '800', '900'] // Add the weights you need
 });
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
@@ -31,7 +31,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   }, []);
 
   return (
-    <html lang="en" className={dmSans.className}>
+    <html lang="en" className={montserrat.className}>
       <body>
         <Providers> {/* Wrap the entire app with the Providers component */}
           <RecipeProvider> {/* Wrap the entire app with the RecipeProvider */}
