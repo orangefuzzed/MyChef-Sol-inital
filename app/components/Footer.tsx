@@ -17,7 +17,7 @@ const Footer: React.FC<FooterProps> = ({ actions, contextualActions }) => {
   };
 
   return (
-    <footer className="sticky bottom-0 z-10 w-full bg-teal-600 text-white">
+    <footer className="sticky bottom-0 z-10 w-full bg-[#00a39e]/85 border-t border-teal-500 text-white">
       {/* Container for actions */}
       <div className="flex justify-around items-center p-2">
         {/* Static Actions */}

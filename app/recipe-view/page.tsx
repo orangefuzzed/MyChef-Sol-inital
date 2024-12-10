@@ -53,10 +53,6 @@ const RecipeViewPage = () => {
     return <div className="text-white p-4">No recipe selected. Please go back and select a recipe.</div>;
   }
 
-  {/*const handleBackToSuggestions = () => {
-    router.push('/recipe-suggestions');
-  };*/}
-
   const handleSaveToggle = async () => {
     if (!selectedRecipe || !id) return; // Ensure `id` is not null before proceeding
 
@@ -129,7 +125,10 @@ const RecipeViewPage = () => {
 
   return (
     <Suspense fallback={<div>Loading...</div>}>
-      <div className="h-screen flex flex-col bg-gray-900 text-white overflow-hidden">
+      <div
+        className="flex flex-col h-screen bg-fixed bg-cover bg-center text-white"
+        style={{ backgroundImage: "url('/images/pizza-1.png')" }}
+      >
         {/* Header */}
         <Header
           centralText="Recipe Details"
@@ -146,12 +145,12 @@ const RecipeViewPage = () => {
           contextualActions={[
             {
               label: isSaved ? 'Saved' : 'Save',
-              icon: <Bookmark size={24} color={isSaved ? 'green' : 'white'} />,
+              icon: <Bookmark size={22} color={isSaved ? 'green' : 'white'} />,
               onClick: handleSaveToggle,
             },
             {
               label: isFavorited ? 'Favorited' : 'Favorite',
-              icon: <Heart size={24} color={isFavorited ? 'red' : 'white'} />,
+              icon: <Heart size={22} color={isFavorited ? 'red' : 'white'} />,
               onClick: handleFavoriteToggle,
             },
           ]}

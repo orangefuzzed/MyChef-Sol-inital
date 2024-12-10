@@ -254,22 +254,22 @@ const AIChatInterface = () => {
             handleRegenerateResponse={handleRegenerateResponse}*/
           />
 
-          <ActionButtons
-          lastAIResponse={lastAIResponse}
-          handleRetry={handleRetry}
-          handleRegenerateResponse={handleRegenerateResponse}
-          />   
-
           {/* Recipe Suggestions in Context with Messages */}
           {recipeSuggestionSets.map((suggestionSet) => (
             <div key={suggestionSet.responseId} className="mt-4">
-            <p className="max-w-lg px-8 py-4 rounded-r-3xl rounded-b-3xl bg-gradient-to-r from-[#00a39e] from-20% to-[#00f5d0] to-95% text-white font-bold border border-white shadow-lg ring-1 ring-black/5 mb-4">{suggestionSet.message}</p>
+            <p className="max-w-lg px-8 py-4 rounded-r-3xl rounded-b-3xl bg-gradient-to-r from-[#00a39e] from-20% to-[#00f5d0] to-95% text-slate-950 font-medium border border-white shadow-lg ring-1 ring-black/5 mb-4">{suggestionSet.message}</p>
             <RecipeSuggestions
                 currentRecipeList={suggestionSet.suggestions}
                 handleRecipeSelect={handleRecipeSelect}
               />
             </div>
           ))}
+
+          <ActionButtons
+          lastAIResponse={lastAIResponse}
+          handleRetry={handleRetry}
+          handleRegenerateResponse={handleRegenerateResponse}
+          /> 
 
           {/* Scroll to Bottom Reference */}
           <div ref={messagesEndRef} />

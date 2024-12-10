@@ -1,11 +1,12 @@
 // RecipeDetails.tsx - Updated for SearchParams Handling and Best Practices
 import React, { useEffect, useState } from 'react';
 import { useSearchParams } from 'next/navigation';
-import { ExternalLinkIcon } from '@radix-ui/react-icons';
 import Link from 'next/link';
 import { useRecipeContext } from '../../contexts/RecipeContext';
 import { Recipe } from '../../../types/Recipe';
 import { generateShoppingList } from '../../utils/shoppingListUtils';
+import { Flame, Clock, Soup, ShoppingCart, ChefHat } from 'lucide-react';
+
 
 const RecipeDetails: React.FC = () => {
   const searchParams = useSearchParams();
@@ -53,10 +54,25 @@ const RecipeDetails: React.FC = () => {
   }
 
   return (
-    <div className="recipe-details-container p-6 bg-gray-800 text-white rounded-lg shadow-md">
-      <h2 className="text-3xl font-bold mb-4">{selectedRecipe.recipeTitle}</h2>
-      <div className="rating text-yellow-400 mb-2">Rating: {selectedRecipe.rating}</div>
-      <div className="protein text-gray-400 mb-4">Protein: {selectedRecipe.protein}</div>
+    <div className="recipe-details-container bg-white/30 backdrop-blur-lg border-white border shadow-lg ring-1 ring-black/5 p-6 rounded-2xl">
+      <h2 className="text-xl text-slate-950 font-bold">{selectedRecipe.recipeTitle}</h2>
+      <div className="rating text-amber-400 mb-2">Rating: {selectedRecipe.rating}</div>
+
+      {/* Icons for kcal, time, protein */}
+      <div className="flex items-center space-x-4 mb-4">
+              <div className="flex flex-col items-center text-xs text-slate-700">
+                <Flame className="w-5 h-5 text-pink-800 mb-1" />
+                <span> {selectedRecipe.calories}</span>
+              </div>
+              <div className="flex flex-col items-center text-xs text-slate-700">
+                <Clock className="w-5 h-5 text-pink-800 mb-1" />
+                <span> {selectedRecipe.cookTime} </span>
+              </div>
+              <div className="flex flex-col items-center text-xs text-slate-700">
+                <Soup className="w-5 h-5 text-pink-800 mb-1" />
+                <span> {selectedRecipe.protein} protein</span>
+              </div>
+            </div>
 
       <section className="ingredients mb-6">
         <h3 className="text-2xl font-semibold mb-2">Ingredients</h3>
@@ -78,9 +94,9 @@ const RecipeDetails: React.FC = () => {
 
       <div className="action-buttons flex gap-4 mt-6">
         <Link href={{ pathname: `/cook-mode`, query: { id: selectedRecipe.id } }}>
-          <button className="p-2 px-6 my-4 bg-blue-600 text-white rounded-full flex items-center gap-2">
+          <button className="mt-4 p-2 px-6 bg-pink-800/50 border border-sky-50 shadow-lg ring-1 ring-black/5 rounded-full text-sky-50 flex items-center gap-2">
             View in Cook Mode
-            <ExternalLinkIcon className="w-5 h-5" />
+            <ChefHat className="w-5 h-5" />
           </button>
         </Link>
         </div>
@@ -88,9 +104,9 @@ const RecipeDetails: React.FC = () => {
           href={{ pathname: `/shopping-list`, query: { id: selectedRecipe.id } }}
           onClick={handleCreateShoppingList}
         >
-          <button className="p-2 px-6 bg-green-600 text-white rounded-full flex items-center gap-2">
+          <button className="mt-4 p-2 px-6 bg-pink-800/50 border border-sky-50 shadow-lg ring-1 ring-black/5 rounded-full text-sky-50 flex items-center gap-2">
             View Shopping List
-            <ExternalLinkIcon className="w-5 h-5" />
+            <ShoppingCart className="w-5 h-5" />
           </button>
         </Link>
 
