@@ -32,7 +32,7 @@ const RetryModal: React.FC<RetryModalProps> = ({ isOpen, onRetry, onClose }) => 
           onClick={(e) => e.stopPropagation()} // Prevent clicks inside the modal from closing it
         >
           {/* Chef Whiskington Icon */}
-          <div className="relative mb-4">
+          <div className="relative mb-2">
             <Image
               src="/images/food-bot-1.png"
               alt="Chef Whiskington"
@@ -50,7 +50,7 @@ const RetryModal: React.FC<RetryModalProps> = ({ isOpen, onRetry, onClose }) => 
           {/* Retry Button */}
           <button
           onClick={onRetry}
-          className="p-2 px-4 bg-orange-500 text-white rounded-full flex items-center gap-2 hover:bg-orange-600 transition"
+          className="p-2 px-6 bg-orange-500 text-white border border-amber-500 rounded-full shadow-lg flex items-center gap-2 hover:bg-orange-600 transition"
           >
             <RefreshCw className="w-5 h-5" />
             Retry my last request!

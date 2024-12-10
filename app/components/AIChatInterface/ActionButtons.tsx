@@ -1,5 +1,5 @@
 import React from 'react';
-import { RefreshCw, RotateCw} from 'lucide-react';
+import { RefreshCw, Repeat2 } from 'lucide-react';
 
 interface ActionButtonsProps {
   handleRegenerateResponse: () => void;
@@ -32,12 +32,12 @@ const ActionButtons: React.FC<ActionButtonsProps> = ({
 
       {lastAIResponse.sender === 'ai' && (
         <button
-          onClick={handleRegenerateResponse}
-          className="p-2 px-4 bg-sky-500 text-white rounded-full flex items-center gap-2"
-        >
-          <RotateCw className="w-5 h-5" />
-          These are great! Can I get some more suggestions?
-        </button>
+        onClick={handleRegenerateResponse}
+        className="p-2 px-4 bg-[#27ff52] text-md rounded-full text-black flex items-center gap-2"
+      >
+        Get More Suggestions
+        <Repeat2 className="w-5 h-5 text-black" />
+      </button>      
       )}
     </div>
   );
