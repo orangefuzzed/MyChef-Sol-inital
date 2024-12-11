@@ -4,9 +4,9 @@ import clientPromise from './../../../../lib/mongodb';
 
 export async function GET(
   _request: Request,
-  { params }: { params: { sessionId: string } }
+  context: any // Allow dynamic shape for the context
 ) {
-  const { sessionId } = params;
+  const { sessionId } = context.params; // Access params dynamically
 
   try {
     const client: MongoClient = await clientPromise;
