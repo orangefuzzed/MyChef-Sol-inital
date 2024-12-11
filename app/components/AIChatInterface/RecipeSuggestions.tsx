@@ -19,8 +19,8 @@ const RecipeSuggestions: React.FC<RecipeSuggestionsProps> = ({ currentRecipeList
           className="relative flex items-start bg-white/30 backdrop-blur-lg border-white border shadow-lg ring-1 ring-black/5 py-6 px-8 rounded-3xl ml-4 mb-4"
         >
           {/* Left-Side Icon */}
-          <div className="absolute left-0 top-1/2 transform -translate-y-1/2 -ml-6 bg-slate-500 w-10 h-10 border border-white rounded-full flex items-center justify-center">
-            <CookingPot strokeWidth={1.5} className="w-6 h-6 text-white" /> {/* Example icon, you can change this */}
+          <div className="absolute left-0 top-1/2 transform -translate-y-1/2 -ml-4 bg-slate-500 w-8 h-8 border border-white rounded-full flex items-center justify-center">
+            <CookingPot strokeWidth={1.75} className="w-4 h-4 text-white" /> {/* Example icon, you can change this */}
           </div>
 
           <div className="ml-4"> {/* Adds space to accommodate the left-side icon */}

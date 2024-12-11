@@ -8,6 +8,7 @@ import Footer from '../components/Footer';
 import { getSavedRecipesFromDB } from '../utils/indexedDBUtils';
 import { useRouter } from 'next/navigation';
 import { Recipe } from '../../types/Recipe';
+import { Flame, Clock, Soup, Heart } from 'lucide-react';
 
 const SavedRecipesPage = () => {
   const [savedRecipes, setSavedRecipes] = useState<Recipe[]>([]);
@@ -43,7 +44,9 @@ const SavedRecipesPage = () => {
   };
 
   return (
-    <div className="h-screen flex flex-col bg-gray-900 text-white overflow-hidden">
+    <div className="flex flex-col h-screen bg-fixed bg-cover bg-center text-white"
+        style={{ backgroundImage: "url('/images/steak-dinner-2.png')" }}
+        >
       {/* Header */}
       <Header centralText="Saved Recipes" />
 
@@ -54,11 +57,31 @@ const SavedRecipesPage = () => {
             {savedRecipes.map((recipe) => (
               <div
                 key={recipe.id} // Updated `recipeId` to `id`
-                className="bg-gray-800 p-4 rounded-lg cursor-pointer hover:bg-gray-700"
+                className="bg-white/30 backdrop-blur-lg border-white border shadow-lg ring-1 ring-black/5 p-6 rounded-2xl"
                 onClick={() => handleRecipeClick(recipe.id)} // Updated `recipeId` to `id`
               >
-                <h3 className="text-lg font-semibold mb-2">{recipe.recipeTitle}</h3>
-                <p className="text-sm text-gray-400">{recipe.description}</p>
+                {/* Left-Side Icon */}
+                <div className="absolute left-0 top-1/2 transform -translate-y-1/2 -ml-4 bg-pink-800 w-8 h-8 border border-white rounded-full flex items-center justify-center">
+                  <Heart strokeWidth={1.5} className="w-4 h-4 text-white" /> {/* Example icon, you can change this */}
+                </div>
+                <h3 className="text-lg font-semibold">{recipe.recipeTitle}</h3>
+                <div className="rating text-sm text-amber-400 mb-2">Rating: {recipe.rating}</div>
+                {/* Icons for kcal, time, protein */}
+                  <div className="flex items-center space-x-4 mb-4">
+                    <div className="flex flex-col items-center text-xs text-slate-700">
+                      <Flame className="w-5 h-5 text-pink-800 mb-1" />
+                      <span> {recipe.calories}</span>
+                    </div>
+                    <div className="flex flex-col items-center text-xs text-slate-700">
+                      <Clock className="w-5 h-5 text-pink-800 mb-1" />
+                      <span> {recipe.cookTime} </span>
+                    </div>
+                    <div className="flex flex-col items-center text-xs text-slate-700">
+                      <Soup className="w-5 h-5 text-pink-800 mb-1" />
+                      <span> {recipe.protein} protein</span>
+                    </div>
+                  </div>
+                <p className="text-sm text-slate-950">{recipe.description}</p>
               </div>
             ))}
           </div>

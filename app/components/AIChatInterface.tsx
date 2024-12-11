@@ -292,7 +292,7 @@ const AIChatInterface = () => {
           contextualActions={[
             {
               label: isChatSaved ? 'Saved' : 'Save',
-              icon: <Heart size={20} color={isChatSaved ? '#27ff52' : 'white'} />,
+              icon: <Heart size={20} color={isChatSaved ? '#9d174d' : 'white'} />,
               onClick: handleSaveSession,
             },
           ]}
