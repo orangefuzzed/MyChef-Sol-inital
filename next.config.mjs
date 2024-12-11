@@ -6,7 +6,6 @@ const nextConfig = {
     imageSizes: [16, 32, 48, 64, 96, 128, 256, 384],
     domains: ['res.cloudinary.com'], // Added domain to allow Cloudinary images
   },
-  swcMinify: true,
 };
 
 export default nextConfig;

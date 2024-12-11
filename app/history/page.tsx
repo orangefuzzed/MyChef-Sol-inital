@@ -1,5 +1,3 @@
-// History Page - app/history/page.tsx
-
 'use client';
 
 import React, { useEffect, useState } from 'react';
@@ -7,61 +5,58 @@ import Header from '../components/Header';
 import Footer from '../components/Footer';
 import { useRouter } from 'next/navigation';
 import { ChatSession } from '../../types/ChatSession';
-import { getSavedSessionsFromDB } from '../utils/indexedDBUtils';
+import { getSavedSessionsFromDB, saveSessionToDB } from '../utils/indexedDBUtils';
 
 const HistoryPage: React.FC = () => {
   const [savedSessions, setSavedSessions] = useState<ChatSession[]>([]);
   const router = useRouter();
 
   useEffect(() => {
-    const fetchSavedSessions = async () => {
-      let sessions = await getSavedSessionsFromDB();
-  
-      // If no sessions in IndexedDB, fetch from MongoDB
-      if (sessions.length === 0) {
-        try {
-          const response = await fetch('/api/sessions/save');
-          if (response.ok) {
-            const fetchedSessions: ChatSession[] = await response.json();
-            sessions = fetchedSessions;
-          } else {
-            console.error('Failed to fetch saved sessions from MongoDB');
+    const fetchAndMergeSessions = async () => {
+      try {
+        // Fetch local sessions from IndexedDB
+        const localSessions = await getSavedSessionsFromDB();
+
+        // Fetch remote sessions from MongoDB
+        const remoteSessions: ChatSession[] = await (async () => {
+          try {
+            const response = await fetch('/api/sessions/saved');
+            if (response.ok) {
+              return await response.json();
+            } else {
+              console.error('Failed to fetch sessions from MongoDB:', response.statusText);
+              return [];
+            }
+          } catch (error) {
+            console.error('Error fetching sessions from MongoDB:', error);
+            return [];
           }
-        } catch (error) {
-          console.error('Error fetching saved sessions from MongoDB:', error);
+        })();
+
+        // Merge local and remote sessions
+        const mergedSessionsMap = new Map<string, ChatSession>();
+        [...localSessions, ...remoteSessions].forEach((session) =>
+          mergedSessionsMap.set(session.sessionId, session)
+        );
+
+        const mergedSessions = Array.from(mergedSessionsMap.values());
+
+        // Sync missing remote sessions to IndexedDB
+        for (const remoteSession of remoteSessions) {
+          if (!localSessions.some((localSession) => localSession.sessionId === remoteSession.sessionId)) {
+            await saveSessionToDB(remoteSession);
+          }
         }
+
+        // Update state with merged sessions
+        setSavedSessions(mergedSessions);
+      } catch (error) {
+        console.error('Error fetching and merging sessions:', error);
       }
-  
-      setSavedSessions(sessions);
     };
-  
-    fetchSavedSessions();
+
+    fetchAndMergeSessions();
   }, []);
-  
-  useEffect(() => {
-    const fetchSavedSessions = async () => {
-      let sessions = await getSavedSessionsFromDB();
-  
-      // If no sessions in IndexedDB, fetch from MongoDB
-      if (sessions.length === 0) {
-        try {
-          const response = await fetch('/api/sessions/saved');
-          if (response.ok) {
-            const fetchedSessions: ChatSession[] = await response.json();
-            sessions = fetchedSessions;
-          } else {
-            console.error('Failed to fetch saved sessions from MongoDB');
-          }
-        } catch (error) {
-          console.error('Error fetching saved sessions from MongoDB:', error);
-        }
-      }
-  
-      setSavedSessions(sessions);
-    };
-  
-    fetchSavedSessions();
-  }, []);  
 
   const handleSessionClick = (sessionId: string) => {
     router.push(`/chat-view?sessionId=${sessionId}`);
