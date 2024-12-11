@@ -1,17 +1,27 @@
 import { NextResponse } from 'next/server';
 import { MongoClient } from 'mongodb';
 import clientPromise from '../../../../lib/mongodb';
+import { getServerSession } from 'next-auth/next';
+import { authOptions } from '@/lib/auth';
 
 export async function GET() {
   try {
     const client: MongoClient = await clientPromise;
     const db = client.db();
 
-    // Assuming we have `sessions` collection in MongoDB
-    const collection = db.collection('sessions');
+    // Get the authenticated user's session
+    const session = await getServerSession(authOptions);
 
-    // Fetch all saved sessions
-    const savedSessions = await collection.find({}).toArray();
+    // Ensure the user is authenticated
+    if (!session?.user?.email) {
+      return NextResponse.json({ error: 'User not authenticated' }, { status: 401 });
+    }
+
+    const userEmail = session.user.email;
+
+    // Fetch all saved sessions for the authenticated user
+    const collection = db.collection('sessions');
+    const savedSessions = await collection.find({ userEmail }).toArray();
 
     return NextResponse.json(savedSessions);
   } catch (error) {
