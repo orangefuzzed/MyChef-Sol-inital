@@ -2,7 +2,10 @@ import { NextResponse } from 'next/server';
 import { MongoClient } from 'mongodb';
 import clientPromise from './../../../../lib/mongodb';
 
-export async function GET(req: Request, { params }: { params: { sessionId: string } }) {
+export async function GET(
+  _: unknown,
+  { params }: { params: { sessionId: string } }
+) {
   const { sessionId } = params;
   try {
     const client: MongoClient = await clientPromise;
@@ -10,7 +13,7 @@ export async function GET(req: Request, { params }: { params: { sessionId: strin
     const collection = db.collection('sessions');
 
     // Fetch the session by sessionId (not using ObjectId)
-    const session = await collection.findOne({ sessionId: sessionId });
+    const session = await collection.findOne({ sessionId });
 
     if (!session) {
       return NextResponse.json({ success: false, error: 'Session not found' }, { status: 404 });
