@@ -2,18 +2,18 @@ import { NextResponse } from 'next/server';
 import { MongoClient } from 'mongodb';
 import clientPromise from './../../../../lib/mongodb';
 
-interface Context {
-  params: { sessionId: string };
-}
+export async function GET(
+  _request: Request,
+  { params }: { params: { sessionId: string } }
+) {
+  const { sessionId } = params;
 
-export async function GET(_request: Request, context: Context) {
-  const { sessionId } = context.params;
   try {
     const client: MongoClient = await clientPromise;
     const db = client.db();
     const collection = db.collection('sessions');
 
-    // Fetch the session by sessionId (not using ObjectId)
+    // Fetch the session by sessionId
     const session = await collection.findOne({ sessionId });
 
     if (!session) {

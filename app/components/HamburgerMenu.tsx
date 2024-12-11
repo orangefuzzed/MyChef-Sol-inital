@@ -26,6 +26,12 @@ interface HamburgerMenuProps {
 const HamburgerMenu: React.FC<HamburgerMenuProps> = ({ isOpen, onClose }) => {
   const { data: session } = useSession();
   const [userImage, setUserImage] = useState<string | null>(null);
+  const [portalRoot, setPortalRoot] = useState<HTMLElement | null>(null);
+
+  // Ensure the portal root is available after the component mounts
+  useEffect(() => {
+    setPortalRoot(document.body); // Set the portal root dynamically
+  }, []);
 
   // Fetch user avatar
   useEffect(() => {
@@ -54,6 +60,8 @@ const HamburgerMenu: React.FC<HamburgerMenuProps> = ({ isOpen, onClose }) => {
     { icon: <Calendar size={20} />, text: 'Saved Meal Plans', link: '/saved-meal-plans' },
   ];
 
+  if (!portalRoot) return null; // Prevent rendering until portalRoot is set
+
   return createPortal(
     <AnimatePresence>
       {isOpen && (
@@ -75,11 +83,6 @@ const HamburgerMenu: React.FC<HamburgerMenuProps> = ({ isOpen, onClose }) => {
             animate={{ x: '0%' }}
             exit={{ x: '100%' }}
             transition={{ duration: 0.5, ease: 'easeInOut' }}
-            onAnimationComplete={(definition) => {
-              if (definition === 'exit') {
-                onClose(); // Cleanup after exit animation
-              }
-            }}
           >
             {/* Close Button */}
             <button
@@ -161,7 +164,7 @@ const HamburgerMenu: React.FC<HamburgerMenuProps> = ({ isOpen, onClose }) => {
         </>
       )}
     </AnimatePresence>,
-    document.body
+    portalRoot
   );
 };
 
