@@ -2,11 +2,12 @@ import { NextResponse } from 'next/server';
 import { MongoClient } from 'mongodb';
 import clientPromise from './../../../../lib/mongodb';
 
-export async function GET(
-  _: unknown,
-  { params }: { params: { sessionId: string } }
-) {
-  const { sessionId } = params;
+interface Context {
+  params: { sessionId: string };
+}
+
+export async function GET(_request: Request, context: Context) {
+  const { sessionId } = context.params;
   try {
     const client: MongoClient = await clientPromise;
     const db = client.db();
