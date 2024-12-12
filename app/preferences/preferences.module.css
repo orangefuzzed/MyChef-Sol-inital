@@ -55,6 +55,7 @@
 .preferenceItem {
   margin-bottom: 8px;
   color: #020617;
+  font-size: 0.875rem; 
 }
 
 .preferenceItem strong {

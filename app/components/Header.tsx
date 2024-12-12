@@ -44,7 +44,7 @@ const Header: React.FC<HeaderProps> = ({ onBackClick }) => {
 
   return (
     <header className={`${styles.header} header`}>
-      <div className="flex justify-between items-center py-1.5 px-2.5 bg-white/30 backdrop-blur-lg shadow-lg ring-1 ring-black/5">
+      <div className="flex justify-between items-center py-1.5 px-4 bg-white/30 backdrop-blur-lg shadow-lg ring-1 ring-black/5">
         {/* Back Button */}
         <button
           onClick={handleBackClick}

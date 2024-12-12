@@ -28,7 +28,7 @@ const FavoritesPage = () => {
   
   return (
     <div className="flex flex-col h-screen bg-fixed bg-cover bg-center text-white"
-        style={{ backgroundImage: "url('/images/summer-deck-2.png')" }}
+        style={{ backgroundImage: "url('/images/breakfast-1.png')" }}
         >
       {/* Header */}
       <Header centralText="Favorite Recipes" />

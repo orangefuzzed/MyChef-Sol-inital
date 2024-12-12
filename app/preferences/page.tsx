@@ -100,6 +100,16 @@ const PreferencesPage = () => {
       .map((pref) => `${pref.name} (Ranking: ${pref.ranking})`)
       .join(', ');
 
+      // Convert ranking to stars with appropriate colors
+  const getStars = (ranking: number) => {
+    const colors = ['text-rose-500', 'text-amber-500', 'text-cyan-400', 'text-lime-500'];
+    const stars = '★'.repeat(ranking).padEnd(4, '☆'); // Ensure all ratings show 3 stars for consistency
+    const color = colors[ranking - 1] || 'text-gray-500'; // Fallback for invalid rankings
+
+    return <span className={`text-sm ${color}`}>{stars}</span>;
+  };
+
+
   return (
     <div className="flex flex-col h-screen bg-fixed bg-cover bg-center text-white"
         style={{ backgroundImage: "url('/images/meal-cooking-1.png')" }}
@@ -127,28 +137,30 @@ const PreferencesPage = () => {
               <h2>Dietary Preferences</h2>
             </div>
             <div className="mt-4">
-            <p className="mt-2 text-lg font-normal mb-2">Cuisine Preferences:</p>
-              {preferences.cuisinePreferences.length > 0 ? (
-                <ul className="list-disc list-inside mt-2 space-y-1 text-slate-950">
-                  {preferences.cuisinePreferences.map((preference, index) => (
-                    <li key={index} className="text-sm">
-                      {preference.name} (Ranking: {preference.ranking})
-                    </li>
-                  ))}
-                </ul>
-              ) : (
-                <p className="mt-2 text-sm text-gray-500">None specified</p>
+              <p className="mt-2 text-md font-normal mb-2">Cuisine Preferences:</p>
+                {preferences.cuisinePreferences.length > 0 ? (
+                  <ul className="list-disc list-inside mt-2 space-y-1 text-slate-950">
+                    {preferences.cuisinePreferences.map((preference, index) => (
+                      <li key={index} className="text-sm">
+                        <span>{preference.name}: </span>
+                        {getStars(preference.ranking)}
+                      </li>
+                    ))}
+                  </ul>
+                ) : (
+              <p className="mt-2 text-sm text-gray-500">None specified</p>
               )}
             </div>
 
             {/* Dietary Preferences */}
               <section className="mt-4">
-                <p className="text-lg font-normal mb-2">Dietary Preferences</p>
+                <p className="text-md font-normal mb-2">Dietary Preferences</p>
                 {preferences.dietaryPreferences.length > 0 ? (
                   <ul className="list-disc list-inside mt-2 space-y-1 text-slate-950">
                     {preferences.dietaryPreferences.map((preference, index) => (
                       <li key={index} className="text-sm">
-                        {preference.name} (Ranking: {preference.ranking})
+                        <span>{preference.name}: </span>
+                        {getStars(preference.ranking)}
                       </li>
                     ))}
                   </ul>
@@ -159,7 +171,7 @@ const PreferencesPage = () => {
 
               {/* Dietary Restrictions */}
               <section className="mt-4">
-                <p className="text-lg font-normal mb-2">Dietary Restrictions</p>
+                <p className="text-md font-normal mb-2">Dietary Restrictions</p>
                 {preferences.dietaryRestrictions.length > 0 ? (
                   <ul className="list-disc list-inside mt-2 space-y-1 text-slate-950">
                     {preferences.dietaryRestrictions.map((restriction, index) => (
@@ -175,7 +187,7 @@ const PreferencesPage = () => {
 
               {/* Diets */}
               <section className="mt-4">
-                <p className="text-lg font-normal mb-2">Diets</p>
+                <p className="text-md font-normal mb-2">Diets</p>
                 {preferences.diets ? (
                   <ul className="list-disc list-inside mt-2 space-y-1 text-slate-950">
                     {preferences.diets.split(',').map((diet, index) => (
@@ -190,23 +202,32 @@ const PreferencesPage = () => {
 
           {/* Cooking Preferences Section */}
           <section className="bg-white/30 backdrop-blur-lg border-white border shadow-lg ring-1 ring-black/5 p-6 rounded-2xl">
-            <div className="flex items-center text-lg font-semibold mb-2">
+            <div className="flex items-center text-md font-semibold mb-2">
             <div className="bg-[#00a39e] w-8 h-8 border border-white rounded-full flex items-center justify-center mr-2">
                   <CookingPot strokeWidth={1.5} className="w-5 h-5 text-white" /> {/* Example icon, you can change this */}
                 </div>
               <h2>Cooking Preferences</h2>
             </div>
-            <div className="mt-4">
-            <p className="mt-2 text-lg font-normal mb-2">Cooking Difficulty Preferences:</p>
-            <div className={styles.preferenceItem}>
-              {preferences.cookingDifficultyPreferences.length > 0
-                ? formatPreferences(preferences.cookingDifficultyPreferences)
-                : 'None specified'}
-                </div>
-            </div>
+            {/* Cooking Difficulty Preferences */}
+              <section className="mt-4">
+              <p className="mt-2 text-md font-normal mb-2">Cooking Difficulty Preferences:</p>
+                {preferences.cookingDifficultyPreferences.length > 0 ? (
+                  <ul className="list-disc list-inside mt-2 space-y-1 text-slate-950">
+                    {preferences.cookingDifficultyPreferences.map((preference, index) => (
+                      <li key={index} className="text-sm">
+                        <span>{preference.name}: </span>
+                        {getStars(preference.ranking)} {/* Add the stars here */}
+                      </li>
+                    ))}
+                  </ul>
+                ) : (
+                  <p className="mt-2 text-sm text-gray-500">None specified</p>
+                )}
+              </section>
+
             {/* Cooking Methods */}
             <section className="mt-4">
-              <p className="text-lg font-normal mb-2">Cooking Methods</p>
+              <p className="text-md font-normal mb-2">Cooking Methods</p>
               {preferences.cookingMethods && preferences.cookingMethods.length > 0 ? (
                 <ul className="list-disc list-inside mt-2 space-y-1 text-slate-950">
                   {preferences.cookingMethods.map((method, index) => (
@@ -218,52 +239,52 @@ const PreferencesPage = () => {
               )}
             </section>
             <div className={styles.preferenceItem}>
-            <p className="mt-2 text-lg font-normal text-white mb-2">Cooking Preferences Notes:</p>
+            <p className="mt-2 text-md font-normal text-white mb-2">Cooking Preferences Notes:</p>
               {preferences.cookingPreferencesNotes || 'None'}
             </div>
           </section>
 
           {/* Wellness Goals Section */}
           <section className="bg-white/30 backdrop-blur-lg border-white border shadow-lg ring-1 ring-black/5 p-6 rounded-2xl">
-            <div className="flex items-center text-lg font-semibold mb-2">
+            <div className="flex items-center text-md font-semibold mb-2">
             <div className="bg-[#00a39e] w-8 h-8 border border-white rounded-full flex items-center justify-center mr-2">
                   <HeartPulse strokeWidth={1.5} className="w-5 h-5 text-white" /> {/* Example icon, you can change this */}
                 </div>
               <h2>Wellness Goals</h2>
             </div>
             <div className={styles.preferenceItem}>
-              <p className="mt-2 text-lg font-normal text-white mb-2">User Goals:</p> {preferences.userGoals || 'None specified'}
+              <p className="mt-2 text-md font-normal text-white mb-2">User Goals:</p> {preferences.userGoals || 'None specified'}
             </div>
             <div className={styles.preferenceItem}>
-              <p className="mt-2 text-lg font-normal text-white mb-2">Wellness Importance:</p> {' '}
+              <p className="mt-2 text-md font-normal text-white mb-2">Wellness Importance:</p> {' '}
               {preferences.wellnessImportance || 'Not specified'}
             </div>
             <div className={styles.preferenceItem}>
-              <p className="mt-2 text-lg font-normal text-white mb-2">Wellness Notes:</p> {preferences.wellnessNotes || 'None'}
+              <p className="mt-2 text-md font-normal text-white mb-2">Wellness Notes:</p> {preferences.wellnessNotes || 'None'}
             </div>
           </section>
 
           {/* Interaction Preferences Section */}
           <section className="bg-white/30 backdrop-blur-lg border-white border shadow-lg ring-1 ring-black/5 p-6 rounded-2xl">
-            <div className="flex items-center text-lg font-semibold mb-2">
+            <div className="flex items-center text-md font-semibold mb-2">
             <div className="bg-[#00a39e] w-8 h-8 border border-white rounded-full flex items-center justify-center mr-2">
                   <Bot strokeWidth={1.5} className="w-5 h-5 text-white" /> {/* Example icon, you can change this */}
                 </div>
               <h2>Interaction Preferences</h2>
             </div>
             <div className={styles.preferenceItem}>
-              <p className="mt-2 text-lg font-normal text-white mb-2">Interaction Preferences:</p> {' '}
+              <p className="mt-2 text-md font-normal text-white mb-2">Interaction Preferences:</p> {' '}
               {preferences.interactionPreferences.length > 0
                 ? formatPreferences(preferences.interactionPreferences)
                 : 'None specified'}
             </div>
             <div className={styles.preferenceItem}>
-              <p className="mt-2 text-lg font-normal text-white mb-2">Interaction Importance:</p> {' '}
+              <p className="mt-2 text-md font-normal text-white mb-2">Interaction Importance:</p> {' '}
               {preferences.interactionImportance || 'Not specified'}
             </div>
             {/* Experience Mapping */}
             <section className="mt-4">
-              <p className="text-lg font-normal mb-2">Experience Mapping</p>
+              <p className="text-md font-normal mb-2">Experience Mapping</p>
               {preferences.experienceMapping && preferences.experienceMapping.length > 0 ? (
                 <ul className="list-disc list-inside mt-2 space-y-1 text-slate-950">
                   {preferences.experienceMapping.map((experience, index) => (
@@ -275,26 +296,26 @@ const PreferencesPage = () => {
               )}
             </section>
 
-            <div className="text-lg font-normal mt-2">
-              <p className="text-lg font-normal text-white mt-2 mb-2">Experience Mapping Notes:</p> {' '}
+            <div className="text-md font-normal mt-2">
+              <p className="text-md font-normal text-white mt-2 mb-2">Experience Mapping Notes:</p> {' '}
              
             </div>
             <div className={styles.preferenceItem}>
-              <p className="mt-2 text-lg font-normal text-white mt-2 mb-2"></p> {' '}
+              <p className="mt-2 text-md font-normal text-white mt-2 mb-2"></p> {' '}
               {preferences.experienceMappingNotes || 'None'}
             </div>
           </section>
 
           {/* Additional Notes Section */}
           <section className="bg-white/30 backdrop-blur-lg border-white border shadow-lg ring-1 ring-black/5 p-6 rounded-2xl">
-            <div className="flex items-center text-lg font-semibold mb-2">
+            <div className="flex items-center text-md font-semibold mb-2">
             <div className="bg-[#00a39e] w-8 h-8 border border-white rounded-full flex items-center justify-center mr-2">
                   <Utensils strokeWidth={1.5} className="w-5 h-5 text-white" /> {/* Example icon, you can change this */}
                 </div>
               <h2>Additional Notes</h2>
             </div>
             <div className={styles.preferenceItem}>
-              <p className="mt-2 text-lg font-normal text-white mt-2 mb-2">General Preferences Notes:</p> {' '}
+              <p className="mt-2 text-md font-normal text-white mt-2 mb-2">General Preferences Notes:</p> {' '}
               {preferences.generalPreferencesNotes || 'None'}
             </div>
           </section>
