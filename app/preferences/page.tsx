@@ -110,15 +110,15 @@ const PreferencesPage = () => {
 
           {/* Edit Preferences Button */}
           <Link className="flex justify-end" href="/preferencesWalkthrough">
-              <button className="text-xs flex p-2 px-4 bg-sky-50/20 border border-sky-50 shadow-lg ring-1 ring-black/5 rounded-full text-sky-50 items-center gap-2 mb-2.5">
-                Edit
+              <button className="text-xs flex p-2 px-4 bg-pink-800/30 border border-sky-50 shadow-lg ring-1 ring-black/5 rounded-full text-sky-50 items-center gap-2 -mt-2 -mb-2">
+                Edit Preferences
                 <FilePenLine className="w-4 h-4" />
               </button>
             </Link>
 
           {/* Dietary Preferences Section */}
           <section className="bg-white/30 backdrop-blur-lg border-white border shadow-lg ring-1 ring-black/5 p-6 rounded-2xl">
-            
+          
             {/* Dietary Preferences Title and Content */}
             <div className="flex items-center text-xl font-semibold mb-2">
             <div className="bg-[#00a39e] w-8 h-8 border border-white rounded-full flex items-center justify-center mr-2">
@@ -198,9 +198,11 @@ const PreferencesPage = () => {
             </div>
             <div className="mt-4">
             <p className="mt-2 text-lg font-normal mb-2">Cooking Difficulty Preferences:</p>
+            <div className={styles.preferenceItem}>
               {preferences.cookingDifficultyPreferences.length > 0
                 ? formatPreferences(preferences.cookingDifficultyPreferences)
                 : 'None specified'}
+                </div>
             </div>
             {/* Cooking Methods */}
             <section className="mt-4">
@@ -230,14 +232,14 @@ const PreferencesPage = () => {
               <h2>Wellness Goals</h2>
             </div>
             <div className={styles.preferenceItem}>
-              <p className="mt-2 text-lg font-normal mb-2">User Goals:</p> {preferences.userGoals || 'None specified'}
+              <p className="mt-2 text-lg font-normal text-white mb-2">User Goals:</p> {preferences.userGoals || 'None specified'}
             </div>
             <div className={styles.preferenceItem}>
-              <p className="mt-2 text-lg font-normal mb-2">Wellness Importance:</p> {' '}
+              <p className="mt-2 text-lg font-normal text-white mb-2">Wellness Importance:</p> {' '}
               {preferences.wellnessImportance || 'Not specified'}
             </div>
             <div className={styles.preferenceItem}>
-              <p className="mt-2 text-lg font-normal mb-2">Wellness Notes:</p> {preferences.wellnessNotes || 'None'}
+              <p className="mt-2 text-lg font-normal text-white mb-2">Wellness Notes:</p> {preferences.wellnessNotes || 'None'}
             </div>
           </section>
 
@@ -250,18 +252,18 @@ const PreferencesPage = () => {
               <h2>Interaction Preferences</h2>
             </div>
             <div className={styles.preferenceItem}>
-              <p className="mt-2 text-lg font-normal mb-2">Interaction Preferences:</p> {' '}
+              <p className="mt-2 text-lg font-normal text-white mb-2">Interaction Preferences:</p> {' '}
               {preferences.interactionPreferences.length > 0
                 ? formatPreferences(preferences.interactionPreferences)
                 : 'None specified'}
             </div>
             <div className={styles.preferenceItem}>
-              <p className="mt-2 text-lg font-normal mb-2">Interaction Importance:</p> {' '}
+              <p className="mt-2 text-lg font-normal text-white mb-2">Interaction Importance:</p> {' '}
               {preferences.interactionImportance || 'Not specified'}
             </div>
             {/* Experience Mapping */}
             <section className="mt-4">
-              <p className="text-lg font-semibold mb-2">Experience Mapping</p>
+              <p className="text-lg font-normal mb-2">Experience Mapping</p>
               {preferences.experienceMapping && preferences.experienceMapping.length > 0 ? (
                 <ul className="list-disc list-inside mt-2 space-y-1 text-slate-950">
                   {preferences.experienceMapping.map((experience, index) => (
@@ -274,7 +276,11 @@ const PreferencesPage = () => {
             </section>
 
             <div className="text-lg font-normal mt-2">
-              <p className="mt-2 text-lg font-normal mb-2">Experience Mapping Notes:</p> {' '}
+              <p className="text-lg font-normal text-white mt-2 mb-2">Experience Mapping Notes:</p> {' '}
+             
+            </div>
+            <div className={styles.preferenceItem}>
+              <p className="mt-2 text-lg font-normal text-white mt-2 mb-2"></p> {' '}
               {preferences.experienceMappingNotes || 'None'}
             </div>
           </section>
@@ -288,7 +294,7 @@ const PreferencesPage = () => {
               <h2>Additional Notes</h2>
             </div>
             <div className={styles.preferenceItem}>
-              <p className="mt-2 text-lg font-normal mb-2">General Preferences Notes:</p> {' '}
+              <p className="mt-2 text-lg font-normal text-white mt-2 mb-2">General Preferences Notes:</p> {' '}
               {preferences.generalPreferencesNotes || 'None'}
             </div>
           </section>
