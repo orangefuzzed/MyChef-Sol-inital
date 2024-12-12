@@ -29,9 +29,9 @@ const LoadingModal: React.FC<LoadingModalProps> = ({ isOpen }) => {
 
   // Static recipe received messages
   const recipeReceivedMessages = [
-    "First recipe whisked together...",
-    "Second recipe whipped up...",
-    "Third recipe baked to perfection!",
+    "Recipe one whisked together...",
+    "Recipe two whipped up...",
+    "Recipe three - DONE!",
   ];
 
   // Clear received messages when modal opens
