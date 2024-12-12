@@ -158,7 +158,7 @@ const ShoppingListPage = () => {
           contextualActions={[
             {
               label: isShoppingListSaved ? 'List Saved' : 'Save List',
-              icon: <ShoppingCart size={22} color={isShoppingListSaved ? '#9d174d' : 'white'} />,
+              icon: <ShoppingCart strokeWidth={1.5} size={18} color={isShoppingListSaved ? '#9d174d' : 'white'} />,
               onClick: handleShoppingListSaveToggle,
             },
           ]}

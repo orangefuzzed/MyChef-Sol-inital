@@ -145,12 +145,12 @@ const RecipeViewPage = () => {
           contextualActions={[
             {
               label: isSaved ? 'Saved' : 'Save',
-              icon: <Bookmark size={22} color={isSaved ? '#9d174d' : 'white'} />,
+              icon: <Bookmark strokeWidth={1.5} size={18} color={isSaved ? '#9d174d' : 'white'} />,
               onClick: handleSaveToggle,
             },
             {
               label: isFavorited ? 'Favorited' : 'Favorite',
-              icon: <Heart size={22} color={isFavorited ? '#9d174d' : 'white'} />,
+              icon: <Heart strokeWidth={1.5} size={18} color={isFavorited ? '#9d174d' : 'white'} />,
               onClick: handleFavoriteToggle,
             },
           ]}

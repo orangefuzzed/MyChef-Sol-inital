@@ -44,13 +44,13 @@ const Header: React.FC<HeaderProps> = ({ onBackClick }) => {
 
   return (
     <header className={`${styles.header} header`}>
-      <div className="flex justify-between items-center p-2 bg-white/30 backdrop-blur-lg shadow-lg ring-1 ring-black/5">
+      <div className="flex justify-between items-center p-0.5 px-2.5 bg-white/30 backdrop-blur-lg shadow-lg ring-1 ring-black/5">
         {/* Back Button */}
         <button
           onClick={handleBackClick}
           className={`${styles.backButton} text-white`}
         >
-          <CircleArrowLeft size={24} />
+          <CircleArrowLeft strokeWidth={1.5} size={24} />
         </button>
 
         {/* Central Greeting */}
@@ -72,7 +72,7 @@ const Header: React.FC<HeaderProps> = ({ onBackClick }) => {
           className={`${styles.menuButton}`}
           onClick={() => setIsHamburgerMenuOpen(!isHamburgerMenuOpen)}
         >
-          <Menu size={28} strokeWidth={1} className="text-white" />
+          <Menu strokeWidth={1.5} size={24} className="text-white" />
         </button>
 
         {/* Hamburger Menu */}

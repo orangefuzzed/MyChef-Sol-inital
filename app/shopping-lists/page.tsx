@@ -7,6 +7,7 @@ import Footer from '../components/Footer';
 import { getAllSavedShoppingListsFromDB } from '../utils/shoppingListUtils';
 import { useRouter } from 'next/navigation';
 import { ShoppingList } from '../../types/ShoppingList';
+import { ShoppingCart } from 'lucide-react';
 
 
 const ShoppingListsPage = () => {
@@ -45,6 +46,10 @@ const ShoppingListsPage = () => {
                 className="bg-white/30 backdrop-blur-lg border-white border shadow-lg ring-1 ring-black/5 p-6 rounded-2xl"
                 onClick={() => handleViewShoppingList(list.recipeId)} // Updated `recipeId` to `id`
               >
+                {/* Left-Side Icon */}
+                <div className="bg-sky-50/30 w-8 h-8 border border-white rounded-full flex items-center justify-center mb-2">
+                  <ShoppingCart strokeWidth={1.5} className="w-4 h-4 text-black" /> {/* Example icon, you can change this */}
+                </div>
                 <h3 className="text-lg font-semibold mb-2">Shopping List for {list.recipeTitle || 'Recipe'}</h3>
                 
               </div>
