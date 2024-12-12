@@ -85,7 +85,7 @@ const CookModePage = () => {
 
   return (
     <div className="flex flex-col h-screen bg-fixed bg-cover bg-center text-white"
-        style={{ backgroundImage: "url('/images/pizza-1.png')" }}
+        style={{ backgroundImage: "url('/images/chef-cooking-3.png')" }}
         >
       {/* Header with contextual Back Button */}
       <Header

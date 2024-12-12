@@ -6,6 +6,7 @@ import Footer from '../components/Footer';
 import { useRouter } from 'next/navigation';
 import { ChatSession } from '../../types/ChatSession';
 import { getSavedSessionsFromDB, saveSessionToDB } from '../utils/indexedDBUtils';
+import { MessagesSquare } from 'lucide-react';
 
 const HistoryPage: React.FC = () => {
   const [savedSessions, setSavedSessions] = useState<ChatSession[]>([]);
@@ -63,8 +64,9 @@ const HistoryPage: React.FC = () => {
   };
 
   return (
-    <div className="h-screen flex flex-col bg-gray-900 text-white overflow-hidden">
-      {/* Header */}
+    <div className="flex flex-col h-screen bg-fixed bg-cover bg-center text-white"
+        style={{ backgroundImage: "url('/images/summer-deck-5.png')" }}
+        >
       <Header centralText="Chat History" />
 
       {/* Main Content */}
@@ -74,12 +76,16 @@ const HistoryPage: React.FC = () => {
             {savedSessions.map((session) => (
               <div
                 key={session.sessionId}
-                className="bg-gray-800 p-4 rounded-lg cursor-pointer hover:bg-gray-700"
+                className="bg-white/30 backdrop-blur-lg border-white border shadow-lg ring-1 ring-black/5 p-6 rounded-2xl"
                 onClick={() => handleSessionClick(session.sessionId)}
               >
+                {/* Left-Side Icon */}
+                <div className="bg-sky-50/30 w-8 h-8 border border-white rounded-full flex items-center justify-center mb-2">
+                  <MessagesSquare strokeWidth={1.5} className="w-4 h-4 text-black" /> {/* Example icon, you can change this */}
+                </div>
                 <h3 className="text-lg font-semibold mb-2">{session.sessionTitle || 'Chat Session'}</h3>
-                <p className="text-sm text-gray-400">{session.sessionSummary}</p>
-                <p className="text-xs text-gray-500 mt-1">
+                <p className="text-sm text-black">{session.sessionSummary}</p>
+                <p className="text-xs mt-2 text-pink-800">
                   {new Date(session.timestamp).toLocaleDateString()} - {new Date(session.timestamp).toLocaleTimeString()}
                 </p>
               </div>

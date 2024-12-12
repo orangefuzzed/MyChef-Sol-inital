@@ -140,7 +140,7 @@ const ShoppingListPage = () => {
   return (
     <Suspense fallback={<div>Loading...</div>}>
       <div className="flex flex-col h-screen bg-fixed bg-cover bg-center text-white"
-        style={{ backgroundImage: "url('/images/fresh-store-5.png')" }}
+        style={{ backgroundImage: "url('/images/fresh-store-2.png')" }}
         >
         {/* Header with Back Button */}
         <Header
@@ -158,7 +158,7 @@ const ShoppingListPage = () => {
           contextualActions={[
             {
               label: isShoppingListSaved ? 'List Saved' : 'Save List',
-              icon: <ShoppingCart size={24} color={isShoppingListSaved ? '#9d174d' : 'white'} />,
+              icon: <ShoppingCart size={22} color={isShoppingListSaved ? '#9d174d' : 'white'} />,
               onClick: handleShoppingListSaveToggle,
             },
           ]}

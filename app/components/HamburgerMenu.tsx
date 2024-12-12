@@ -52,12 +52,12 @@ const HamburgerMenu: React.FC<HamburgerMenuProps> = ({ isOpen, onClose }) => {
   }, [session]);
 
   const menuItems = [
-    { icon: <Settings size={20} />, text: 'Preferences', link: '/preferences' },
-    { icon: <Bookmark size={20} />, text: 'Saved Recipes', link: '/saved-recipes' },
-    { icon: <Heart size={20} />, text: 'Favorites', link: '/favorites' },
-    { icon: <ShoppingCart size={20} />, text: 'Shopping Lists', link: '/shopping-lists' },
-    { icon: <History size={20} />, text: 'Recent History', link: '/history' },
-    { icon: <Calendar size={20} />, text: 'Saved Meal Plans', link: '/saved-meal-plans' },
+    { icon: <Settings size={20} color={'#fff'}/>, text: 'My Preferences', link: '/preferences' },
+    { icon: <Bookmark size={20} color={'#fff'} />, text: 'Saved Recipes', link: '/saved-recipes' },
+    { icon: <Heart size={20} color={'#fff'} />, text: 'Favorite Recipes', link: '/favorites' },
+    { icon: <ShoppingCart size={20} color={'#fff'} />, text: 'Shopping Lists', link: '/shopping-lists' },
+    { icon: <History size={20} color={'#fff'} />, text: 'Recent History', link: '/history' },
+    /*{ icon: <Calendar size={20} color={'#fff'} />, text: 'Saved Meal Plans', link: '/saved-meal-plans' },*/
   ];
 
   if (!portalRoot) return null; // Prevent rendering until portalRoot is set
@@ -133,7 +133,7 @@ const HamburgerMenu: React.FC<HamburgerMenuProps> = ({ isOpen, onClose }) => {
                   onClick={onClose}
                 >
                   <User size={20} />
-                  <span>Account</span>
+                  <span>Account Settings</span>
                 </div>
               </Link>
               <div
@@ -157,7 +157,7 @@ const HamburgerMenu: React.FC<HamburgerMenuProps> = ({ isOpen, onClose }) => {
             <div className="my-4 border-t border-gray-600"></div>
 
             {/* Logo */}
-            <div className="flex items-center justify-center mt-6">
+            <div className="flex items-center justify-center mt-2 mb-4">
               <img src="/images/dishcovery-full-logo.png" alt="Dishcovery" className="w-3/4" />
             </div>
           </motion.div>

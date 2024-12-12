@@ -8,7 +8,7 @@ import Footer from '../components/Footer';
 import { getSavedRecipesFromDB } from '../utils/indexedDBUtils';
 import { useRouter } from 'next/navigation';
 import { Recipe } from '../../types/Recipe';
-import { Flame, Clock, Soup, Heart } from 'lucide-react';
+import { Flame, Clock, Soup, Bookmark } from 'lucide-react';
 
 const SavedRecipesPage = () => {
   const [savedRecipes, setSavedRecipes] = useState<Recipe[]>([]);
@@ -61,8 +61,8 @@ const SavedRecipesPage = () => {
                 onClick={() => handleRecipeClick(recipe.id)} // Updated `recipeId` to `id`
               >
                 {/* Left-Side Icon */}
-                <div className="absolute left-0 top-1/2 transform -translate-y-1/2 -ml-4 bg-pink-800 w-8 h-8 border border-white rounded-full flex items-center justify-center">
-                  <Heart strokeWidth={1.5} className="w-4 h-4 text-white" /> {/* Example icon, you can change this */}
+                <div className="bg-sky-50/30 w-8 h-8 border border-white rounded-full flex items-center justify-center mb-2">
+                  <Bookmark strokeWidth={1.5} className="w-4 h-4 text-black" /> {/* Example icon, you can change this */}
                 </div>
                 <h3 className="text-lg font-semibold">{recipe.recipeTitle}</h3>
                 <div className="rating text-sm text-amber-400 mb-2">Rating: {recipe.rating}</div>

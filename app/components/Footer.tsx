@@ -10,10 +10,10 @@ interface FooterProps {
 const Footer: React.FC<FooterProps> = ({ actions, contextualActions }) => {
   // Define the static action items
   const actionItems: { [key: string]: { icon: JSX.Element; label: string; link: string } } = {
-    home: { icon: <Home strokeWidth={1.5} size={22} />, label: 'Home', link: '/' },
-    save: { icon: <Bookmark strokeWidth={1.5} size={22} />, label: 'Save', link: '/' },
-    favorite: { icon: <Heart strokeWidth={1.5} size={22} />, label: 'Favorite', link: '/' },
-    send: { icon: <Bot strokeWidth={1.5} size={24} />, label: 'Chat', link: '/ai-chat' },
+    home: { icon: <Home  size={22} />, label: 'Home', link: '/' },
+    save: { icon: <Bookmark  size={22} />, label: 'Save', link: '/' },
+    favorite: { icon: <Heart  size={22} />, label: 'Favorite', link: '/' },
+    send: { icon: <Bot  size={24} />, label: 'Chat', link: '/ai-chat' },
   };
 
   return (
