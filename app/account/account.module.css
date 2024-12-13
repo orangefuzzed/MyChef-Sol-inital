@@ -111,7 +111,7 @@
 .avatarPreview {
   width: 60px;
   height: 60px;
-  border-radius: 50%;
+  border-radius: 80%;
   border: 1px solid #ffffff;
   object-fit: cover;
 }
@@ -119,7 +119,7 @@
 .avatarPlaceholder {
   width: 60px;
   height: 60px;
-  border-radius: 50%;
+  border-radius: 80%;
   background-color: #3a3a3a;
   display: flex;
   align-items: center;

@@ -68,18 +68,18 @@
 }
 
 .button:hover:not(:disabled) {
-  background-color: #005bb5;
+  background-color: #0ea5e9;
 }
 
 .signupText {
-  
+  text-align: center;
   margin-top: 1rem;
   color: black;
   font-size: 1rem;
 }
 
 .link {
-  color: #075985;
+  color: #00a39e;
   text-decoration: none;
 }
 
@@ -88,7 +88,7 @@
 }
 
 .error {
-  color: #ff0000;
+  color: #9d174d;
   margin-bottom: 1rem;
   text-align: center;
 }

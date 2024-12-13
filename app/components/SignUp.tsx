@@ -4,7 +4,6 @@ import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import styles from './LoginScreen.module.css'; // Reuse the styles from the login page
-import Image from 'next/image';
 
 const SignUp: React.FC = () => {
   const [email, setEmail] = useState('');
@@ -52,7 +51,7 @@ const SignUp: React.FC = () => {
       className={`${styles.container} flex items-center justify-center h-screen bg-fixed bg-cover`}
       style={{ backgroundImage: "url('/images/breakfast-2.png')" }}
     >
-      <form onSubmit={handleSubmit} className="bg-white/30 backdrop-blur-lg border-white border shadow-lg ring-1 ring-black/5 p-6 m-6 rounded-2xl">
+      <form onSubmit={handleSubmit} className="bg-white/30 backdrop-blur-lg border-white border shadow-lg ring-1 ring-black/5 p-6 m-4 rounded-2xl">
         {/* Logo */}
         <div className="flex items-center justify-center mb-2">
               <img src="/images/dishcovery-full-logo.png" alt="Dishcovery" className="w-3/4" />
@@ -88,16 +87,8 @@ const SignUp: React.FC = () => {
         {/* Divider */}
         <div className="my-6 border-t border-pink-800"></div>
         <p className={styles.signupText}>
-          Already have an account? <Link href="/login" className={styles.link}>Log In!</Link>
+          Already have an account? <Link href="/login" className="text-md font-semibold text-[#00a39e]">Log In!</Link>
         </p>
-        <div className="absolute bottom-0 left-0 -translate-y-4 -translate-x-6 ml-1 bg-black w-10 h-10 border border-white rounded-full flex items-center justify-center z-10">
-            <Image
-                src="/images/kAi.png"
-                alt="kai"
-                width={28}
-                height={28}
-              />
-          </div>
       </form>
     </div>
   );

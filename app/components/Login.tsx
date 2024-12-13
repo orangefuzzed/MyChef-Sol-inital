@@ -4,7 +4,6 @@ import React, { useState } from 'react';
 import { signIn } from 'next-auth/react';
 import Link from 'next/link';
 import styles from './LoginScreen.module.css';
-import Image from 'next/image';
 
 const LoginScreen: React.FC = () => {
   const [email, setEmail] = useState('');
@@ -48,7 +47,7 @@ const LoginScreen: React.FC = () => {
       className={`${styles.container} flex items-center justify-center h-screen bg-fixed bg-cover`}
       style={{ backgroundImage: "url('/images/breakfast-2.png')" }}
     >
-      <form onSubmit={handleSubmit} className="bg-white/30 backdrop-blur-lg border-white border shadow-lg ring-1 ring-black/5 p-6 m-6 rounded-2xl">
+      <form onSubmit={handleSubmit} className="bg-white/30 backdrop-blur-lg border-white border shadow-lg ring-1 ring-black/5 p-6 m-4 rounded-2xl">
         {/* Logo */}
         <div className="flex items-center justify-center mb-2">
               <img src="/images/dishcovery-full-logo.png" alt="Dishcovery" className="w-3/4" />
@@ -101,7 +100,7 @@ const LoginScreen: React.FC = () => {
         <div className="my-6 border-t border-pink-800"></div>
         <p className={styles.signupText}>
           Don&apos;t have an account?{' '}
-          <Link href="/signup" className={styles.link}>
+          <Link href="/signup" className="text-md font-semibold text-[#00a39e]">
             Create One!
           </Link>
         </p>
