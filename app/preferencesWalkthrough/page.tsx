@@ -72,7 +72,7 @@ const steps: Step[] = [
       },
     ],
     
-    icon: <Fish strokeWidth={1.5} className="w-6 h-6 text-white" />,
+    icon: <Fish strokeWidth={1.5} size={22} className="bg-[#00a39e] p-1 w-8 h-8 border border-white rounded-full flex items-center justify-center mr-2" />,
     notesField: true,
   },
   {
@@ -99,7 +99,7 @@ const steps: Step[] = [
         type: 'text',
       },
     ],
-    icon: <CookingPot strokeWidth={1.5} className="w-6 h-6 text-white" />,
+    icon: <CookingPot strokeWidth={1.5} size={22} className="bg-[#00a39e] p-1 w-8 h-8 border border-white rounded-full flex items-center justify-center mr-2" />,
     notesField: true,
   },
   {
@@ -125,7 +125,7 @@ const steps: Step[] = [
         type: 'text',
       },
     ],
-    icon: <HeartPulse strokeWidth={1.5} className="w-6 h-6 text-white"/>,
+    icon: <HeartPulse strokeWidth={1.5} size={22} className="bg-[#00a39e] p-1 w-8 h-8 border border-white rounded-full flex items-center justify-center mr-2" />,
     notesField: true,
   },
   {
@@ -150,7 +150,7 @@ const steps: Step[] = [
         type: 'slider',
       },
     ],
-    icon: <Bot strokeWidth={1.5} className="w-6 h-6 text-white"/>,
+    icon: <Bot strokeWidth={1.5} size={22} className="bg-[#00a39e] p-1 w-8 h-8 border border-white rounded-full flex items-center justify-center mr-2" />,
     notesField: true,
   },
   {
@@ -175,7 +175,7 @@ const steps: Step[] = [
         options: ['Planning', 'Notifications', 'Cooking Guidance', 'Proactive Suggestions'],
       },
     ],
-    icon: <Utensils strokeWidth={1.5} className="w-6 h-6 text-white"/>,
+    icon: <Utensils strokeWidth={1.5} size={22} className="bg-[#00a39e] p-1 w-8 h-8 border border-white rounded-full flex items-center justify-center mr-2" />,
     notesField: true,
   },
 ];
@@ -343,7 +343,7 @@ const PreferencesWalkthrough = () => {
       <div className="flex-grow p-8 overflow-y-auto">
       <div className="flex items-center text-lg font-normal mb-4">
               <div className="flex items-center justify-center mr-2">
-                    <Settings strokeWidth={1.5} className="w-6 h-6 text-white" /> 
+                    <Settings strokeWidth={1.5} size={22} className="bg-pink-800/40 p-1 w-8 h-8 border border-white rounded-full flex items-center justify-center mr-2" /> 
                   </div>
                 <p>Set Your Preferences</p>
             </div>
@@ -358,13 +358,13 @@ const PreferencesWalkthrough = () => {
             </div>
         
         <div className="mb-4 bg-white/30 backdrop-blur-lg border-white border shadow-lg ring-1 ring-black/5 p-6 rounded-2xl">
-          <h2 className="text-md text-white mb-4 font-normal flex items-center gap-2">
+          <h2 className="text-lg font-light text-white mb-4 flex items-center gap-2">
             {icon}
             {section}
           </h2>
           {fields.map((fieldItem: FieldItem) => (
             <div key={fieldItem.field} className="mb-6">
-              <h3 className="text-md text-white mb-2 font-normal">{fieldItem.label}:</h3>
+              <h3 className="text-base font-medium text-white mb-2">{fieldItem.label}:</h3>
 
               {/* Text Input */}
               {fieldItem.type === 'text' && (
@@ -599,7 +599,7 @@ const PreferencesWalkthrough = () => {
           {currentStep < steps.length - 1 ? (
             <Button
               size="3"
-              className="text-xs p-2 px-4 bg-pink-800/30 border border-sky-50 shadow-lg ring-1 ring-black/5 rounded-full text-sky-50 ml-auto"
+              className="text-xs p-2 px-4 bg-pink-800/40 border border-sky-50 shadow-lg ring-1 ring-black/5 rounded-full text-sky-50 ml-auto"
               onClick={handleNext}
             >
               Next
@@ -607,7 +607,7 @@ const PreferencesWalkthrough = () => {
           ) : (
             <Button
               size="3"
-              className="text-xs p-2 px-4 bg-pink-800/30 border border-sky-50 shadow-lg ring-1 ring-black/5 rounded-full text-sky-50 ml-auto"
+              className="text-xs p-2 px-4 bg-pink-800/40 border border-sky-50 shadow-lg ring-1 ring-black/5 rounded-full text-sky-50 ml-auto"
               onClick={handleSavePreferences}
             >
               Save Preferences
