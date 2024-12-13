@@ -2,7 +2,7 @@
 
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useLayoutEffect } from 'react';
 import Header from './../components/Header';
 import Footer from './../components/Footer';
 import { Button } from '@radix-ui/themes';
@@ -223,6 +223,11 @@ const PreferencesWalkthrough = () => {
     fetchPreferences();
   }, [session]);
 
+  useLayoutEffect(() => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }, [currentStep]);
+  
+
   const handleInputChange = (field: keyof UserPreferencesInterface, value: string) => {
     setPreferences((prev) => ({ ...prev, [field]: value }));
   };  
@@ -281,14 +286,12 @@ const PreferencesWalkthrough = () => {
   const handleNext = () => {
     if (currentStep < steps.length - 1) {
       setCurrentStep(currentStep + 1);
-      document.getElementById('scroll-to-top-anchor')?.scrollIntoView({ behavior: 'smooth' });
     }
   };
 
   const handleBack = () => {
     if (currentStep > 0) {
       setCurrentStep(currentStep - 1);
-      document.getElementById('scroll-to-top-anchor')?.scrollIntoView({ behavior: 'smooth' });
     }
   };
 
@@ -337,11 +340,13 @@ const PreferencesWalkthrough = () => {
   };
 
   return (
+    <div className="main-content overflow-y-scroll h-full" key={currentStep}>
     <>
+    
     <div className="flex flex-col h-screen bg-fixed bg-cover bg-center text-white"
         style={{ backgroundImage: "url('/images/meal-cooking-1.png')" }}
         >
-      <Header centralText="Preferences Walkthrough" /><div id="scroll-to-top-anchor"></div>
+      <Header centralText="Preferences Walkthrough" />
       <div className="flex-grow p-8 overflow-y-auto">
       <div className="flex items-center text-lg font-normal mb-4">
               <div className="flex items-center justify-center mr-2">
@@ -619,7 +624,9 @@ const PreferencesWalkthrough = () => {
       </div>
       <Footer actions={['home', 'send']} />
     </div>
+    
     </>
+    </div>
   );
 };
 
