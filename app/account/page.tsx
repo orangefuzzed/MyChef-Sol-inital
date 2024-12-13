@@ -6,18 +6,10 @@ import Header from './../components/Header';
 import Footer from './../components/Footer';
 import { useSession } from 'next-auth/react';
 import { Button } from '@radix-ui/themes';
-import {
-  FaUser,
-  FaCog,
-  FaEnvelope,
-  FaSave,
-  FaEdit,
-  FaLock,
-  FaLanguage,
-  FaUpload,
-} from 'react-icons/fa';
 import styles from './account.module.css';
 import Image from 'next/image';
+import { Settings, User, FilePenLine, MailCheck, Lock, Languages, ImagePlus } from 'lucide-react';
+
 
 const AccountPage: React.FC = () => {
   const { data: session, update } = useSession();
@@ -154,14 +146,32 @@ const AccountPage: React.FC = () => {
   };
 
   return (
-    <div className={styles.container}>
+    <div className="flex flex-col h-screen bg-fixed bg-cover bg-center text-white"
+      style={{ backgroundImage: "url('/images/summer-deck-5.png')" }}
+      >
       <Header centralText="Account Settings" />
-      <main className={styles.mainContent}>
-        <div className={styles.sectionCard}>
-          <div className={styles.sectionHeader}>
-            <FaUser className={styles.icon} />
-            <h2 className={styles.sectionTitle}>Profile Information</h2>
-          </div>
+      <main className="flex-grow p-8 overflow-y-auto">
+
+        {/* Editing Action Buttons */}
+        <div className="flex justify-end mb-6">
+                  {isEditing ? (
+                    <Button onClick={handleSave} className="text-xs flex p-2 px-4 bg-pink-800/30 border border-sky-50 shadow-lg ring-1 ring-black/5 rounded-full text-sky-50 items-center gap-2 -mt-2 -mb-2">
+                      <FilePenLine className="w-4 h-4" /> Save
+                    </Button>
+                  ) : (
+                    <Button onClick={() => setIsEditing(true)} className="text-xs flex p-2 px-4 bg-pink-800/30 border border-sky-50 shadow-lg ring-1 ring-black/5 rounded-full text-sky-50 items-center gap-2 -mt-2 -mb-2">
+                      <FilePenLine className="w-4 h-4" /> Edit Profile
+                    </Button>
+                  )}
+                </div>
+
+        <div className="bg-white/30 backdrop-blur-lg border-white border shadow-lg ring-1 ring-black/5 mb-6 mt-2 p-6 rounded-2xl">
+          <div className="flex items-center text-md font-normal mb-4">
+          <div className="bg-[#00a39e] w-8 h-8 border border-white rounded-full flex items-center justify-center mr-2">
+                  <User strokeWidth={1.5} className="w-5 h-5 text-white" /> {/* Example icon, you can change this */}
+                </div>
+              <p>Profile Information</p>
+            </div>
           <div className={styles.sectionContent}>
             {/* Avatar Upload */}
             <div className={styles.avatarContainer}>
@@ -179,7 +189,7 @@ const AccountPage: React.FC = () => {
               {isEditing && (
                 <div className={styles.avatarUploadWrapper}>
                   <label htmlFor="avatarUpload" className={styles.avatarUploadLabel}>
-                    <FaUpload className={styles.uploadIcon} /> Upload Avatar
+                    <ImagePlus className={styles.uploadIcon} /> Upload Avatar
                   </label>
                   <input
                     id="avatarUpload"
@@ -234,11 +244,13 @@ const AccountPage: React.FC = () => {
         </div>
 
         {/* Account Settings Section */}
-        <div className={styles.sectionCard}>
-          <div className={styles.sectionHeader}>
-            <FaCog className={styles.icon} />
-            <h2 className={styles.sectionTitle}>Account Settings</h2>
-          </div>
+        <div className="bg-white/30 backdrop-blur-lg border-white border shadow-lg ring-1 ring-black/5 mb-6 mt-2 p-6 rounded-2xl">
+          <div className="flex items-center text-md font-normal mb-4">
+          <div className="bg-[#00a39e] w-8 h-8 border border-white rounded-full flex items-center justify-center mr-2">
+                  <Settings strokeWidth={1.5} className="w-5 h-5 text-white" /> {/* Example icon, you can change this */}
+                </div>
+              <p>Account Settings</p>
+            </div>
           <div className={styles.sectionContent}>
             <label htmlFor="linkedAccounts" className={styles.label}>
               Linked Accounts
@@ -269,11 +281,13 @@ const AccountPage: React.FC = () => {
         </div>
 
         {/* Notifications Section */}
-        <div className={styles.sectionCard}>
-          <div className={styles.sectionHeader}>
-            <FaEnvelope className={styles.icon} />
-            <h2 className={styles.sectionTitle}>Notifications</h2>
-          </div>
+        <div className="bg-white/30 backdrop-blur-lg border-white border shadow-lg ring-1 ring-black/5 mb-6 mt-2 p-6 rounded-2xl">
+          <div className="flex items-center text-md font-normal mb-4">
+          <div className="bg-[#00a39e] w-8 h-8 border border-white rounded-full flex items-center justify-center mr-2">
+                  <MailCheck strokeWidth={1.5} className="w-5 h-5 text-white" /> {/* Example icon, you can change this */}
+                </div>
+              <p>Notifications</p>
+            </div>
           <div className={styles.sectionContent}>
             <label className={styles.checkboxLabel}>
               <input
@@ -299,11 +313,13 @@ const AccountPage: React.FC = () => {
         </div>
 
         {/* Privacy Settings Section */}
-        <div className={styles.sectionCard}>
-          <div className={styles.sectionHeader}>
-            <FaLock className={styles.icon} />
-            <h2 className={styles.sectionTitle}>Privacy Settings</h2>
-          </div>
+        <div className="bg-white/30 backdrop-blur-lg border-white border shadow-lg ring-1 ring-black/5 mb-6 mt-2 p-6 rounded-2xl">
+          <div className="flex items-center text-md font-normal mb-4">
+          <div className="bg-[#00a39e] w-8 h-8 border border-white rounded-full flex items-center justify-center mr-2">
+                  <Lock strokeWidth={1.5} className="w-5 h-5 text-white" /> {/* Example icon, you can change this */}
+                </div>
+              <p>Privacy Settings</p>
+            </div>
           <div className={styles.sectionContent}>
             <label className={styles.label}>Profile Visibility</label>
             <select
@@ -330,11 +346,13 @@ const AccountPage: React.FC = () => {
         </div>
 
         {/* Language and Region Section */}
-        <div className={styles.sectionCard}>
-          <div className={styles.sectionHeader}>
-            <FaLanguage className={styles.icon} />
-            <h2 className={styles.sectionTitle}>Language and Region</h2>
-          </div>
+        <div className="bg-white/30 backdrop-blur-lg border-white border shadow-lg ring-1 ring-black/5 mb-4 mt-2 p-6 rounded-2xl">
+          <div className="flex items-center text-md font-normal mb-4">
+          <div className="bg-[#00a39e] w-8 h-8 border border-white rounded-full flex items-center justify-center mr-2">
+                  <Languages strokeWidth={1.5} className="w-5 h-5 text-white" /> {/* Example icon, you can change this */}
+                </div>
+              <p>Language and Region</p>
+            </div>
           <div className={styles.sectionContent}>
             <label htmlFor="language" className={styles.label}>
               Language
@@ -363,21 +381,11 @@ const AccountPage: React.FC = () => {
           </div>
         </div>
 
-        {/* Action Buttons */}
-        <div className={styles.actionButtons}>
-          {isEditing ? (
-            <Button onClick={handleSave} className={styles.saveButton}>
-              <FaSave className={styles.buttonIcon} /> Save
-            </Button>
-          ) : (
-            <Button onClick={() => setIsEditing(true)} className={styles.editButton}>
-              <FaEdit className={styles.buttonIcon} /> Edit Profile
-            </Button>
-          )}
-        </div>
+        
       </main>
       <Footer actions={['home', 'send']} />
-    </div>
+      </div>
+
   );
 };
 

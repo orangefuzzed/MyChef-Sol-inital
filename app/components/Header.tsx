@@ -56,7 +56,7 @@ const Header: React.FC<HeaderProps> = ({ onBackClick }) => {
         {/* Central Greeting */}
         <div className="flex items-center gap-2">
           <Image
-            src="/images/food-bot-1.png"
+            src="/images/kAi.png"
             alt="Food Bot"
             width={30}
             height={30}

@@ -4,9 +4,7 @@ import React, { useState } from 'react';
 import { signIn } from 'next-auth/react';
 import Link from 'next/link';
 import styles from './LoginScreen.module.css';
-import { Button } from '@radix-ui/themes';
-import { FcGoogle } from 'react-icons/fc';
-import { FaFacebook } from 'react-icons/fa';
+import Image from 'next/image';
 
 const LoginScreen: React.FC = () => {
   const [email, setEmail] = useState('');
@@ -46,9 +44,16 @@ const LoginScreen: React.FC = () => {
   };
 
   return (
-    <div className={styles.container}>
-      <form onSubmit={handleSubmit} className={styles.form}>
-        <h2 className={styles.title}>Login to MyChef</h2>
+    <div
+      className={`${styles.container} flex items-center justify-center h-screen bg-fixed bg-cover`}
+      style={{ backgroundImage: "url('/images/breakfast-2.png')" }}
+    >
+      <form onSubmit={handleSubmit} className="bg-white/30 backdrop-blur-lg border-white border shadow-lg ring-1 ring-black/5 p-6 m-6 rounded-2xl">
+        {/* Logo */}
+        <div className="flex items-center justify-center mb-2">
+              <img src="/images/dishcovery-full-logo.png" alt="Dishcovery" className="w-3/4" />
+            </div>
+        <h2 className={styles.title}>Login</h2>
         {error && <p className={styles.error}>{error}</p>}
         <div className={styles.inputGroup}>
           <label htmlFor="email">Email</label>
@@ -75,7 +80,7 @@ const LoginScreen: React.FC = () => {
         <button type="submit" className={styles.button} disabled={isLoading}>
           {isLoading ? 'Logging in...' : 'Log in'}
         </button>
-        <p className={styles.orText}>or</p>
+        {/*<p className={styles.orText}>or</p>
         <Button
           variant="solid"
           color="gray"
@@ -91,13 +96,23 @@ const LoginScreen: React.FC = () => {
           onClick={() => handleOAuthLogin('facebook')}
         >
           <FaFacebook size={20} /> Log in with Facebook
-        </Button>
+        </Button>*/}
+        {/* Divider */}
+        <div className="my-6 border-t border-pink-800"></div>
         <p className={styles.signupText}>
           Don&apos;t have an account?{' '}
           <Link href="/signup" className={styles.link}>
             Create One!
           </Link>
         </p>
+        <div className="absolute bottom-0 left-0 -translate-y-4 -translate-x-6 ml-1 bg-black w-10 h-10 border border-white rounded-full flex items-center justify-center z-10">
+            <Image
+                src="/images/kAi.png"
+                alt="kai"
+                width={28}
+                height={28}
+              />
+          </div>
       </form>
     </div>
   );

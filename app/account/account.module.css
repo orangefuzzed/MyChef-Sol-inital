@@ -9,7 +9,7 @@
 .mainContent {
   flex: 1;
   padding: 2rem;
-  background-color: #121212;
+
 }
 
 .sectionCard {
@@ -44,27 +44,31 @@
 }
 
 .label {
-  font-size: 1rem;
-  color: #cccccc;
-  margin-bottom: 0.75rem; /* Increased margin for better spacing */
+  font-size: .75rem;
+  color: #ffffff;
+  margin-bottom: 0.25rem; /* Increased margin for better spacing */
 }
 
 .input {
-  padding: 0.75rem;
-  border-radius: 4px;
+  padding: 0.25rem;
+  border-radius: 8px;
   border: none;
-  background-color: #2a2a2a;
-  color: #ffffff;
-  margin-bottom: 1.5rem; /* Increased margin for better spacing */
-  outline: none;
+  background-color: #ffffff;
+  color: #000000;
+  margin-bottom: 1rem; /* Increased margin for better spacing */
+  border: solid;
+  border-width: 1px;
+  font-size: .75rem;
+  border-color: rgb(170, 170, 170);
+  outline: #b7032a;
 }
 
 .input:disabled {
-  background-color: #3a3a3a;
+  background-color: #797979;
 }
 
 .placeholder {
-  font-size: 1rem;
+  font-size: .75rem;
   color: #aaaaaa;
 }
 
@@ -108,7 +112,7 @@
   width: 60px;
   height: 60px;
   border-radius: 50%;
-  border: 1px solid #00bcd4;
+  border: 1px solid #ffffff;
   object-fit: cover;
 }
 
@@ -130,7 +134,7 @@
 
 .avatarUploadLabel {
   cursor: pointer;
-  color: #00bcd4;
+  color: #000000;
   display: flex;
   align-items: center;
   gap: 0.5rem;

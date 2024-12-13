@@ -66,8 +66,8 @@ const Message: React.FC<MessageProps> = ({
         ) : (
           /*<BotMessageSquare strokeWidth={1.5} className="w-6 h-6 text-white" />*/
           <Image
-                src="/images/food-bot-1.png"
-                alt="disher"
+                src="/images/kAi.png"
+                alt="kai"
                 width={30}
                 height={30}
               />

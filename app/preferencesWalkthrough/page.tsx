@@ -8,7 +8,7 @@ import Footer from './../components/Footer';
 import { Button } from '@radix-ui/themes';
 import { useSession } from 'next-auth/react';
 import axios from 'axios';
-import { Settings, Frown, Meh, Smile, ThumbsUp, Heart, Bot, Fish, Utensils, CookingPot, FilePenLine, HeartPulse } from 'lucide-react';
+import { Settings, Frown, Meh, Smile, ThumbsUp, Heart, Bot, Fish, Utensils, CookingPot, HeartPulse } from 'lucide-react';
 import RankingSlider from './../components/RankingSlider';
 import * as Slider from '@radix-ui/react-slider';
 import styles from './PreferencesWalkthrough.module.css';
@@ -317,10 +317,10 @@ const PreferencesWalkthrough = () => {
     <Frown key="frown" />,
     <Meh key="meh" />,
     <Smile key="smile" />,
-    <ThumbsUp  key="grin-stars" />,
+    <ThumbsUp  key="thumbs-up" />,
     <Heart key="heart" />
   ];  
-  const importanceColors = ['#f43f5e', '#f59e0b', '#22d3ee', '#84cc16', '#84cc16'];
+  const importanceColors = ['#f43f5e', '#f59e0b', '#ebd234', '#84cc16', '#0ea5e9'];
 
   // Progress calculation
   const progressPercentage = ((currentStep + 1) / steps.length) * 100;
@@ -397,9 +397,9 @@ const PreferencesWalkthrough = () => {
                         onChange={(e) =>
                           handleCheckboxChange(fieldItem.field as keyof UserPreferencesInterface, option, e.target.checked)
                         }
-                        className="form-checkbox h-5 w-5 text-blue-600"
+                        className="form-checkbox h-4 w-4"
                       />
-                      <label className="text-white">{option}</label>
+                      <label className="text-white text-md">{option}</label>
                   </div>
                   ))}
                   
@@ -431,9 +431,9 @@ const PreferencesWalkthrough = () => {
                           onChange={(e) =>
                             handleRestrictionChange(restriction, e.target.checked, isAllergy)
                           }
-                          className="form-checkbox h-5 w-5 text-blue-600"
+                          className="form-checkbox h-4 w-4"
                         />
-                        <label className="text-white">{restriction}</label>
+                        <label className="text-sky-50 text-sm">{restriction}</label>
 
                         {/* Allergy Checkbox */}
                         {isChecked && (
@@ -444,9 +444,9 @@ const PreferencesWalkthrough = () => {
                               onChange={(e) =>
                                 handleRestrictionChange(restriction, true, e.target.checked)
                               }
-                              className="form-checkbox h-4 w-4 text-red-600"
+                              className="form-checkbox h-4 w-4"
                             />
-                            <label className="text-red-400 text-sm">Allergy</label>
+                            <label className="text-yellow-400 text-sm">Allergy</label>
                           </div>
                         )}
                       </div>
@@ -590,7 +590,7 @@ const PreferencesWalkthrough = () => {
           {currentStep > 0 && (
             <Button
               size="3"
-              className="px-6 py-2 rounded-full bg-gray-600 text-white hover:bg-gray-500 transition-colors duration-200"
+              className="text-xs p-2 px-4 bg-pink-800/30 border border-sky-50 shadow-lg ring-1 ring-black/5 rounded-full text-sky-50"
               onClick={handleBack}
             >
               Back
@@ -599,7 +599,7 @@ const PreferencesWalkthrough = () => {
           {currentStep < steps.length - 1 ? (
             <Button
               size="3"
-              className="px-6 py-2 rounded-full bg-blue-600 text-white hover:bg-blue-500 transition-colors duration-200 ml-auto"
+              className="text-xs p-2 px-4 bg-pink-800/30 border border-sky-50 shadow-lg ring-1 ring-black/5 rounded-full text-sky-50 ml-auto"
               onClick={handleNext}
             >
               Next
@@ -607,7 +607,7 @@ const PreferencesWalkthrough = () => {
           ) : (
             <Button
               size="3"
-              className="px-6 py-2 rounded-full bg-green-600 text-white hover:bg-green-500 transition-colors duration-200 ml-auto"
+              className="text-xs p-2 px-4 bg-pink-800/30 border border-sky-50 shadow-lg ring-1 ring-black/5 rounded-full text-sky-50 ml-auto"
               onClick={handleSavePreferences}
             >
               Save Preferences

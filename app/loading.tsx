@@ -12,7 +12,7 @@ const Loading = () => {
           {/* Chef Whiskington Icon */}
           <div className="relative">
             <Image
-              src="/images/food-bot-1.png"
+              src="/images/kAi.png"
               alt="Dishcovery Icon"
               width={60}
               height={60}

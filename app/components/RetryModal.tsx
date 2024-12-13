@@ -34,7 +34,7 @@ const RetryModal: React.FC<RetryModalProps> = ({ isOpen, onRetry, onClose }) => 
           {/* Chef Whiskington Icon */}
           <div className="relative mb-2">
             <Image
-              src="/images/food-bot-1.png"
+              src="/images/kAi.png"
               alt="Chef Whiskington"
               width={80}
               height={80}
