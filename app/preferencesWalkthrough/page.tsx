@@ -8,18 +8,7 @@ import Footer from './../components/Footer';
 import { Button } from '@radix-ui/themes';
 import { useSession } from 'next-auth/react';
 import axios from 'axios';
-import {
-  FaLeaf,
-  FaChild,
-  FaUtensils,
-  FaHeartbeat,
-  FaClipboardList,
-  FaFrown,
-  FaMeh,
-  FaSmile,
-  FaGrinStars,
-  FaHeart,
-} from 'react-icons/fa';
+import { Settings, Frown, Meh, Smile, ThumbsUp, Heart, Bot, Fish, Utensils, CookingPot, FilePenLine, HeartPulse } from 'lucide-react';
 import RankingSlider from './../components/RankingSlider';
 import * as Slider from '@radix-ui/react-slider';
 import styles from './PreferencesWalkthrough.module.css';
@@ -59,7 +48,6 @@ interface UserPreferencesInterface {
   // You can add other fields if needed, based on the default values and structure used in your component
 }
 
-
 const steps: Step[] = [
   {
     section: 'General Preferences',
@@ -83,7 +71,8 @@ const steps: Step[] = [
         options: ['Gluten', 'Dairy', 'Nuts', 'Shellfish', 'Soy', 'Eggs', 'Fish'],
       },
     ],
-    icon: <FaLeaf />,
+    
+    icon: <Fish strokeWidth={1.5} className="w-6 h-6 text-white" />,
     notesField: true,
   },
   {
@@ -110,7 +99,7 @@ const steps: Step[] = [
         type: 'text',
       },
     ],
-    icon: <FaChild />,
+    icon: <CookingPot strokeWidth={1.5} className="w-6 h-6 text-white" />,
     notesField: true,
   },
   {
@@ -136,7 +125,7 @@ const steps: Step[] = [
         type: 'text',
       },
     ],
-    icon: <FaUtensils />,
+    icon: <HeartPulse strokeWidth={1.5} className="w-6 h-6 text-white"/>,
     notesField: true,
   },
   {
@@ -161,7 +150,7 @@ const steps: Step[] = [
         type: 'slider',
       },
     ],
-    icon: <FaHeartbeat />,
+    icon: <Bot strokeWidth={1.5} className="w-6 h-6 text-white"/>,
     notesField: true,
   },
   {
@@ -186,7 +175,7 @@ const steps: Step[] = [
         options: ['Planning', 'Notifications', 'Cooking Guidance', 'Proactive Suggestions'],
       },
     ],
-    icon: <FaClipboardList />,
+    icon: <Utensils strokeWidth={1.5} className="w-6 h-6 text-white"/>,
     notesField: true,
   },
 ];
@@ -325,13 +314,13 @@ const PreferencesWalkthrough = () => {
   // Define importance labels, icons, and colors
   const importanceLabels = ['Low', 'Moderate', 'High', 'Very High', 'Critical'];
   const importanceIcons = [
-    <FaFrown key="frown" />,
-    <FaMeh key="meh" />,
-    <FaSmile key="smile" />,
-    <FaGrinStars key="grin-stars" />,
-    <FaHeart key="heart" />
+    <Frown key="frown" />,
+    <Meh key="meh" />,
+    <Smile key="smile" />,
+    <ThumbsUp  key="grin-stars" />,
+    <Heart key="heart" />
   ];  
-  const importanceColors = ['#ff4d4f', '#faad14', '#52c41a', '#1890ff', '#722ed1'];
+  const importanceColors = ['#f43f5e', '#f59e0b', '#22d3ee', '#84cc16', '#84cc16'];
 
   // Progress calculation
   const progressPercentage = ((currentStep + 1) / steps.length) * 100;
@@ -347,26 +336,35 @@ const PreferencesWalkthrough = () => {
 
   return (
     <>
+    <div className="flex flex-col h-screen bg-fixed bg-cover bg-center text-white"
+        style={{ backgroundImage: "url('/images/meal-cooking-1.png')" }}
+        >
       <Header centralText="Preferences Walkthrough" />
-      <div className="main-content">
-        <h1 className="text-2xl text-white mb-4 font-semibold">Set Your Preferences</h1>
-
-        {/* Progress Bar */}
-        <div className={styles.progressBarContainer}>
-          <div className={styles.progressBar} style={{ width: `${progressPercentage}%` }}></div>
-        </div>
-        <div className="text-white text-sm mb-4">
-          Step {currentStep + 1} of {steps.length}
-        </div>
-
-        <div className="mb-4">
-          <h2 className="text-lg text-white mb-4 font-medium flex items-center gap-2">
+      <div className="flex-grow p-8 overflow-y-auto">
+      <div className="flex items-center text-lg font-normal mb-4">
+              <div className="flex items-center justify-center mr-2">
+                    <Settings strokeWidth={1.5} className="w-6 h-6 text-white" /> 
+                  </div>
+                <p>Set Your Preferences</p>
+            </div>
+            <div className="bg-white/30 backdrop-blur-lg border-white border shadow-lg ring-1 ring-black/5 p-6 rounded-2xl mb-4">
+              {/* Progress Bar */}
+              <div className={styles.progressBarContainer}>
+                <div className={styles.progressBar} style={{ width: `${progressPercentage}%` }}></div>
+              </div>
+              <div className="text-white text-sm">
+                Step {currentStep + 1} of {steps.length}
+              </div>
+            </div>
+        
+        <div className="mb-4 bg-white/30 backdrop-blur-lg border-white border shadow-lg ring-1 ring-black/5 p-6 rounded-2xl">
+          <h2 className="text-md text-white mb-4 font-normal flex items-center gap-2">
             {icon}
             {section}
           </h2>
           {fields.map((fieldItem: FieldItem) => (
             <div key={fieldItem.field} className="mb-6">
-              <h3 className="text-md text-white mb-2 font-medium">{fieldItem.label}</h3>
+              <h3 className="text-md text-white mb-2 font-normal">{fieldItem.label}:</h3>
 
               {/* Text Input */}
               {fieldItem.type === 'text' && (
@@ -402,8 +400,9 @@ const PreferencesWalkthrough = () => {
                         className="form-checkbox h-5 w-5 text-blue-600"
                       />
                       <label className="text-white">{option}</label>
-                    </div>
+                  </div>
                   ))}
+                  
   </div>
 )}
 
@@ -518,7 +517,7 @@ const PreferencesWalkthrough = () => {
                   >
                     {importanceIcons[
                       (preferences[fieldItem.field as keyof UserPreferencesInterface] as number) - 1
-                    ] || <FaMeh />}
+                    ] || <Meh />}
                   </span>
                   {fieldItem.label}
                 </label>
@@ -617,6 +616,7 @@ const PreferencesWalkthrough = () => {
         </div>
       </div>
       <Footer actions={['home', 'save', 'favorite', 'send']} />
+    </div>
     </>
   );
 };

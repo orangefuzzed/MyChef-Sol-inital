@@ -3,12 +3,7 @@
 import React from 'react';
 import * as Slider from '@radix-ui/react-slider';
 import styles from './RankingSlider.module.css';
-import {
-  FaThumbsDown,
-  FaMeh,
-  FaThumbsUp,
-  FaHeart,
-} from 'react-icons/fa';
+import { Meh, ThumbsDown, Heart, ThumbsUp, } from 'lucide-react';
 
 interface RankingSliderProps {
   name: string;
@@ -19,18 +14,18 @@ interface RankingSliderProps {
 const RankingSlider: React.FC<RankingSliderProps> = ({ name, ranking, onChange }) => {
   const labels = ['Avoid', 'Neutral', 'Prefer', 'Must-Have'];
   const icons = [
-    <FaThumbsDown key="thumbs-down" />,
-    <FaMeh key="meh" />,
-    <FaThumbsUp key="thumbs-up" />,
-    <FaHeart key="heart" />
+    <ThumbsDown strokeWidth={1.5} size={18} key="thumbs-down" />,
+    <Meh strokeWidth={1.5} size={18} key="meh" />,
+    <ThumbsUp strokeWidth={1.5} size={18} key="thumbs-up" />,
+    <Heart strokeWidth={1.5} size={18} key="heart" />
   ];  
-  const colors = ['#ff4d4f', '#faad14', '#52c41a', '#1890ff'];
+  const colors = ['#f43f5e', '#f59e0b', '#22d3ee', '#84cc16'];
 
   return (
     <div className={styles.sliderContainer}>
-      <label className="text-white mb-2 flex items-center">
+      <label className="text-sky-50 mb-2 flex items-center">
         <span
-          className={styles.sliderIcon}
+          className="mr-2"
           style={{ color: colors[ranking - 1] }}
         >
           {icons[ranking - 1]}

@@ -134,7 +134,7 @@ const PreferencesPage = () => {
             <div className="bg-[#00a39e] w-8 h-8 border border-white rounded-full flex items-center justify-center mr-2">
                   <Fish strokeWidth={1.5} className="w-5 h-5 text-white" /> {/* Example icon, you can change this */}
                 </div>
-              <h2>Dietary Preferences</h2>
+              <p>General Preferences</p>
             </div>
             <div className="mt-4">
               <p className="mt-2 text-md font-normal mb-2">Cuisine Preferences:</p>
@@ -238,10 +238,10 @@ const PreferencesPage = () => {
                 <p className="mt-2 text-sm text-gray-500">No preference</p>
               )}
             </section>
-            <div className={styles.preferenceItem}>
-            <p className="mt-2 text-md font-normal text-white mb-2">Cooking Preferences Notes:</p>
-              {preferences.cookingPreferencesNotes || 'None'}
-            </div>
+            <section className="mt-4">
+              <p className="mt-2 text-md font-normal text-black mb-2">Cooking Preferences Notes:</p>
+                {preferences.cookingPreferencesNotes || 'None'}
+            </section>
           </section>
 
           {/* Wellness Goals Section */}
