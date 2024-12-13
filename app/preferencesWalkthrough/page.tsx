@@ -340,14 +340,12 @@ const PreferencesWalkthrough = () => {
   };
 
   return (
-    <div className="main-content overflow-y-scroll h-full" key={currentStep}>
     <>
-    
-    <div className="flex flex-col h-screen bg-fixed bg-cover bg-center text-white"
+    <div className="overflow-y-auto h-full flex flex-col h-screen bg-fixed bg-cover bg-center text-white" key={currentStep}
         style={{ backgroundImage: "url('/images/meal-cooking-1.png')" }}
         >
       <Header centralText="Preferences Walkthrough" />
-      <div className="flex-grow p-8 overflow-y-auto">
+      <div className="flex-grow p-8">
       <div className="flex items-center text-lg font-normal mb-4">
               <div className="flex items-center justify-center mr-2">
                     <Settings strokeWidth={1.5} size={22} className="bg-pink-800/40 p-1 w-8 h-8 border border-white rounded-full flex items-center justify-center mr-2" /> 
@@ -624,9 +622,7 @@ const PreferencesWalkthrough = () => {
       </div>
       <Footer actions={['home', 'send']} />
     </div>
-    
     </>
-    </div>
   );
 };
 
