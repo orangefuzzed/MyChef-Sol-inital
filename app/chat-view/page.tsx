@@ -123,7 +123,10 @@ const ChatViewPage: React.FC = () => {
   }
 
   return (
-    <div className="h-screen flex flex-col bg-gray-900 text-white overflow-hidden">
+    <div
+        className="flex flex-col h-screen bg-fixed bg-cover bg-center text-white"
+        style={{ backgroundImage: "url('/images/summer-deck-2.png')" }}
+      >
       {/* Header */}
       <Header centralText={sessionTitle} />
 
@@ -140,7 +143,7 @@ const ChatViewPage: React.FC = () => {
         {/* Recipe Suggestions in Context with Messages */}
         {recipeSuggestionSets.map((suggestionSet) => (
           <div key={suggestionSet.responseId} className="mt-4">
-            <p className="max-w-lg p-3 rounded-3xl bg-gray-700 text-green-200 border-solid border border-gray-500 mb-4">{suggestionSet.message}</p>
+            <p className="max-w-lg px-8 py-4 rounded-r-3xl rounded-b-3xl bg-gradient-to-r from-[#00a39e] from-20% to-[#00f5d0] to-95% text-slate-950 font-medium border border-white shadow-lg ring-1 ring-black/5 mb-4">{suggestionSet.message}</p>
             <RecipeSuggestions
               currentRecipeList={suggestionSet.suggestions}
               handleRecipeSelect={() => {}} // No selection action needed for saved sessions
@@ -164,7 +167,7 @@ const ChatViewPage: React.FC = () => {
       />
 
       {/* Footer Section with Save Session Button */}
-      <Footer actions={['home', 'save', 'favorite', 'send']} />
+      <Footer actions={['home', 'send']} />
     </div>
   );
 };

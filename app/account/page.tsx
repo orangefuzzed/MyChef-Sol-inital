@@ -159,7 +159,7 @@ const AccountPage: React.FC = () => {
                       <FilePenLine className="w-4 h-4" /> Save
                     </Button>
                   ) : (
-                    <Button onClick={() => setIsEditing(true)} className="text-xs flex p-2 px-4 bg-pink-800/40 border border-sky-50 shadow-lg ring-1 ring-black/5 rounded-full text-sky-50 items-center gap-2 -mt-2 -mb-2">
+                    <Button onClick={() => setIsEditing(true)} className="text-xs flex p-2 px-4 bg-pink-800/45 border border-sky-50 shadow-lg ring-1 ring-black/5 rounded-full text-sky-50 items-center gap-2 -mt-2 -mb-2">
                       <FilePenLine className="w-4 h-4" /> Edit Profile
                     </Button>
                   )}

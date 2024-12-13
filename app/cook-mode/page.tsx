@@ -99,7 +99,7 @@ const CookModePage = () => {
       </div>
 
       {/* Footer with standard actions */}
-      <Footer actions={['home', 'save', 'favorite', 'send']} />
+      <Footer actions={['home', 'send']} />
     </div>
   );
 };

@@ -8,7 +8,7 @@ import HamburgerMenu from '../components/HamburgerMenu';
 import AvatarMenu from '../components/AvatarMenu';
 import Footer from '../components/Footer';
 import Header from '../components/Header'; // Import the Header component
-import { SendHorizontal, ChefHat } from 'lucide-react';
+import { BotMessageSquare, ChefHat } from 'lucide-react';
 import Link from 'next/link'
 
 type IconName = 'apple' | 'avocado' | 'axe' | 'beer 1' | 'cake 1' | 'carrot' | 'cheese' | 'cherry' | 'burger' | 'dish 1' | 'cutlery 4' | 'fire' | 'chefshat' | 'shopping basket' | 'shrimp' | 'scales' | 'dish 3';
@@ -102,15 +102,15 @@ const HomeScreen: React.FC = () => {
           ].map(({ title, description }, index) => (
             <div key={index} className="recipe-details-container bg-white/30 backdrop-blur-lg border-white border shadow-lg ring-1 ring-black/5 p-6 rounded-2xl">
               <div className="bg-sky-50/30 w-8 h-8 border border-white rounded-full flex items-center justify-center">
-                  <ChefHat strokeWidth={1.5} className="w-4 h-4 text-black" /> {/* Example icon, you can change this */}
+                  <ChefHat strokeWidth={1.5} className="w-5 h-5 text-black" /> {/* Example icon, you can change this */}
                 </div>
               <div className="mt-2">
                 <h3 className={styles.cardTitle}>{title}</h3>
                 <p className={styles.cardDescription}>{description}</p>
                 <Link href="/ai-chat">
-                <button className="mt-4 p-2 px-6 bg-pink-800/50 border border-sky-50 shadow-lg ring-1 ring-black/5 rounded-full text-sky-50 flex items-center gap-2">
+                <button className="mt-4 py-2 px-6 bg-pink-800/50 border border-sky-50 shadow-lg ring-1 ring-black/5 rounded-full text-sky-50 flex items-center gap-2">
                   Get Recipes!
-                  <SendHorizontal strokeWidth={1.5} className="w-5 h-5" />
+                  <BotMessageSquare strokeWidth={1.5} className="w-5 h-5" />
                 </button>
                 </Link>
               </div>
