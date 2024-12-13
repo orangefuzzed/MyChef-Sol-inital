@@ -147,7 +147,7 @@ const AccountPage: React.FC = () => {
 
   return (
     <div className="flex flex-col h-screen bg-fixed bg-cover bg-center text-white"
-      style={{ backgroundImage: "url('/images/summer-deck-5.png')" }}
+      style={{ backgroundImage: "url('/images/chef-cooking-2.png')" }}
       >
       <Header centralText="Account Settings" />
       <main className="flex-grow p-8 overflow-y-auto">
