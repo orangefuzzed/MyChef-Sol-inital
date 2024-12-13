@@ -99,9 +99,9 @@ const LoginScreen: React.FC = () => {
         {/* Divider */}
         <div className="my-6 border-t border-pink-800"></div>
         <p className={styles.signupText}>
-          Don&apos;t have an account?{' '}
+          No Account yet?{' '}
           <Link href="/signup" className="text-md font-semibold text-[#00a39e]">
-            Create One!
+            Create One Now!
           </Link>
         </p>
       </form>

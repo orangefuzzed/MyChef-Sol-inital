@@ -97,7 +97,7 @@ const HistoryPage: React.FC = () => {
       </div>
 
       {/* Footer */}
-      <Footer actions={['home', 'favorite', 'send']} />
+      <Footer actions={['home', 'send']} />
     </div>
   );
 };

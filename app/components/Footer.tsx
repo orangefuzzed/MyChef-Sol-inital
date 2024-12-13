@@ -1,6 +1,6 @@
 import React from 'react';
 import Link from 'next/link';
-import { Home, Bookmark, Heart, Bot } from 'lucide-react';
+import { Home, Bookmark, Heart, BotMessageSquare } from 'lucide-react';
 
 interface FooterProps {
   actions: string[];
@@ -13,7 +13,7 @@ const Footer: React.FC<FooterProps> = ({ actions, contextualActions }) => {
     home: { icon: <Home strokeWidth={1.5} size={18} />, label: 'Home', link: '/' },
     save: { icon: <Bookmark strokeWidth={1.5} size={18} />, label: 'Save', link: '/' },
     favorite: { icon: <Heart strokeWidth={1.5} size={18} />, label: 'Favorite', link: '/' },
-    send: { icon: <Bot strokeWidth={1.5} size={20} />, label: 'Chat', link: '/ai-chat' },
+    send: { icon: <BotMessageSquare strokeWidth={1.5} size={20} />, label: 'Get Recipes', link: '/ai-chat' },
   };
 
   return (

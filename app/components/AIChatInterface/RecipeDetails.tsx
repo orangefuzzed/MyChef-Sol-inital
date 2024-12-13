@@ -76,7 +76,7 @@ const RecipeDetails: React.FC = () => {
         </div>
         <div className="flex flex-col items-center text-xs text-black">
           <Clock className="w-5 h-5 text-pink-800 mb-1" />
-          <span> {selectedRecipe.cookTime} </span>
+          <span> {selectedRecipe.cookTime}</span>
         </div>
         <div className="flex flex-col items-center text-xs text-black">
           <Soup className="w-5 h-5 text-pink-800 mb-1" />
@@ -106,7 +106,7 @@ const RecipeDetails: React.FC = () => {
         <Link href={{ pathname: `/cook-mode`, query: { id: selectedRecipe.id } }}>
           <button className="mt-4 p-2 px-6 bg-pink-800/50 border border-sky-50 shadow-lg ring-1 ring-black/5 rounded-full text-sky-50 flex items-center gap-2">
             View in Cook Mode
-            <ChefHat className="w-5 h-5" />
+            <ChefHat strokeWidth={1.5} className="w-5 h-5" />
           </button>
         </Link>
       </div>
@@ -116,7 +116,7 @@ const RecipeDetails: React.FC = () => {
       >
         <button className="mt-4 p-2 px-6 bg-pink-800/50 border border-sky-50 shadow-lg ring-1 ring-black/5 rounded-full text-sky-50 flex items-center gap-2">
           View Shopping List
-          <ShoppingCart className="w-5 h-5" />
+          <ShoppingCart strokeWidth={1.5} className="w-5 h-5" />
         </button>
       </Link>
     </div>

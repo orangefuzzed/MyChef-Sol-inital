@@ -8,7 +8,9 @@ import Link from 'next/link';
 import styles from './preferences.module.css'; // Import the CSS module and make a change for no reason other than to mess with git
 import Header from '../components/Header';
 import Footer from '../components/Footer';
-import { Bot, Fish, Utensils, CookingPot, FilePenLine, HeartPulse } from 'lucide-react';
+import { Bot, Fish, Utensils, CookingPot, FilePenLine, HeartPulse, Settings } from 'lucide-react';
+import Image from 'next/image';
+
 
 interface Preference {
   name: string;
@@ -84,14 +86,42 @@ const PreferencesPage = () => {
 
   if (!preferences) {
     return (
-      <div className={styles.noPreferencesContainer}>
-        <p>No preferences found.</p>
-        <Link href="/preferencesWalkthrough">
-          <button className={styles.editButton}>Set Your Preferences</button>
-        </Link>
+      <div
+        className="flex flex-col items-center justify-center h-screen bg-fixed bg-cover"
+        style={{ backgroundImage: "url('/images/meal-cooking-1.png')" }}
+      >
+        {/* Main Container */}
+        <div className="flex flex-col items-center justify-center space-y-6 bg-white/30 backdrop-blur-lg border-white border shadow-lg ring-1 ring-black/5 p-4 m-6 rounded-2xl">
+          {/* Chef Whiskington Icon */}
+          <div className="relative bg-black w-20 h-20 border border-white rounded-full flex items-center justify-center">
+            <Image
+              src="/images/kAi.png"
+              alt="Dishcovery Icon"
+              width={60}
+              height={60}
+              className="mb-2"
+            />
+          </div>
+  
+          {/* Content */}
+          <p className="text-center text-md font-normal text-sky-50">
+            Oops! You don't have any preferences set yet. Your preferences helps kAi
+            to create and deliver tailored recipes for your dietary needs - would you like to
+            set them now?
+          </p>
+  
+          {/* Button */}
+          <Link href="/preferencesWalkthrough">
+            <button className="text-sm p-2 px-6 bg-pink-800/50 border border-sky-50 shadow-lg ring-1 ring-black/5 rounded-full text-sky-50 flex items-center gap-2">
+              Set Your Preferences
+              <Settings className="w-4 h-4" />
+            </button>
+          </Link>
+        </div>
       </div>
     );
   }
+  
 
   // Helper function to display rankings
   const formatPreferences = (prefs: Preference[]) =>
@@ -321,7 +351,7 @@ const PreferencesPage = () => {
           </section>
         </div>
       </div>
-      <Footer actions={["home", "save", "favorite", "send"]} />
+      <Footer actions={["home", "send"]} />
     </div>
   );
 };

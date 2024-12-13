@@ -55,9 +55,19 @@
 }
 
 .avatarImage {
-  border-radius: 50%;
+  width: 60px;
+  height: 60px;
+  border-radius: 80%;
   object-fit: cover;
-  border: 1px solid var(--text-primary);
+  border: 1px solid #b1b1b1;
+}
+
+.avatarImageChat {
+  width: 40px;
+  height: 40px;
+  border-radius: 80%;
+  object-fit: cover;
+  border: 1px solid #b1b1b1;
 }
 
 /* Divider Styling */

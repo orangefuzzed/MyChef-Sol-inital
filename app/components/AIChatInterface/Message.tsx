@@ -58,7 +58,7 @@ const Message: React.FC<MessageProps> = ({
               alt="User Avatar"
               width={40}
               height={40}
-              className={`${styles.avatarImage} rounded-full`}
+              className={styles.avatarImageChat}
             />
           ) : (
             <CircleUserRound className="w-6 h-6 text-white" />

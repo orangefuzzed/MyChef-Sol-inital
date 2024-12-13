@@ -62,7 +62,7 @@ const ShoppingListsPage = () => {
 
   
       {/* Footer */}
-      <Footer actions={['home', 'save', 'send']} />
+      <Footer actions={['home', 'send']} />
     </div>
   );
   

@@ -123,7 +123,7 @@ const HomeScreen: React.FC = () => {
       </div>
       
       {/* Footer */}
-      <Footer actions={["home", "save", "favorite", "send"]} />
+      <Footer actions={["home", "send"]} />
     </div>
   );
 };

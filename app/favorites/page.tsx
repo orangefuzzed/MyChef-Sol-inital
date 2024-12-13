@@ -76,7 +76,7 @@ const FavoritesPage = () => {
   
 
       {/* Footer */}
-      <Footer actions={['home', 'save', 'send']} />
+      <Footer actions={['home', 'send']} />
     </div>
   );
 };

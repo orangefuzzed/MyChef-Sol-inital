@@ -615,7 +615,7 @@ const PreferencesWalkthrough = () => {
           )}
         </div>
       </div>
-      <Footer actions={['home', 'save', 'favorite', 'send']} />
+      <Footer actions={['home', 'send']} />
     </div>
     </>
   );

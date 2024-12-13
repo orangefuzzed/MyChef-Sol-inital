@@ -141,15 +141,15 @@ const RecipeViewPage = () => {
 
         {/* Footer with Save and Favorite Toggles */}
         <Footer
-          actions={['home', 'send']}
+          actions={['home']}
           contextualActions={[
             {
-              label: isSaved ? 'Saved' : 'Save',
+              label: isSaved ? 'Recipe Saved' : 'Save Recipe',
               icon: <Bookmark strokeWidth={1.5} size={18} color={isSaved ? '#9d174d' : 'white'} />,
               onClick: handleSaveToggle,
             },
             {
-              label: isFavorited ? 'Favorited' : 'Favorite',
+              label: isFavorited ? 'Recipe Favorited' : 'Favorite Recipe',
               icon: <Heart strokeWidth={1.5} size={18} color={isFavorited ? '#9d174d' : 'white'} />,
               onClick: handleFavoriteToggle,
             },

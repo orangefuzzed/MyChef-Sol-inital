@@ -8,7 +8,6 @@ import {
   Heart,
   ShoppingCart,
   History,
-  Calendar,
   User,
   LogOut,
   Bookmark,
@@ -17,6 +16,7 @@ import {
 import Link from 'next/link';
 import { signOut, useSession } from 'next-auth/react';
 import Image from 'next/image';
+import styles from './HamburgerMenu.module.css';
 
 interface HamburgerMenuProps {
   isOpen: boolean;
@@ -100,7 +100,7 @@ const HamburgerMenu: React.FC<HamburgerMenuProps> = ({ isOpen, onClose }) => {
                   alt="User Avatar"
                   width={60}
                   height={60}
-                  className="rounded-full border border-gray-400"
+                  className={styles.avatarImage}
                 />
               ) : (
                 <User size={40} className="text-gray-300" />

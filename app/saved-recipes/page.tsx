@@ -92,7 +92,7 @@ const SavedRecipesPage = () => {
 
 
       {/* Footer */}
-      <Footer actions={['home', 'favorite', 'send']} />
+      <Footer actions={['home', 'send']} />
     </div>
   );
 };
