@@ -76,7 +76,7 @@ const steps: Step[] = [
     notesField: true,
   },
   {
-    section: 'Meal Planning & Family Considerations',
+    section: 'Lifestyle and Meal Plans',
     fields: [
       {
         label: 'Meal Planning',
@@ -99,7 +99,7 @@ const steps: Step[] = [
         type: 'text',
       },
     ],
-    icon: <CookingPot strokeWidth={1.5} size={22} className="bg-[#00a39e] p-1 w-8 h-8 border border-white rounded-full flex items-center justify-center mr-2" />,
+    icon: <Utensils strokeWidth={1.5} size={22} className="bg-[#00a39e] p-1 w-8 h-8 border border-white rounded-full flex items-center justify-center mr-2" />,
     notesField: true,
   },
   {
@@ -125,7 +125,7 @@ const steps: Step[] = [
         type: 'text',
       },
     ],
-    icon: <HeartPulse strokeWidth={1.5} size={22} className="bg-[#00a39e] p-1 w-8 h-8 border border-white rounded-full flex items-center justify-center mr-2" />,
+    icon: <CookingPot strokeWidth={1.5} size={22} className="bg-[#00a39e] p-1 w-8 h-8 border border-white rounded-full flex items-center justify-center mr-2" />,
     notesField: true,
   },
   {
@@ -150,7 +150,7 @@ const steps: Step[] = [
         type: 'slider',
       },
     ],
-    icon: <Bot strokeWidth={1.5} size={22} className="bg-[#00a39e] p-1 w-8 h-8 border border-white rounded-full flex items-center justify-center mr-2" />,
+    icon: <HeartPulse strokeWidth={1.5} size={22} className="bg-[#00a39e] p-1 w-8 h-8 border border-white rounded-full flex items-center justify-center mr-2" />,
     notesField: true,
   },
   {
@@ -175,7 +175,7 @@ const steps: Step[] = [
         options: ['Planning', 'Notifications', 'Cooking Guidance', 'Proactive Suggestions'],
       },
     ],
-    icon: <Utensils strokeWidth={1.5} size={22} className="bg-[#00a39e] p-1 w-8 h-8 border border-white rounded-full flex items-center justify-center mr-2" />,
+    icon: <Bot strokeWidth={1.5} size={22} className="bg-[#00a39e] p-1 w-8 h-8 border border-white rounded-full flex items-center justify-center mr-2" />,
     notesField: true,
   },
 ];
@@ -222,6 +222,12 @@ const PreferencesWalkthrough = () => {
 
     fetchPreferences();
   }, [session]);
+
+
+  useEffect(() => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }, [currentStep]);
+  
 
   const handleInputChange = (field: keyof UserPreferencesInterface, value: string) => {
     setPreferences((prev) => ({ ...prev, [field]: value }));
@@ -369,7 +375,7 @@ const PreferencesWalkthrough = () => {
               {/* Text Input */}
               {fieldItem.type === 'text' && (
                 <textarea
-                  className="w-full p-4 bg-gray-700 text-white rounded-lg border border-gray-600 focus:border-blue-500 focus:outline-none"
+                  className="w-full p-4 bg-gray-700/40 text-white rounded-lg border border-gray-600 focus:border-sky-500 focus:outline-none"
                   placeholder={fieldItem.placeholder}
                   value={
                     typeof preferences[fieldItem.field as keyof UserPreferencesInterface] === 'string'
@@ -566,7 +572,7 @@ const PreferencesWalkthrough = () => {
             <div className="mb-6">
               <h3 className="text-md text-white mb-2 font-medium">Additional Notes</h3>
               <textarea
-                className="w-full p-4 bg-gray-700 text-white rounded-lg border border-gray-600 focus:border-blue-500 focus:outline-none"
+                className="w-full p-4 bg-gray-700/40 text-white rounded-lg border border-gray-600 focus:border-sky-500 focus:outline-none"
                 placeholder="Any additional considerations or comments?"
                 value={
                   typeof preferences[notesFieldMapping[currentStep] as keyof UserPreferencesInterface] ===
