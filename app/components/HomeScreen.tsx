@@ -28,9 +28,6 @@ const HomeScreen: React.FC = () => {
     }
   }, [status, router]);
 
-  if (status === 'loading') {
-    return <div>Loading...</div>; // You can replace this with a loading spinner if preferred
-  }
 
   // The main component content should only be returned once the user is authenticated.
   return (
