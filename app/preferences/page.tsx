@@ -104,7 +104,7 @@ const PreferencesPage = () => {
           </div>
   
           {/* Content */}
-          <p className="text-center text-md font-normal text-sky-50">
+          <p className="text-center text-base font-medium text-sky-50">
             Oops! You don't have any preferences set yet. Your preferences helps kAi
             to create and deliver tailored recipes for your dietary needs - would you like to
             set them now?
@@ -167,7 +167,7 @@ const PreferencesPage = () => {
               <p>General Preferences</p>
             </div>
             <div className="mt-4">
-              <p className="mt-2 text-md font-normal mb-2">Cuisine Preferences:</p>
+              <p className="mt-2 text-base font-medium mb-2">Cuisine Preferences:</p>
                 {preferences.cuisinePreferences.length > 0 ? (
                   <ul className="list-disc list-inside mt-2 space-y-1 text-sky-50">
                     {preferences.cuisinePreferences.map((preference, index) => (
@@ -184,7 +184,7 @@ const PreferencesPage = () => {
 
             {/* Dietary Preferences */}
               <section className="mt-4">
-                <p className="text-md font-normal mb-2">Dietary Preferences</p>
+                <p className="text-base font-medium mb-2">Dietary Preferences</p>
                 {preferences.dietaryPreferences.length > 0 ? (
                   <ul className="list-disc list-inside mt-2 space-y-1 text-sky-50">
                     {preferences.dietaryPreferences.map((preference, index) => (
@@ -201,7 +201,7 @@ const PreferencesPage = () => {
 
               {/* Dietary Restrictions */}
               <section className="mt-4">
-                <p className="text-md font-normal mb-2">Dietary Restrictions</p>
+                <p className="text-base font-medium mb-2">Dietary Restrictions</p>
                 {preferences.dietaryRestrictions.length > 0 ? (
                   <ul className="list-disc list-inside mt-2 space-y-1 text-sky-50">
                     {preferences.dietaryRestrictions.map((restriction, index) => (
@@ -217,7 +217,7 @@ const PreferencesPage = () => {
 
               {/* Diets */}
               <section className="mt-4">
-                <p className="text-md font-normal mb-2">Diets</p>
+                <p className="text-base font-medium mb-2">Diets</p>
                 {preferences.diets ? (
                   <ul className="list-disc list-inside mt-2 space-y-1 text-sky-50">
                     {preferences.diets.split(',').map((diet, index) => (
@@ -240,7 +240,7 @@ const PreferencesPage = () => {
             </div>
             {/* Cooking Difficulty Preferences */}
               <section className="mt-4">
-              <p className="mt-2 text-md font-normal mb-2">Cooking Difficulty Preferences:</p>
+              <p className="mt-2 text-base font-medium mb-2">Cooking Difficulty Preferences:</p>
                 {preferences.cookingDifficultyPreferences.length > 0 ? (
                   <ul className="list-disc list-inside mt-2 space-y-1 text-sky-50">
                     {preferences.cookingDifficultyPreferences.map((preference, index) => (
@@ -257,7 +257,7 @@ const PreferencesPage = () => {
 
             {/* Cooking Methods */}
             <section className="mt-4">
-              <p className="text-md font-normal mb-2">Cooking Methods</p>
+              <p className="text-base font-medium mb-2">Cooking Methods</p>
               {preferences.cookingMethods && preferences.cookingMethods.length > 0 ? (
                 <ul className="list-disc list-inside mt-2 space-y-1 text-sky-50">
                   {preferences.cookingMethods.map((method, index) => (
@@ -269,7 +269,7 @@ const PreferencesPage = () => {
               )}
             </section>
             <section className="mt-4">
-              <p className="mt-2 text-md font-normal text-sky-50 mb-2">Cooking Preferences Notes:</p>
+              <p className="mt-2 text-base font-medium text-sky-50 mb-2">Cooking Preferences Notes:</p>
                 {preferences.cookingPreferencesNotes || 'None'}
             </section>
           </section>
