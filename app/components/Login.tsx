@@ -105,14 +105,6 @@ const LoginScreen: React.FC = () => {
             Create One!
           </Link>
         </p>
-        <div className="absolute bottom-0 left-0 -translate-y-4 -translate-x-6 ml-1 bg-black w-10 h-10 border border-white rounded-full flex items-center justify-center z-10">
-            <Image
-                src="/images/kAi.png"
-                alt="kai"
-                width={28}
-                height={28}
-              />
-          </div>
       </form>
     </div>
   );

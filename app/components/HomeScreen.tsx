@@ -113,7 +113,7 @@ const HomeScreen: React.FC = () => {
                 <Link href="/ai-chat">
                 <button className="mt-4 p-2 px-6 bg-pink-800/50 border border-sky-50 shadow-lg ring-1 ring-black/5 rounded-full text-sky-50 flex items-center gap-2">
                   Get Recipes!
-                  <SendHorizontal className="w-5 h-5" />
+                  <SendHorizontal strokeWidth={1.5} className="w-5 h-5" />
                 </button>
                 </Link>
               </div>
