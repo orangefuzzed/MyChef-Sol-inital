@@ -44,7 +44,7 @@
 }
 
 .label {
-  font-size: .75rem;
+  font-size: 1rem;
   color: #ffffff;
   margin-bottom: 0.25rem; /* Increased margin for better spacing */
 }
@@ -58,13 +58,13 @@
   margin-bottom: 1rem; /* Increased margin for better spacing */
   border: solid;
   border-width: 1px;
-  font-size: .75rem;
+  font-size: 1rem;
   border-color: rgb(170, 170, 170);
   outline: #b7032a;
 }
 
 .input:disabled {
-  background-color: #797979;
+  background-color: #bfbfbf;
 }
 
 .placeholder {
