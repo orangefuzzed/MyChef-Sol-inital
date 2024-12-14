@@ -9,12 +9,12 @@
   "scope": "/",
   "icons": [
     {
-      "src": "/icons/dishcovery_icon-192x192.png",
+      "src": "/icons/dishcovery_icon-192x192_new.png",
       "sizes": "192x192",
       "type": "image/png"
     },
     {
-      "src": "/icons/dishcovery_icon-512x512.png",
+      "src": "/icons/dishcovery_icon-512x512_new.png",
       "sizes": "512x512",
       "type": "image/png"
     }
