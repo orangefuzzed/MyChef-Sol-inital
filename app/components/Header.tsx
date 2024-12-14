@@ -44,7 +44,7 @@ const Header: React.FC<HeaderProps> = ({ onBackClick }) => {
 
   return (
     <header className={`${styles.header} header`}>
-      <div className="flex justify-between items-center py-1.5 px-4 bg-white/30 backdrop-blur-lg shadow-lg ring-1 ring-black/5">
+      <div className="flex justify-between items-center py-1.5 px-4 bg-black/75 border-b border-gray-800 text-white backdrop-blur-lg shadow-lg ring-1 ring-black/5">
         {/* Back Button */}
         <button
           onClick={handleBackClick}
@@ -62,7 +62,7 @@ const Header: React.FC<HeaderProps> = ({ onBackClick }) => {
             height={30}
             className="rounded-full"
           />
-          <Text className="text-md text-black">
+          <Text className="text-md text-white">
             Hiya, {user ? user.displayName || 'Guest' : 'Guest'}!
           </Text>
         </div>
