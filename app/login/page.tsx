@@ -44,6 +44,7 @@ export default function LoginPage() {
           Create Account
         </button>
       </div>
+      </div>
 
       {/* Modals */}
       <AnimatePresence>
@@ -99,7 +100,6 @@ export default function LoginPage() {
           </motion.div>
         )}
       </AnimatePresence>
-    </div>
     </div>
   );
 }

@@ -10,7 +10,7 @@ import Header from '../components/Header';
 import Footer from '../components/Footer';
 import { Bot, Fish, Utensils, CookingPot, FilePenLine, HeartPulse, Settings } from 'lucide-react';
 import Image from 'next/image';
-
+import Loading from '../loading';
 
 interface Preference {
   name: string;
@@ -77,11 +77,7 @@ const PreferencesPage = () => {
   }, [session, status, router]);
 
   if (loading) {
-    return (
-      <div className={styles.loadingContainer}>
-        <p>Loading preferences...</p>
-      </div>
-    );
+    return <Loading />;
   }
 
   if (!preferences) {

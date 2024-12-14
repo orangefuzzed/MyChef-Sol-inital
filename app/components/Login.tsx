@@ -64,7 +64,7 @@ const LoginScreen: React.FC = () => {
           value={email}
           onChange={(e) => setEmail(e.target.value)}
           required
-          className="w-full px-4 py-2 border border-gray-300 rounded-lg"
+          className="w-full px-4 py-2 border border-gray-300 rounded-lg text-black"
         />
       </div>
       <div className="mb-4">
@@ -75,7 +75,7 @@ const LoginScreen: React.FC = () => {
           value={password}
           onChange={(e) => setPassword(e.target.value)}
           required
-          className="w-full px-4 py-2 border border-gray-300 rounded-lg"
+          className="w-full px-4 py-2 border border-gray-300 rounded-lg text-black"
         />
       </div>
       <button
