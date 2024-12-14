@@ -2,8 +2,7 @@
 
 import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
-import Link from 'next/link';
-import styles from './LoginScreen.module.css'; // Reuse the styles from the login page
+import Image from 'next/image';
 
 const SignUp: React.FC = () => {
   const [email, setEmail] = useState('');
@@ -47,50 +46,50 @@ const SignUp: React.FC = () => {
   };
 
   return (
-    <div
-      className={`${styles.container} flex items-center justify-center h-screen bg-fixed bg-cover`}
-      style={{ backgroundImage: "url('/images/breakfast-2.png')" }}
-    >
-      <form onSubmit={handleSubmit} className="bg-white/30 backdrop-blur-lg border-white border shadow-lg ring-1 ring-black/5 p-6 m-4 rounded-2xl">
-        {/* Logo */}
-        <div className="flex items-center justify-center mb-2">
-              <img src="/images/dishcovery-full-logo.png" alt="Dishcovery" className="w-3/4" />
-            </div>
-        <h2 className={styles.title}>Sign Up for Dishcovery</h2>
-        {error && <p className={styles.error}>{error}</p>}
-        {successMessage && <p className={styles.success}>{successMessage}</p>}
-        <div className={styles.inputGroup}>
-          <label htmlFor="email">Email</label>
-          <input
-            id="email"
-            type="email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            required
-            className={styles.input}
-          />
+    <form onSubmit={handleSubmit} className="bg-white/35 backdrop-blur-lg border border-white shadow-lg rounded-2xl p-6">
+      <div className="flex items-center justify-center mb-4 space-x-2">
+          <div className="bg-black w-10 h-10 border border-white rounded-full flex items-center justify-center">
+            <Image
+              src="/images/kAi.png"
+              alt="kai"
+              width={28}
+              height={28}
+            />
+          </div>
+          <h2 className="text-lg font-semibold text-center">Sign Up</h2>
         </div>
-        <div className={styles.inputGroup}>
-          <label htmlFor="password">Password</label>
-          <input
-            id="password"
-            type="password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            required
-            className={styles.input}
-          />
-        </div>
-        <button type="submit" className={styles.button} disabled={isLoading}>
-          {isLoading ? 'Signing up...' : 'Sign Up'}
-        </button>
-        {/* Divider */}
-        <div className="my-6 border-t border-pink-800"></div>
-        <p className={styles.signupText}>
-          Already have an account? <Link href="/login" className="text-md font-semibold text-[#00a39e]">Log In!</Link>
-        </p>
-      </form>
-    </div>
+      <div className="my-6 border-t border-pink-800"></div>
+      {error && <p className="text-red-500 text-center mb-4">{error}</p>}
+      <div className="mb-4">
+        <label htmlFor="email" className="block text-sm mb-1">Email</label>
+        <input
+          id="email"
+          type="email"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+          required
+          className="w-full px-4 py-2 border border-gray-300 rounded-lg"
+        />
+      </div>
+      <div className="mb-4">
+        <label htmlFor="password" className="block text-sm mb-1">Password</label>
+        <input
+          id="password"
+          type="password"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+          required
+          className="w-full px-4 py-2 border border-gray-300 rounded-lg"
+        />
+      </div>
+      <button
+        type="submit"
+        className="w-full px-4 py-2 mt-2 bg-[#00a39e] border border-solid border-[#00f5d0] text-white rounded-full hover:bg-[#0ea5e9] transition duration-200"
+        disabled={isLoading}
+      >
+        {isLoading ? 'Signing up...' : 'Sign Up'}
+      </button>
+    </form>
   );
 };
 

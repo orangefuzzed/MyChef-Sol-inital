@@ -2,8 +2,7 @@
 
 import React, { useState } from 'react';
 import { signIn } from 'next-auth/react';
-import Link from 'next/link';
-import styles from './LoginScreen.module.css';
+import Image from 'next/image';
 
 const LoginScreen: React.FC = () => {
   const [email, setEmail] = useState('');
@@ -43,70 +42,52 @@ const LoginScreen: React.FC = () => {
   };
 
   return (
-    <div
-      className={`${styles.container} flex items-center justify-center h-screen bg-fixed bg-cover`}
-      style={{ backgroundImage: "url('/images/breakfast-2.png')" }}
-    >
-      <form onSubmit={handleSubmit} className="bg-white/30 backdrop-blur-lg border-white border shadow-lg ring-1 ring-black/5 p-6 m-4 rounded-2xl">
-        {/* Logo */}
-        <div className="flex items-center justify-center mb-2">
-              <img src="/images/dishcovery-full-logo.png" alt="Dishcovery" className="w-3/4" />
-            </div>
-        <h2 className={styles.title}>Login</h2>
-        {error && <p className={styles.error}>{error}</p>}
-        <div className={styles.inputGroup}>
-          <label htmlFor="email">Email</label>
-          <input
-            id="email"
-            type="email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            required
-            className={styles.input}
-          />
-        </div>
-        <div className={styles.inputGroup}>
-          <label htmlFor="password">Password</label>
-          <input
-            id="password"
-            type="password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            required
-            className={styles.input}
-          />
-        </div>
-        <button type="submit" className={styles.button} disabled={isLoading}>
-          {isLoading ? 'Logging in...' : 'Log in'}
-        </button>
-        {/*<p className={styles.orText}>or</p>
-        <Button
-          variant="solid"
-          color="gray"
-          className={styles.oauthButton}
-          onClick={() => handleOAuthLogin('google')}
-        >
-          <FcGoogle size={20} /> Log in with Google
-        </Button>
-        <Button
-          variant="solid"
-          color="blue"
-          className={styles.oauthButton}
-          onClick={() => handleOAuthLogin('facebook')}
-        >
-          <FaFacebook size={20} /> Log in with Facebook
-        </Button>*/}
-        {/* Divider */}
-        <div className="my-6 border-t border-pink-800"></div>
-        <p className={styles.signupText}>
-          No Account yet?{' '}
-          <Link href="/signup" className="text-md font-semibold text-[#00a39e]">
-            Create One Now!
-          </Link>
-        </p>
-      </form>
-    </div>
+    <form onSubmit={handleSubmit} className="bg-white/35 backdrop-blur-lg border border-white shadow-lg rounded-2xl p-6">
+      <div className="flex items-center justify-center mb-4 space-x-2">
+                <div className="bg-black w-10 h-10 border border-white rounded-full flex items-center justify-center">
+                  <Image
+                    src="/images/kAi.png"
+                    alt="kai"
+                    width={28}
+                    height={28}
+                  />
+                </div>
+                <h2 className="text-lg font-semibold text-center">Login</h2>
+              </div>
+            <div className="my-6 border-t border-pink-800"></div>
+      {error && <p className="text-red-500 text-center mb-4">{error}</p>}
+      <div className="mb-4">
+        <label htmlFor="email" className="block text-sm mb-1">Email</label>
+        <input
+          id="email"
+          type="email"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+          required
+          className="w-full px-4 py-2 border border-gray-300 rounded-lg"
+        />
+      </div>
+      <div className="mb-4">
+        <label htmlFor="password" className="block text-sm mb-1">Password</label>
+        <input
+          id="password"
+          type="password"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+          required
+          className="w-full px-4 py-2 border border-gray-300 rounded-lg"
+        />
+      </div>
+      <button
+        type="submit"
+        className="w-full px-4 py-2 mt-2 bg-[#00a39e] border border-solid border-[#00f5d0] text-white rounded-full hover:bg-[#0ea5e9] transition duration-200"
+        disabled={isLoading}
+      >
+        {isLoading ? 'Logging in...' : 'Log In'}
+      </button>
+    </form>
   );
 };
 
 export default LoginScreen;
+
