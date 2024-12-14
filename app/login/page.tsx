@@ -14,6 +14,10 @@ export default function LoginPage() {
     setSignUpModalOpen(false);
   };
 
+  const [isSignUpOpen, setIsSignUpOpen] = useState(false);
+
+  const closeModal = () => setIsSignUpOpen(false);
+
   return (
     <div
       className="flex items-center justify-center h-screen bg-cover bg-center"
@@ -32,13 +36,13 @@ export default function LoginPage() {
       {/* Buttons */}
       <div className="flex flex-col items-center space-y-4 mb-4 mt-4">
         <button
-          className="px-14 py-2 mt-2 bg-[#00a39e] border border-solid border-[#00f5d0] text-white rounded-full hover:bg-[#0ea5e9] transition duration-200"
+          className="px-14 py-2 mt-2 bg-[#00a39e] border border-solid border-[#00f5d0] text-white rounded-full hover:bg-[#00f5d0] transition duration-200"
           onClick={() => setLoginModalOpen(true)}
         >
           Login
         </button>
         <button
-          className="px-5 py-2 mt-2 bg-[#00a39e] border border-solid border-[#00f5d0] text-white rounded-full hover:bg-[#0ea5e9] transition duration-200"
+          className="px-5 py-2 mt-2 bg-[#00a39e] border border-solid border-[#00f5d0] text-white rounded-full hover:bg-[#00f5d0] transition duration-200"
           onClick={() => setSignUpModalOpen(true)}
         >
           Create Account
@@ -65,7 +69,7 @@ export default function LoginPage() {
             >
               <LoginScreen />
               <button
-                className="absolute top-4 right-4 text-white hover:text-red-500"
+                className="absolute top-8 right-10 text-white hover:text-red-500"
                 onClick={closeModals}
               >
                 ✕
@@ -89,9 +93,10 @@ export default function LoginPage() {
               exit={{ y: 100 }}
               transition={{ duration: 0.3 }}
             >
-              <SignUp />
+              {/* Pass closeModal prop to SignUp */}
+              <SignUp closeModal={closeModals} />
               <button
-                className="absolute top-4 right-4 text-white hover:text-red-500"
+                className="absolute top-8 right-10 text-white hover:text-red-500"
                 onClick={closeModals}
               >
                 ✕
@@ -99,6 +104,7 @@ export default function LoginPage() {
             </motion.div>
           </motion.div>
         )}
+
       </AnimatePresence>
     </div>
   );

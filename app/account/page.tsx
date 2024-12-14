@@ -99,51 +99,36 @@ const AccountPage: React.FC = () => {
   };
 
   const handleSave = async () => {
-    if (!session?.user?.email) {
-      alert('User not authenticated.');
-      return;
-    }
+  if (!session?.user?.email) {
+    alert('User not authenticated.');
+    return;
+  }
 
-    try {
-      // Include userEmail in formData before saving
-      const updatedFormData = {
-        ...formData,
-        userEmail: session.user.email,
-      };
+  try {
+    const updatedFormData = {
+      ...formData,
+      userEmail: session.user.email,
+    };
 
+    // Use plain JSON if avatarFile is not present
+    if (!avatarFile) {
+      await axios.post('/api/account', updatedFormData);
+    } else {
       const formDataToSend = new FormData();
       formDataToSend.append('data', JSON.stringify(updatedFormData));
-      if (avatarFile) {
-        formDataToSend.append('avatar', avatarFile);
-      }
+      formDataToSend.append('avatar', avatarFile);
 
-      const response = await axios.post('/api/account', formDataToSend, {
-        headers: {
-          'Content-Type': 'multipart/form-data',
-        },
-      });
-
-      if (response.status === 200) {
-        alert('Account information saved successfully!');
-        setIsEditing(false);
-
-        // Update the session to reflect the new avatar
-        if (response.data.account && response.data.account.avatarUrl) {
-          await update({
-            user: {
-              ...session.user,
-              image: response.data.account.avatarUrl,
-            },
-          });
-        }
-      } else {
-        alert('Failed to save account information.');
-      }
-    } catch (error) {
-      console.error('Failed to save account information:', error);
-      alert('Failed to save account information. Please try again.');
+      await axios.post('/api/account', formDataToSend);
     }
-  };
+
+    alert('Account information saved successfully!');
+    setIsEditing(false);
+  } catch (error) {
+    console.error('Failed to save account information:', error);
+    alert('Failed to save account information. Please try again.');
+  }
+};
+
 
   return (
     <div className="flex flex-col h-screen bg-fixed bg-cover bg-center text-white"

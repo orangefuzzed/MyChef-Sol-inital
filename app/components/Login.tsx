@@ -80,7 +80,7 @@ const LoginScreen: React.FC = () => {
       </div>
       <button
         type="submit"
-        className="w-full px-4 py-2 mt-2 bg-[#00a39e] border border-solid border-[#00f5d0] text-white rounded-full hover:bg-[#0ea5e9] transition duration-200"
+        className="w-full px-4 py-2 mt-2 bg-[#00a39e] border border-solid border-[#00f5d0] text-white rounded-full hover:bg-[#00f5d0] transition duration-200"
         disabled={isLoading}
       >
         {isLoading ? 'Logging in...' : 'Log In'}

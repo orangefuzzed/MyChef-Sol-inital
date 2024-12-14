@@ -108,7 +108,7 @@ const HomeScreen: React.FC = () => {
                 <h3 className={styles.cardTitle}>{title}</h3>
                 <p className={styles.cardDescription}>{description}</p>
                 <Link href="/ai-chat">
-                <button className="mt-4 py-2 px-6 bg-pink-800/50 border border-sky-50 shadow-lg ring-1 ring-black/5 rounded-full text-sky-50 flex items-center gap-2">
+                <button className="mt-4 py-2 px-6 bg-[#00a39e]/50 border border-sky-50 shadow-lg ring-1 ring-black/5 rounded-full text-sky-50 flex items-center gap-2">
                   Get Recipes!
                   <BotMessageSquare strokeWidth={1.5} className="w-5 h-5" />
                 </button>
