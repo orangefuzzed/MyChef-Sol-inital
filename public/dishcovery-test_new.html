@@ -13,7 +13,9 @@
         .catch(err => console.error('Service Worker registration failed:', err));
     }
   </script>
+  <script src="https://cdn.tailwindcss.com"></script>
 </head>
+
 <body class="min-h-screen flex flex-col justify-start bg-cover bg-center text-sky-50" style="background-image: url('/images/breakfast-5.png'); font-family: 'Montserrat', sans-serif;">
   <!-- Main Content -->
   <div class="bg-white/45 backdrop-blur-lg border border-white shadow-lg rounded-2xl p-6 max-w-md mx-auto mt-10 mb-10 text-black">
@@ -22,22 +24,29 @@
       <img src="/images/dishcovery-full-logo.png" alt="Dishcovery Logo" class="w-32" />
     </div>
 
-      <!-- Steps Content -->
-      <h1 class="text-2xl font-bold text-center mb-4">Install Dishcovery on Android</h1>
-      
-      
-      <p>Click the button below to install Dishcovery on your device:</p>
-      <button class="px-20 py-2 mt-2 flex items-center bg-[#00a39e]/40 border border-solid border-[#00f5d0] text-white rounded-full" id="installButton" style="display: none;">Install Dishcovery</button>
+    <!-- Steps Content -->
+    <h1 class="text-2xl font-bold text-center mb-4">Install Dishcovery on Android</h1>
+    <p class="text-center mb-4">Click the button below to install Dishcovery on your device:</p>
 
+    <!-- Install Button -->
+    <div class="flex justify-center">
+      <button
+        class="px-6 py-2 bg-[#00a39e]/90 hover:bg-[#00a39e] text-white font-semibold rounded-full border border-[#00f5d0] shadow-lg transition-all duration-300 hidden"
+        id="installButton"
+      >
+        Install Dishcovery
+      </button>
     </div>
   </div>
+
+  <!-- Script for Install Prompt -->
   <script>
     let installPromptEvent;
 
     window.addEventListener('beforeinstallprompt', (event) => {
       event.preventDefault();
       installPromptEvent = event;
-      document.getElementById('installButton').style.display = 'block';
+      document.getElementById('installButton').classList.remove('hidden'); // Show button
     });
 
     document.getElementById('installButton').addEventListener('click', () => {
