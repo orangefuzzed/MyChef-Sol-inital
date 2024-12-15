@@ -7,8 +7,11 @@
     <link rel="manifest" href="/manifest.json" />
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap" />
     <script>
+      // Registering the service worker
       if ('serviceWorker' in navigator) {
-        navigator.serviceWorker.register('/service-worker.js').catch((err) => console.error('Service Worker registration failed:', err));
+        navigator.serviceWorker.register('/service-worker.js')
+          .then(reg => console.log('Service Worker registered:', reg))
+          .catch(err => console.error('Service Worker registration failed:', err));
       }
     </script>
     <script src="https://cdn.tailwindcss.com"></script>
@@ -36,20 +39,20 @@
         <!-- Step 2 -->
         <div>
           <h2 class="font-semibold mb-2">Step 2: Add to Home Screen</h2>
-          <img src="/images/ios-1.jpeg" alt="Step 2" class="rounded-lg shadow-md" />
+          <img src="/images/ios-1.PNG" alt="Step 2" class="rounded-lg shadow-md" />
         </div>
 
         <!-- Step 3 -->
         <div>
           <h2 class="font-semibold mb-2">Step 3: Tap Add</h2>
-          <img src="/images/ios-2.jpeg" alt="Step 3" class="rounded-lg shadow-md" />
+          <img src="/images/ios-2.PNG" alt="Step 3" class="rounded-lg shadow-md" />
         </div>
 
         <!-- Success Message -->
         <div>
           <h2 class="font-semibold mb-2">Success!</h2>
           <p class="text-sm mb-2">The Dishcovery app will now appear on your home screen:</p>
-          <img src="/images/ios-3.jpeg" alt="Success" class="rounded-lg shadow-md" />
+          <img src="/images/ios-3.PNG" alt="Success" class="rounded-lg shadow-md" />
         </div>
       </div>
     </div>
