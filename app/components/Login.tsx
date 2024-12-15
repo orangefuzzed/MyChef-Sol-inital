@@ -42,7 +42,7 @@ const LoginScreen: React.FC = () => {
   };
 
   return (
-    <form onSubmit={handleSubmit} className="bg-white/35 backdrop-blur-lg border border-white shadow-lg rounded-2xl p-6">
+    <form onSubmit={handleSubmit} className="bg-white/45 backdrop-blur-lg border border-white shadow-lg rounded-2xl p-6">
       <div className="flex items-center justify-center mb-4 space-x-2">
                 <div className="bg-black w-10 h-10 border border-white rounded-full flex items-center justify-center">
                   <Image
@@ -57,7 +57,7 @@ const LoginScreen: React.FC = () => {
             <div className="my-6 border-t border-pink-800"></div>
       {error && <p className="text-red-500 text-center mb-4">{error}</p>}
       <div className="mb-4">
-        <label htmlFor="email" className="block text-sm mb-1">Email</label>
+        <label htmlFor="email" className="block text-white text-sm mb-1">Email</label>
         <input
           id="email"
           type="email"

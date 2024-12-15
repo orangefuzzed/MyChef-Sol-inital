@@ -4,6 +4,7 @@ import React, { useState } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
 import LoginScreen from '../components/Login';
 import SignUp from '../components/SignUp';
+import { LogIn, SquarePen } from 'lucide-react';
 
 export default function LoginPage() {
   const [isLoginModalOpen, setLoginModalOpen] = useState(false);
@@ -23,7 +24,7 @@ export default function LoginPage() {
       className="flex items-center justify-center h-screen bg-cover bg-center"
       style={{ backgroundImage: "url('/images/breakfast-2.png')" }}
     >
-      <div className="absolute top-20 bg-white/25 backdrop-blur-lg border border-sky-50 shadow-lg rounded-2xl mx-6 p-2">
+      <div className="absolute top-40 bg-white/25 backdrop-blur-lg border border-sky-50 shadow-lg rounded-2xl mx-6 p-2">
       {/* Logo */}
       <div className="mt-4 text-center">
         <img
@@ -36,17 +37,19 @@ export default function LoginPage() {
       {/* Buttons */}
       <div className="flex flex-col items-center space-y-4 mb-4 mt-4">
         <button
-          className="px-24 py-2 mt-2 bg-[#00a39e]/40 border border-solid border-[#00f5d0] text-white rounded-full hover:bg-[#00f5d0] transition duration-200"
+          className="px-20 py-2 mt-2 flex items-center bg-[#00a39e]/40 border border-solid border-[#00f5d0] text-white rounded-full hover:bg-[#00f5d0] transition duration-200"
           onClick={() => setLoginModalOpen(true)}
         >
           Login
+          <LogIn className="ml-2 w-4 h-4" />
         </button>
-        <div className="text-white"> - or -</div>
+       
         <button
-          className="px-14 py-2 bg-[#00a39e]/40 border border-solid border-[#00f5d0] text-white rounded-full hover:bg-[#00f5d0] transition duration-200"
+          className="px-10 py-2 flex items-center bg-[#00a39e]/40 border border-solid border-[#00f5d0] text-white rounded-full hover:bg-[#00f5d0] transition duration-200"
           onClick={() => setSignUpModalOpen(true)}
         >
           Create Account
+          <SquarePen className="ml-2 w-4 h-4" />
         </button>
       </div>
       </div>

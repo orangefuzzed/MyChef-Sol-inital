@@ -4,75 +4,37 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Install Dishcovery on iOS</title>
-  <link rel="manifest" href="/manifest.json">
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap">
-  <style>
-    body {
-      font-family: 'Roboto', sans-serif;
-      background-color: #ffffff;
-      color: #333;
-      margin: 0;
-      padding: 0;
-      text-align: center;
-    }
-
-    header {
-      background-color: #FFA500;
-      color: white;
-      padding: 20px;
-    }
-
-    h1 {
-      margin-top: 20px;
-    }
-
-    .instructions-container {
-      margin: 20px;
-      padding: 20px;
-      border: 1px solid #ddd;
-      border-radius: 8px;
-      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    }
-
-    .instructions-container img {
-      max-width: 100%;
-      height: auto;
-      margin: 20px 0;
-    }
-
-    .fallback-message {
-      margin-top: 20px;
-      font-size: 0.9em;
-      color: #666;
-    }
-  </style>
-</head>
-<body>
-  <header>
-    <h1>Install Dishcovery on Your iOS Device</h1>
-  </header>
-
-  <div class="instructions-container">
-    <h2>How to Add Dishcovery to Your Home Screen</h2>
-    <p>To install the Dishcovery app, follow these simple steps:</p>
-    <ol>
-      <li>Tap the <strong>Share</strong> button <span>(located at the bottom of Safari)</span>.</li>
-      <li>Scroll down and select <strong>Add to Home Screen</strong>.</li>
-      <li>Tap <strong>Add</strong> in the upper-right corner.</li>
-    </ol>
-    <img src="/images/share-icon-guide.png" alt="Pointing to Share button in Safari">
-    <p>Enjoy easy access to personalized recipes anytime!</p>
-  </div>
-
-  <p class="fallback-message">If you don’t see the ‘Add to Home Screen’ option, ensure Safari is up-to-date and try again.</p>
-
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap">
   <script>
-    // Registering the service worker
     if ('serviceWorker' in navigator) {
       navigator.serviceWorker.register('/service-worker.js')
         .then(reg => console.log('Service Worker registered:', reg))
         .catch(err => console.error('Service Worker registration failed:', err));
     }
   </script>
+</head>
+<body class="bg-[url('/images/breakfast-5.png')] bg-cover bg-center text-sky-50 font-montserrat">
+  <div class="bg-black/50 w-full py-4 flex items-center justify-center">
+    <img src="/images/dishcovery-full-logo.png" alt="Dishcovery Logo" class="h-16">
+  </div>
+
+  <div class="max-w-lg mx-auto mt-10">
+    <h1 class="text-center text-2xl font-bold">Install Dishcovery on Your iOS Device</h1>
+    <div class="bg-white/45 backdrop-blur-lg border border-white shadow-lg rounded-2xl p-6 mt-6">
+      <h2 class="text-xl font-semibold">How to Add Dishcovery to Your Home Screen</h2>
+      <ol class="list-decimal list-inside mt-4 text-lg">
+        <li>Tap the <strong>Share</strong> button (at the bottom of Safari).</li>
+        <li>Scroll and select <strong>Add to Home Screen</strong>.</li>
+        <li>Tap <strong>Add</strong> in the top-right corner.</li>
+      </ol>
+      <div class="mt-4 space-y-4">
+        <img src="/images/ios-4.jpeg" alt="Step 1: Share button" class="rounded-lg shadow">
+        <img src="/images/ios-1.jpeg" alt="Step 2: Add to Home Screen" class="rounded-lg shadow">
+        <img src="/images/ios-2.jpeg" alt="Step 3: Tap Add" class="rounded-lg shadow">
+        <img src="/images/ios-3.jpeg" alt="Success: Dishcovery Icon" class="rounded-lg shadow">
+      </div>
+    </div>
+    <p class="mt-4 text-center text-sm opacity-80">If you don’t see the "Add to Home Screen" option, ensure Safari is up-to-date and try again.</p>
+  </div>
 </body>
 </html>

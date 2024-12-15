@@ -48,7 +48,7 @@ const SignUp: React.FC<SignUpProps> = ({ closeModal }) => {
   };
 
   return (
-    <form onSubmit={handleSubmit} className="bg-white/35 backdrop-blur-lg border border-white shadow-lg rounded-2xl p-6">
+    <form onSubmit={handleSubmit} className="bg-white/45 backdrop-blur-lg border border-white shadow-lg rounded-2xl p-6">
       <div className="flex items-center justify-center mb-4 space-x-2">
         <div className="bg-black w-10 h-10 border border-white rounded-full flex items-center justify-center">
           <Image

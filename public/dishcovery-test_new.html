@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Dishcovery Install Test</title>
-  <link rel="manifest" href="/manifest.json">
+  <title>Install Dishcovery on Android</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap">
   <script>
     if ('serviceWorker' in navigator) {
       navigator.serviceWorker.register('/service-worker.js')
@@ -13,30 +13,49 @@
     }
   </script>
 </head>
-<body>
-  <h1>Test Dishcovery PWA Install</h1>
-  <p>Click the button below to install Dishcovery on your device:</p>
-  <button id="installButton" style="display: none;">Install Dishcovery</button>
+<body class="bg-[url('/images/breakfast-5.png')] bg-cover bg-center text-sky-50 font-montserrat">
+  <div class="bg-black/50 w-full py-4 flex items-center justify-center">
+    <img src="/images/dishcovery-full-logo.png" alt="Dishcovery Logo" class="h-16">
+  </div>
 
+  <div class="max-w-lg mx-auto mt-10">
+    <h1 class="text-center text-2xl font-bold">Install Dishcovery on Your Android Device</h1>
+    <div class="bg-white/45 backdrop-blur-lg border border-white shadow-lg rounded-2xl p-6 mt-6">
+      <h2 class="text-xl font-semibold">How to Install Dishcovery</h2>
+      <p class="mt-4 text-lg">When you load this page, you should see a prompt to install the Dishcovery app. If not, follow these steps:</p>
+      <ol class="list-decimal list-inside mt-4 text-lg">
+        <li>Ensure you're using the latest version of Chrome or Brave.</li>
+        <li>Tap the three-dot menu in the top-right corner.</li>
+        <li>Select <strong>Install Dishcovery</strong> and follow the prompts.</li>
+      </ol>
+      <div class="mt-4 space-y-4">
+        <img src="/images/android-1.jpeg" alt="Step 1: Install Prompt" class="rounded-lg shadow">
+        <img src="/images/android-2.jpeg" alt="Success: Dishcovery Icon" class="rounded-lg shadow">
+      </div>
+    </div>
+    <p class="mt-4 text-center text-sm opacity-80">If you encounter any issues, refresh the page or check browser compatibility.</p>
+  </div>
   <script>
     let installPromptEvent;
 
     window.addEventListener('beforeinstallprompt', (event) => {
       event.preventDefault();
       installPromptEvent = event;
-      document.getElementById('installButton').style.display = 'block';
-    });
+      const installButton = document.createElement('button');
+      installButton.textContent = 'Install Dishcovery';
+      installButton.className = 'mt-6 px-6 py-2 bg-[#00a39e] text-white rounded-full shadow hover:bg-[#0ea5e9] transition';
+      document.body.appendChild(installButton);
 
-    document.getElementById('installButton').addEventListener('click', () => {
-      if (installPromptEvent) {
-        installPromptEvent.prompt();
-        installPromptEvent.userChoice.then((choiceResult) => {
-          console.log('User choice:', choiceResult.outcome);
-          installPromptEvent = null;
-        });
-      } else {
-        alert('Install prompt not available.');
-      }
+      installButton.addEventListener('click', () => {
+        if (installPromptEvent) {
+          installPromptEvent.prompt();
+          installPromptEvent.userChoice.then((choiceResult) => {
+            console.log('User choice:', choiceResult.outcome);
+          });
+        } else {
+          alert('Install prompt not available.');
+        }
+      });
     });
   </script>
 </body>
