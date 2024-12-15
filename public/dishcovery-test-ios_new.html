@@ -1,40 +1,57 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Install Dishcovery on iOS</title>
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap">
-  <script>
-    if ('serviceWorker' in navigator) {
-      navigator.serviceWorker.register('/service-worker.js')
-        .then(reg => console.log('Service Worker registered:', reg))
-        .catch(err => console.error('Service Worker registration failed:', err));
-    }
-  </script>
-</head>
-<body class="bg-[url('/images/breakfast-5.png')] bg-cover bg-center text-sky-50 font-montserrat">
-  <div class="bg-black/50 w-full py-4 flex items-center justify-center">
-    <img src="/images/dishcovery-full-logo.png" alt="Dishcovery Logo" class="h-16">
-  </div>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Install Dishcovery on iOS</title>
+    <link rel="manifest" href="/manifest.json" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap" />
+    <script>
+      if ('serviceWorker' in navigator) {
+        navigator.serviceWorker.register('/service-worker.js').catch((err) => console.error('Service Worker registration failed:', err));
+      }
+    </script>
+    <script src="https://cdn.tailwindcss.com"></script>
+  </head>
 
-  <div class="max-w-lg mx-auto mt-10">
-    <h1 class="text-center text-2xl font-bold">Install Dishcovery on Your iOS Device</h1>
-    <div class="bg-white/45 backdrop-blur-lg border border-white shadow-lg rounded-2xl p-6 mt-6">
-      <h2 class="text-xl font-semibold">How to Add Dishcovery to Your Home Screen</h2>
-      <ol class="list-decimal list-inside mt-4 text-lg">
-        <li>Tap the <strong>Share</strong> button (at the bottom of Safari).</li>
-        <li>Scroll and select <strong>Add to Home Screen</strong>.</li>
-        <li>Tap <strong>Add</strong> in the top-right corner.</li>
-      </ol>
-      <div class="mt-4 space-y-4">
-        <img src="/images/ios-4.jpeg" alt="Step 1: Share button" class="rounded-lg shadow">
-        <img src="/images/ios-1.jpeg" alt="Step 2: Add to Home Screen" class="rounded-lg shadow">
-        <img src="/images/ios-2.jpeg" alt="Step 3: Tap Add" class="rounded-lg shadow">
-        <img src="/images/ios-3.jpeg" alt="Success: Dishcovery Icon" class="rounded-lg shadow">
+  <body class="h-screen flex items-center justify-center bg-cover bg-center text-sky-50" style="background-image: url('/images/breakfast-5.png'); font-family: 'Montserrat', sans-serif;">
+    <!-- Main Content -->
+    <div class="bg-white/45 backdrop-blur-lg border border-white shadow-lg rounded-2xl p-6 max-w-md text-black">
+      <!-- Logo -->
+      <div class="flex justify-center mb-6">
+        <img src="/images/dishcovery-full-logo.png" alt="Dishcovery Logo" class="w-32" />
+      </div>
+
+      <!-- Steps Content -->
+      <h1 class="text-2xl font-bold text-center mb-4">Install Dishcovery on iOS</h1>
+      <p class="text-center mb-6">Follow these simple steps to add Dishcovery to your home screen:</p>
+
+      <div class="space-y-6">
+        <!-- Step 1 -->
+        <div>
+          <h2 class="font-semibold mb-2">Step 1: Tap the Share Button</h2>
+          <img src="/images/ios-4.jpeg" alt="Step 1" class="rounded-lg shadow-md" />
+        </div>
+
+        <!-- Step 2 -->
+        <div>
+          <h2 class="font-semibold mb-2">Step 2: Add to Home Screen</h2>
+          <img src="/images/ios-1.jpeg" alt="Step 2" class="rounded-lg shadow-md" />
+        </div>
+
+        <!-- Step 3 -->
+        <div>
+          <h2 class="font-semibold mb-2">Step 3: Tap Add</h2>
+          <img src="/images/ios-2.jpeg" alt="Step 3" class="rounded-lg shadow-md" />
+        </div>
+
+        <!-- Success Message -->
+        <div>
+          <h2 class="font-semibold mb-2">Success!</h2>
+          <p class="text-sm mb-2">The Dishcovery app will now appear on your home screen:</p>
+          <img src="/images/ios-3.jpeg" alt="Success" class="rounded-lg shadow-md" />
+        </div>
       </div>
     </div>
-    <p class="mt-4 text-center text-sm opacity-80">If you don’t see the "Add to Home Screen" option, ensure Safari is up-to-date and try again.</p>
-  </div>
-</body>
+  </body>
 </html>
