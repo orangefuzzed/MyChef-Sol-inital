@@ -11,64 +11,62 @@ import Image from 'next/image';
 import { Settings, User, FilePenLine, MailCheck, Lock, Languages, ImagePlus } from 'lucide-react';
 
 
+interface AccountData {
+  displayName: string;
+  email: string;
+  password: string;
+  linkedAccounts: {
+    google: boolean;
+    facebook: boolean;
+  };
+  notificationSettings: {
+    emailNotifications: boolean;
+    pushNotifications: boolean;
+  };
+  privacySettings: {
+    profileVisibility: string;
+    dataCollectionOptIn: boolean;
+  };
+  language: string;
+  region: string;
+  avatarUrl?: string;
+}
+
 const AccountPage: React.FC = () => {
   const { data: session, update } = useSession();
   const [isEditing, setIsEditing] = useState(false);
   const [avatarPreview, setAvatarPreview] = useState<string | null>(null);
   const [avatarFile, setAvatarFile] = useState<File | null>(null);
 
-  // **Updated formData state**
-  const [formData, setFormData] = useState({
+  const [formData, setFormData] = useState<AccountData>({
     displayName: '',
     email: '',
     password: '',
-    linkedAccounts: {
-      google: false,
-      facebook: false,
-    },
-    notificationSettings: {
-      emailNotifications: false,
-      pushNotifications: false,
-    },
-    privacySettings: {
-      profileVisibility: 'public',
-      dataCollectionOptIn: true,
-    },
+    linkedAccounts: { google: false, facebook: false },
+    notificationSettings: { emailNotifications: false, pushNotifications: false },
+    privacySettings: { profileVisibility: 'public', dataCollectionOptIn: true },
     language: '',
     region: '',
   });
 
-  // Fetch the user's account data when the component loads
+  // Fetch account data on load
   useEffect(() => {
     const fetchAccountData = async () => {
       if (session?.user?.email) {
         try {
-          const response = await axios.get('/api/account');
-          if (response.status === 200) {
-            const account = response.data.account;
-            setFormData({
-              displayName: account.displayName || '',
-              email: session.user.email, // Set email from session
-              password: '',
-              linkedAccounts: account.linkedAccounts || {
-                google: false,
-                facebook: false,
-              },
-              notificationSettings: account.notificationSettings || {
-                emailNotifications: false,
-                pushNotifications: false,
-              },
-              privacySettings: account.privacySettings || {
-                profileVisibility: 'public',
-                dataCollectionOptIn: true,
-              },
-              language: account.language || '',
-              region: account.region || '',
-            });
-            setAvatarPreview(account.avatarUrl || null);
-          }
-        } catch (error) {
-          console.error('Failed to fetch account data:', error);
+          const { data } = await axios.get('/api/account');
+          setFormData((prev) => ({
+            ...prev,
+            displayName: data.account?.displayName || '',
+            linkedAccounts: data.account?.linkedAccounts || prev.linkedAccounts,
+            notificationSettings: data.account?.notificationSettings || prev.notificationSettings,
+            privacySettings: data.account?.privacySettings || prev.privacySettings,
+            language: data.account?.language || '',
+            region: data.account?.region || '',
+          }));
+          setAvatarPreview(data.account?.avatarUrl || null);
+        } catch (err) {
+          console.error('Error fetching account data:', err);
         }
       }
     };
@@ -76,20 +74,25 @@ const AccountPage: React.FC = () => {
     fetchAccountData();
   }, [session]);
 
+  // Update formData and handle checkboxes
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
-    const { name, value } = e.target;
-
-    if (e.target instanceof HTMLInputElement && e.target.type === 'checkbox') {
-      const { checked } = e.target;
+    const target = e.target as HTMLInputElement;
+    const { name, value, type } = e.target;
+  
+    if (type === 'checkbox') {
       setFormData((prev) => ({
         ...prev,
-        [name]: checked,
+        [name]: target.checked,
       }));
     } else {
-      setFormData((prev) => ({ ...prev, [name]: value }));
+      setFormData((prev) => ({
+        ...prev,
+        [name]: value,
+      }));
     }
   };
 
+  // Handle avatar file input
   const handleAvatarChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files[0]) {
       const file = e.target.files[0];
@@ -98,36 +101,53 @@ const AccountPage: React.FC = () => {
     }
   };
 
+  // Save account data with FormData
   const handleSave = async () => {
-  if (!session?.user?.email) {
-    alert('User not authenticated.');
-    return;
-  }
-
-  try {
-    const updatedFormData = {
-      ...formData,
-      userEmail: session.user.email,
-    };
-
-    // Use plain JSON if avatarFile is not present
-    if (!avatarFile) {
-      await axios.post('/api/account', updatedFormData);
-    } else {
-      const formDataToSend = new FormData();
-      formDataToSend.append('data', JSON.stringify(updatedFormData));
-      formDataToSend.append('avatar', avatarFile);
-
-      await axios.post('/api/account', formDataToSend);
+    if (!session?.user?.email) {
+      alert('User not authenticated.');
+      return;
     }
 
-    alert('Account information saved successfully!');
-    setIsEditing(false);
-  } catch (error) {
-    console.error('Failed to save account information:', error);
-    alert('Failed to save account information. Please try again.');
-  }
-};
+    try {
+      const updatedFormData = {
+        ...formData,
+        userEmail: session.user.email,
+        avatarUrl: avatarPreview || '',
+      };
+
+      const formDataToSend = new FormData();
+      formDataToSend.append('data', JSON.stringify(updatedFormData));
+
+      if (avatarFile) {
+        formDataToSend.append('avatar', avatarFile);
+      }
+
+      const response = await axios.post('/api/account', formDataToSend, {
+        headers: { 'Content-Type': 'multipart/form-data' },
+      });
+
+      if (response.status === 200) {
+        alert('Account information saved successfully!');
+        setIsEditing(false);
+
+        // Update session with the new avatar if applicable
+        if (response.data.account?.avatarUrl) {
+          setAvatarPreview(response.data.account.avatarUrl);
+          await update({
+            user: {
+              ...session.user,
+              image: response.data.account.avatarUrl,
+            },
+          });
+        }
+      } else {
+        alert('Failed to save account information.');
+      }
+    } catch (err) {
+      console.error('Error saving account information:', err);
+      alert('Failed to save account information. Please try again.');
+    }
+  };
 
 
   return (

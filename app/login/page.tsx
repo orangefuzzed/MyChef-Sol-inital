@@ -36,13 +36,14 @@ export default function LoginPage() {
       {/* Buttons */}
       <div className="flex flex-col items-center space-y-4 mb-4 mt-4">
         <button
-          className="px-14 py-2 mt-2 bg-[#00a39e] border border-solid border-[#00f5d0] text-white rounded-full hover:bg-[#00f5d0] transition duration-200"
+          className="px-24 py-2 mt-2 bg-[#00a39e]/40 border border-solid border-[#00f5d0] text-white rounded-full hover:bg-[#00f5d0] transition duration-200"
           onClick={() => setLoginModalOpen(true)}
         >
           Login
         </button>
+        <div className="text-white"> - or -</div>
         <button
-          className="px-5 py-2 mt-2 bg-[#00a39e] border border-solid border-[#00f5d0] text-white rounded-full hover:bg-[#00f5d0] transition duration-200"
+          className="px-14 py-2 bg-[#00a39e]/40 border border-solid border-[#00f5d0] text-white rounded-full hover:bg-[#00f5d0] transition duration-200"
           onClick={() => setSignUpModalOpen(true)}
         >
           Create Account
