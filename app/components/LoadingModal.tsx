@@ -56,7 +56,7 @@ const LoadingModal: React.FC<LoadingModalProps> = ({ isOpen }) => {
     };
   }, [isOpen]);
 
-  // Add recipe received messages every 6 seconds
+  // Add recipe received messages every 5 seconds
   useEffect(() => {
     if (!isOpen) return;
 
@@ -65,7 +65,7 @@ const LoadingModal: React.FC<LoadingModalProps> = ({ isOpen }) => {
       if (nextIndex < recipeReceivedMessages.length) {
         setReceivedMessages((prevMessages) => [...prevMessages, recipeReceivedMessages[nextIndex]]);
       }
-    }, 6000);
+    }, 5000);
 
     return () => clearInterval(recipeInterval);
   }, [isOpen, receivedMessages]);
