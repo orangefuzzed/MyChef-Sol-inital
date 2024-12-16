@@ -74,7 +74,7 @@ export async function POST(request: Request) {
     const response = await axios.post(
       CLAUDE_API_URL,
       {
-        model: "claude-3-opus-20240229",
+        model: "claude-3-5-sonnet-20240620",
         max_tokens: 1024,
         messages: [
           {
