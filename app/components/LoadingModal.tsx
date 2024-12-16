@@ -29,9 +29,9 @@ const LoadingModal: React.FC<LoadingModalProps> = ({ isOpen }) => {
 
   // Static recipe received messages
   const recipeReceivedMessages = [
-    "Recipe one whisked together...",
-    "Recipe two whipped up...",
-    "Shopping lists - DONE!",
+    "First recipe whisked together...",
+    "Next recipe whipped up...",
+    "Last recipe ready to go!",
   ];
 
   // Clear received messages when modal opens
@@ -41,14 +41,14 @@ const LoadingModal: React.FC<LoadingModalProps> = ({ isOpen }) => {
     }
   }, [isOpen]);
 
-  // Cycle through loading messages every 2 seconds
+  // Cycle through loading messages every 2.5 seconds
   useEffect(() => {
     let interval: NodeJS.Timeout | null = null;
 
     if (isOpen) {
       interval = setInterval(() => {
         setLoadingMessageIndex((prevIndex) => (prevIndex + 1) % loadingMessages.length);
-      }, 2000);
+      }, 2500);
     }
 
     return () => {
