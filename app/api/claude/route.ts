@@ -75,7 +75,7 @@ export async function POST(request: Request) {
       CLAUDE_API_URL,
       {
         model: "claude-3-5-sonnet-20240620",
-        max_tokens: 1024,
+        max_tokens: 3072,
         messages: [
           {
             role: "user",

@@ -18,12 +18,12 @@ const LoadingModal: React.FC<LoadingModalProps> = ({ isOpen }) => {
   const loadingMessages = [
     "Thinking...",
     "Gathering ingredients...",
-    "Creating shopping list...",
-    "Whisking up cook mode...",
+    "Blending ideas...",
+    "Whisking up thoughts...",
     "Cooking up something special...",
     "Simmering recipe view...",
-    "Baking up something special...",
-    "Blending shopping list...",
+    "Baking up shopping lists...",
+    "Finalizing details...",
     "Just a moment...",
   ];;
 
@@ -56,7 +56,7 @@ const LoadingModal: React.FC<LoadingModalProps> = ({ isOpen }) => {
     };
   }, [isOpen]);
 
-  // Add recipe received messages every 4 seconds
+  // Add recipe received messages every 8 seconds
   useEffect(() => {
     if (!isOpen) return;
 
@@ -65,7 +65,7 @@ const LoadingModal: React.FC<LoadingModalProps> = ({ isOpen }) => {
       if (nextIndex < recipeReceivedMessages.length) {
         setReceivedMessages((prevMessages) => [...prevMessages, recipeReceivedMessages[nextIndex]]);
       }
-    }, 4000);
+    }, 8000);
 
     return () => clearInterval(recipeInterval);
   }, [isOpen, receivedMessages]);
