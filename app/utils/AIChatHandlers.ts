@@ -107,7 +107,7 @@ export const useAIChatHandlers = () => {
         ${conversationHistory}
         Assistant:
   
-        Please provide 3 additional recipe suggestions, ensuring they are unique, varied, and avoid duplicating previous suggestions.
+        Please provide 2 additional recipe suggestions, ensuring they are unique, varied, and avoid duplicating previous suggestions.
   
         Respond in the following JSON format:
           {
@@ -191,7 +191,7 @@ export const useAIChatHandlers = () => {
         Please retry the user's last request:
         "${lastUserMessage.text}"
   
-        Please provide 3 recipe suggestions based on the following user input.
+        Please provide 2 recipe suggestions based on the following user input.
           
           Respond in the following JSON format:
           {

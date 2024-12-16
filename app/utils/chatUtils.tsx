@@ -23,7 +23,7 @@ export const handleError = (
       case 'sendMessage':
         return `
           ${commonPromptPart}
-          Please provide 3 recipe suggestions based on the following user input.
+          Please provide 2 recipe suggestions based on the following user input.
           
           Respond in the following JSON format:
           {
