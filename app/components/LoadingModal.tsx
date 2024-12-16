@@ -41,14 +41,14 @@ const LoadingModal: React.FC<LoadingModalProps> = ({ isOpen }) => {
     }
   }, [isOpen]);
 
-  // Cycle through loading messages every 5 seconds
+  // Cycle through loading messages every 3 seconds
   useEffect(() => {
     let interval: NodeJS.Timeout | null = null;
 
     if (isOpen) {
       interval = setInterval(() => {
         setLoadingMessageIndex((prevIndex) => (prevIndex + 1) % loadingMessages.length);
-      }, 5000);
+      }, 3000);
     }
 
     return () => {
@@ -56,7 +56,7 @@ const LoadingModal: React.FC<LoadingModalProps> = ({ isOpen }) => {
     };
   }, [isOpen]);
 
-  // Add recipe received messages every 8 seconds
+  // Add recipe received messages every 4 seconds
   useEffect(() => {
     if (!isOpen) return;
 
@@ -65,7 +65,7 @@ const LoadingModal: React.FC<LoadingModalProps> = ({ isOpen }) => {
       if (nextIndex < recipeReceivedMessages.length) {
         setReceivedMessages((prevMessages) => [...prevMessages, recipeReceivedMessages[nextIndex]]);
       }
-    }, 8000);
+    }, 4000);
 
     return () => clearInterval(recipeInterval);
   }, [isOpen, receivedMessages]);
