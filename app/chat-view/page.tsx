@@ -5,12 +5,12 @@ import React, { Suspense, useEffect, useState } from 'react';
 import { useSearchParams } from 'next/navigation';
 import Header from '../components/Header';
 import MessageList from '../components/AIChatInterface/MessageList';
-import MessageInput from '../components/AIChatInterface/MessageInput';
+/*import MessageInput from '../components/AIChatInterface/MessageInput';*/
 import LoadingSpinner from '../components/LoadingSpinner';
 import Footer from '../components/Footer';
 import { getSavedSessionsFromDB } from '../utils/indexedDBUtils';
 import { useChat } from '../contexts/ChatContext';
-import { sendMessageToClaude } from '../services/claudeService';
+/*import { sendMessageToClaude } from '../services/claudeService';*/
 import { ChatMessage } from '../../types/ChatMessage';
 import { RecipeSuggestionSet } from '../../types/Recipe';
 import RecipeSuggestions from '../components/AIChatInterface/RecipeSuggestions';
@@ -87,7 +87,7 @@ const ChatViewPage: React.FC = () => {
     loadSessionMessages();
   }, [sessionId, setMessages, setIsLoading]);
 
-  // Handle sending message from input
+  {/*// Handle sending message from input
   const handleSendMessageClick = async () => {
     if (inputMessage.trim()) {
       setIsLoading(true);
@@ -116,7 +116,7 @@ const ChatViewPage: React.FC = () => {
         setInputMessage('');
       }
     }
-  };
+  };*/}
 
   if (!hydrationReady) {
     return null; // Prevent rendering until hydration is ready
@@ -125,7 +125,7 @@ const ChatViewPage: React.FC = () => {
   return (
     <div
         className="flex flex-col h-screen bg-fixed bg-cover bg-center text-white"
-        style={{ backgroundImage: "url('/images/summer-deck-2.png')" }}
+        style={{ backgroundImage: "url('/images/summer-deck-3.png')" }}
       >
       {/* Header */}
       <Header centralText={sessionTitle} />
@@ -155,7 +155,7 @@ const ChatViewPage: React.FC = () => {
         <LoadingSpinner isLoading={isLoading} loadingMessage="Chatting..." />
       </div>
 
-      {/* Input Section */}
+      {/* Input Section 
       <MessageInput
         inputMessage={inputMessage}
         handleInputChange={(e) => setInputMessage(e.target.value)}
@@ -164,7 +164,7 @@ const ChatViewPage: React.FC = () => {
         }}
         handleSendMessage={handleSendMessageClick}
         isLoading={isLoading}
-      />
+      />*/}
 
       {/* Footer Section with Save Session Button */}
       <Footer actions={['home', 'send']} />
