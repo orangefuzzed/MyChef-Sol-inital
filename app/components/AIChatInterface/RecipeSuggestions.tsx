@@ -1,7 +1,7 @@
 import React from 'react';
 import Link from 'next/link';
 import { Recipe } from '../../../types/Recipe';
-import { Flame, Clock, Soup, CookingPot, ChefHat } from 'lucide-react';
+import { Flame, Clock, Soup, ChefHat, Salad } from 'lucide-react';
 
 interface RecipeSuggestionsProps {
   currentRecipeList: Recipe[];
@@ -16,14 +16,11 @@ const RecipeSuggestions: React.FC<RecipeSuggestionsProps> = ({ currentRecipeList
       {currentRecipeList.map((recipe, index) => (
         <div
           key={`${recipe.recipeTitle}-${index}`}
-          className="relative flex items-start bg-white/30 backdrop-blur-lg border-white border shadow-lg ring-1 ring-black/5 py-6 px-8 rounded-3xl ml-4 mb-4"
+          className="relative flex items-start bg-white/30 backdrop-blur-lg border-white border shadow-lg ring-1 ring-black/5 py-6 px-8 rounded-3xl mb-4"
         >
-          {/* Left-Side Icon */}
-          <div className="absolute left-0 top-1/2 transform -translate-y-1/2 -ml-4 bg-slate-500 w-8 h-8 border border-white rounded-full flex items-center justify-center">
-            <CookingPot strokeWidth={1.75} className="w-4 h-4 text-white" /> {/* Example icon, you can change this */}
-          </div>
+          
 
-          <div className="ml-4"> {/* Adds space to accommodate the left-side icon */}
+          <div className="ml-2"> {/* Adds space to accommodate the left-side icon */}
             <h3 className="text-xl text-slate-950 font-bold">{recipe.recipeTitle}</h3>
             <p className="text-amber-400 mb-2">{recipe.rating}</p>
 

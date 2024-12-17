@@ -51,7 +51,7 @@ const HomeScreen: React.FC = () => {
               description: "Breakfast, lunch, or snack—recipes at the speed of thought.",
               
             },
-            {
+            /*{
               icon: 'fire' as IconName,
               title: "Trending Tastes",
               description: "Find the tastiest dishes making waves this week.",
@@ -98,7 +98,7 @@ const HomeScreen: React.FC = () => {
               title: "Old School Eats",
               description: "Nostalgic, hearty, and just like home.",
               
-            }
+            }*/
           ].map(({ title, description }, index) => (
             <div key={index} className="recipe-details-container bg-white/30 backdrop-blur-lg border-white border shadow-lg ring-1 ring-black/5 p-6 rounded-2xl">
               <div className="bg-sky-50/30 w-8 h-8 border border-white rounded-full flex items-center justify-center">
