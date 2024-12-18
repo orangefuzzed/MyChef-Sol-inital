@@ -9,7 +9,24 @@ const CookMode: React.FC<CookModeProps> = ({ cookModeData, recipeTitle }) => {
   const [wakeLock, setWakeLock] = useState<null | WakeLockSentinel>(null);
   const [error, setError] = useState<string | null>(null);
 
-  // Request Wake Lock
+// Fullscreen Hack for iOS PWAs
+const activateFullscreenHack = () => {
+  const video = document.createElement('video');
+  video.setAttribute('playsinline', 'true');
+  video.setAttribute('muted', 'true');
+  video.setAttribute('loop', 'true');
+  video.style.position = 'absolute';
+  video.style.width = '1px';
+  video.style.height = '1px';
+  video.style.opacity = '0'; // Make it fully invisible
+  video.src = 'data:video/mp4;base64,AAAAFGZ0eXBtcDQyAAAAAG1wNDEAAAAAaXNvbXNkYXQAAAAD//+EYXRvb2wwMDAwMDAwMAAAAABoZWxvb2woAAAAARp3cG9xU3lhbQAAAAATYXZjcDPEAAAAA3N0c29CVE9QAAAAAIA=';
+  document.body.appendChild(video);
+  video.play().catch((err) => {
+    console.warn('Fullscreen hack failed to play:', err);
+  });
+};
+
+  // Request Wake Lock (for supported platforms)
   const requestWakeLock = async () => {
     try {
       if ('wakeLock' in navigator) {
@@ -22,7 +39,8 @@ const CookMode: React.FC<CookModeProps> = ({ cookModeData, recipeTitle }) => {
           setWakeLock(null);
         });
       } else {
-        console.warn('Wake Lock API is not supported in this browser');
+        console.warn('Wake Lock API is not supported in this browser. Activating fullscreen hack.');
+        activateFullscreenHack();
       }
     } catch (err) {
       console.error('Failed to acquire wake lock:', err);
