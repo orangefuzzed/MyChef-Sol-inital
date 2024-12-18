@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef } from 'react'; // Added useRef
+import React, { useEffect, useState } from 'react'; // Added useRef
 import { TabletSmartphone } from 'lucide-react';
 
 interface CookModeProps {
@@ -10,41 +10,52 @@ const CookMode: React.FC<CookModeProps> = ({ cookModeData }) => {
   const [wakeLock, setWakeLock] = useState<null | WakeLockSentinel>(null);
   const [error, setError] = useState<string | null>(null);
   const [screenActive, setScreenActive] = useState(false); // Track if screen is actively locked
-  const videoRef = useRef<HTMLVideoElement | null>(null); // Track the video element
+  const [audioHack, setAudioHack] = useState<HTMLAudioElement | null>(null); // Track audio element
 
-  const activateFullscreenHack = () => {
-    const video = document.createElement('video');
-    video.setAttribute('playsinline', 'true'); // Required for Safari
-    video.setAttribute('muted', 'true');
-    video.setAttribute('loop', 'true');
-    video.style.position = 'absolute';
-    video.style.width = '1px';
-    video.style.height = '1px';
-    video.style.opacity = '0';
-    video.src = '/videos/tiny-video.mp4';
+  const activateAudioHack = () => {
+    const audio = document.createElement('audio');
+    audio.setAttribute('playsinline', 'true'); // Required for Safari
+    audio.setAttribute('muted', 'true'); // Silent
+    audio.setAttribute('loop', 'true'); // Loop continuously
+    audio.src = '/audio/tiny-silence.mp3'; // Replace with your hosted silent audio file
 
-    videoRef.current = video; // Store reference to the video element
-    document.body.appendChild(video);
-
-    video.play()
+    audio.play()
       .then(() => {
-        console.log('Fullscreen hack video is now playing.');
-        setScreenActive(true); // Update state when video starts playing
+        console.log('Audio hack is now playing.');
+        setAudioHack(audio); // Save reference for stopping later
+        setScreenActive(true); // Mark screen as active
       })
       .catch((err) => {
-        console.error('Fullscreen hack failed to play:', err);
+        console.error('Audio hack failed to play:', err);
       });
+
+    document.body.appendChild(audio); // Add to DOM for lifecycle control
   };
 
-  const deactivateFullscreenHack = () => {
-    if (videoRef.current) {
-      videoRef.current.pause(); // Stop playback
-      videoRef.current.remove(); // Remove from the DOM
-      videoRef.current = null; // Clear the reference
-      console.log('Fullscreen hack video stopped.');
+  const deactivateAudioHack = () => {
+    if (audioHack) {
+      audioHack.pause(); // Stop playback
+      audioHack.remove(); // Remove from DOM
+      setAudioHack(null); // Clear reference
+      console.log('Audio hack stopped.');
+      setScreenActive(false); // Mark screen as inactive
     }
-    setScreenActive(false);
   };
+
+  const handleKeepScreenActive = () => {
+    if (!screenActive) {
+      activateAudioHack();
+    } else {
+      deactivateAudioHack();
+    }
+  };
+
+  useEffect(() => {
+    // Cleanup audio hack on component unmount
+    return () => {
+      deactivateAudioHack();
+    };
+  }, [audioHack]);
 
   const requestWakeLock = async () => {
     try {
@@ -53,21 +64,22 @@ const CookMode: React.FC<CookModeProps> = ({ cookModeData }) => {
         setWakeLock(lock);
         setScreenActive(true);
         console.log('Wake Lock is active');
-
+  
         lock.addEventListener('release', () => {
           console.log('Wake Lock was released');
           setWakeLock(null);
           setScreenActive(false);
         });
       } else {
-        console.warn('Wake Lock API not supported. Activating fullscreen hack.');
-        activateFullscreenHack();
+        console.warn('Wake Lock API not supported. Activating audio hack.');
+        handleKeepScreenActive(); // Use the toggle logic
       }
     } catch (err) {
       console.error('Failed to activate wake lock:', err);
       setError('Failed to keep screen awake.');
     }
   };
+  
 
   const releaseWakeLock = () => {
     if (wakeLock) {
@@ -89,23 +101,13 @@ const CookMode: React.FC<CookModeProps> = ({ cookModeData }) => {
       </h2>
       {error && <p className="text-red-500 text-center mt-4">{error}</p>}
 
-      {!screenActive ? (
-        <button
-          className="mt-4 p-2 px-6 bg-pink-800/50 border border-sky-50 shadow-lg ring-1 ring-black/5 rounded-full text-sky-50 flex items-center justify-center mx-auto gap-2"
-          onClick={activateFullscreenHack}
-        >
-          Click to Keep Screen Active
-          <TabletSmartphone className="w-4 h-4" />
-        </button>
-      ) : (
-        <button
-          className="mt-4 p-2 px-6 bg-pink-800/50 border border-sky-50 shadow-lg ring-1 ring-black/5 rounded-full text-sky-50 flex items-center justify-center mx-auto gap-2"
-          onClick={deactivateFullscreenHack}
-        >
-          Stop Keeping Screen Active
-          <TabletSmartphone className="w-4 h-4" />
-        </button>
-      )}
+      <button
+        className="mt-4 p-2 px-6 bg-pink-800/50 border border-sky-50 shadow-lg ring-1 ring-black/5 rounded-full text-sky-50 flex items-center justify-center mx-auto gap-2"
+        onClick={handleKeepScreenActive}
+      >
+        {screenActive ? 'Screen is Active' : 'Click to Keep Screen Active'}
+        <TabletSmartphone className="w-4 h-4" />
+      </button>
 
       <div className="py-3 flex items-center text-sm text-black before:flex-1 before:border-t before:border-pink-800 before:me-6 after:flex-1 after:border-t after:border-pink-800 after:ms-6 dark:text-white dark:before:border-neutral-600 dark:after:border-neutral-600">
         INSTRUCTIONS
