@@ -106,7 +106,7 @@ const CookMode: React.FC<CookModeProps> = ({ cookModeData }) => {
       {error && <p className="text-red-500 text-center mt-4">{error}</p>}
         <button
           className="mt-4 p-2 px-6 bg-pink-800/50 border border-sky-50 shadow-lg ring-1 ring-black/5 rounded-full text-sky-50 flex items-center justify-center mx-auto gap-2"
-          onClick={handleKeepScreenActive}
+          onClick={activateFullscreenHack}
           disabled={screenActive} // Disable button if already active
         >
           {screenActive ? 'Screen is Active' : 'Click to Keep Screen Active'}
