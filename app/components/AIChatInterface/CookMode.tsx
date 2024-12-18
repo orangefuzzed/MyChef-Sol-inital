@@ -1,86 +1,39 @@
 import React, { useEffect, useState } from 'react';
-import { TabletSmartphone } from 'lucide-react';
 
 interface CookModeProps {
   cookModeData: string[]; // Array of instructions
   recipeTitle: string;    // The recipe title
 }
 
-const CookMode: React.FC<CookModeProps> = ({ cookModeData }) => {
-  const [wakeLock, setWakeLock] = useState<null | WakeLockSentinel>(null);
-  const [error, setError] = useState<string | null>(null);
+const CookMode: React.FC<CookModeProps> = ({ cookModeData, recipeTitle }) => {
   const [screenActive, setScreenActive] = useState(false);
 
-  // Periodic "Soft Refresh" with DOM Manipulation for iOS
-  useEffect(() => {
-    const softRefresh = setInterval(() => {
-      console.log('Triggering soft refresh for iOS...');
-      
-      // Scroll slightly to trigger a scroll event
-      window.scrollTo(0, 10); // Scroll down by 1px
-      setTimeout(() => {
-        window.scrollTo(0, 0); // Scroll back to the top
-      }, 100);
-
-      // Add a temporary class to body for visual DOM change
-      const body = document.body;
-      body.classList.add('temporary-refresh');
-      setTimeout(() => body.classList.remove('temporary-refresh'), 200); // Remove class after 200ms
-    }, 25000); // Fire every 25 seconds
-
-    return () => clearInterval(softRefresh); // Cleanup interval on component unmount
-  }, []);
-
-  const requestWakeLock = async () => {
-    try {
-      if ('wakeLock' in navigator) {
-        const lock = await navigator.wakeLock.request('screen');
-        setWakeLock(lock);
-        setScreenActive(true);
-        console.log('Wake Lock is active');
-  
-        lock.addEventListener('release', () => {
-          console.log('Wake Lock was released');
-          setWakeLock(null);
-          setScreenActive(false);
-        });
-      } else {
-        console.warn('Wake Lock API not supported.');
-      }
-    } catch (err) {
-      console.error('Failed to activate wake lock:', err);
-      setError('Failed to keep screen awake.');
-    }
+  const handleVideoPlay = () => {
+    setScreenActive(true);
+    console.log('Tiny-video is now playing.');
   };
-  
-
-  const releaseWakeLock = () => {
-    if (wakeLock) {
-      wakeLock.release();
-      setWakeLock(null);
-      console.log('Wake Lock released.');
-    }
-  };
-
-  useEffect(() => {
-    requestWakeLock();
-    return () => releaseWakeLock();
-  }, []);
 
   return (
     <div className="cook-mode bg-white/30 backdrop-blur-lg border-white border shadow-lg ring-1 ring-black/5 p-6 rounded-2xl">
       <h2 className="text-2xl font-medium text-sky-50 text-center">
-      Let&apos;s Get Cooking some shit!
+        Let&apos;s Cook Up Some {recipeTitle}!
       </h2>
-      {error && <p className="text-red-500 text-center mt-4">{error}</p>}
 
-      <button
-        className="mt-4 p-2 px-6 bg-pink-800/50 border border-sky-50 shadow-lg ring-1 ring-black/5 rounded-full text-sky-50 flex items-center justify-center mx-auto gap-2"
-        onClick={requestWakeLock}
-      >
-        {screenActive ? 'Screen is Active' : 'Click to Keep Screen Active'}
-        <TabletSmartphone className="w-4 h-4" />
-      </button>
+      <div className="flex justify-center my-4">
+        <video
+          className="rounded-lg shadow-lg"
+          width="300"
+          height="200"
+          muted
+          playsInline
+          loop
+          autoPlay
+          src="/videos/tiny-video.mp4"
+          onPlay={handleVideoPlay}
+        >
+          Your browser does not support the video tag.
+        </video>
+      </div>
 
       <div className="py-3 flex items-center text-sm text-black before:flex-1 before:border-t before:border-pink-800 before:me-6 after:flex-1 after:border-t after:border-pink-800 after:ms-6 dark:text-white dark:before:border-neutral-600 dark:after:border-neutral-600">
         INSTRUCTIONS
