@@ -140,7 +140,7 @@ const ShoppingListPage = () => {
   return (
     <Suspense fallback={<div>Loading...</div>}>
       <div className="flex flex-col h-screen bg-fixed bg-cover bg-center text-white"
-        style={{ backgroundImage: "url('/images/fresh-store-2.png')" }}
+        style={{ backgroundImage: "url('/images/fresh-store-4.png')" }}
         >
         {/* Header with Back Button */}
         <Header
@@ -149,7 +149,8 @@ const ShoppingListPage = () => {
 
         {/* Main Content */}
         <div className="flex-grow p-8 overflow-y-auto">
-          <ShoppingList shoppingListData={currentShoppingList} />
+          <ShoppingList shoppingListData={currentShoppingList} 
+          recipeTitle={selectedRecipe?.recipeTitle || 'Recipe Title Missing'}/>
         </div>
 
         {/* Footer with Save Shopping List Toggle */}

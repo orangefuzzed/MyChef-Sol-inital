@@ -42,9 +42,9 @@ const ShoppingListsPage = () => {
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
             {shoppingLists.map((list) => (
               <div
-                key={list.recipeId} // Updated `recipeId` to `id`
+              key={list.id} // Updated `recipeId` to `id`
                 className="bg-white/30 backdrop-blur-lg border-white border shadow-lg ring-1 ring-black/5 p-6 rounded-2xl"
-                onClick={() => handleViewShoppingList(list.recipeId)} // Updated `recipeId` to `id`
+                onClick={() => handleViewShoppingList(list.id)} // Updated `recipeId` to `id`
               >
                 {/* Left-Side Icon */}
                 <div className="bg-sky-50/30 w-8 h-8 border border-white rounded-full flex items-center justify-center mb-2">
