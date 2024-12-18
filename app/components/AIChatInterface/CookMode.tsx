@@ -9,18 +9,64 @@ const CookMode: React.FC<CookModeProps> = ({ cookModeData }) => {
   const [wakeLock, setWakeLock] = useState<null | WakeLockSentinel>(null);
   const [error, setError] = useState<string | null>(null);
   const [isToastVisible, setIsToastVisible] = useState(false); // Toast visibility state
+  const [videoRef, setVideoRef] = useState<HTMLVideoElement | null>(null); // Reference to the video element
+  const [sessionStarted, setSessionStarted] = useState(false); // Track if session has started
 
-  // Periodically show the toast to prevent screen dimming
+  const activateFullscreenHack = () => {
+    const video = document.createElement('video');
+    video.setAttribute('playsinline', 'true'); // Required for Safari
+    video.setAttribute('muted', 'true'); // Silent
+    video.setAttribute('loop', 'true'); // Loop continuously
+    video.style.position = 'absolute';
+    video.style.width = '1px';
+    video.style.height = '1px';
+    video.style.opacity = '0';
+    video.src = '/videos/tiny-video.mp4'; // Replace with your hosted silent video file
+
+    document.body.appendChild(video); // Add video to DOM
+    video.play()
+      .then(() => {
+        console.log('Fullscreen hack video is now playing.');
+        setVideoRef(video); // Save reference for stopping later
+      })
+      .catch((err) => {
+        console.error('Fullscreen hack failed to play:', err);
+      });
+  };
+
+  const deactivateFullscreenHack = () => {
+    if (videoRef) {
+      videoRef.pause(); // Stop playback
+      videoRef.remove(); // Remove from DOM
+      setVideoRef(null); // Clear reference
+      console.log('Fullscreen hack video stopped.');
+    }
+  };
+
+  // Periodically show the toast and activate the fullscreen hack
   useEffect(() => {
+    if (!sessionStarted) return; // Only activate after session has started
+
     const toastInterval = setInterval(() => {
-      setIsToastVisible(true); // Show toast
-      setTimeout(() => setIsToastVisible(false), 3000); // Hide after 3 seconds
+      setIsToastVisible(true);
+      activateFullscreenHack(); // Trigger the fullscreen hack with the toast
+      setTimeout(() => {
+        setIsToastVisible(false);
+        deactivateFullscreenHack(); // Clean up after the toast disappears
+      }, 3000); // Toast visible for 3 seconds
     }, 25000); // Trigger every 25 seconds
 
-    return () => clearInterval(toastInterval); // Cleanup on unmount
-  }, []);
+    return () => {
+      clearInterval(toastInterval); // Cleanup on unmount
+      deactivateFullscreenHack(); // Stop video playback
+    };
+  }, [sessionStarted, videoRef]);
 
-  // Request Wake Lock (if supported)
+  const handleStartSession = () => {
+    setSessionStarted(true);
+    console.log('Cooking session started!');
+  };
+
   const requestWakeLock = async () => {
     try {
       if ('wakeLock' in navigator) {
@@ -33,7 +79,8 @@ const CookMode: React.FC<CookModeProps> = ({ cookModeData }) => {
           setWakeLock(null);
         });
       } else {
-        console.warn('Wake Lock API not supported in this browser.');
+        console.warn('Wake Lock API not supported. Activating fullscreen hack.');
+        activateFullscreenHack();
       }
     } catch (err) {
       console.error('Failed to activate wake lock:', err);
@@ -41,7 +88,6 @@ const CookMode: React.FC<CookModeProps> = ({ cookModeData }) => {
     }
   };
 
-  // Release Wake Lock
   const releaseWakeLock = () => {
     if (wakeLock) {
       wakeLock.release();
@@ -50,7 +96,6 @@ const CookMode: React.FC<CookModeProps> = ({ cookModeData }) => {
     }
   };
 
-  // Initialize Wake Lock and set up cleanup
   useEffect(() => {
     requestWakeLock();
     return () => releaseWakeLock();
@@ -58,14 +103,19 @@ const CookMode: React.FC<CookModeProps> = ({ cookModeData }) => {
 
   return (
     <div className="cook-mode bg-white/30 backdrop-blur-lg border-white border shadow-lg ring-1 ring-black/5 p-6 rounded-2xl">
-      {/* Page Title */}
       <h2 className="text-2xl font-medium text-sky-50 text-center">
         Let&apos;s Get Cooking!
       </h2>
+      {error && <p className="text-red-500 text-center mt-4">{error}</p>}
 
-      {/* Error Message */}
-      {error && (
-        <p className="text-red-500 text-center mt-4">{error}</p>
+      {/* Start Session Button */}
+      {!sessionStarted && (
+        <button
+          className="mt-4 p-2 px-6 bg-pink-800/50 border border-sky-50 shadow-lg ring-1 ring-black/5 rounded-full text-sky-50 flex items-center justify-center mx-auto gap-2"
+          onClick={handleStartSession}
+        >
+          Start Cooking Session
+        </button>
       )}
 
       {/* Toast Notification */}
@@ -78,12 +128,9 @@ const CookMode: React.FC<CookModeProps> = ({ cookModeData }) => {
         </div>
       )}
 
-      {/* Instructions Header */}
       <div className="py-3 flex items-center text-sm text-black before:flex-1 before:border-t before:border-pink-800 before:me-6 after:flex-1 after:border-t after:border-pink-800 after:ms-6 dark:text-white dark:before:border-neutral-600 dark:after:border-neutral-600">
         INSTRUCTIONS
       </div>
-
-      {/* Instructions List */}
       <ol className="list-decimal pl-6 text-base text-white text-lg leading-relaxed space-y-4">
         {cookModeData.map((step, index) => (
           <li key={index} className="mb-2">
