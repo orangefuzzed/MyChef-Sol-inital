@@ -8,12 +8,12 @@ import { useSession } from 'next-auth/react';
 import { Button } from '@radix-ui/themes';
 import styles from './account.module.css';
 import Image from 'next/image';
-import { Settings, User, FilePenLine, MailCheck, Lock, Languages, ImagePlus } from 'lucide-react';
+import { Settings, User, FilePenLine, MailCheck, Lock, Languages, ImagePlus, CircleX } from 'lucide-react';
 
 
 interface AccountData {
   displayName: string;
-  email: string;
+  userEmail: string;
   password: string;
   linkedAccounts: {
     google: boolean;
@@ -40,7 +40,7 @@ const AccountPage: React.FC = () => {
 
   const [formData, setFormData] = useState<AccountData>({
     displayName: '',
-    email: '',
+    userEmail: '',
     password: '',
     linkedAccounts: { google: false, facebook: false },
     notificationSettings: { emailNotifications: false, pushNotifications: false },
@@ -49,30 +49,39 @@ const AccountPage: React.FC = () => {
     region: '',
   });
 
-  // Fetch account data on load
-  useEffect(() => {
-    const fetchAccountData = async () => {
-      if (session?.user?.email) {
-        try {
-          const { data } = await axios.get('/api/account');
-          setFormData((prev) => ({
-            ...prev,
-            displayName: data.account?.displayName || '',
-            linkedAccounts: data.account?.linkedAccounts || prev.linkedAccounts,
-            notificationSettings: data.account?.notificationSettings || prev.notificationSettings,
-            privacySettings: data.account?.privacySettings || prev.privacySettings,
-            language: data.account?.language || '',
-            region: data.account?.region || '',
-          }));
-          setAvatarPreview(data.account?.avatarUrl || null);
-        } catch (err) {
-          console.error('Error fetching account data:', err);
-        }
-      }
-    };
+  const [initialFormData, setInitialFormData] = useState<AccountData | null>(null); // New state
 
-    fetchAccountData();
-  }, [session]);
+  // Fetch account data on load
+useEffect(() => {
+  const fetchAccountData = async () => {
+    if (session?.user?.email) {
+      try {
+        const { data } = await axios.get('/api/account');
+
+        // Preserve the existing logic for setting formData
+        const updatedFormData = {
+          ...formData, // Keep previous state intact
+          displayName: data.account?.displayName || '',
+          userEmail: data.account?.userEmail || '',
+          linkedAccounts: data.account?.linkedAccounts || formData.linkedAccounts,
+          notificationSettings: data.account?.notificationSettings || formData.notificationSettings,
+          privacySettings: data.account?.privacySettings || formData.privacySettings,
+          language: data.account?.language || '',
+          region: data.account?.region || '',
+        };
+
+        setFormData(updatedFormData); // Set current form data
+        setInitialFormData(updatedFormData); // Store initial state for cancellation logic
+        setAvatarPreview(data.account?.avatarUrl || null);
+      } catch (err) {
+        console.error('Error fetching account data:', err);
+      }
+    }
+  };
+
+  fetchAccountData();
+}, [session]);
+
 
   // Update formData and handle checkboxes
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
@@ -149,6 +158,18 @@ const AccountPage: React.FC = () => {
     }
   };
 
+  const handleCancelClick = () => {
+    const confirmCancel = window.confirm(
+      "Are you sure you want to cancel? Unsaved changes will be lost."
+    );
+    if (confirmCancel && initialFormData) {
+      setFormData(initialFormData); // Reset formData to initial state
+      setIsEditing(false); // Exit editing mode
+    }
+  };
+  
+  
+
 
   return (
     <div className="flex flex-col h-screen bg-fixed bg-cover bg-center text-white"
@@ -158,17 +179,32 @@ const AccountPage: React.FC = () => {
       <main className="flex-grow p-8 overflow-y-auto">
 
         {/* Editing Action Buttons */}
-        <div className="flex justify-end mb-6">
-                  {isEditing ? (
-                    <Button onClick={handleSave} className="text-xs flex p-2 px-4 bg-pink-800/30 border border-sky-50 shadow-lg ring-1 ring-black/5 rounded-full text-sky-50 items-center gap-2 -mt-2 -mb-2">
-                      <FilePenLine className="w-4 h-4" /> Save
-                    </Button>
-                  ) : (
-                    <Button onClick={() => setIsEditing(true)} className="text-xs flex p-2 px-4 bg-pink-800/45 border border-sky-50 shadow-lg ring-1 ring-black/5 rounded-full text-sky-50 items-center gap-2 -mt-2 -mb-2">
-                      <FilePenLine className="w-4 h-4" /> Edit Profile
-                    </Button>
-                  )}
-                </div>
+        <div className="flex justify-end mb-6 space-x-4">
+          {isEditing ? (
+            <>
+              <Button
+                onClick={handleCancelClick}
+                className="text-xs flex p-2 px-4 bg-gray-400/30 border border-gray-100 shadow-lg ring-1 ring-black/5 rounded-full text-white items-center gap-2 -mt-2 -mb-2"
+              >
+                <CircleX className="w-4 h-4" /> Cancel
+              </Button>
+              <Button
+                onClick={handleSave}
+                className="text-xs flex p-2 px-4 bg-pink-800/30 border border-sky-50 shadow-lg ring-1 ring-black/5 rounded-full text-sky-50 items-center gap-2 -mt-2 -mb-2"
+              >
+                <FilePenLine className="w-4 h-4" /> Save
+              </Button>
+            </>
+          ) : (
+            <Button
+              onClick={() => setIsEditing(true)}
+              className="text-xs flex p-2 px-4 bg-pink-800/45 border border-sky-50 shadow-lg ring-1 ring-black/5 rounded-full text-sky-50 items-center gap-2 -mt-2 -mb-2"
+            >
+              <FilePenLine className="w-4 h-4" /> Edit Profile
+            </Button>
+          )}
+        </div>
+
 
         <div className="bg-white/30 backdrop-blur-lg border-white border shadow-lg ring-1 ring-black/5 mb-6 mt-2 p-6 rounded-2xl">
           <div className="flex items-center text-md font-normal mb-4">
@@ -224,13 +260,13 @@ const AccountPage: React.FC = () => {
               Email
             </label>
             <input
-              id="email"
-              name="email"
-              type="email"
+              id="userEmail"
+              name="userEmail"
+              type="text"
               className={styles.input}
-              value={formData.email}
+              value={formData.userEmail}
               onChange={handleChange}
-              disabled // Email should not be editable
+              disabled={!isEditing}
             />
             {/* Password Field */}
             <label htmlFor="password" className={styles.label}>
@@ -249,7 +285,7 @@ const AccountPage: React.FC = () => {
         </div>
 
         {/* Account Settings Section */}
-        <div className="bg-white/30 backdrop-blur-lg border-white border shadow-lg ring-1 ring-black/5 mb-6 mt-2 p-6 rounded-2xl">
+        <div className="bg-white/30 backdrop-blur-lg border-white border shadow-lg ring-1 ring-black/5 mb-6 mt-2 p-6 rounded-2xl hidden">
           <div className="flex items-center text-md font-normal mb-4">
           <div className="bg-[#00a39e] w-8 h-8 border border-white rounded-full flex items-center justify-center mr-2">
                   <Settings strokeWidth={1.5} className="w-5 h-5 text-white" /> {/* Example icon, you can change this */}
@@ -286,7 +322,7 @@ const AccountPage: React.FC = () => {
         </div>
 
         {/* Notifications Section */}
-        <div className="bg-white/30 backdrop-blur-lg border-white border shadow-lg ring-1 ring-black/5 mb-6 mt-2 p-6 rounded-2xl">
+        <div className="bg-white/30 backdrop-blur-lg border-white border shadow-lg ring-1 ring-black/5 mb-6 mt-2 p-6 rounded-2xl hidden">
           <div className="flex items-center text-md font-normal mb-4">
           <div className="bg-[#00a39e] w-8 h-8 border border-white rounded-full flex items-center justify-center mr-2">
                   <MailCheck strokeWidth={1.5} className="w-5 h-5 text-white" /> {/* Example icon, you can change this */}
@@ -326,13 +362,13 @@ const AccountPage: React.FC = () => {
               <p>Privacy Settings</p>
             </div>
           <div className={styles.sectionContent}>
-            <label className={styles.label}>Profile Visibility</label>
+            <label className="hidden">Profile Visibility</label>
             <select
               name="privacySettings.profileVisibility"
               value={formData.privacySettings.profileVisibility}
               onChange={handleChange}
               disabled={!isEditing}
-              className={styles.input}
+              className="hidden"
             >
               <option value="public">Public</option>
               <option value="private">Private</option>
@@ -345,13 +381,14 @@ const AccountPage: React.FC = () => {
                 onChange={handleChange}
                 disabled={!isEditing}
               />
-              Data Collection Opt-In
+              Data Collection Opt-Out
             </label>
+            <p>*We do not collect any data from our users.</p>
           </div>
         </div>
 
         {/* Language and Region Section */}
-        <div className="bg-white/30 backdrop-blur-lg border-white border shadow-lg ring-1 ring-black/5 mb-4 mt-2 p-6 rounded-2xl">
+        <div className="bg-white/30 backdrop-blur-lg border-white border shadow-lg ring-1 ring-black/5 mb-4 mt-2 p-6 rounded-2xl hidden">
           <div className="flex items-center text-md font-normal mb-4">
           <div className="bg-[#00a39e] w-8 h-8 border border-white rounded-full flex items-center justify-center mr-2">
                   <Languages strokeWidth={1.5} className="w-5 h-5 text-white" /> {/* Example icon, you can change this */}

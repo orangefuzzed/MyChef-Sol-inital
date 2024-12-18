@@ -133,7 +133,7 @@ const HamburgerMenu: React.FC<HamburgerMenuProps> = ({ isOpen, onClose }) => {
                   onClick={onClose}
                 >
                   <User size={20} />
-                  <span>Profile Info</span>
+                  <span>Profile & Account Settings</span>
                 </div>
               </Link>
               <div

@@ -193,3 +193,20 @@
 }
 
 /* Removed Delete Account Section */
+.button {
+  padding: 8px 16px;
+  border-radius: 4px;
+  font-weight: bold;
+  cursor: pointer;
+  margin: 0 8px; /* Add some spacing between buttons */
+}
+
+.saveButton {
+  background-color: #4caf50; /* Green for Save */
+  color: white;
+}
+
+.cancelButton {
+  background-color: #f44336; /* Red for Cancel */
+  color: white;
+}

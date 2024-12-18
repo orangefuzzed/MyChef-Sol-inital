@@ -1,30 +1,66 @@
 import React, { useEffect, useState } from 'react';
+import { TabletSmartphone } from 'lucide-react';
+
 
 interface CookModeProps {
   cookModeData: string[]; // Array of instructions
   recipeTitle: string;    // The recipe title
 }
 
-const CookMode: React.FC<CookModeProps> = ({ cookModeData, recipeTitle }) => {
+const CookMode: React.FC<CookModeProps> = ({ cookModeData }) => {
   const [wakeLock, setWakeLock] = useState<null | WakeLockSentinel>(null);
   const [error, setError] = useState<string | null>(null);
+  const [screenActive, setScreenActive] = useState(false); // Track if screen is actively locked
 
-// Fullscreen Hack for iOS PWAs
-const activateFullscreenHack = () => {
-  const video = document.createElement('video');
-  video.setAttribute('playsinline', 'true');
-  video.setAttribute('muted', 'true');
-  video.setAttribute('loop', 'true');
-  video.style.position = 'absolute';
-  video.style.width = '1px';
-  video.style.height = '1px';
-  video.style.opacity = '0'; // Make it fully invisible
-  video.src = 'data:video/mp4;base64,AAAAFGZ0eXBtcDQyAAAAAG1wNDEAAAAAaXNvbXNkYXQAAAAD//+EYXRvb2wwMDAwMDAwMAAAAABoZWxvb2woAAAAARp3cG9xU3lhbQAAAAATYXZjcDPEAAAAA3N0c29CVE9QAAAAAIA=';
-  document.body.appendChild(video);
-  video.play().catch((err) => {
-    console.warn('Fullscreen hack failed to play:', err);
-  });
-};
+  const handleKeepScreenActive = async () => {
+    try {
+      if ('wakeLock' in navigator) {
+        const lock = await navigator.wakeLock.request('screen');
+        setWakeLock(lock);
+        setScreenActive(true);
+        console.log('Wake Lock is active');
+
+        lock.addEventListener('release', () => {
+          console.log('Wake Lock was released');
+          setWakeLock(null);
+          setScreenActive(false);
+        });
+      } else {
+        console.warn('Wake Lock API not supported. Activating fullscreen hack.');
+        activateFullscreenHack();
+        setScreenActive(true);
+      }
+    } catch (err) {
+      console.error('Failed to activate wake lock:', err);
+      setError('Failed to keep screen awake.');
+    }
+  };
+
+  const activateFullscreenHack = () => {
+    const video = document.createElement('video');
+    video.setAttribute('playsinline', 'true');
+    video.setAttribute('muted', 'true');
+    video.setAttribute('loop', 'true');
+    video.style.position = 'absolute';
+    video.style.width = '1px';
+    video.style.height = '1px';
+    video.style.opacity = '0'; // Make it fully invisible
+    video.src =
+      'data:video/mp4;base64,AAAAFGZ0eXBtcDQyAAAAAG1wNDEAAAAAaXNvbXNkYXQAAAAD//+EYXRvb2wwMDAwMDAwMAAAAABoZWxvb2woAAAAARp3cG9xU3lhbQAAAAATYXZjcDPEAAAAA3N0c29CVE9QAAAAAIA=';
+    video.addEventListener('loadstart', () => {
+      console.log('Fullscreen hack video has started loading.');
+    });
+    document.body.appendChild(video);
+    video
+      .play()
+      .then(() => {
+        console.log('Fullscreen hack video is playing.');
+      })
+      .catch((err) => {
+        console.warn('Fullscreen hack failed to play:', err);
+      });
+  };
+  
 
   // Request Wake Lock (for supported platforms)
   const requestWakeLock = async () => {
@@ -68,6 +104,15 @@ const activateFullscreenHack = () => {
         Let&apos;s Get Cooking!
       </h2>
       {error && <p className="text-red-500 text-center mt-4">{error}</p>}
+        <button
+          className="mt-4 p-2 px-6 bg-pink-800/50 border border-sky-50 shadow-lg ring-1 ring-black/5 rounded-full text-sky-50 flex items-center justify-center mx-auto gap-2"
+          onClick={handleKeepScreenActive}
+          disabled={screenActive} // Disable button if already active
+        >
+          {screenActive ? 'Screen is Active' : 'Click to Keep Screen Active'}
+          <TabletSmartphone className="w-4 h-4" />
+        </button>
+
       <div className="py-3 flex items-center text-sm text-black before:flex-1 before:border-t before:border-pink-800 before:me-6 after:flex-1 after:border-t after:border-pink-800 after:ms-6 dark:text-white dark:before:border-neutral-600 dark:after:border-neutral-600">
         INSTRUCTIONS
       </div>
