@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 
 interface CookModeProps {
   cookModeData: string[]; // Array of instructions
@@ -6,11 +6,18 @@ interface CookModeProps {
 }
 
 const CookMode: React.FC<CookModeProps> = ({ cookModeData, recipeTitle }) => {
-  const [screenActive, setScreenActive] = useState(false);
+  const [isPlaying, setIsPlaying] = useState(false);
 
   const handleVideoPlay = () => {
-    setScreenActive(true);
-    console.log('Tiny-video is now playing.');
+    const video = document.getElementById('cookModeVideo') as HTMLVideoElement;
+    if (video) {
+      video.play()
+        .then(() => {
+          setIsPlaying(true);
+          console.log('Video is now playing.');
+        })
+        .catch((err) => console.error('Error playing video:', err));
+    }
   };
 
   return (
@@ -20,20 +27,30 @@ const CookMode: React.FC<CookModeProps> = ({ cookModeData, recipeTitle }) => {
       </h2>
 
       <div className="flex justify-center my-4">
-        <video
-          className="rounded-lg shadow-lg"
-          width="300"
-          height="200"
-          muted
-          playsInline
-          loop
-          autoPlay
-          src="/videos/tiny-video.mp4"
-          onPlay={handleVideoPlay}
-        >
-          Your browser does not support the video tag.
-        </video>
+        {!isPlaying ? (
+          <button
+            className="px-4 py-2 bg-pink-800 text-white rounded-full shadow-md"
+            onClick={handleVideoPlay}
+          >
+            Click to Play Video
+          </button>
+        ) : (
+          <p className="text-green-500">Video is Playing</p>
+        )}
       </div>
+
+      <video
+        id="cookModeVideo"
+        className="rounded-lg shadow-lg"
+        width="300"
+        height="200"
+        muted
+        playsInline
+        loop
+        src="/videos/tiny-video.mp4"
+      >
+        Your browser does not support the video tag.
+      </video>
 
       <div className="py-3 flex items-center text-sm text-black before:flex-1 before:border-t before:border-pink-800 before:me-6 after:flex-1 after:border-t after:border-pink-800 after:ms-6 dark:text-white dark:before:border-neutral-600 dark:after:border-neutral-600">
         INSTRUCTIONS
