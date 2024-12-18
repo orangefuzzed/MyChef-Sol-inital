@@ -47,7 +47,7 @@ const CookMode: React.FC<CookModeProps> = ({ cookModeData, recipeTitle }) => {
         muted
         playsInline
         loop
-        src="/videos/tiny-video.mp4"
+        src="/videos/tiny-video.MOV"
       >
         Your browser does not support the video tag.
       </video>
