@@ -26,7 +26,8 @@ const ShoppingListsPage = () => {
   }, []);
 
   const handleViewShoppingList = (id: string) => {
-    router.push(`/shopping-list?id=${id}`); // Updated `recipeId` to `id`
+    console.log("Navigating to Shopping List with ID:", id); // Debug log
+    router.push(`/shopping-list?id=${id}`);
   };
 
   return (

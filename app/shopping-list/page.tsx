@@ -24,34 +24,30 @@ const ShoppingListPage = () => {
   }, []);
 
   useEffect(() => {
-    if (!id) return; // Add null-check for `id`
-
-    // If there's an id in the URL, fetch the recipe and shopping list
-    if (hydrationReady && id && !selectedRecipe) {
-      const fetchRecipe = async () => {
-        try {
-          // Fetch the recipe details
-          const response = await fetch(`/api/recipes/saved?id=${id}`);
-          if (response.ok) {
-            const fetchedRecipe = await response.json();
-            setSelectedRecipe(fetchedRecipe);
-          } else {
-            console.error('Failed to fetch recipe:', await response.text());
-          }
-
-          // Fetch the shopping list for this id
-          const savedShoppingList = await getSavedShoppingListsFromDB(id);
-          if (savedShoppingList) {
-            setCurrentShoppingList(savedShoppingList);
-          }
-        } catch (error) {
-          console.error('Failed to fetch recipe or shopping list:', error);
+    if (!id || !hydrationReady) return;
+  
+    const fetchRecipe = async () => {
+      try {
+        const response = await fetch(`/api/recipes/saved?id=${id}`);
+        if (response.ok) {
+          const fetchedRecipe = await response.json();
+          setSelectedRecipe(fetchedRecipe);
+        } else {
+          console.error('Failed to fetch recipe:', await response.text());
         }
-      };
-
-      fetchRecipe();
-    }
-  }, [hydrationReady, id, selectedRecipe, setSelectedRecipe, setCurrentShoppingList]);
+  
+        const savedShoppingList = await getSavedShoppingListsFromDB(id);
+        if (savedShoppingList) {
+          setCurrentShoppingList(savedShoppingList);
+        }
+      } catch (error) {
+        console.error('Failed to fetch recipe or shopping list:', error);
+      }
+    };
+  
+    fetchRecipe();
+  }, [hydrationReady, id, setSelectedRecipe, setCurrentShoppingList]);
+  
 
   useEffect(() => {
     if (hydrationReady && id) {
