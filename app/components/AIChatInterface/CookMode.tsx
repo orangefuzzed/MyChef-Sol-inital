@@ -1,6 +1,5 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react'; // Added useRef
 import { TabletSmartphone } from 'lucide-react';
-
 
 interface CookModeProps {
   cookModeData: string[]; // Array of instructions
@@ -11,8 +10,43 @@ const CookMode: React.FC<CookModeProps> = ({ cookModeData }) => {
   const [wakeLock, setWakeLock] = useState<null | WakeLockSentinel>(null);
   const [error, setError] = useState<string | null>(null);
   const [screenActive, setScreenActive] = useState(false); // Track if screen is actively locked
+  const videoRef = useRef<HTMLVideoElement | null>(null); // Track the video element
 
-  const handleKeepScreenActive = async () => {
+  const activateFullscreenHack = () => {
+    const video = document.createElement('video');
+    video.setAttribute('playsinline', 'true'); // Required for Safari
+    video.setAttribute('muted', 'true');
+    video.setAttribute('loop', 'true');
+    video.style.position = 'absolute';
+    video.style.width = '1px';
+    video.style.height = '1px';
+    video.style.opacity = '0';
+    video.src = '/videos/tiny-video.mp4';
+
+    videoRef.current = video; // Store reference to the video element
+    document.body.appendChild(video);
+
+    video.play()
+      .then(() => {
+        console.log('Fullscreen hack video is now playing.');
+        setScreenActive(true); // Update state when video starts playing
+      })
+      .catch((err) => {
+        console.error('Fullscreen hack failed to play:', err);
+      });
+  };
+
+  const deactivateFullscreenHack = () => {
+    if (videoRef.current) {
+      videoRef.current.pause(); // Stop playback
+      videoRef.current.remove(); // Remove from the DOM
+      videoRef.current = null; // Clear the reference
+      console.log('Fullscreen hack video stopped.');
+    }
+    setScreenActive(false);
+  };
+
+  const requestWakeLock = async () => {
     try {
       if ('wakeLock' in navigator) {
         const lock = await navigator.wakeLock.request('screen');
@@ -28,7 +62,6 @@ const CookMode: React.FC<CookModeProps> = ({ cookModeData }) => {
       } else {
         console.warn('Wake Lock API not supported. Activating fullscreen hack.');
         activateFullscreenHack();
-        setScreenActive(true);
       }
     } catch (err) {
       console.error('Failed to activate wake lock:', err);
@@ -36,58 +69,11 @@ const CookMode: React.FC<CookModeProps> = ({ cookModeData }) => {
     }
   };
 
-  const activateFullscreenHack = () => {
-    const video = document.createElement('video');
-    video.setAttribute('playsinline', 'true'); // Required for Safari
-    video.setAttribute('muted', 'true');
-    video.setAttribute('loop', 'true');
-    video.style.position = 'absolute';
-    video.style.width = '1px';
-    video.style.height = '1px';
-    video.style.opacity = '0'; // Make it fully invisible
-    video.src = '/videos/tiny-video.mp4'; // Replace with a valid video URL or hosted file
-    document.body.appendChild(video);
-    
-    video.play()
-      .then(() => {
-        console.log('Fullscreen hack video is now playing.');
-        setScreenActive(true); // Update the screenActive state
-      })
-      .catch((err) => {
-        console.error('Fullscreen hack failed to play:', err);
-      });
-  };
-  
-  
-
-  // Request Wake Lock (for supported platforms)
-  const requestWakeLock = async () => {
-    try {
-      if ('wakeLock' in navigator) {
-        const lock = await navigator.wakeLock.request('screen');
-        setWakeLock(lock);
-        console.log('Wake Lock is active');
-
-        lock.addEventListener('release', () => {
-          console.log('Wake Lock was released');
-          setWakeLock(null);
-        });
-      } else {
-        console.warn('Wake Lock API is not supported in this browser. Activating fullscreen hack.');
-        activateFullscreenHack();
-      }
-    } catch (err) {
-      console.error('Failed to acquire wake lock:', err);
-      setError('Wake Lock failed to activate');
-    }
-  };
-
-  // Release Wake Lock on cleanup
   const releaseWakeLock = () => {
     if (wakeLock) {
       wakeLock.release();
       setWakeLock(null);
-      console.log('Wake Lock released');
+      console.log('Wake Lock released.');
     }
   };
 
@@ -99,17 +85,27 @@ const CookMode: React.FC<CookModeProps> = ({ cookModeData }) => {
   return (
     <div className="cook-mode bg-white/30 backdrop-blur-lg border-white border shadow-lg ring-1 ring-black/5 p-6 rounded-2xl">
       <h2 className="text-2xl font-medium text-sky-50 text-center">
-        Let&apos;s Get Cooking!
+      Let&apos;s Get Cooking!
       </h2>
       {error && <p className="text-red-500 text-center mt-4">{error}</p>}
+
+      {!screenActive ? (
         <button
           className="mt-4 p-2 px-6 bg-pink-800/50 border border-sky-50 shadow-lg ring-1 ring-black/5 rounded-full text-sky-50 flex items-center justify-center mx-auto gap-2"
           onClick={activateFullscreenHack}
-          disabled={screenActive} // Disable button if already active
         >
-          {screenActive ? 'Screen is Active' : 'Click to Keep Screen Active'}
+          Click to Keep Screen Active
           <TabletSmartphone className="w-4 h-4" />
         </button>
+      ) : (
+        <button
+          className="mt-4 p-2 px-6 bg-pink-800/50 border border-sky-50 shadow-lg ring-1 ring-black/5 rounded-full text-sky-50 flex items-center justify-center mx-auto gap-2"
+          onClick={deactivateFullscreenHack}
+        >
+          Stop Keeping Screen Active
+          <TabletSmartphone className="w-4 h-4" />
+        </button>
+      )}
 
       <div className="py-3 flex items-center text-sm text-black before:flex-1 before:border-t before:border-pink-800 before:me-6 after:flex-1 after:border-t after:border-pink-800 after:ms-6 dark:text-white dark:before:border-neutral-600 dark:after:border-neutral-600">
         INSTRUCTIONS
