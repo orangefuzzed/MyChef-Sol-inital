@@ -38,28 +38,26 @@ const CookMode: React.FC<CookModeProps> = ({ cookModeData }) => {
 
   const activateFullscreenHack = () => {
     const video = document.createElement('video');
-    video.setAttribute('playsinline', 'true');
+    video.setAttribute('playsinline', 'true'); // Required for Safari
     video.setAttribute('muted', 'true');
     video.setAttribute('loop', 'true');
     video.style.position = 'absolute';
     video.style.width = '1px';
     video.style.height = '1px';
     video.style.opacity = '0'; // Make it fully invisible
-    video.src =
-      'data:video/mp4;base64,AAAAFGZ0eXBtcDQyAAAAAG1wNDEAAAAAaXNvbXNkYXQAAAAD//+EYXRvb2wwMDAwMDAwMAAAAABoZWxvb2woAAAAARp3cG9xU3lhbQAAAAATYXZjcDPEAAAAA3N0c29CVE9QAAAAAIA=';
-    video.addEventListener('loadstart', () => {
-      console.log('Fullscreen hack video has started loading.');
-    });
+    video.src = '/videos/tiny-video.mp4'; // Replace with a valid video URL or hosted file
     document.body.appendChild(video);
-    video
-      .play()
+    
+    video.play()
       .then(() => {
-        console.log('Fullscreen hack video is playing.');
+        console.log('Fullscreen hack video is now playing.');
+        setScreenActive(true); // Update the screenActive state
       })
       .catch((err) => {
-        console.warn('Fullscreen hack failed to play:', err);
+        console.error('Fullscreen hack failed to play:', err);
       });
   };
+  
   
 
   // Request Wake Lock (for supported platforms)
