@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { TabletSmartphone } from 'lucide-react';
 
 interface CookModeProps {
   cookModeData: string[]; // Array of instructions
@@ -8,79 +9,36 @@ interface CookModeProps {
 const CookMode: React.FC<CookModeProps> = ({ cookModeData }) => {
   const [wakeLock, setWakeLock] = useState<null | WakeLockSentinel>(null);
   const [error, setError] = useState<string | null>(null);
-  const [isToastVisible, setIsToastVisible] = useState(false); // Toast visibility state
-  const [videoRef, setVideoRef] = useState<HTMLVideoElement | null>(null); // Reference to the video element
-  const [sessionStarted, setSessionStarted] = useState(false); // Track if session has started
+  const [screenActive, setScreenActive] = useState(false);
 
-  const activateFullscreenHack = () => {
-    const video = document.createElement('video');
-    video.setAttribute('playsinline', 'true'); // Required for Safari
-    video.setAttribute('muted', 'true'); // Silent
-    video.setAttribute('loop', 'true'); // Loop continuously
-    video.style.position = 'absolute';
-    video.style.width = '1px';
-    video.style.height = '1px';
-    video.style.opacity = '0';
-    video.src = '/videos/tiny-video.mp4'; // Replace with your hosted silent video file
-
-    document.body.appendChild(video); // Add video to DOM
-    video.play()
-      .then(() => {
-        console.log('Fullscreen hack video is now playing.');
-        setVideoRef(video); // Save reference for stopping later
-      })
-      .catch((err) => {
-        console.error('Fullscreen hack failed to play:', err);
-      });
-  };
-
-  const deactivateFullscreenHack = () => {
-    if (videoRef) {
-      videoRef.pause(); // Stop playback
-      videoRef.remove(); // Remove from DOM
-      setVideoRef(null); // Clear reference
-      console.log('Fullscreen hack video stopped.');
-    }
-  };
-
-  // Periodically show the toast and activate the fullscreen hack
+  // Periodic "Soft Refresh"
   useEffect(() => {
-    if (!sessionStarted) return; // Only activate after session has started
-
-    const toastInterval = setInterval(() => {
-      setIsToastVisible(true);
-      activateFullscreenHack(); // Trigger the fullscreen hack with the toast
+    const softRefresh = setInterval(() => {
+      window.scrollTo(0, 10); // Scroll down by 10px
       setTimeout(() => {
-        setIsToastVisible(false);
-        deactivateFullscreenHack(); // Clean up after the toast disappears
-      }, 3000); // Toast visible for 3 seconds
-    }, 25000); // Trigger every 25 seconds
+        window.scrollTo(0, 0); // Scroll back up
+      }, 100); // Allow time for the scroll event
+      console.log('Soft refresh triggered to prevent screen dimming.');
+    }, 25000); // Fire every 25 seconds
 
-    return () => {
-      clearInterval(toastInterval); // Cleanup on unmount
-      deactivateFullscreenHack(); // Stop video playback
-    };
-  }, [sessionStarted, videoRef]);
-
-  const handleStartSession = () => {
-    setSessionStarted(true);
-    console.log('Cooking session started!');
-  };
+    return () => clearInterval(softRefresh); // Cleanup interval on component unmount
+  }, []);
 
   const requestWakeLock = async () => {
     try {
       if ('wakeLock' in navigator) {
         const lock = await navigator.wakeLock.request('screen');
         setWakeLock(lock);
+        setScreenActive(true);
         console.log('Wake Lock is active');
 
         lock.addEventListener('release', () => {
           console.log('Wake Lock was released');
           setWakeLock(null);
+          setScreenActive(false);
         });
       } else {
-        console.warn('Wake Lock API not supported. Activating fullscreen hack.');
-        activateFullscreenHack();
+        console.warn('Wake Lock API not supported.');
       }
     } catch (err) {
       console.error('Failed to activate wake lock:', err);
@@ -88,17 +46,14 @@ const CookMode: React.FC<CookModeProps> = ({ cookModeData }) => {
     }
   };
 
-  const releaseWakeLock = () => {
-    if (wakeLock) {
-      wakeLock.release();
-      setWakeLock(null);
-      console.log('Wake Lock released.');
-    }
-  };
-
   useEffect(() => {
     requestWakeLock();
-    return () => releaseWakeLock();
+    return () => {
+      if (wakeLock) {
+        wakeLock.release();
+        console.log('Wake Lock released.');
+      }
+    };
   }, []);
 
   return (
@@ -107,27 +62,13 @@ const CookMode: React.FC<CookModeProps> = ({ cookModeData }) => {
         Let&apos;s Get Cooking!
       </h2>
       {error && <p className="text-red-500 text-center mt-4">{error}</p>}
-
-      {/* Start Session Button */}
-      {!sessionStarted && (
-        <button
-          className="mt-4 p-2 px-6 bg-pink-800/50 border border-sky-50 shadow-lg ring-1 ring-black/5 rounded-full text-sky-50 flex items-center justify-center mx-auto gap-2"
-          onClick={handleStartSession}
-        >
-          Start Cooking Session
-        </button>
-      )}
-
-      {/* Toast Notification */}
-      {isToastVisible && (
-        <div
-          className="fixed bottom-4 left-1/2 transform -translate-x-1/2 px-4 py-2 bg-pink-800/90 text-white rounded-lg shadow-md ring-1 ring-black/10 animate-fade-in-out"
-          role="status"
-        >
-          🍳 This keeps your recipe view alive!
-        </div>
-      )}
-
+      <button
+        className="mt-4 p-2 px-6 bg-pink-800/50 border border-sky-50 shadow-lg ring-1 ring-black/5 rounded-full text-sky-50 flex items-center justify-center mx-auto gap-2"
+        onClick={requestWakeLock}
+      >
+        {screenActive ? 'Screen is Active' : 'Click to Keep Screen Active'}
+        <TabletSmartphone className="w-4 h-4" />
+      </button>
       <div className="py-3 flex items-center text-sm text-black before:flex-1 before:border-t before:border-pink-800 before:me-6 after:flex-1 after:border-t after:border-pink-800 after:ms-6 dark:text-white dark:before:border-neutral-600 dark:after:border-neutral-600">
         INSTRUCTIONS
       </div>
