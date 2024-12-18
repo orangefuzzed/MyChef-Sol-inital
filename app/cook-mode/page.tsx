@@ -95,7 +95,8 @@ const CookModePage = () => {
 
       {/* Main Content */}
       <div className="flex-grow p-8 overflow-y-auto">
-      <CookMode cookModeData={selectedRecipe.instructions} /> {/* Pass array directly */}
+      <CookMode cookModeData={selectedRecipe.instructions} 
+      recipeTitle={selectedRecipe?.recipeTitle || 'Recipe Title Missing'}/>
       </div>
 
       {/* Footer with standard actions */}
