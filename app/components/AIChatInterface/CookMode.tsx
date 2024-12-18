@@ -1,5 +1,4 @@
-import React, { useEffect, useState } from 'react'; // Added useRef
-import { TabletSmartphone } from 'lucide-react';
+import React, { useEffect, useState } from 'react';
 
 interface CookModeProps {
   cookModeData: string[]; // Array of instructions
@@ -9,78 +8,40 @@ interface CookModeProps {
 const CookMode: React.FC<CookModeProps> = ({ cookModeData }) => {
   const [wakeLock, setWakeLock] = useState<null | WakeLockSentinel>(null);
   const [error, setError] = useState<string | null>(null);
-  const [screenActive, setScreenActive] = useState(false); // Track if screen is actively locked
-  const [audioHack, setAudioHack] = useState<HTMLAudioElement | null>(null); // Track audio element
+  const [isToastVisible, setIsToastVisible] = useState(false); // Toast visibility state
 
-  const activateAudioHack = () => {
-    const audio = document.createElement('audio');
-    audio.setAttribute('playsinline', 'true'); // Required for Safari
-    audio.setAttribute('muted', 'true'); // Silent
-    audio.setAttribute('loop', 'true'); // Loop continuously
-    audio.src = '/audio/tiny-silence.mp3'; // Replace with your hosted silent audio file
-
-    audio.play()
-      .then(() => {
-        console.log('Audio hack is now playing.');
-        setAudioHack(audio); // Save reference for stopping later
-        setScreenActive(true); // Mark screen as active
-      })
-      .catch((err) => {
-        console.error('Audio hack failed to play:', err);
-      });
-
-    document.body.appendChild(audio); // Add to DOM for lifecycle control
-  };
-
-  const deactivateAudioHack = () => {
-    if (audioHack) {
-      audioHack.pause(); // Stop playback
-      audioHack.remove(); // Remove from DOM
-      setAudioHack(null); // Clear reference
-      console.log('Audio hack stopped.');
-      setScreenActive(false); // Mark screen as inactive
-    }
-  };
-
-  const handleKeepScreenActive = () => {
-    if (!screenActive) {
-      activateAudioHack();
-    } else {
-      deactivateAudioHack();
-    }
-  };
-
+  // Periodically show the toast to prevent screen dimming
   useEffect(() => {
-    // Cleanup audio hack on component unmount
-    return () => {
-      deactivateAudioHack();
-    };
-  }, [audioHack]);
+    const toastInterval = setInterval(() => {
+      setIsToastVisible(true); // Show toast
+      setTimeout(() => setIsToastVisible(false), 3000); // Hide after 3 seconds
+    }, 25000); // Trigger every 25 seconds
 
+    return () => clearInterval(toastInterval); // Cleanup on unmount
+  }, []);
+
+  // Request Wake Lock (if supported)
   const requestWakeLock = async () => {
     try {
       if ('wakeLock' in navigator) {
         const lock = await navigator.wakeLock.request('screen');
         setWakeLock(lock);
-        setScreenActive(true);
         console.log('Wake Lock is active');
-  
+
         lock.addEventListener('release', () => {
           console.log('Wake Lock was released');
           setWakeLock(null);
-          setScreenActive(false);
         });
       } else {
-        console.warn('Wake Lock API not supported. Activating audio hack.');
-        handleKeepScreenActive(); // Use the toggle logic
+        console.warn('Wake Lock API not supported in this browser.');
       }
     } catch (err) {
       console.error('Failed to activate wake lock:', err);
       setError('Failed to keep screen awake.');
     }
   };
-  
 
+  // Release Wake Lock
   const releaseWakeLock = () => {
     if (wakeLock) {
       wakeLock.release();
@@ -89,6 +50,7 @@ const CookMode: React.FC<CookModeProps> = ({ cookModeData }) => {
     }
   };
 
+  // Initialize Wake Lock and set up cleanup
   useEffect(() => {
     requestWakeLock();
     return () => releaseWakeLock();
@@ -96,22 +58,32 @@ const CookMode: React.FC<CookModeProps> = ({ cookModeData }) => {
 
   return (
     <div className="cook-mode bg-white/30 backdrop-blur-lg border-white border shadow-lg ring-1 ring-black/5 p-6 rounded-2xl">
+      {/* Page Title */}
       <h2 className="text-2xl font-medium text-sky-50 text-center">
-      Let&apos;s Get Cooking!
+        Let&apos;s Get Cooking!
       </h2>
-      {error && <p className="text-red-500 text-center mt-4">{error}</p>}
 
-      <button
-        className="mt-4 p-2 px-6 bg-pink-800/50 border border-sky-50 shadow-lg ring-1 ring-black/5 rounded-full text-sky-50 flex items-center justify-center mx-auto gap-2"
-        onClick={handleKeepScreenActive}
-      >
-        {screenActive ? 'Screen is Active' : 'Click to Keep Screen Active'}
-        <TabletSmartphone className="w-4 h-4" />
-      </button>
+      {/* Error Message */}
+      {error && (
+        <p className="text-red-500 text-center mt-4">{error}</p>
+      )}
 
+      {/* Toast Notification */}
+      {isToastVisible && (
+        <div
+          className="fixed bottom-4 left-1/2 transform -translate-x-1/2 px-4 py-2 bg-pink-800/90 text-white rounded-lg shadow-md ring-1 ring-black/10 animate-fade-in-out"
+          role="status"
+        >
+          🍳 This keeps your recipe view alive!
+        </div>
+      )}
+
+      {/* Instructions Header */}
       <div className="py-3 flex items-center text-sm text-black before:flex-1 before:border-t before:border-pink-800 before:me-6 after:flex-1 after:border-t after:border-pink-800 after:ms-6 dark:text-white dark:before:border-neutral-600 dark:after:border-neutral-600">
         INSTRUCTIONS
       </div>
+
+      {/* Instructions List */}
       <ol className="list-decimal pl-6 text-base text-white text-lg leading-relaxed space-y-4">
         {cookModeData.map((step, index) => (
           <li key={index} className="mb-2">
