@@ -11,14 +11,21 @@ const CookMode: React.FC<CookModeProps> = ({ cookModeData }) => {
   const [error, setError] = useState<string | null>(null);
   const [screenActive, setScreenActive] = useState(false);
 
-  // Periodic "Soft Refresh"
+  // Periodic "Soft Refresh" with DOM Manipulation for iOS
   useEffect(() => {
     const softRefresh = setInterval(() => {
-      window.scrollTo(0, 10); // Scroll down by 10px
+      console.log('Triggering soft refresh for iOS...');
+      
+      // Scroll slightly to trigger a scroll event
+      window.scrollTo(0, 10); // Scroll down by 1px
       setTimeout(() => {
-        window.scrollTo(0, 0); // Scroll back up
-      }, 100); // Allow time for the scroll event
-      console.log('Soft refresh triggered to prevent screen dimming.');
+        window.scrollTo(0, 0); // Scroll back to the top
+      }, 100);
+
+      // Add a temporary class to body for visual DOM change
+      const body = document.body;
+      body.classList.add('temporary-refresh');
+      setTimeout(() => body.classList.remove('temporary-refresh'), 200); // Remove class after 200ms
     }, 25000); // Fire every 25 seconds
 
     return () => clearInterval(softRefresh); // Cleanup interval on component unmount
@@ -31,7 +38,7 @@ const CookMode: React.FC<CookModeProps> = ({ cookModeData }) => {
         setWakeLock(lock);
         setScreenActive(true);
         console.log('Wake Lock is active');
-
+  
         lock.addEventListener('release', () => {
           console.log('Wake Lock was released');
           setWakeLock(null);
@@ -45,23 +52,28 @@ const CookMode: React.FC<CookModeProps> = ({ cookModeData }) => {
       setError('Failed to keep screen awake.');
     }
   };
+  
+
+  const releaseWakeLock = () => {
+    if (wakeLock) {
+      wakeLock.release();
+      setWakeLock(null);
+      console.log('Wake Lock released.');
+    }
+  };
 
   useEffect(() => {
     requestWakeLock();
-    return () => {
-      if (wakeLock) {
-        wakeLock.release();
-        console.log('Wake Lock released.');
-      }
-    };
+    return () => releaseWakeLock();
   }, []);
 
   return (
     <div className="cook-mode bg-white/30 backdrop-blur-lg border-white border shadow-lg ring-1 ring-black/5 p-6 rounded-2xl">
       <h2 className="text-2xl font-medium text-sky-50 text-center">
-        Let&apos;s Get Cooking!
+      Let&apos;s Get Cooking some shit!
       </h2>
       {error && <p className="text-red-500 text-center mt-4">{error}</p>}
+
       <button
         className="mt-4 p-2 px-6 bg-pink-800/50 border border-sky-50 shadow-lg ring-1 ring-black/5 rounded-full text-sky-50 flex items-center justify-center mx-auto gap-2"
         onClick={requestWakeLock}
@@ -69,6 +81,7 @@ const CookMode: React.FC<CookModeProps> = ({ cookModeData }) => {
         {screenActive ? 'Screen is Active' : 'Click to Keep Screen Active'}
         <TabletSmartphone className="w-4 h-4" />
       </button>
+
       <div className="py-3 flex items-center text-sm text-black before:flex-1 before:border-t before:border-pink-800 before:me-6 after:flex-1 after:border-t after:border-pink-800 after:ms-6 dark:text-white dark:before:border-neutral-600 dark:after:border-neutral-600">
         INSTRUCTIONS
       </div>
