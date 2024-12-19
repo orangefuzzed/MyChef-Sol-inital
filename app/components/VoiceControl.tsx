@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 
 interface VoiceControlProps {
   instructions: string[];
@@ -7,31 +7,25 @@ interface VoiceControlProps {
 
 const VoiceControl: React.FC<VoiceControlProps> = ({ instructions, onStepChange }) => {
   const [recognition, setRecognition] = useState<SpeechRecognition | null>(null);
-  const [isListening, setIsListening] = useState(false);
+  const [recognitionRunning, setRecognitionRunning] = useState(false);
   const [currentStep, setCurrentStep] = useState(0);
   const [error, setError] = useState<string | null>(null);
 
+  // Ref to store onStepChange for stable useEffect behavior
+  const onStepChangeRef = useRef(onStepChange);
   useEffect(() => {
-    if (!("webkitSpeechRecognition" in window) && !("SpeechRecognition" in window)) {
+    onStepChangeRef.current = onStepChange;
+  }, [onStepChange]);
+
+  useEffect(() => {
+    const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+
+    if (!SpeechRecognition) {
       setError("Your browser does not support Voice Recognition. Please use Google Chrome.");
       return;
     }
-    
 
-    const SpeechRecognition =
-  window.SpeechRecognition || window.webkitSpeechRecognition;
-
-if (!SpeechRecognition) {
-  console.error("SpeechRecognition API is not supported in this browser.");
-  setError(
-    "Your browser does not support Voice Recognition. Please use Google Chrome or another compatible browser."
-  );
-  return;
-}
-
-// If we reach here, SpeechRecognition is guaranteed to exist
-const recognitionInstance = new SpeechRecognition();
-
+    const recognitionInstance = new SpeechRecognition();
     recognitionInstance.continuous = true;
     recognitionInstance.interimResults = false;
     recognitionInstance.lang = "en-US";
@@ -41,57 +35,83 @@ const recognitionInstance = new SpeechRecognition();
       console.log("Voice Command:", transcript);
 
       if (transcript.includes("next")) {
-        if (currentStep < instructions.length - 1) {
-          const nextStep = currentStep + 1;
-          setCurrentStep(nextStep);
-          onStepChange(nextStep);
-        }
+        setCurrentStep((prevStep) => {
+          const nextStep = Math.min(prevStep + 1, instructions.length - 1);
+          console.log(`Advanced to Step ${nextStep + 1}`);
+          return nextStep;
+        });
       } else if (transcript.includes("back")) {
-        if (currentStep > 0) {
-          const prevStep = currentStep - 1;
-          setCurrentStep(prevStep);
-          onStepChange(prevStep);
-        }
-      } else if (transcript.includes("repeat")) {
-        onStepChange(currentStep);
+        setCurrentStep((prevStep) => {
+          const prevStepValue = Math.max(prevStep - 1, 0);
+          console.log(`Moved back to Step ${prevStepValue + 1}`);
+          return prevStepValue;
+        });
       } else if (transcript.includes("pause")) {
         stopListening();
+        console.log("Voice Control paused.");
+      } else {
+        console.log("Unrecognized command.");
       }
+
+      recognitionInstance.stop();
+      recognitionInstance.onend = () => {
+        console.log("Restarting recognition...");
+        recognitionInstance.start();
+      };
     };
 
     recognitionInstance.onerror = (event) => {
+      if (event.error === "no-speech") {
+        console.warn("No speech detected.");
+        return;
+      }
+      if (event.error === "aborted") {
+        console.warn("Recognition aborted, restarting...");
+        recognitionInstance.start();
+        return;
+      }
       console.error("SpeechRecognition Error:", event.error);
-      setError("Voice recognition error. Try restarting voice control.");
+      setError(`Voice recognition error: ${event.error}`);
     };
 
     setRecognition(recognitionInstance);
-  }, [currentStep, instructions]);
+  }, [instructions]);
+
+  // Trigger onStepChange after currentStep updates, with a guard for stability
+  useEffect(() => {
+    console.log("Notifying parent component of current step:", currentStep);
+    if (onStepChangeRef.current) {
+      onStepChangeRef.current(currentStep);
+    }
+  }, [currentStep]);
 
   const startListening = () => {
-    if (recognition) {
-      recognition.start();
-      setIsListening(true);
-      console.log("Voice Control started.");
+    if (!recognition || recognitionRunning) {
+      console.warn("Recognition is already running or unavailable.");
+      return;
     }
+    recognition.start();
+    setRecognitionRunning(true);
+    console.log("Voice Control started.");
   };
 
   const stopListening = () => {
-    if (recognition) {
-      recognition.stop();
-      setIsListening(false);
-      console.log("Voice Control stopped.");
+    if (!recognition || !recognitionRunning) {
+      console.warn("Recognition is already stopped or unavailable.");
+      return;
     }
+    recognition.stop();
+    setRecognitionRunning(false);
+    console.log("Voice Control stopped.");
   };
 
   return (
-    <div className="voice-control mt-4">
+    <div className="voice-control">
       <button
-        className={`p-2 px-6 ${
-          isListening ? "bg-green-500" : "bg-gray-500"
-        } text-white rounded-full shadow-lg`}
-        onClick={isListening ? stopListening : startListening}
+        className={`p-2 px-6 ${recognitionRunning ? "bg-green-500" : "bg-gray-500"} text-white rounded-full shadow-lg`}
+        onClick={recognitionRunning ? stopListening : startListening}
       >
-        {isListening ? "Stop Voice Control" : "Start Voice Control"}
+        {recognitionRunning ? "Stop Voice Control" : "Start Voice Control"}
       </button>
       {error && <p className="text-red-500 mt-4">{error}</p>}
     </div>
