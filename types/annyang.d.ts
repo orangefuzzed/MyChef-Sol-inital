@@ -3,8 +3,13 @@ declare module "annyang" {
       [command: string]: () => void;
     }
   
+    export interface StartOptions {
+      autoRestart?: boolean;
+      continuous?: boolean;
+    }
+  
     interface Annyang {
-      start(): void;
+      start(options?: StartOptions): void; // Updated to accept options
       abort(): void;
       pause(): void;
       resume(): void;
