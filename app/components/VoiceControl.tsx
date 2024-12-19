@@ -38,7 +38,7 @@ const VoiceControl: React.FC<VoiceControlProps> = ({ onStepChange }) => {
 
       // Cleanup on unmount
       return () => {
-        annyang.abort();
+        annyang?.abort();
         console.log("Annyang voice control stopped.");
       };
     } else {
