@@ -1,6 +1,5 @@
 "use client";
 import React, { useEffect } from "react";
-import annyang from "annyang";
 
 interface VoiceControlProps {
   onStepChange: (step: "next" | "back" | "repeat" | "pause") => void;
@@ -8,8 +7,13 @@ interface VoiceControlProps {
 
 const VoiceControl: React.FC<VoiceControlProps> = ({ onStepChange }) => {
   useEffect(() => {
+    // Ensure code runs only in the browser
+    if (typeof window === "undefined") return;
+
+    // Dynamically require annyang at runtime, not at build time
+    const annyang = require("annyang").default;
+
     if (annyang) {
-      // Define commands
       const commands = {
         next: () => {
           console.log("Command recognized: next");
@@ -29,15 +33,11 @@ const VoiceControl: React.FC<VoiceControlProps> = ({ onStepChange }) => {
         },
       };
 
-      // Add commands to annyang
       annyang.addCommands(commands);
-
-      // Start listening
       annyang.start({ autoRestart: true, continuous: true });
 
       console.log("Annyang voice control started.");
 
-      // Cleanup on unmount
       return () => {
         annyang?.abort();
         console.log("Annyang voice control stopped.");
