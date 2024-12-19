@@ -34,7 +34,7 @@ const VoiceControl: React.FC<VoiceControlProps> = ({ onStepChange }) => {
       console.log("Annyang voice control started.");
 
       return () => {
-        annyang.abort();
+        annyang?.abort();
         console.log("Annyang voice control stopped.");
       };
     } else {
