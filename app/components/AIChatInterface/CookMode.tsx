@@ -11,10 +11,11 @@ const CookMode: React.FC<CookModeProps> = ({ cookModeData, recipeTitle }) => {
   const [isIos, setIsIos] = useState(false);
   const [isToastVisible, setIsToastVisible] = useState(false);
 
- // Detect iOS platform
- useEffect(() => {
+// Detect iOS platform and show the toast
+useEffect(() => {
   if (/iPhone|iPad|iPod/i.test(navigator.userAgent)) {
     setIsIos(true);
+    setIsToastVisible(true); // Trigger toast for iOS users
   }
 }, []);
 
