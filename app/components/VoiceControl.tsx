@@ -1,5 +1,6 @@
 "use client";
-import React, { useEffect } from "react";
+
+import React, { useEffect, useRef } from "react";
 import annyang from "annyang";
 
 interface VoiceControlProps {
@@ -7,8 +8,13 @@ interface VoiceControlProps {
 }
 
 const VoiceControl: React.FC<VoiceControlProps> = ({ onStepChange }) => {
+  const isRecognitionActive = useRef(false); // Track if recognition is active
+  const restartTimeout = useRef<NodeJS.Timeout | null>(null); // For throttling restarts
+  const lastErrorLogged = useRef<number>(Date.now()); // Suppress repeated logs
+
   useEffect(() => {
     if (annyang) {
+      // Define commands
       const commands = {
         next: () => {
           console.log("Command recognized: next");
@@ -28,13 +34,49 @@ const VoiceControl: React.FC<VoiceControlProps> = ({ onStepChange }) => {
         },
       };
 
+      // Add commands
       annyang.addCommands(commands);
+
+      // Add error handling
+      annyang.addCallback("error", (err) => {
+        const now = Date.now();
+        if (now - lastErrorLogged.current > 2000) {
+          console.warn("Annyang error:", err);
+          lastErrorLogged.current = now;
+        }
+
+        // Throttle restarts
+        if (err.error === "aborted" && !restartTimeout.current) {
+          console.log("Attempting to restart recognition after error...");
+          restartTimeout.current = setTimeout(() => {
+            annyang.resume();
+            restartTimeout.current = null;
+          }, 2000);
+        }
+      });
+
+      annyang.addCallback("result", (userSaid: string[]) => {
+        console.log("User said:", userSaid);
+      });
+
+      annyang.addCallback("start", () => {
+        console.log("Recognition started.");
+        isRecognitionActive.current = true;
+      });
+
+      annyang.addCallback("end", () => {
+        console.log("Recognition stopped.");
+        isRecognitionActive.current = false;
+      });
+
+      // Start recognition
+      console.log("Starting Annyang...");
       annyang.start({ autoRestart: true, continuous: true });
 
-      console.log("Annyang voice control started.");
-
+      // Cleanup
       return () => {
-        annyang?.abort();
+        if (restartTimeout.current) clearTimeout(restartTimeout.current);
+        annyang.abort();
         console.log("Annyang voice control stopped.");
       };
     } else {
@@ -44,7 +86,9 @@ const VoiceControl: React.FC<VoiceControlProps> = ({ onStepChange }) => {
 
   return (
     <div className="voice-control">
-      <p className="text-green-500">Voice control active. Say "next", "back", "repeat", or "pause".</p>
+      <p className="text-green-500">
+        Voice control active. Say "next", "back", "repeat", or "pause".
+      </p>
     </div>
   );
 };
