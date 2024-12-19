@@ -67,21 +67,25 @@ const VoiceControl: React.FC<VoiceControlProps> = ({ instructions, onStepChange 
     recognitionInstance.onerror = (event) => {
         console.warn("SpeechRecognition error:", event.error);
       
-        // Handle specific errors gracefully
-        if (event.error === "no-speech" || event.error === "aborted") {
-          console.warn("No speech detected or recognition aborted.");
+        if (event.error === "aborted" || event.error === "no-speech") {
+          console.warn("No speech detected or recognition aborted. Retrying...");
+          // Stop and restart recognition after a small delay to stabilize
+          recognitionInstance.stop();
+          setTimeout(() => {
+            if (!recognitionRunning) {
+              console.log("Retrying recognition...");
+              recognitionInstance.start();
+              setRecognitionRunning(true);
+            }
+          }, 500); // Delay to prevent immediate overlap
           return;
         }
       
-        // Restart recognition only if it's not running
-        if (!recognitionRunning) {
-          console.log("Restarting recognition...");
-          recognitionInstance.start();
-          setRecognitionRunning(true);
-        } else {
-          console.log("Recognition already running, skipping restart.");
-        }
+        // Log and set error for any unexpected issues
+        console.error("Unhandled SpeechRecognition error:", event.error);
+        setError(`Voice recognition error: ${event.error}`);
       };
+      
       
 
     setRecognition(recognitionInstance);
@@ -100,9 +104,15 @@ const VoiceControl: React.FC<VoiceControlProps> = ({ instructions, onStepChange 
       console.warn("Recognition is already running or unavailable.");
       return;
     }
-    recognition.start();
-    setRecognitionRunning(true);
-    console.log("Voice Control started.");
+  
+    try {
+      recognition.start();
+      setRecognitionRunning(true);
+      console.log("Voice Control started.");
+    } catch (err) {
+      console.error("Error starting SpeechRecognition:", err);
+      setError("Failed to start voice control. Please try again.");
+    }
   };
 
   const stopListening = () => {
@@ -110,10 +120,16 @@ const VoiceControl: React.FC<VoiceControlProps> = ({ instructions, onStepChange 
       console.warn("Recognition is already stopped or unavailable.");
       return;
     }
-    recognition.stop();
-    setRecognitionRunning(false);
-    console.log("Voice Control stopped.");
+  
+    try {
+      recognition.stop();
+      setRecognitionRunning(false);
+      console.log("Voice Control stopped.");
+    } catch (err) {
+      console.error("Error stopping SpeechRecognition:", err);
+    }
   };
+  
 
   return (
     <div className="voice-control">
