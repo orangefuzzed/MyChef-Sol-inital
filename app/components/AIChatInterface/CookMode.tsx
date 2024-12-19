@@ -33,8 +33,20 @@ const CookMode: React.FC<CookModeProps> = ({ cookModeData, recipeTitle }) => {
     }
   }, [currentStep, cookModeData, ttsEnabled]);
 
-  const handleStepChange = (step: number) => {
-    setCurrentStep(step);
+  const handleVoiceCommand = (command: "next" | "back" | "repeat" | "pause") => {
+    if (command === "next") {
+      setCurrentStep((prev) => Math.min(prev + 1, cookModeData.length - 1));
+    } else if (command === "back") {
+      setCurrentStep((prev) => Math.max(prev - 1, 0));
+    } else if (command === "repeat") {
+      // Just speak the current step again
+      if (ttsEnabled && cookModeData[currentStep]) {
+        speakStep(`Step ${currentStep + 1}: ${cookModeData[currentStep]}`);
+      }
+    } else if (command === "pause") {
+      // Here you could do something like stop recognition or just log.
+      console.log("Voice control paused command received.");
+    }
   };
 
   const toggleTts = () => {
@@ -97,7 +109,8 @@ const CookMode: React.FC<CookModeProps> = ({ cookModeData, recipeTitle }) => {
       </div>
 
       <div className="mb-6 text-center">
-        <VoiceControl instructions={cookModeData} onStepChange={handleStepChange} />
+        {/* No instructions prop here for VoiceControl */}
+        <VoiceControl onStepChange={handleVoiceCommand} />
         <button
           className={`mt-4 p-2 px-6 ${
             ttsEnabled ? "bg-green-500" : "bg-gray-500"
