@@ -65,18 +65,24 @@ const VoiceControl: React.FC<VoiceControlProps> = ({ instructions, onStepChange 
     };
 
     recognitionInstance.onerror = (event) => {
-      if (event.error === "no-speech") {
-        console.warn("No speech detected.");
-        return;
-      }
-      if (event.error === "aborted") {
-        console.warn("Recognition aborted, restarting...");
-        recognitionInstance.start();
-        return;
-      }
-      console.error("SpeechRecognition Error:", event.error);
-      setError(`Voice recognition error: ${event.error}`);
-    };
+        console.warn("SpeechRecognition error:", event.error);
+      
+        // Handle specific errors gracefully
+        if (event.error === "no-speech" || event.error === "aborted") {
+          console.warn("No speech detected or recognition aborted.");
+          return;
+        }
+      
+        // Restart recognition only if it's not running
+        if (!recognitionRunning) {
+          console.log("Restarting recognition...");
+          recognitionInstance.start();
+          setRecognitionRunning(true);
+        } else {
+          console.log("Recognition already running, skipping restart.");
+        }
+      };
+      
 
     setRecognition(recognitionInstance);
   }, [instructions]);
