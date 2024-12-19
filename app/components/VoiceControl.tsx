@@ -54,10 +54,10 @@ const VoiceControl: React.FC<VoiceControlProps> = ({ instructions, onStepChange 
       }
 
       recognitionInstance.stop();
-      recognitionInstance.onend = () => {
+        (recognitionInstance as SpeechRecognition).onend = () => {
         console.log("Restarting recognition...");
         recognitionInstance.start();
-      };
+        };
     };
 
     recognitionInstance.onerror = (event) => {
