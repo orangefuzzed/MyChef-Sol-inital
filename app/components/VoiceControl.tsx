@@ -4,9 +4,10 @@ interface VoiceControlProps {
   instructions: string[];
   onStepChange: (currentStep: number) => void;
 }
+
 interface EnhancedSpeechRecognition extends SpeechRecognition {
-    onend: (() => void) | null;
-  }
+  onend: (() => void) | null;
+}
 
 const VoiceControl: React.FC<VoiceControlProps> = ({ instructions, onStepChange }) => {
   const [recognition, setRecognition] = useState<SpeechRecognition | null>(null);
@@ -14,7 +15,6 @@ const VoiceControl: React.FC<VoiceControlProps> = ({ instructions, onStepChange 
   const [currentStep, setCurrentStep] = useState(0);
   const [error, setError] = useState<string | null>(null);
 
-  // Ref to store onStepChange for stable useEffect behavior
   const onStepChangeRef = useRef(onStepChange);
   useEffect(() => {
     onStepChangeRef.current = onStepChange;
@@ -33,13 +33,19 @@ const VoiceControl: React.FC<VoiceControlProps> = ({ instructions, onStepChange 
     recognitionInstance.interimResults = false;
     recognitionInstance.lang = "en-US";
 
+    let retryCount = 0;
+    const MAX_RETRIES = 3;
+
     recognitionInstance.onresult = (event: SpeechRecognitionEvent) => {
-        console.log("SpeechRecognition result event fired."); // Add this
+      console.log("SpeechRecognition result event fired.");
       const transcript = event.results[event.results.length - 1][0].transcript.trim().toLowerCase();
       console.log("Voice Command:", transcript);
 
+      // Reset retryCount on successful result
+      retryCount = 0;
+
       if (transcript.includes("next")) {
-        console.log("Command recognized: next"); // Add this
+        console.log("Command recognized: next");
         setCurrentStep((prevStep) => {
           const nextStep = Math.min(prevStep + 1, instructions.length - 1);
           console.log(`Advanced to Step ${nextStep + 1}`);
@@ -57,41 +63,46 @@ const VoiceControl: React.FC<VoiceControlProps> = ({ instructions, onStepChange 
       } else {
         console.log("Unrecognized command.");
       }
-
-      (recognitionInstance as EnhancedSpeechRecognition).onend = () => {
-        console.log("Restarting recognition...");
-        recognitionInstance.start();
-      };      
     };
 
     recognitionInstance.onerror = (event) => {
-        console.warn("SpeechRecognition error:", event.error);
-      
-        if (event.error === "aborted" || event.error === "no-speech") {
-          console.warn("No speech detected or recognition aborted. Retrying...");
-          // Stop and restart recognition after a small delay to stabilize
-          recognitionInstance.stop();
-          setTimeout(() => {
-            if (!recognitionRunning) {
-              console.log("Retrying recognition...");
-              recognitionInstance.start();
-              setRecognitionRunning(true);
-            }
-          }, 500); // Delay to prevent immediate overlap
+      console.warn("SpeechRecognition error:", event.error);
+
+      if (event.error === "aborted" || event.error === "no-speech") {
+        console.warn("No speech detected or recognition aborted. Retrying...");
+
+        if (retryCount >= MAX_RETRIES) {
+          console.error("Max retries reached. Stopping recognition.");
+          stopListening();
+          setError("Voice recognition failed. Please try again.");
           return;
         }
-      
-        // Log and set error for any unexpected issues
+
+        retryCount++;
+        console.log(`Retrying recognition... Attempt ${retryCount}/${MAX_RETRIES}`);
+
+        setTimeout(() => {
+          if (!recognitionRunning && recognitionInstance) {
+            try {
+              recognitionInstance.start();
+              setRecognitionRunning(true);
+              console.log("Recognition restarted successfully.");
+            } catch (err) {
+              console.error("Error restarting recognition:", err);
+              setError("Failed to restart voice control. Please try again.");
+            }
+          }
+        }, 1000);
+      } else {
         console.error("Unhandled SpeechRecognition error:", event.error);
         setError(`Voice recognition error: ${event.error}`);
-      };
-      
-      
+        stopListening();
+      }
+    };
 
     setRecognition(recognitionInstance);
   }, [instructions]);
 
-  // Trigger onStepChange after currentStep updates, with a guard for stability
   useEffect(() => {
     console.log("Notifying parent component of current step:", currentStep);
     if (onStepChangeRef.current) {
@@ -104,7 +115,7 @@ const VoiceControl: React.FC<VoiceControlProps> = ({ instructions, onStepChange 
       console.warn("Recognition is already running or unavailable.");
       return;
     }
-  
+
     try {
       recognition.start();
       setRecognitionRunning(true);
@@ -120,7 +131,7 @@ const VoiceControl: React.FC<VoiceControlProps> = ({ instructions, onStepChange 
       console.warn("Recognition is already stopped or unavailable.");
       return;
     }
-  
+
     try {
       recognition.stop();
       setRecognitionRunning(false);
@@ -129,7 +140,6 @@ const VoiceControl: React.FC<VoiceControlProps> = ({ instructions, onStepChange 
       console.error("Error stopping SpeechRecognition:", err);
     }
   };
-  
 
   return (
     <div className="voice-control">
