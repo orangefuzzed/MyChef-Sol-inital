@@ -4,6 +4,9 @@ interface VoiceControlProps {
   instructions: string[];
   onStepChange: (currentStep: number) => void;
 }
+interface EnhancedSpeechRecognition extends SpeechRecognition {
+    onend: (() => void) | null;
+  }
 
 const VoiceControl: React.FC<VoiceControlProps> = ({ instructions, onStepChange }) => {
   const [recognition, setRecognition] = useState<SpeechRecognition | null>(null);
@@ -53,11 +56,10 @@ const VoiceControl: React.FC<VoiceControlProps> = ({ instructions, onStepChange 
         console.log("Unrecognized command.");
       }
 
-      recognitionInstance.stop();
-        (recognitionInstance as SpeechRecognition).onend = () => {
+      (recognitionInstance as EnhancedSpeechRecognition).onend = () => {
         console.log("Restarting recognition...");
         recognitionInstance.start();
-        };
+      };      
     };
 
     recognitionInstance.onerror = (event) => {
