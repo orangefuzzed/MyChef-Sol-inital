@@ -34,10 +34,12 @@ const VoiceControl: React.FC<VoiceControlProps> = ({ instructions, onStepChange 
     recognitionInstance.lang = "en-US";
 
     recognitionInstance.onresult = (event: SpeechRecognitionEvent) => {
+        console.log("SpeechRecognition result event fired."); // Add this
       const transcript = event.results[event.results.length - 1][0].transcript.trim().toLowerCase();
       console.log("Voice Command:", transcript);
 
       if (transcript.includes("next")) {
+        console.log("Command recognized: next"); // Add this
         setCurrentStep((prevStep) => {
           const nextStep = Math.min(prevStep + 1, instructions.length - 1);
           console.log(`Advanced to Step ${nextStep + 1}`);
