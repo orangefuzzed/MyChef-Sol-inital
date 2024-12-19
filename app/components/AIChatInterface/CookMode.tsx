@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import VoiceControl from "../VoiceControl";
+import dynamic from 'next/dynamic';
 
 interface CookModeProps {
   cookModeData: string[];
@@ -12,6 +13,10 @@ const CookMode: React.FC<CookModeProps> = ({ cookModeData, recipeTitle }) => {
   const [currentStep, setCurrentStep] = useState(0);
   const [isSpeaking, setIsSpeaking] = useState(false);
   const [ttsEnabled, setTtsEnabled] = useState(true); // Toggle for TTS
+
+  const VoiceControl = dynamic(() => import('../VoiceControl'), {
+    ssr: false, // ensures no SSR attempt for VoiceControl
+  });
 
   const speakStep = (step: string) => {
     if (!ttsEnabled || !("speechSynthesis" in window)) return;
