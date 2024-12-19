@@ -13,10 +13,9 @@ const CookMode: React.FC<CookModeProps> = ({ cookModeData, recipeTitle }) => {
 
  // Detect iOS platform
  useEffect(() => {
-  const userAgent = navigator.userAgent || navigator.vendor || window.opera;
   if (/iPhone|iPad|iPod/i.test(navigator.userAgent)) {
     setIsIos(true);
-}
+  }
 }, []);
 
 // Auto-hide toast after a few seconds
