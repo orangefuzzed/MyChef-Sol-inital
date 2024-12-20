@@ -47,11 +47,15 @@ const VoiceControl: React.FC<VoiceControlProps> = ({ onStepChange }) => {
 
         // Throttle restarts
         if (err.error === "aborted" && !restartTimeout.current) {
-          console.log("Attempting to restart recognition after error...");
-          restartTimeout.current = setTimeout(() => {
-            annyang.resume();
+            console.log("Attempting to restart recognition after error...");
+            restartTimeout.current = setTimeout(() => {
+            if (annyang) {
+                annyang.resume(); // Safely call resume only if annyang is defined
+            } else {
+                console.warn("Annyang is not defined during restart.");
+            }
             restartTimeout.current = null;
-          }, 2000);
+            }, 2000);
         }
       });
 
