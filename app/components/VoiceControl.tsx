@@ -79,9 +79,16 @@ const VoiceControl: React.FC<VoiceControlProps> = ({ onStepChange }) => {
 
       // Cleanup
       return () => {
-        if (restartTimeout.current) clearTimeout(restartTimeout.current);
-        annyang.abort();
-        console.log("Annyang voice control stopped.");
+        if (restartTimeout.current) {
+          clearTimeout(restartTimeout.current);
+        }
+  
+        if (annyang) {
+          annyang.abort(); // Safely call abort only if annyang is defined
+          console.log("Annyang voice control stopped.");
+        } else {
+          console.warn("Annyang is not defined during cleanup.");
+        }
       };
     } else {
       console.error("Annyang is not supported in this browser.");
