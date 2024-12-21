@@ -64,21 +64,20 @@ const HomeScreen: React.FC = () => {
   }, [status, router]);
 
   return (
-    <div
-      className="flex flex-col min-h-screen overflow-y-auto bg-fixed bg-cover bg-center text-white"
-      style={{ backgroundImage: "url('/images/summer-deck-5.png')" }}
-    >
-      {/* Header */}
-    <div className="sticky top-0 z-10">
-      <Header centralText={`Welcome, ${session?.user?.name || 'Guest'}`} />
-    </div>
-
+    <div className="flex flex-col h-screen bg-fixed bg-cover bg-center text-white"
+        style={{ backgroundImage: "url('/images/meal-cooking-1.png')" }}
+        >
+      <Header centralText="Your Preferences" />
+      
+  
       {/* Menus */}
       <HamburgerMenu isOpen={isHamburgerMenuOpen} onClose={() => setIsHamburgerMenuOpen(false)} />
       <AvatarMenu isOpen={isAvatarMenuOpen} onClose={() => setIsAvatarMenuOpen(false)} />
-
-      {/* Walkthrough Section */}
-        <div className="flex-grow px-6 py-4">
+  
+      {/* Main Content */}
+      <div className="flex-grow overflow-y-auto px-6 py-4">
+        {/* Walkthrough Section */}
+        <div className="mb-6">
           <h2 className="text-2xl font-light text-sky-50 mb-4">Getting Started</h2>
           <div className="flex gap-4 overflow-x-auto">
             {dummyWalkthroughCards.map((card, index) => (
@@ -93,7 +92,7 @@ const HomeScreen: React.FC = () => {
             ))}
           </div>
         </div>
-
+  
         {/* Render Modals */}
         {dummyWalkthroughCards.map((card, index) => (
           <GetStartedModal
@@ -105,46 +104,48 @@ const HomeScreen: React.FC = () => {
             imageSrc={card.imageSrc}
           />
         ))}
-
-      {/* Favorites Section */}
-      <div className="flex-grow px-6 py-4">
-      <div className="flex items-center mb-4">
-        <Heart strokeWidth={1.5} className="w-6 h-6 text-pink-800 mr-2" />
-        <p className="text-2xl font-light text-sky-50">My Favorite Recipes</p>
-      </div>
-              <div className="flex gap-4 overflow-x-auto">
-                <FavoriteRecipesCarousel />
-              </div>
-      </div>
-
-      {/* Saved Recipes */}
-      <div className="flex-grow px-6 py-4">
-      <div className="flex items-center mb-4">
-        <Bookmark strokeWidth={1.5} className="w-6 h-6 text-pink-800 mr-2" />
-        <p className="text-2xl font-light text-sky-50">My Saved Recipes</p>
-      </div>
-        <div className="flex gap-4 overflow-x-auto">
-          <SavedRecipesCarousel />
+  
+        {/* Favorites Section */}
+        <div className="mb-6">
+          <div className="flex items-center mb-4">
+            <Heart strokeWidth={1.5} className="w-6 h-6 text-pink-800 mr-2" />
+            <p className="text-2xl font-light text-sky-50">My Favorite Recipes</p>
+          </div>
+          <div className="flex gap-4 overflow-x-auto">
+            <FavoriteRecipesCarousel />
+          </div>
+        </div>
+  
+        {/* Saved Recipes */}
+        <div className="mb-6">
+          <div className="flex items-center mb-4">
+            <Bookmark strokeWidth={1.5} className="w-6 h-6 text-pink-800 mr-2" />
+            <p className="text-2xl font-light text-sky-50">My Saved Recipes</p>
+          </div>
+          <div className="flex gap-4 overflow-x-auto">
+            <SavedRecipesCarousel />
+          </div>
+        </div>
+  
+        {/* Shopping Lists Section */}
+        <div>
+          <div className="flex items-center mb-4">
+            <ShoppingCart strokeWidth={1.5} className="w-6 h-6 text-pink-800 mr-2" />
+            <p className="text-2xl font-light text-sky-50">My Shopping Lists</p>
+          </div>
+          <div className="flex gap-4 overflow-x-auto">
+            <ShoppingListsCarousel />
+          </div>
         </div>
       </div>
-
-      {/* Shopping Lists Section */}
-      <div className="flex-grow px-6 py-4">
-      <div className="flex items-center mb-4">
-        <ShoppingCart strokeWidth={1.5} className="w-6 h-6 text-pink-800 mr-2" />
-        <p className="text-2xl font-light text-sky-50">My Shopping Lists</p>
-      </div>
-        <div className="flex gap-4 overflow-x-auto">
-          <ShoppingListsCarousel />
-        </div>
-      </div>
-
+  
       {/* Footer */}
     <div className="sticky bottom-0 z-10">
       <Footer actions={['home', 'send']} />
     </div>
     </div>
-  );
+    
+  );  
 };
 
 export default HomeScreen;
