@@ -27,18 +27,18 @@ export async function POST(request: Request) {
     const collection = db.collection('recipes');
 
     // Create the recipe document
-const recipeDocument: RecipeDocument = {
-  id: recipe.id, // 
-  recipeTitle: recipe.recipeTitle,
-  description: recipe.description,
-  ingredients: recipe.ingredients,
-  instructions: recipe.instructions,
-  imageURL: recipe.imageURL,
-  userEmail: userEmail,
-  isSuggestion: recipe.isSuggestion ?? false,
-  createdAt: new Date(),
-  updatedAt: new Date(),
-};
+    const recipeDocument: RecipeDocument = {
+      id: recipe.id, // 
+      recipeTitle: recipe.recipeTitle,
+      description: recipe.description,
+      ingredients: recipe.ingredients,
+      instructions: recipe.instructions,
+      imageURL: recipe.imageURL,
+      userEmail: userEmail,
+      isSuggestion: recipe.isSuggestion ?? false,
+      createdAt: new Date(),
+      updatedAt: new Date(),
+    };
 
 
     // Insert or update the recipe

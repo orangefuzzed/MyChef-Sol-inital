@@ -78,45 +78,81 @@ const RecipeDetails: React.FC = () => {
       checkIfFavorited();
     }, [id]);
 
-  const handleSaveToggle = async () => {
-    if (!selectedRecipe || !id) return;
-
-    
-
-    try {
-      if (isSaved) {
-        await deleteRecipeFromDB(id);
-        setIsSaved(false);
-        triggerToast('Recipe successfully removed from saved recipes!', 'success');
-      } else {
-        await saveRecipeToDB(selectedRecipe);
-        setIsSaved(true);
-        triggerToast('Recipe successfully saved!', 'success');
+    const handleSaveToggle = async () => {
+      if (!selectedRecipe || !id) return; // Ensure `id` is not null before proceeding
+  
+      try {
+        if (isSaved) {
+          await deleteRecipeFromDB(id);
+          setIsSaved(false);
+          triggerToast('Recipe successfully removed from saved recipes!', 'success');
+          const response = await fetch(`/api/recipes/saved?id=${id}`, {
+            method: 'DELETE',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+          });
+          if (!response.ok) {
+            console.error('Failed to delete recipe from MongoDB:', await response.text());
+          }
+        } else {
+          await saveRecipeToDB(selectedRecipe);
+          setIsSaved(true);
+          triggerToast('Recipe successfully saved!', 'success');
+          const response = await fetch('/api/recipes/saved', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(selectedRecipe),
+          });
+          if (!response.ok) {
+            console.error('Failed to save recipe to MongoDB:', await response.text());
+          }
+        }
+      } catch (error) {
+        console.error('Error while toggling save:', error);
+        triggerToast('Failed to save the recipe. Please try again.', 'error');
       }
-    } catch (error) {
-      console.error('Error while toggling save:', error);
-      triggerToast('Failed to save the recipe. Please try again.', 'error');
-    }
-  };
+    };
 
-  const handleFavoriteToggle = async () => {
-    if (!selectedRecipe || !id) return;
-
-    try {
-      if (isFavorited) {
-        await deleteRecipeFromFavorites(id);
-        setIsFavorited(false);
-        triggerToast('Recipe successfully removed from favorites!', 'success');
-      } else {
-        await saveRecipeToFavorites(selectedRecipe);
-        setIsFavorited(true);
-        triggerToast('Recipe successfully added to favorites!', 'success');
+    const handleFavoriteToggle = async () => {
+      if (!selectedRecipe || !id) return; // Ensure `id` is not null before proceeding
+  
+      try {
+        if (isFavorited) {
+          await deleteRecipeFromFavorites(id);
+          setIsFavorited(false);
+          triggerToast('Recipe successfully removed from favorites!', 'success');
+          const response = await fetch(`/api/recipes/favorites?id=${id}`, {
+            method: 'DELETE',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+          });
+          if (!response.ok) {
+            console.error('Failed to delete favorite from MongoDB:', await response.text());
+          }
+        } else {
+          await saveRecipeToFavorites(selectedRecipe);
+          setIsFavorited(true);
+          triggerToast('Recipe successfully added to favorites!', 'success');
+          const response = await fetch('/api/recipes/favorites', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(selectedRecipe),
+          });
+          if (!response.ok) {
+            console.error('Failed to save favorite to MongoDB:', await response.text());
+          }
+        }
+      } catch (error) {
+        console.error('Error while toggling favorite:', error);
+        triggerToast('Failed to favorite the recipe. Please try again.', 'error');
       }
-    } catch (error) {
-      console.error('Error while toggling favorite:', error);
-      triggerToast('Failed to favorite the recipe. Please try again.', 'error');
-    }
-  };
+    };
 
   if (loading) {
     return <Loading />;
@@ -142,7 +178,7 @@ const RecipeDetails: React.FC = () => {
     <div className="recipe-details-container bg-white/30 backdrop-blur-lg border-white border shadow-lg ring-1 ring-black/5 p-6 rounded-2xl">
 
       {/* Save and Favorite Toggles */}
-      <div className="flex justify-end gap-4 mb-2">
+      <div className="flex justify-start gap-2 mb-2">
         <button onClick={handleSaveToggle} className="p-2 text-sky-50 hover:text-pink-800">
           <Bookmark strokeWidth={1.5} size={24} color={isSaved ? '#9d174d' : 'white'} />
         </button>

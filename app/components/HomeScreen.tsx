@@ -64,7 +64,7 @@ const HomeScreen: React.FC = () => {
 
   return (
     <div
-      className="flex flex-col h-screen bg-fixed bg-cover bg-center text-white"
+      className="flex flex-col overflow-y-auto h-screen bg-fixed bg-cover bg-center text-white"
       style={{ backgroundImage: "url('/images/summer-deck-5.png')" }}
     >
       {/* Header */}
@@ -107,7 +107,7 @@ const HomeScreen: React.FC = () => {
       {/* Saved Recipes */}
       <div className="px-6 py-4">
         <h2 className="text-2xl font-bold text-sky-50 mb-4">My Saved Recipes</h2>
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+        <div className="flex gap-4 overflow-x-auto">
           <SavedRecipesCarousel />
         </div>
       </div>
@@ -115,7 +115,7 @@ const HomeScreen: React.FC = () => {
       {/* Favorites Section */}
       <div className="px-6 py-4">
         <h2 className="text-2xl font-bold text-sky-50 mb-4">My Favorites</h2>
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+        <div className="flex gap-4 overflow-x-auto">
           <FavoriteRecipesCarousel />
         </div>
       </div>
@@ -123,7 +123,7 @@ const HomeScreen: React.FC = () => {
       {/* Shopping Lists Section */}
       <div className="px-6 py-4">
         <h2 className="text-2xl font-bold text-sky-50 mb-4">My Shopping Lists</h2>
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+        <div className="flex gap-4 overflow-x-auto">
           <ShoppingListsCarousel />
         </div>
       </div>

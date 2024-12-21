@@ -116,7 +116,7 @@ const ShoppingList: React.FC<ShoppingListProps> = ({
             isShoppingListSaved ? 'bg-pink-800 text-white' : 'bg-sky-50 text-pink-800'
           } shadow-md transition-all duration-200`}
         >
-          {isShoppingListSaved ? 'Remove from Saved Lists' : 'Save Shopping List'}
+          {isShoppingListSaved ? 'Delete Shopping List' : 'Save Shopping List'}
           <ShoppingCart size={20} />
         </button>
       </div>
