@@ -67,7 +67,7 @@ const HomeScreen: React.FC = () => {
     <div className="flex flex-col h-screen bg-fixed bg-cover bg-center text-white"
         style={{ backgroundImage: "url('/images/meal-cooking-1.png')" }}
         >
-      <Header centralText="Your Preferences" />
+      <Header centralText={`Welcome, ${session?.user?.name || 'Guest'}`} />
       
   
       {/* Menus */}
