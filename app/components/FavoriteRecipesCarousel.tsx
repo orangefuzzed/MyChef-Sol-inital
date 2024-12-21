@@ -4,7 +4,7 @@ import React, { useEffect, useState } from 'react';
 import { getFavoriteRecipesFromDB } from '../utils/favoritesUtils';
 import { useRouter } from 'next/navigation';
 import { Recipe } from '../../types/Recipe'; // Make sure Recipe is imported
-import { Flame, Clock, Soup, Bookmark } from 'lucide-react';
+import { Flame, Clock, Soup, Heart } from 'lucide-react';
 
 const FavoriteRecipesCarousel: React.FC = () => {
   const [favoriteRecipes, setFavoriteRecipes] = useState<Recipe[]>([]);
@@ -28,8 +28,8 @@ const FavoriteRecipesCarousel: React.FC = () => {
   };
 
   return (
-    <div className="p-8">
-      <h2 className="text-2xl font-bold text-sky-50 mb-4">My Favorite Recipes</h2>
+    <div className="p">
+      <h2 className="text-2xl font-bold text-sky-50 mb-4 hidden">My Favorite Recipes</h2>
       {favoriteRecipes.length > 0 ? (
         <div className="flex gap-6 overflow-x-auto scrollbar-hide">
           {favoriteRecipes.map((recipe) => (
@@ -40,7 +40,7 @@ const FavoriteRecipesCarousel: React.FC = () => {
             >
               {/* Left-Side Icon */}
               <div className="bg-sky-50/30 w-8 h-8 border border-white rounded-full flex items-center justify-center mb-2">
-                <Bookmark strokeWidth={1.5} className="w-4 h-4 text-black" />
+                <Heart strokeWidth={1.5} className="w-4 h-4 text-black" />
               </div>
               <h3 className="text-lg font-semibold">{recipe.recipeTitle}</h3>
               <div className="rating text-sm text-amber-400 mb-2">

@@ -44,9 +44,12 @@ const ShoppingListsCarousel: React.FC = () => {
               <div className="bg-sky-50/30 w-8 h-8 border border-white rounded-full flex items-center justify-center mb-2">
                 <ShoppingCart strokeWidth={1.5} className="w-4 h-4 text-black" />
               </div>
-              <h3 className="text-lg font-semibold">
-                Shopping List for {list.recipeTitle || 'Recipe'}
-              </h3>
+              <h3 className="text-lg font-light mb-2">
+                  Shopping List for{' '}
+                  <span className="text-sky-50 font-semibold">
+                    {list.recipeTitle || 'Recipe'}
+                  </span>
+                </h3>
               
             </div>
           ))}

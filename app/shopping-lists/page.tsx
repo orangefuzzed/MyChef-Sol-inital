@@ -111,8 +111,11 @@ const ShoppingListsPage = () => {
                   <Trash2 size={16} />
                 </button>
 
-                <h3 className="text-lg font-semibold mb-2">
-                  Shopping List for {list.recipeTitle || 'Recipe'}
+                <h3 className="text-lg font-light mb-2">
+                  Shopping List for{' '}
+                  <span className="text-sky-50 font-semibold">
+                    {list.recipeTitle || 'Recipe'}
+                  </span>
                 </h3>
               </div>
             ))}

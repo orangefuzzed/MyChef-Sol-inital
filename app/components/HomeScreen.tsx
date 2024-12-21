@@ -8,9 +8,10 @@ import AvatarMenu from '../components/AvatarMenu';
 import Footer from '../components/Footer';
 import Header from '../components/Header'; // Import the Header component
 import SavedRecipesCarousel from '../components/SavedRecipesCarousel';
-import FavoriteRecipesCarousel from '../components/SavedRecipesCarousel';
+import FavoriteRecipesCarousel from '../components/FavoriteRecipesCarousel';
 import ShoppingListsCarousel from '../components/ShoppingListsCarousel';
 import GetStartedModal from './GetStartedModal';
+import { ShoppingCart, Bookmark, Heart } from 'lucide-react';
 
 
 const HomeScreen: React.FC = () => {
@@ -64,19 +65,21 @@ const HomeScreen: React.FC = () => {
 
   return (
     <div
-      className="flex flex-col overflow-y-auto h-screen bg-fixed bg-cover bg-center text-white"
+      className="flex flex-col min-h-screen overflow-y-auto bg-fixed bg-cover bg-center text-white"
       style={{ backgroundImage: "url('/images/summer-deck-5.png')" }}
     >
       {/* Header */}
+    <div className="sticky top-0 z-10">
       <Header centralText={`Welcome, ${session?.user?.name || 'Guest'}`} />
+    </div>
 
       {/* Menus */}
       <HamburgerMenu isOpen={isHamburgerMenuOpen} onClose={() => setIsHamburgerMenuOpen(false)} />
       <AvatarMenu isOpen={isAvatarMenuOpen} onClose={() => setIsAvatarMenuOpen(false)} />
 
       {/* Walkthrough Section */}
-        <div className="px-6 py-4">
-          <h2 className="text-2xl font-bold text-sky-50 mb-4">Get Started</h2>
+        <div className="flex-grow px-6 py-4">
+          <h2 className="text-2xl font-light text-sky-50 mb-4">Getting Started</h2>
           <div className="flex gap-4 overflow-x-auto">
             {dummyWalkthroughCards.map((card, index) => (
               <div
@@ -103,33 +106,43 @@ const HomeScreen: React.FC = () => {
           />
         ))}
 
+      {/* Favorites Section */}
+      <div className="flex-grow px-6 py-4">
+      <div className="flex items-center mb-4">
+        <Heart strokeWidth={1.5} className="w-6 h-6 text-pink-800 mr-2" />
+        <p className="text-2xl font-light text-sky-50">My Favorite Recipes</p>
+      </div>
+              <div className="flex gap-4 overflow-x-auto">
+                <FavoriteRecipesCarousel />
+              </div>
+      </div>
 
       {/* Saved Recipes */}
-      <div className="px-6 py-4">
-        <h2 className="text-2xl font-bold text-sky-50 mb-4">My Saved Recipes</h2>
+      <div className="flex-grow px-6 py-4">
+      <div className="flex items-center mb-4">
+        <Bookmark strokeWidth={1.5} className="w-6 h-6 text-pink-800 mr-2" />
+        <p className="text-2xl font-light text-sky-50">My Saved Recipes</p>
+      </div>
         <div className="flex gap-4 overflow-x-auto">
           <SavedRecipesCarousel />
         </div>
       </div>
 
-      {/* Favorites Section */}
-      <div className="px-6 py-4">
-        <h2 className="text-2xl font-bold text-sky-50 mb-4">My Favorites</h2>
-        <div className="flex gap-4 overflow-x-auto">
-          <FavoriteRecipesCarousel />
-        </div>
-      </div>
-
       {/* Shopping Lists Section */}
-      <div className="px-6 py-4">
-        <h2 className="text-2xl font-bold text-sky-50 mb-4">My Shopping Lists</h2>
+      <div className="flex-grow px-6 py-4">
+      <div className="flex items-center mb-4">
+        <ShoppingCart strokeWidth={1.5} className="w-6 h-6 text-pink-800 mr-2" />
+        <p className="text-2xl font-light text-sky-50">My Shopping Lists</p>
+      </div>
         <div className="flex gap-4 overflow-x-auto">
           <ShoppingListsCarousel />
         </div>
       </div>
 
       {/* Footer */}
+    <div className="sticky bottom-0 z-10">
       <Footer actions={['home', 'send']} />
+    </div>
     </div>
   );
 };
