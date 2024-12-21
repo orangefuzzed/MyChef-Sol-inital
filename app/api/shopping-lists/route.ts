@@ -95,16 +95,19 @@ export async function DELETE(request: Request) {
 
     const userEmail = session.user.email;
     const { searchParams } = new URL(request.url);
-    const shoppingListId = searchParams.get('shoppingListId');
+    const id = searchParams.get('id'); // Update to match the `id` field in MongoDB
 
-    if (!shoppingListId) {
+    console.log('DELETE Request Params:', searchParams.toString()); // Debug log
+
+    if (!id) {
       return NextResponse.json({ error: 'Shopping List ID is required' }, { status: 400 });
     }
 
     const db = await connectToDatabase();
     const collection = db.collection('shoppingLists');
 
-    const result = await collection.deleteOne({ shoppingListId, userEmail });
+    // Match the document by `id` and `userEmail`
+    const result = await collection.deleteOne({ id, userEmail });
 
     if (result.deletedCount === 0) {
       return NextResponse.json({ error: 'Shopping list not found' }, { status: 404 });
@@ -121,3 +124,4 @@ export async function DELETE(request: Request) {
     }
   }
 }
+

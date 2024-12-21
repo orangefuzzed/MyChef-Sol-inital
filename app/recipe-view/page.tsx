@@ -7,9 +7,8 @@ import { useSearchParams } from 'next/navigation';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
 import RecipeDetails from '../components/AIChatInterface/RecipeDetails';
-import { Bookmark, Heart } from 'lucide-react';
-import { saveRecipeToDB, deleteRecipeFromDB, getSavedRecipesFromDB } from '../utils/indexedDBUtils';
-import { saveRecipeToFavorites, deleteRecipeFromFavorites, getFavoriteRecipesFromDB } from '../utils/favoritesUtils';
+import {  getSavedRecipesFromDB } from '../utils/indexedDBUtils';
+import {  getFavoriteRecipesFromDB } from '../utils/favoritesUtils';
 import { Suspense } from 'react';
 
 const RecipeViewPage = () => {
@@ -53,76 +52,6 @@ const RecipeViewPage = () => {
     return <div className="text-white p-4">No recipe selected. Please go back and select a recipe.</div>;
   }
 
-  const handleSaveToggle = async () => {
-    if (!selectedRecipe || !id) return; // Ensure `id` is not null before proceeding
-
-    try {
-      if (isSaved) {
-        await deleteRecipeFromDB(id);
-        setIsSaved(false);
-        const response = await fetch(`/api/recipes/saved?id=${id}`, {
-          method: 'DELETE',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-        });
-        if (!response.ok) {
-          console.error('Failed to delete recipe from MongoDB:', await response.text());
-        }
-      } else {
-        await saveRecipeToDB(selectedRecipe);
-        setIsSaved(true);
-        const response = await fetch('/api/recipes/saved', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify(selectedRecipe),
-        });
-        if (!response.ok) {
-          console.error('Failed to save recipe to MongoDB:', await response.text());
-        }
-      }
-    } catch (error) {
-      console.error('Error while toggling save:', error);
-    }
-  };
-
-  const handleFavoriteToggle = async () => {
-    if (!selectedRecipe || !id) return; // Ensure `id` is not null before proceeding
-
-    try {
-      if (isFavorited) {
-        await deleteRecipeFromFavorites(id);
-        setIsFavorited(false);
-        const response = await fetch(`/api/recipes/favorites?id=${id}`, {
-          method: 'DELETE',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-        });
-        if (!response.ok) {
-          console.error('Failed to delete favorite from MongoDB:', await response.text());
-        }
-      } else {
-        await saveRecipeToFavorites(selectedRecipe);
-        setIsFavorited(true);
-        const response = await fetch('/api/recipes/favorites', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify(selectedRecipe),
-        });
-        if (!response.ok) {
-          console.error('Failed to save favorite to MongoDB:', await response.text());
-        }
-      }
-    } catch (error) {
-      console.error('Error while toggling favorite:', error);
-    }
-  };
-
   return (
     <Suspense fallback={<div>Loading...</div>}>
       <div
@@ -141,19 +70,7 @@ const RecipeViewPage = () => {
 
         {/* Footer with Save and Favorite Toggles */}
         <Footer
-          actions={['home']}
-          contextualActions={[
-            {
-              label: isSaved ? 'Recipe Saved' : 'Save Recipe',
-              icon: <Bookmark strokeWidth={1.5} size={18} color={isSaved ? '#9d174d' : 'white'} />,
-              onClick: handleSaveToggle,
-            },
-            {
-              label: isFavorited ? 'Recipe Favorited' : 'Favorite Recipe',
-              icon: <Heart strokeWidth={1.5} size={18} color={isFavorited ? '#9d174d' : 'white'} />,
-              onClick: handleFavoriteToggle,
-            },
-          ]}
+          actions={['home', 'send']}
         />
       </div>
     </Suspense>

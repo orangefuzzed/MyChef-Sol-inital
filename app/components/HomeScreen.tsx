@@ -3,23 +3,57 @@
 import React, { useState, useEffect } from 'react';
 import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
-import styles from './HomeScreen.module.css';
 import HamburgerMenu from '../components/HamburgerMenu';
 import AvatarMenu from '../components/AvatarMenu';
 import Footer from '../components/Footer';
 import Header from '../components/Header'; // Import the Header component
-import { BotMessageSquare, ChefHat } from 'lucide-react';
-import Link from 'next/link'
+import SavedRecipesCarousel from '../components/SavedRecipesCarousel';
+import FavoriteRecipesCarousel from '../components/SavedRecipesCarousel';
+import ShoppingListsCarousel from '../components/ShoppingListsCarousel';
+import GetStartedModal from './GetStartedModal';
 
-type IconName = 'apple' | 'avocado' | 'axe' | 'beer 1' | 'cake 1' | 'carrot' | 'cheese' | 'cherry' | 'burger' | 'dish 1' | 'cutlery 4' | 'fire' | 'chefshat' | 'shopping basket' | 'shrimp' | 'scales' | 'dish 3';
 
 const HomeScreen: React.FC = () => {
   const { data: session, status } = useSession();
   const router = useRouter();
-  
-  // State hooks
   const [isHamburgerMenuOpen, setIsHamburgerMenuOpen] = useState(false);
   const [isAvatarMenuOpen, setIsAvatarMenuOpen] = useState(false);
+  const [activeModalIndex, setActiveModalIndex] = useState<number | null>(null);
+
+  const dummyWalkthroughCards = [
+    {
+      title: "Discover Recipes in a Snap!",
+      description: "Find your next favorite recipe in seconds.",
+      modalContent: "Use Dishcovery's AI to find personalized recipes tailored to your taste and dietary needs.",
+      imageSrc: "/images/kAi.png", // Example image
+    },
+    {
+      title: "Save Your Favorites",
+      description: "Keep track of recipes you love.",
+      modalContent: "Never lose track of your favorite meals. Save recipes to revisit later and share them with friends!",
+      imageSrc: "/images/favorites.png", // Example image
+    },
+    {
+      title: "Plan Your Meals",
+      description: "Make meal planning a breeze.",
+      modalContent: "Create shopping lists and plan your meals for the week—all in one app.",
+      imageSrc: "/images/shopping-list.png", // Example image
+    },
+    {
+      title: "Cook Mode Activated!",
+      description: "Follow step-by-step instructions.",
+      modalContent: "Dishcovery's Cook Mode lets you focus on cooking with step-by-step instructions and voice guidance.",
+      imageSrc: "/images/cook-mode.png", // Example image
+    },
+    {
+      title: "Write the Perfect Prompt",
+      description: "Get the most out of Dishcovery.",
+      modalContent: "Learn to write creative prompts like 'Quick and easy dinner ideas' or 'High-protein breakfasts.' Dishcovery will take it from there!",
+      imageSrc: "/images/prompts.png", // Example image
+    },
+  ];
+  
+
 
   // Redirect to login page if not authenticated
   useEffect(() => {
@@ -28,99 +62,74 @@ const HomeScreen: React.FC = () => {
     }
   }, [status, router]);
 
-
-  // The main component content should only be returned once the user is authenticated.
   return (
-    
-    <div className="flex flex-col h-screen bg-fixed bg-cover bg-center text-white"
+    <div
+      className="flex flex-col h-screen bg-fixed bg-cover bg-center text-white"
       style={{ backgroundImage: "url('/images/summer-deck-5.png')" }}
-      >
-      {/* Use Header Component for the Top Bar */}
-      <Header centralText={`Home - ${session?.user?.name || 'Guest'}`} />
+    >
+      {/* Header */}
+      <Header centralText={`Welcome, ${session?.user?.name || 'Guest'}`} />
 
       {/* Menus */}
       <HamburgerMenu isOpen={isHamburgerMenuOpen} onClose={() => setIsHamburgerMenuOpen(false)} />
       <AvatarMenu isOpen={isAvatarMenuOpen} onClose={() => setIsAvatarMenuOpen(false)} />
 
-      {/* Main Content */}
-      <div className="flex-grow p-8 overflow-y-auto">
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
-          {[{
-              icon: 'dish 1' as IconName,
-              title: "Recipes in a Snap!",
-              description: "Breakfast, lunch, or snack—recipes at the speed of thought.",
-              
-            },
-            /*{
-              icon: 'fire' as IconName,
-              title: "Trending Tastes",
-              description: "Find the tastiest dishes making waves this week.",
-              
-            },
-            {
-              icon: 'chefshat' as IconName,
-              title: "Ask me anything!",
-              description: "Ask anything culinary and let the surprises begin.",
-              
-            },
-            {
-              icon: 'shopping basket' as IconName,
-              title: "Your Custom Menu",
-              description: "Expertly curated recipes & meal plans based on what you love.",
-              
-            },
-            {
-              icon: 'shrimp' as IconName,
-              title: "Bite-Sized Bliss",
-              description: "Craft the perfect appetizers for any gathering.",
-              
-            },
-            {
-              icon: 'scales' as IconName,
-              title: "Macro Magic",
-              description: "Meals to match your macros for the ultimate balance.",
-              
-            },
-            {
-              icon: 'dish 3' as IconName,
-              title: "Recipe Radar",
-              description: "Find anything, from everyday meals to culinary adventures.",
-              
-            },
-            {
-              icon: 'axe' as IconName,
-              title: "Cook Like a Pro",
-              description: "Sharpen your skills and learn to cook like a pro.",
-              
-            },
-            {
-              icon: 'dish 1' as IconName,
-              title: "Old School Eats",
-              description: "Nostalgic, hearty, and just like home.",
-              
-            }*/
-          ].map(({ title, description }, index) => (
-            <div key={index} className="recipe-details-container bg-white/30 backdrop-blur-lg border-white border shadow-lg ring-1 ring-black/5 p-6 rounded-2xl">
-              <div className="bg-sky-50/30 w-8 h-8 border border-white rounded-full flex items-center justify-center">
-                  <ChefHat strokeWidth={1.5} className="w-5 h-5 text-black" /> {/* Example icon, you can change this */}
-                </div>
-              <div className="mt-2">
-                <h3 className={styles.cardTitle}>{title}</h3>
-                <p className={styles.cardDescription}>{description}</p>
-                <Link href="/ai-chat">
-                <button className="mt-4 py-2 px-6 bg-[#00a39e]/50 border border-sky-50 shadow-lg ring-1 ring-black/5 rounded-full text-sky-50 flex items-center gap-2">
-                  Get Recipes!
-                  <BotMessageSquare strokeWidth={1.5} className="w-5 h-5" />
-                </button>
-                </Link>
+      {/* Walkthrough Section */}
+        <div className="px-6 py-4">
+          <h2 className="text-2xl font-bold text-sky-50 mb-4">Get Started</h2>
+          <div className="flex gap-4 overflow-x-auto">
+            {dummyWalkthroughCards.map((card, index) => (
+              <div
+                key={index}
+                className="min-w-[300px] bg-white/30 backdrop-blur-lg border border-white shadow-lg rounded-2xl p-6 flex-shrink-0 cursor-pointer hover:shadow-2xl transition"
+                onClick={() => setActiveModalIndex(index)} // Open the modal for this card
+              >
+                <h3 className="text-lg font-bold mb-2">{card.title}</h3>
+                <p className="text-sm">{card.description}</p>
               </div>
-            </div>
-          ))}
+            ))}
+          </div>
+        </div>
+
+        {/* Render Modals */}
+        {dummyWalkthroughCards.map((card, index) => (
+          <GetStartedModal
+            key={index}
+            isOpen={activeModalIndex === index} // Show the modal only if it's the active card
+            onClose={() => setActiveModalIndex(null)} // Close modal when dismissed
+            title={card.title}
+            content={card.modalContent}
+            imageSrc={card.imageSrc}
+          />
+        ))}
+
+
+      {/* Saved Recipes */}
+      <div className="px-6 py-4">
+        <h2 className="text-2xl font-bold text-sky-50 mb-4">My Saved Recipes</h2>
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+          <SavedRecipesCarousel />
         </div>
       </div>
-      
+
+      {/* Favorites Section */}
+      <div className="px-6 py-4">
+        <h2 className="text-2xl font-bold text-sky-50 mb-4">My Favorites</h2>
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+          <FavoriteRecipesCarousel />
+        </div>
+      </div>
+
+      {/* Shopping Lists Section */}
+      <div className="px-6 py-4">
+        <h2 className="text-2xl font-bold text-sky-50 mb-4">My Shopping Lists</h2>
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+          <ShoppingListsCarousel />
+        </div>
+      </div>
+
       {/* Footer */}
-      <Footer actions={["home", "send"]} />
+      <Footer actions={['home', 'send']} />
     </div>
   );
 };

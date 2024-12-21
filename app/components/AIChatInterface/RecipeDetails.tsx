@@ -5,8 +5,11 @@ import Link from 'next/link';
 import { useRecipeContext } from '../../contexts/RecipeContext';
 import { Recipe } from '../../../types/Recipe';
 import { generateShoppingList } from '../../utils/shoppingListUtils';
-import { Flame, Clock, Soup, ShoppingCart, ChefHat } from 'lucide-react';
+import { Flame, Clock, Soup, ShoppingCart, ChefHat, Bookmark, Heart } from 'lucide-react';
 import Loading from '../../loading'; // Use your existing Loading component
+import { saveRecipeToDB, deleteRecipeFromDB, getSavedRecipesFromDB } from '../../utils/indexedDBUtils';
+import { saveRecipeToFavorites, deleteRecipeFromFavorites, getFavoriteRecipesFromDB } from '../../utils/favoritesUtils';
+import Toast from '../../components/Toast'; // Import your Toast component
 
 // Wrapping the entire page in Suspense
 const RecipeDetailsPageWrapper = () => {
@@ -22,6 +25,15 @@ const RecipeDetails: React.FC = () => {
   const id = searchParams ? searchParams.get('id') : null; // Null-check for searchParams
   const { selectedRecipe, setSelectedRecipe, setCurrentShoppingList } = useRecipeContext();
   const [loading, setLoading] = useState(true); // Proper destructuring
+  const [isSaved, setIsSaved] = useState(false);
+  const [isFavorited, setIsFavorited] = useState(false);
+  const [toastMessage, setToastMessage] = useState<string | null>(null);
+  const [toastType, setToastType] = useState<'success' | 'error' | null>(null);
+
+  const triggerToast = (message: string, type: 'success' | 'error') => {
+    setToastMessage(message);
+    setToastType(type);
+  };
 
   useEffect(() => {
     const loadRecipe = async () => {
@@ -47,6 +59,69 @@ const RecipeDetails: React.FC = () => {
     loadRecipe();
   }, [id, setSelectedRecipe]);
 
+  useEffect(() => {
+      if (!id) return; // Add null check for `id`
+  
+      const checkIfSaved = async () => {
+        const savedRecipes = await getSavedRecipesFromDB();
+        const found = savedRecipes.find((recipe) => recipe.id === id);
+        setIsSaved(!!found);
+      };
+  
+      const checkIfFavorited = async () => {
+        const favoriteRecipes = await getFavoriteRecipesFromDB();
+        const found = favoriteRecipes.find((recipe) => recipe.id === id);
+        setIsFavorited(!!found);
+      };
+  
+      checkIfSaved();
+      checkIfFavorited();
+    }, [id]);
+
+  const handleSaveToggle = async () => {
+    if (!selectedRecipe || !id) return;
+
+    
+
+    try {
+      if (isSaved) {
+        await deleteRecipeFromDB(id);
+        setIsSaved(false);
+        triggerToast('Recipe successfully removed from saved recipes!', 'success');
+      } else {
+        await saveRecipeToDB(selectedRecipe);
+        setIsSaved(true);
+        triggerToast('Recipe successfully saved!', 'success');
+      }
+    } catch (error) {
+      console.error('Error while toggling save:', error);
+      triggerToast('Failed to save the recipe. Please try again.', 'error');
+    }
+  };
+
+  const handleFavoriteToggle = async () => {
+    if (!selectedRecipe || !id) return;
+
+    try {
+      if (isFavorited) {
+        await deleteRecipeFromFavorites(id);
+        setIsFavorited(false);
+        triggerToast('Recipe successfully removed from favorites!', 'success');
+      } else {
+        await saveRecipeToFavorites(selectedRecipe);
+        setIsFavorited(true);
+        triggerToast('Recipe successfully added to favorites!', 'success');
+      }
+    } catch (error) {
+      console.error('Error while toggling favorite:', error);
+      triggerToast('Failed to favorite the recipe. Please try again.', 'error');
+    }
+  };
+
+  if (loading) {
+    return <Loading />;
+  }
+
   const handleCreateShoppingList = () => {
     if (selectedRecipe) {
       const shoppingList = generateShoppingList(selectedRecipe);
@@ -65,6 +140,28 @@ const RecipeDetails: React.FC = () => {
 
   return (
     <div className="recipe-details-container bg-white/30 backdrop-blur-lg border-white border shadow-lg ring-1 ring-black/5 p-6 rounded-2xl">
+
+      {/* Save and Favorite Toggles */}
+      <div className="flex justify-end gap-4 mb-2">
+        <button onClick={handleSaveToggle} className="p-2 text-sky-50 hover:text-pink-800">
+          <Bookmark strokeWidth={1.5} size={24} color={isSaved ? '#9d174d' : 'white'} />
+        </button>
+        <button onClick={handleFavoriteToggle} className="p-2 text-sky-50 hover:text-pink-800">
+          <Heart strokeWidth={1.5} size={24} color={isFavorited ? '#9d174d' : 'white'} />
+        </button>
+
+        {/* Toast Messages */}
+      {toastMessage && toastType && (
+        <Toast
+          message={toastMessage}
+          type={toastType}
+          onClose={() => {
+            setToastMessage(null);
+            setToastType(null);
+          }}
+        />
+      )}
+      </div>
       <h2 className="text-xl text-white font-bold">{selectedRecipe.recipeTitle}</h2>
       <div className="rating text-amber-400 mb-2">Rating: {selectedRecipe.rating}</div>
 
