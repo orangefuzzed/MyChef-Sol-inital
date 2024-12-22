@@ -23,7 +23,7 @@ const Toast: React.FC<ToastProps> = ({ message, type, onClose, duration = 3000 }
       initial={{ opacity: 0, translateY: 30 }}
       animate={{ opacity: 1, translateY: 0 }}
       exit={{ opacity: 0, translateY: 30 }}
-      className={`fixed z-50 flex items-center justify-center p-4 backdrop-blur-lg w-80 ml-40 shadow-lg ring-1 ring-black/5 rounded-2xl text-white ${
+      className={`fixed z-50 flex items-center justify-center p-4 backdrop-blur-lg w-5/6 ml-8 shadow-lg ring-1 ring-black/5 rounded-2xl text-white ${
         type === 'success'
           ? 'bg-[#59ED8F]/85 border border-[#27ff52]'
           : 'bg-pink-800/85 border border-pink-500'
@@ -31,7 +31,7 @@ const Toast: React.FC<ToastProps> = ({ message, type, onClose, duration = 3000 }
       style={{
         bottom: '50px', // Placement from the bottom
         left: '0%', // Center horizontally
-        
+        transform: 'translateX(-50%)', // Center the toast
       }}
     >
       <div className="flex items-center gap-3">
@@ -44,7 +44,7 @@ const Toast: React.FC<ToastProps> = ({ message, type, onClose, duration = 3000 }
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" />
           </svg>
         )}
-        <span className="text-lg font-medium">{message}</span>
+        <span className="text-sm font-normal mr-2">{message}</span>
       </div>
       <button
         onClick={onClose}
