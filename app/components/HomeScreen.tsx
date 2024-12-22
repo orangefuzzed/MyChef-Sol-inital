@@ -11,7 +11,7 @@ import SavedRecipesCarousel from '../components/SavedRecipesCarousel';
 import FavoriteRecipesCarousel from '../components/FavoriteRecipesCarousel';
 import ShoppingListsCarousel from '../components/ShoppingListsCarousel';
 import GetStartedModal from './GetStartedModal';
-import { ShoppingCart, Bookmark, Heart } from 'lucide-react';
+import { ShoppingCart, Bookmark, Heart, ChefHat } from 'lucide-react';
 
 
 const HomeScreen: React.FC = () => {
@@ -78,12 +78,15 @@ const HomeScreen: React.FC = () => {
       <div className="flex-grow overflow-y-auto px-6 py-4">
         {/* Walkthrough Section */}
         <div className="mb-6">
-          <h2 className="text-2xl font-light text-sky-50 mb-4">Getting Started</h2>
+        <div className="flex items-center mb-4">
+            <ChefHat strokeWidth={1.5} className="w-6 h-6 text-pink-800 mr-2" />
+            <p className="text-2xl font-light text-sky-50">Get Started!</p>
+          </div>
           <div className="flex gap-4 overflow-x-auto">
             {dummyWalkthroughCards.map((card, index) => (
               <div
                 key={index}
-                className="min-w-[300px] bg-white/30 backdrop-blur-lg border border-white shadow-lg rounded-2xl p-6 flex-shrink-0 cursor-pointer hover:shadow-2xl transition"
+                className="w-80 bg-white/30 backdrop-blur-lg border border-white shadow-lg rounded-2xl p-6 flex-shrink-0 cursor-pointer hover:shadow-2xl transition"
                 onClick={() => setActiveModalIndex(index)} // Open the modal for this card
               >
                 <h3 className="text-lg font-bold mb-2">{card.title}</h3>

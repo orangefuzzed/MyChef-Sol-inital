@@ -56,10 +56,6 @@ const MessageInput: React.FC<MessageInputProps> = ({
         >
           <PaperPlaneIcon className="h-4 w-4" />
         </button>
-        {/* Microphone Button */}
-        <button className="text-slate-300 ml-2 mr-2">
-          <Mic strokeWidth={1.5} className="h-6 w-6" />
-        </button>
       </div>
     </div>
   );

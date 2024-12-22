@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useEffect } from 'react';
-import { X } from 'lucide-react';
+import { CircleX } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion'; // Add this for animations!
 
 interface ModalProps {
@@ -60,7 +60,7 @@ const GetStartedModal: React.FC<ModalProps> = ({
             className="absolute top-4 right-4 p-2 rounded-full bg-slate-200 hover:bg-slate-300 transition"
             aria-label="Close modal"
           >
-            <X className="w-5 h-5 text-slate-700" />
+            <CircleX className="w-5 h-5 text-slate-700" />
           </button>
 
           {/* Image */}

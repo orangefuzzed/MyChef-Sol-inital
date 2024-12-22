@@ -65,7 +65,7 @@ const HistoryPage: React.FC = () => {
 
   return (
     <div className="flex flex-col h-screen bg-fixed bg-cover bg-center text-white"
-        style={{ backgroundImage: "url('/images/summer-deck-5.png')" }}
+        style={{ backgroundImage: "url('/images/summer-deck-2.png')" }}
         >
       <Header centralText="Chat History" />
 
@@ -83,11 +83,12 @@ const HistoryPage: React.FC = () => {
                 <div className="bg-sky-50/30 w-8 h-8 border border-white rounded-full flex items-center justify-center mb-2">
                   <MessagesSquare strokeWidth={1.5} className="w-4 h-4 text-black" /> {/* Example icon, you can change this */}
                 </div>
-                <h3 className="text-lg font-semibold mb-2">{session.sessionTitle || 'Chat Session'}</h3>
-                <p className="text-sm text-black">{session.sessionSummary}</p>
-                <p className="text-xs mt-2 text-pink-800">
+                <h3 className="text-lg font-light">{session.sessionTitle || 'Chat Session'}</h3>
+                
+                <p className="text-xs font-semibold mb-2 text-sky-50">
                   {new Date(session.timestamp).toLocaleDateString()} - {new Date(session.timestamp).toLocaleTimeString()}
                 </p>
+                <p className="text-sm text-black">{session.sessionSummary}</p>
               </div>
             ))}
           </div>
