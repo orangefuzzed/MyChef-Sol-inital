@@ -2,6 +2,7 @@ import React, { createContext, useContext, useState, ReactNode } from 'react';
 import { saveChatMessageToDB } from '../utils/indexedDBUtils';
 import { generateNewSessionId } from '../utils/sessionUtils'; // Importing the session utility function
 import { Recipe } from '../../types/Recipe';  // Importing Recipe from the correct source
+import { useRecipeContext } from '../contexts/RecipeContext'; // Fixing the import to actually use it
 
 export interface ChatMessage {
   id: number;
@@ -40,27 +41,18 @@ export const ChatProvider = ({ children }: { children: ReactNode }) => {
   const [recipeSuggestions, setRecipeSuggestions] = useState<Recipe[]>([]);  // Updated to use the correct type
   const [sessionId, setSessionId] = useState<string>(() => generateNewSessionId()); // <-- Use the utility function for sessionId
 
+  // Import `setRecipeSuggestionSets` from RecipeContext
+  const { setRecipeSuggestionSets } = useRecipeContext();
+
   // Function to start a new session
   const startNewSession = () => {
     const newId = generateNewSessionId(); // Generate a new session ID
-    setSessionId(newId);
+    setSessionId(newId); // Update session ID
     setMessages([]); // Clear chat messages for the new session
     setLastAIResponse(null); // Reset the AI response state
     setRecipeSuggestions([]); // Clear any existing recipe suggestions
+    setRecipeSuggestionSets([]); // Delegate clearing to RecipeContext
   };
-
-  {/*useEffect(() => {
-    const loadMessages = async () => {
-      if (sessionId !== 'current_session_id') { // Only load if this is NOT a new session
-        const savedMessages = await getChatMessagesFromDB();
-        setMessages(savedMessages);
-      } else {
-        console.log("Skipping message load for a new session.");
-      }
-    };
-    loadMessages();
-  }, [sessionId]);*/}
-  
 
   const addMessage = async (message: ChatMessage) => {
     setMessages((prevMessages) => [...prevMessages, message]);

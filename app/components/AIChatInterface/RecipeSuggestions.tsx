@@ -1,7 +1,7 @@
 import React from 'react';
 import Link from 'next/link';
 import { Recipe } from '../../../types/Recipe';
-import { Flame, Clock, Soup, ChefHat, Salad } from 'lucide-react';
+import { Flame, Clock, Soup, ChefHat } from 'lucide-react';
 
 interface RecipeSuggestionsProps {
   currentRecipeList: Recipe[];

@@ -14,7 +14,7 @@ import RecipeSuggestions from '../components/AIChatInterface/RecipeSuggestions';
 import { ChatSession } from '../../types/ChatSession'; // Add this import for the ChatSession type
 import { ChatMessage } from '../../types/ChatMessage';
 import { useRouter } from 'next/navigation';
-import { Heart } from 'lucide-react'
+import { Heart, CirclePlus } from 'lucide-react'
 import ActionButtons from '../components/AIChatInterface/ActionButtons';
 import LoadingModal from '../components/LoadingModal';
 import RetryModal from '../components/RetryModal'; // Import the RetryModal
@@ -37,8 +37,15 @@ const AIChatInterface = () => {
     recipeSuggestionSets,
     setSelectedRecipe,
   } = useRecipeContext(); // Extract RecipeContext
+
+
+  const handleNewSession = () => {
+    startNewSession(); // Reset the chat context
+};
   
   const router = useRouter();
+
+  const { startNewSession } = useChat();
 
   const messagesEndRef = useRef<null | HTMLDivElement>(null);
   {/*const router = useRouter(); // To capture navigation events*/}
@@ -294,6 +301,11 @@ const AIChatInterface = () => {
               label: isChatSaved ? 'Session Saved' : 'Save Session',
               icon: <Heart strokeWidth={1.5} size={18} color={isChatSaved ? '#9d174d' : 'white'} />,
               onClick: handleSaveSession,
+            },
+            {
+              label: 'Start New Session',
+              icon: <CirclePlus strokeWidth={1.5} size={18} color={'white'} />,
+              onClick: handleNewSession,
             },
           ]}
         />

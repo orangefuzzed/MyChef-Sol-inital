@@ -46,7 +46,7 @@ const Footer: React.FC<FooterProps> = ({ actions, contextualActions }) => {
                 className="flex flex-col items-center text-xs"
               >
                 {action.icon}
-                <span className="text-xs">{action.label}</span>
+                <span className="text-xs mt-1">{action.label}</span>
               </button>
             ))}
           </div>

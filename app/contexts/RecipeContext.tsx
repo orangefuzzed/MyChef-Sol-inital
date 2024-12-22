@@ -20,6 +20,7 @@ interface RecipeContextProps {
   setSelectedRecipe: (recipe: Recipe | null) => void;
   recipeSuggestionSets: RecipeSuggestionSet[];
   addRecipeSuggestionSet: (suggestionSet: RecipeSuggestionSet) => void;
+  setRecipeSuggestionSets: (sets: RecipeSuggestionSet[]) => void; // Add this setter to the context props
   savedRecipes: Recipe[];
   setSavedRecipes: (recipes: Recipe[]) => void;
   currentShoppingList: ShoppingList | null;
@@ -121,6 +122,7 @@ export const RecipeProvider: React.FC<{ children: ReactNode }> = ({ children }) 
         selectedRecipe,
         setSelectedRecipe,
         recipeSuggestionSets,
+        setRecipeSuggestionSets, // Provide the setter in the context
         addRecipeSuggestionSet,
         savedRecipes,
         setSavedRecipes,
