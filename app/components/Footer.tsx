@@ -1,6 +1,6 @@
 import React from 'react';
 import Link from 'next/link';
-import { Home, Bookmark, Heart, Bot } from 'lucide-react';
+import { Home, CircleUserRound, Heart, Bot } from 'lucide-react';
 import Image from 'next/image';
 
 interface FooterProps {
@@ -12,7 +12,7 @@ const Footer: React.FC<FooterProps> = ({ actions, contextualActions }) => {
   // Define the static action items
   const actionItems: { [key: string]: { icon: JSX.Element; label: string; link: string } } = {
     home: { icon: <Home strokeWidth={1.5} size={18} />, label: 'Home', link: '/' },
-    save: { icon: <Bookmark strokeWidth={1.5} size={18} />, label: 'Save', link: '/' },
+    user: { icon: <CircleUserRound strokeWidth={1.5} size={18} />, label: 'Profile', link: '/account' },
     favorite: { icon: <Heart strokeWidth={1.5} size={18} />, label: 'Favorite', link: '/' },
     send: { icon: <Bot strokeWidth={1.5} size={20} />, label: 'Get Recipes', link: '/ai-chat' },
   };
@@ -38,7 +38,7 @@ const Footer: React.FC<FooterProps> = ({ actions, contextualActions }) => {
 
         {/* Contextual Actions */}
       {contextualActions && contextualActions.length > 0 && (
-          <div className="flex gap-20">
+          <div className="flex gap-16">
             {contextualActions.map((action, index) => (
               <button
                 key={index}

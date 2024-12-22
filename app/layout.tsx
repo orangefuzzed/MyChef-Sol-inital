@@ -6,6 +6,7 @@ import { Providers } from './providers'; // Import the Providers component
 import { RecipeProvider } from './contexts/RecipeContext'; // Import the RecipeProvider
 import { UserProvider } from './contexts/UserContext';
 import { ChatProvider } from './contexts/ChatContext'; // Import the ChatProvider
+import { ToastProvider } from './contexts/ToastContext';
 import { Montserrat } from 'next/font/google';
 
 const montserrat = Montserrat({ 
@@ -37,7 +38,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           <RecipeProvider> {/* Wrap the entire app with the RecipeProvider */}
             <UserProvider> {/* Wrap the entire app with the UserProvider */}
               <ChatProvider> {/* Wrap the entire app with the ChatProvider */}
-                {children}
+                <ToastProvider>
+                 {children}
+                </ToastProvider>
               </ChatProvider>
             </UserProvider>
           </RecipeProvider>

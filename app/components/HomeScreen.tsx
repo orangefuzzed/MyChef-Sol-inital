@@ -80,7 +80,7 @@ const HomeScreen: React.FC = () => {
         <div className="mb-6">
         <div className="flex items-center mb-4">
             <ChefHat strokeWidth={1.5} className="w-6 h-6 text-pink-800 mr-2" />
-            <p className="text-2xl font-light text-sky-50">Get Started!</p>
+            <p className="text-xl font-light text-sky-50">Get Started!</p>
           </div>
           <div className="flex gap-4 overflow-x-auto">
             {dummyWalkthroughCards.map((card, index) => (
@@ -112,7 +112,7 @@ const HomeScreen: React.FC = () => {
         <div className="mb-6">
           <div className="flex items-center mb-4">
             <Heart strokeWidth={1.5} className="w-6 h-6 text-pink-800 mr-2" />
-            <p className="text-2xl font-light text-sky-50">My Favorite Recipes</p>
+            <p className="text-xl font-light text-sky-50">My Favorite Recipes</p>
           </div>
           <div className="flex gap-4 overflow-x-auto">
             <FavoriteRecipesCarousel />
@@ -123,7 +123,7 @@ const HomeScreen: React.FC = () => {
         <div className="mb-6">
           <div className="flex items-center mb-4">
             <Bookmark strokeWidth={1.5} className="w-6 h-6 text-pink-800 mr-2" />
-            <p className="text-2xl font-light text-sky-50">My Saved Recipes</p>
+            <p className="text-xl font-light text-sky-50">My Saved Recipes</p>
           </div>
           <div className="flex gap-4 overflow-x-auto">
             <SavedRecipesCarousel />
@@ -134,7 +134,7 @@ const HomeScreen: React.FC = () => {
         <div>
           <div className="flex items-center mb-4">
             <ShoppingCart strokeWidth={1.5} className="w-6 h-6 text-pink-800 mr-2" />
-            <p className="text-2xl font-light text-sky-50">My Shopping Lists</p>
+            <p className="text-xl font-light text-sky-50">My Shopping Lists</p>
           </div>
           <div className="flex gap-4 overflow-x-auto">
             <ShoppingListsCarousel />
@@ -144,7 +144,7 @@ const HomeScreen: React.FC = () => {
   
       {/* Footer */}
     <div className="sticky bottom-0 z-10">
-      <Footer actions={['home', 'send']} />
+      <Footer actions={['user', 'send']} />
     </div>
     </div>
     

@@ -295,7 +295,7 @@ const AIChatInterface = () => {
 
         {/* Footer Section with Save Session Button */}
         <Footer
-          actions={['']}
+          actions={['home']}
           contextualActions={[
             {
               label: isChatSaved ? 'Chat Saved' : 'Save Chat',

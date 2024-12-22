@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import { ShoppingListItem } from '../../../types/ShoppingListItem';
-import Toast from '../Toast'; // Assuming the Toast component exists
 import { ShoppingCart } from 'lucide-react';
 import {
   saveShoppingListToDB,
@@ -9,6 +8,7 @@ import {
 } from '../../utils/shoppingListUtils';
 import { useRecipeContext } from '../../contexts/RecipeContext';
 import { useSearchParams } from 'next/navigation';
+import { useToast } from '../../contexts/ToastContext'; // Import the Toast context
 
 interface ShoppingListProps {
   shoppingListData: {
@@ -23,17 +23,10 @@ const ShoppingList: React.FC<ShoppingListProps> = ({
   recipeTitle,
 }) => {
   const searchParams = useSearchParams();
-  const id = searchParams ? searchParams.get('id') : null; // Add null-check for `searchParams`
+  const id = searchParams ? searchParams.get('id') : null;
   const [isShoppingListSaved, setIsShoppingListSaved] = useState(false);
-  const [toastMessage, setToastMessage] = useState<string | null>(null);
-  const [toastType, setToastType] = useState<'success' | 'error' | null>(null);
-  const { selectedRecipe, currentShoppingList } =
-    useRecipeContext();
-
-  const triggerToast = (message: string, type: 'success' | 'error') => {
-    setToastMessage(message);
-    setToastType(type);
-  };
+  const { selectedRecipe, currentShoppingList } = useRecipeContext();
+  const { showToast } = useToast(); // Use the Toast context
 
   useEffect(() => {
     if (!id) return;
@@ -51,47 +44,49 @@ const ShoppingList: React.FC<ShoppingListProps> = ({
   }, [id]);
 
   const handleShoppingListSaveToggle = async () => {
-      if (!currentShoppingList || !id || !selectedRecipe) return; // Ensure required variables are not null
-  
-      try {
-        if (isShoppingListSaved) {
-          // Delete from IndexedDB
-          await deleteShoppingListFromDB(id);
-          setIsShoppingListSaved(false);
-          triggerToast('Shopping list removed successfully!', 'success');
-          // Delete from MongoDB
-          const response = await fetch(`/api/shopping-lists?id=${id}`, {
-            method: 'DELETE',
-            headers: {
-              'Content-Type': 'application/json',
-            },
-          });
-          if (!response.ok) {
-            console.error('Failed to delete shopping list from MongoDB:', await response.text());
-          }
-        } else {
-          // Save to IndexedDB with recipeTitle
-          await saveShoppingListToDB(id, currentShoppingList, selectedRecipe.recipeTitle);
-          setIsShoppingListSaved(true);
-          triggerToast('Shopping list saved successfully!', 'success');
-          // Save to MongoDB with recipeTitle
-          const response = await fetch('/api/shopping-lists', {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({ id, shoppingList: currentShoppingList, recipeTitle: selectedRecipe.recipeTitle }),
-          });
-  
-          if (!response.ok) {
-            console.error('Failed to save shopping list to MongoDB:', await response.text());
-          }
+    if (!currentShoppingList || !id || !selectedRecipe) return;
+
+    try {
+      if (isShoppingListSaved) {
+        await deleteShoppingListFromDB(id);
+        setIsShoppingListSaved(false);
+        showToast('Shopping list removed successfully!', 'success'); // Use global toast
+        // Delete from MongoDB
+        const response = await fetch(`/api/shopping-lists?id=${id}`, {
+          method: 'DELETE',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        });
+        if (!response.ok) {
+          console.error('Failed to delete shopping list from MongoDB:', await response.text());
         }
-      } catch (error) {
-        console.error('Error while toggling shopping list save:', error);
-        triggerToast('Failed to update shopping list. Please try again.', 'error');
+      } else {
+        await saveShoppingListToDB(
+          id,
+          currentShoppingList,
+          selectedRecipe.recipeTitle
+        );
+        setIsShoppingListSaved(true);
+        showToast('Shopping list saved successfully!', 'success'); // Use global toast
+        // Save to MongoDB with recipeTitle
+        const response = await fetch('/api/shopping-lists', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ id, shoppingList: currentShoppingList, recipeTitle: selectedRecipe.recipeTitle }),
+        });
+
+        if (!response.ok) {
+          console.error('Failed to save shopping list to MongoDB:', await response.text());
+        }
       }
-    };
+    } catch (error) {
+      console.error('Error while toggling shopping list save:', error);
+      showToast('Failed to update shopping list. Please try again.', 'error'); // Use global toast
+    }
+  };
 
   return (
     <div className="shopping-list bg-white/30 backdrop-blur-lg border-white border shadow-lg ring-1 ring-black/5 p-6 rounded-2xl">
@@ -108,7 +103,6 @@ const ShoppingList: React.FC<ShoppingListProps> = ({
       </ul>
       <p className="mt-6 font-semibold">Total Items: {shoppingListData.totalItems}</p>
 
-      {/* Save/Remove Button */}
       <div className="mt-4 flex justify-center">
         <button
           onClick={handleShoppingListSaveToggle}
@@ -120,22 +114,9 @@ const ShoppingList: React.FC<ShoppingListProps> = ({
           <ShoppingCart size={20} />
         </button>
       </div>
-
-      {/* Toast Messages */}
-      {toastMessage && toastType && (
-        <Toast
-          message={toastMessage}
-          type={toastType}
-          onClose={() => {
-            setToastMessage(null);
-            setToastType(null);
-          }}
-        />
-      )}
     </div>
   );
 };
-
 ShoppingList.defaultProps = {
   shoppingListData: { ingredients: [], totalItems: 0 },
   recipeTitle: 'Unknown Recipe',
