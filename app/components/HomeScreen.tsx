@@ -11,7 +11,7 @@ import SavedRecipesCarousel from '../components/SavedRecipesCarousel';
 import FavoriteRecipesCarousel from '../components/FavoriteRecipesCarousel';
 import ShoppingListsCarousel from '../components/ShoppingListsCarousel';
 import GetStartedModal from './GetStartedModal';
-import { ShoppingCart, Bookmark, Heart, ChefHat } from 'lucide-react';
+import { ShoppingCart, Bookmark, Heart, ChefHat, ExternalLink } from 'lucide-react';
 
 
 const HomeScreen: React.FC = () => {
@@ -32,25 +32,25 @@ const HomeScreen: React.FC = () => {
       title: "Save Your Favorites",
       description: "Keep track of recipes you love.",
       modalContent: "Never lose track of your favorite meals. Save recipes to revisit later and share them with friends!",
-      imageSrc: "/images/favorites.png", // Example image
+      imageSrc: "/images/steak-dinner-1.png", // Example image
     },
     {
       title: "Plan Your Meals",
       description: "Make meal planning a breeze.",
       modalContent: "Create shopping lists and plan your meals for the week—all in one app.",
-      imageSrc: "/images/shopping-list.png", // Example image
+      imageSrc: "/images/pizza-1.png", // Example image
     },
     {
       title: "Cook Mode Activated!",
       description: "Follow step-by-step instructions.",
       modalContent: "Dishcovery's Cook Mode lets you focus on cooking with step-by-step instructions and voice guidance.",
-      imageSrc: "/images/cook-mode.png", // Example image
+      imageSrc: "/images/man-kids-cooking-4.png", // Example image
     },
     {
       title: "Write the Perfect Prompt",
       description: "Get the most out of Dishcovery.",
       modalContent: "Learn to write creative prompts like 'Quick and easy dinner ideas' or 'High-protein breakfasts.' Dishcovery will take it from there!",
-      imageSrc: "/images/prompts.png", // Example image
+      imageSrc: "/images/breakfast-1.png", // Example image
     },
   ];
   
@@ -89,6 +89,9 @@ const HomeScreen: React.FC = () => {
                 className="w-80 bg-white/30 backdrop-blur-lg border border-white shadow-lg rounded-2xl p-6 flex-shrink-0 cursor-pointer hover:shadow-2xl transition"
                 onClick={() => setActiveModalIndex(index)} // Open the modal for this card
               >
+                <div className="bg-sky-50/30 w-8 h-8 border border-white rounded-full flex items-center justify-center mb-2">
+                  <ExternalLink strokeWidth={1.5} className="w-4 h-4 text-black" />
+                </div>
                 <h3 className="text-lg font-bold mb-2">{card.title}</h3>
                 <p className="text-sm">{card.description}</p>
               </div>

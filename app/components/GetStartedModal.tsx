@@ -68,7 +68,7 @@ const GetStartedModal: React.FC<ModalProps> = ({
             <img
               src={imageSrc}
               alt={title}
-              className="w-full h-40 object-cover rounded-lg mb-4"
+              className="w-full h-40 object-contain rounded-lg mb-4"
             />
           )}
 
