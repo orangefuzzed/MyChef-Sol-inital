@@ -37,7 +37,7 @@ const ShoppingListsCarousel: React.FC = () => {
           {shoppingLists.map((list) => (
             <div
               key={list.id}
-              className="w-64 bg-white/30 backdrop-blur-lg border-white border shadow-lg ring-1 ring-black/5 px-6 pt-6 pb-2 rounded-2xl flex-shrink-0"
+              className="w-64 bg-white/30 backdrop-blur-lg border-white border shadow-lg ring-1 ring-black/5 px-6 pt-6 pb-1 rounded-2xl flex-shrink-0"
               onClick={() => handleViewShoppingList(list.id)}
             >
               {/* Icon */}
