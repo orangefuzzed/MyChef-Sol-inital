@@ -295,15 +295,15 @@ const AIChatInterface = () => {
 
         {/* Footer Section with Save Session Button */}
         <Footer
-          actions={['home']}
+          actions={['']}
           contextualActions={[
             {
-              label: isChatSaved ? 'Session Saved' : 'Save Session',
+              label: isChatSaved ? 'Chat Saved' : 'Save Chat',
               icon: <Heart strokeWidth={1.5} size={18} color={isChatSaved ? '#9d174d' : 'white'} />,
               onClick: handleSaveSession,
             },
             {
-              label: 'Start New Session',
+              label: 'New Chat',
               icon: <CirclePlus strokeWidth={1.5} size={18} color={'white'} />,
               onClick: handleNewSession,
             },
