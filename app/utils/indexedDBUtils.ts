@@ -3,7 +3,7 @@ import { ChatMessage } from '../../types/ChatMessage';
 import { Recipe } from '../../types/Recipe'; // Assuming Recipe type is defined here
 
 const DB_NAME = 'MyChefDB';
-const DB_VERSION = 7; // Updated version to match and reflect changes
+const DB_VERSION = 6; // Updated version to match and reflect changes
 
 // Store names that use simple configurations
 const STORE_NAMES = ['savedRecipes', 'favoriteRecipes', 'shoppingLists', 'recipeSuggestions'];
