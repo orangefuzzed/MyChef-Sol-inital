@@ -5,7 +5,7 @@ import { ShoppingListItem } from '../../types/ShoppingListItem';
 import { ShoppingList } from '../../types/ShoppingList';
 
 const DB_NAME = 'MyChefDB';
-const DB_VERSION = 6; // Updated version to reflect new shopping list features
+const DB_VERSION = 8; // Updated version to reflect new shopping list features
 const SHOPPING_LISTS_STORE = 'shoppingLists';
 
 // Open IndexedDB connection for Shopping Lists

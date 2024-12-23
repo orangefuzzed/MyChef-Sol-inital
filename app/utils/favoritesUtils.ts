@@ -3,7 +3,7 @@ import { Recipe } from '../../types/Recipe'; // Assuming Recipe type is defined 
 // Setting up IndexedDB utilities for storing saved recipes, favorite recipes, and shopping lists offline
 
 const DB_NAME = 'MyChefDB';
-const DB_VERSION = 6; // Increment version to ensure all object stores are created
+const DB_VERSION = 8; // Increment version to ensure all object stores are created
 const SAVED_RECIPES_STORE = 'savedRecipes';
 const FAVORITES_STORE = 'favoriteRecipes';
 const SHOPPING_LISTS_STORE = 'shoppingLists';
