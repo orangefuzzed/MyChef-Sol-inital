@@ -23,14 +23,33 @@ const ShoppingListsPage = () => {
 
   useEffect(() => {
     const fetchShoppingLists = async () => {
-      const lists = await getAllSavedShoppingListsFromDB();
-      if (lists) {
-        setShoppingLists(lists);
+      let lists = await getAllSavedShoppingListsFromDB();
+  
+      // Ensure `lists` is always an array, even if `getAllSavedShoppingListsFromDB()` returns `null`
+      lists = lists || [];
+  
+      // If no shopping lists in IndexedDB, fetch from MongoDB
+      if (lists.length === 0) {
+        try {
+          const response = await fetch('/api/shopping-lists');
+          if (response.ok) {
+            const fetchedLists: ShoppingList[] = await response.json();
+            lists = fetchedLists;
+          } else {
+            console.error('Failed to fetch shopping lists from MongoDB');
+          }
+        } catch (error) {
+          console.error('Error fetching shopping lists from MongoDB:', error);
+        }
       }
+  
+      setShoppingLists(lists);
     };
-
+  
     fetchShoppingLists();
   }, []);
+  
+
 
   const showToast = (message: string, type: 'success' | 'error') => {
     setToastMessage(message);

@@ -16,14 +16,30 @@ const FavoritesPage = () => {
   const [toastMessage, setToastMessage] = useState(''); // Toast message content
   const [toastType, setToastType] = useState<'success' | 'error'>('success'); // Toast type (success/error)
 
-  useEffect(() => {
-    const fetchFavoriteRecipes = async () => {
-      const recipes = await getFavoriteRecipesFromDB();
-      setFavoriteRecipes(recipes);
-    };
-
-    fetchFavoriteRecipes();
-  }, []);
+    useEffect(() => {
+      const fetchFavoriteRecipes = async () => {
+        let recipes = await getFavoriteRecipesFromDB();
+  
+        // If no recipes in IndexedDB, fetch from MongoDB
+        if (recipes.length === 0) {
+          try {
+            const response = await fetch('/api/recipes/favorites');
+            if (response.ok) {
+              const favorites: Recipe[] = await response.json();
+              recipes = favorites;
+            } else {
+              console.error('Failed to fetch saved recipes from MongoDB');
+            }
+          } catch (error) {
+            console.error('Error fetching saved recipes from MongoDB:', error);
+          }
+        }
+  
+        setFavoriteRecipes(recipes);
+      };
+  
+      fetchFavoriteRecipes();
+    }, []);
 
   const handleRecipeClick = (id: string) => {
     router.push(`/recipe-view?id=${id}`);

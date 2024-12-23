@@ -10,7 +10,7 @@ import { authOptions } from '@/lib/auth';
 
 export async function GET(request: Request) {
   try {
-    await connectToDatabase();
+    const db = await connectToDatabase();
     const session = await getServerSession(authOptions);
 
     if (!session?.user?.email) {
@@ -21,7 +21,6 @@ export async function GET(request: Request) {
     const { searchParams } = new URL(request.url);
     const shoppingListId = searchParams.get('shoppingListId');
 
-    const db = await connectToDatabase();
     const collection = db.collection('shoppingLists');
 
     let shoppingLists;
@@ -31,21 +30,19 @@ export async function GET(request: Request) {
       if (!shoppingList) {
         return NextResponse.json({ error: 'Shopping list not found' }, { status: 404 });
       }
-      shoppingLists = shoppingList;
+      shoppingLists = [shoppingList]; // Return as an array for consistent data structure
     } else {
       // Fetch all shopping lists for the user
       shoppingLists = await collection.find({ userEmail }).toArray();
     }
 
     return NextResponse.json(shoppingLists);
-  } catch (error: unknown) {
-    if (error instanceof Error) {
-      console.error('Error fetching shopping lists:', error.message);
-      return NextResponse.json({ error: 'Failed to fetch shopping lists', details: error.message }, { status: 500 });
-    } else {
-      console.error('An unexpected error occurred');
-      return NextResponse.json({ error: 'Failed to fetch shopping lists', details: 'An unexpected error occurred' }, { status: 500 });
-    }
+  } catch (error) {
+    console.error('Error fetching shopping lists:', error);
+    return NextResponse.json(
+      { error: 'Failed to fetch shopping lists', details: error instanceof Error ? error.message : 'Unknown error' },
+      { status: 500 }
+    );
   }
 }
 
