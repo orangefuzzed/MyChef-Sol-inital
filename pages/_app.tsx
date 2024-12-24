@@ -9,7 +9,7 @@ function MyApp({ Component, pageProps }: AppProps) {
 
     if ('serviceWorker' in navigator) {
       window.addEventListener('load', () => {
-        navigator.serviceWorker.register('/service-worker.js?v=1').then(
+        navigator.serviceWorker.register('/sw.js?v=1').then(
           (registration) => {
             console.log('Service Worker registered with scope:', registration.scope);
           },
