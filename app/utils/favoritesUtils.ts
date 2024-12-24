@@ -8,6 +8,12 @@ const SAVED_RECIPES_STORE = 'savedRecipes';
 const FAVORITES_STORE = 'favoriteRecipes';
 const SHOPPING_LISTS_STORE = 'shoppingLists';
 
+// Store configuration for 'savedSessions'
+const SAVED_SESSIONS_STORE = { name: 'savedSessions', keyPath: 'sessionId', autoIncrement: false };
+
+// Store configuration for 'chatMessages'
+const CHAT_STORE_NAME = { name: 'chatMessages', keyPath: 'messageId', autoIncrement: false };
+
 // Open IndexedDB connection
 export const openDB = (): Promise<IDBDatabase> => {
   return new Promise<IDBDatabase>((resolve, reject) => {
@@ -29,6 +35,16 @@ export const openDB = (): Promise<IDBDatabase> => {
       // Create shoppingLists object store if it doesn't exist
       if (!db.objectStoreNames.contains(SHOPPING_LISTS_STORE)) {
         db.createObjectStore(SHOPPING_LISTS_STORE, { keyPath: 'id' });
+      }
+
+      // Create the 'savedSessions' store with specific key path and no auto-increment
+      if (!db.objectStoreNames.contains(SAVED_SESSIONS_STORE.name)) {
+        db.createObjectStore(SAVED_SESSIONS_STORE.name, { keyPath: SAVED_SESSIONS_STORE.keyPath });
+      }
+
+      // Add the 'chatMessages' store with specific key path and no auto-increment
+      if (!db.objectStoreNames.contains(CHAT_STORE_NAME.name)) {
+        db.createObjectStore(CHAT_STORE_NAME.name, { keyPath: CHAT_STORE_NAME.keyPath });
       }
     };
 
