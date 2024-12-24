@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useEffect, useState } from 'react';
-import { getFavoriteRecipesFromDB } from '../utils/favoritesUtils';
+import { getFavoriteRecipesFromDB, saveRecipeToFavorites } from '../utils/favoritesUtils';
 import { useRouter } from 'next/navigation';
 import { Recipe } from '../../types/Recipe'; // Make sure Recipe is imported
 import { Flame, Clock, Soup, Heart } from 'lucide-react';
@@ -11,17 +11,51 @@ const FavoriteRecipesCarousel: React.FC = () => {
   const router = useRouter();
 
   useEffect(() => {
-    const fetchFavoriteRecipes = async () => {
-      try {
-        const recipes = await getFavoriteRecipesFromDB();
-        setFavoriteRecipes(recipes);
-      } catch (error) {
-        console.error('Error fetching favorite recipes:', error);
-      }
-    };
-
-    fetchFavoriteRecipes();
-  }, []);
+      const fetchAndMergeFavorites = async () => {
+        try {
+          // Fetch local favorites from IndexedDB
+          const localFavorites = await getFavoriteRecipesFromDB();
+    
+          // Fetch remote favorites from MongoDB
+          const remoteFavorites: Recipe[] = await (async () => {
+            try {
+              const response = await fetch('/api/recipes/favorites');
+              if (response.ok) {
+                return await response.json();
+              } else {
+                console.error('Failed to fetch favorites from MongoDB:', response.statusText);
+                return [];
+              }
+            } catch (error) {
+              console.error('Error fetching favorites from MongoDB:', error);
+              return [];
+            }
+          })();
+    
+          // Merge favorites into a single unique list
+          const mergedFavoritesMap = new Map<string, Recipe>();
+          [...localFavorites, ...remoteFavorites].forEach((favorite) =>
+            mergedFavoritesMap.set(favorite.id, favorite) // Use `id` as the unique key
+          );
+    
+          const mergedFavorites = Array.from(mergedFavoritesMap.values());
+    
+          // Sync missing MongoDB favorites to IndexedDB
+          for (const remoteFavorite of remoteFavorites) {
+            if (!localFavorites.some((localFavorite) => localFavorite.id === remoteFavorite.id)) {
+              await saveRecipeToFavorites(remoteFavorite); // Ensure this utility exists
+            }
+          }
+    
+          // Update state with the merged favorites
+          setFavoriteRecipes(mergedFavorites);
+        } catch (error) {
+          console.error('Error fetching and merging favorites:', error);
+        }
+      };
+    
+      fetchAndMergeFavorites();
+    }, [])
 
   const handleRecipeClick = (id: string) => {
     router.push(`/recipe-view?id=${id}`);

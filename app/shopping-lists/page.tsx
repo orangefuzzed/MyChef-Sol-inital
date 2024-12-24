@@ -6,6 +6,7 @@ import Footer from '../components/Footer';
 import {
   getAllSavedShoppingListsFromDB,
   deleteShoppingListFromDB,
+  saveShoppingListToDB
 } from '../utils/shoppingListUtils';
 import { useRouter } from 'next/navigation';
 import { ShoppingList } from '../../types/ShoppingList';
@@ -22,32 +23,57 @@ const ShoppingListsPage = () => {
   const [toastType, setToastType] = useState<'success' | 'error'>('success');
 
   useEffect(() => {
-    const fetchShoppingLists = async () => {
-      let lists = await getAllSavedShoppingListsFromDB();
+    const fetchAndMergeShoppingLists = async () => {
+      try {
+        // Fetch shopping lists from IndexedDB
+        let localLists = await getAllSavedShoppingListsFromDB();
+        localLists = localLists || []; // Ensure it's an array
   
-      // Ensure `lists` is always an array, even if `getAllSavedShoppingListsFromDB()` returns `null`
-      lists = lists || [];
-  
-      // If no shopping lists in IndexedDB, fetch from MongoDB
-      if (lists.length === 0) {
-        try {
-          const response = await fetch('/api/shopping-lists');
-          if (response.ok) {
-            const fetchedLists: ShoppingList[] = await response.json();
-            lists = fetchedLists;
-          } else {
-            console.error('Failed to fetch shopping lists from MongoDB');
+        // Fetch shopping lists from MongoDB
+        const remoteLists: ShoppingList[] = await (async () => {
+          try {
+            const response = await fetch('/api/shopping-lists');
+            if (response.ok) {
+              return await response.json();
+            } else {
+              console.error('Failed to fetch shopping lists from MongoDB:', response.statusText);
+              return [];
+            }
+          } catch (error) {
+            console.error('Error fetching shopping lists from MongoDB:', error);
+            return [];
           }
-        } catch (error) {
-          console.error('Error fetching shopping lists from MongoDB:', error);
-        }
-      }
+        })();
   
-      setShoppingLists(lists);
+        // Merge shopping lists into a single unique list
+        const mergedListsMap = new Map<string, ShoppingList>();
+        [...localLists, ...remoteLists].forEach((list) =>
+          mergedListsMap.set(list.id, list) // Use `id` as the unique key
+        );
+  
+        const mergedLists = Array.from(mergedListsMap.values());
+  
+        // Sync missing MongoDB shopping lists into IndexedDB
+        for (const remoteList of remoteLists) {
+          if (!localLists.some((localList) => localList.id === remoteList.id)) {
+            await saveShoppingListToDB(remoteList.id, { 
+              ingredients: remoteList.items, 
+              totalItems: remoteList.totalItems 
+            }, remoteList.recipeTitle); // Pass all required arguments
+          }
+        }
+  
+        // Update state with the merged shopping lists
+        setShoppingLists(mergedLists);
+      } catch (error) {
+        console.error('Error fetching and merging shopping lists:', error);
+      }
     };
   
-    fetchShoppingLists();
+    fetchAndMergeShoppingLists();
   }, []);
+  ;
+  
   
 
 

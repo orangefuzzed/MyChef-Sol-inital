@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useEffect, useState } from 'react';
-import { getSavedRecipesFromDB } from '../utils/indexedDBUtils';
+import { getSavedRecipesFromDB, saveRecipeToDB } from '../utils/indexedDBUtils';
 import { useRouter } from 'next/navigation';
 import { Recipe } from '../../types/Recipe';
 import { Flame, Clock, Soup, Bookmark } from 'lucide-react';
@@ -11,28 +11,51 @@ const SavedRecipesCarousel: React.FC = () => {
   const router = useRouter();
 
   useEffect(() => {
-    const fetchSavedRecipes = async () => {
-      let recipes = await getSavedRecipesFromDB();
-
-      if (recipes.length === 0) {
+      const fetchAndMergeSavedRecipes = async () => {
         try {
-          const response = await fetch('/api/recipes/saved');
-          if (response.ok) {
-            const fetchedRecipes: Recipe[] = await response.json();
-            recipes = fetchedRecipes;
-          } else {
-            console.error('Failed to fetch saved recipes from MongoDB');
+          // Fetch saved recipes from IndexedDB
+          const localRecipes = await getSavedRecipesFromDB();
+    
+          // Fetch saved recipes from MongoDB
+          const remoteRecipes: Recipe[] = await (async () => {
+            try {
+              const response = await fetch('/api/recipes/saved');
+              if (response.ok) {
+                return await response.json();
+              } else {
+                console.error('Failed to fetch saved recipes from MongoDB:', response.statusText);
+                return [];
+              }
+            } catch (error) {
+              console.error('Error fetching saved recipes from MongoDB:', error);
+              return [];
+            }
+          })();
+    
+          // Merge recipes into a single unique list
+          const mergedRecipesMap = new Map<string, Recipe>();
+          [...localRecipes, ...remoteRecipes].forEach((recipe) =>
+            mergedRecipesMap.set(recipe.id, recipe) // Use `id` as the unique key
+          );
+    
+          const mergedRecipes = Array.from(mergedRecipesMap.values());
+    
+          // Sync missing MongoDB recipes into IndexedDB
+          for (const remoteRecipe of remoteRecipes) {
+            if (!localRecipes.some((localRecipe) => localRecipe.id === remoteRecipe.id)) {
+              await saveRecipeToDB(remoteRecipe); // Ensure this utility exists
+            }
           }
+    
+          // Update state with the merged recipes
+          setSavedRecipes(mergedRecipes);
         } catch (error) {
-          console.error('Error fetching saved recipes:', error);
+          console.error('Error fetching and merging saved recipes:', error);
         }
-      }
-
-      setSavedRecipes(recipes);
-    };
-
-    fetchSavedRecipes();
-  }, []);
+      };
+    
+      fetchAndMergeSavedRecipes();
+    }, []);
 
   const handleRecipeClick = (id: string) => {
     router.push(`/recipe-view?id=${id}`);

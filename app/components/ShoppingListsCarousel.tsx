@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useEffect, useState } from 'react';
-import { getAllSavedShoppingListsFromDB } from '../utils/shoppingListUtils';
+import { getAllSavedShoppingListsFromDB, saveShoppingListToDB } from '../utils/shoppingListUtils';
 import { useRouter } from 'next/navigation';
 import { ShoppingList } from '../../types/ShoppingList';
 import { ShoppingCart } from 'lucide-react';
@@ -10,20 +10,56 @@ const ShoppingListsCarousel: React.FC = () => {
   const [shoppingLists, setShoppingLists] = useState<ShoppingList[]>([]);
   const router = useRouter();
 
-  useEffect(() => {
-    const fetchShoppingLists = async () => {
+ useEffect(() => {
+    const fetchAndMergeShoppingLists = async () => {
       try {
-        const lists = await getAllSavedShoppingListsFromDB();
-        if (lists) {
-          setShoppingLists(lists);
+        // Fetch shopping lists from IndexedDB
+        let localLists = await getAllSavedShoppingListsFromDB();
+        localLists = localLists || []; // Ensure it's an array
+  
+        // Fetch shopping lists from MongoDB
+        const remoteLists: ShoppingList[] = await (async () => {
+          try {
+            const response = await fetch('/api/shopping-lists');
+            if (response.ok) {
+              return await response.json();
+            } else {
+              console.error('Failed to fetch shopping lists from MongoDB:', response.statusText);
+              return [];
+            }
+          } catch (error) {
+            console.error('Error fetching shopping lists from MongoDB:', error);
+            return [];
+          }
+        })();
+  
+        // Merge shopping lists into a single unique list
+        const mergedListsMap = new Map<string, ShoppingList>();
+        [...localLists, ...remoteLists].forEach((list) =>
+          mergedListsMap.set(list.id, list) // Use `id` as the unique key
+        );
+  
+        const mergedLists = Array.from(mergedListsMap.values());
+  
+        // Sync missing MongoDB shopping lists into IndexedDB
+        for (const remoteList of remoteLists) {
+          if (!localLists.some((localList) => localList.id === remoteList.id)) {
+            await saveShoppingListToDB(remoteList.id, { 
+              ingredients: remoteList.items, 
+              totalItems: remoteList.totalItems 
+            }, remoteList.recipeTitle); // Pass all required arguments
+          }
         }
+  
+        // Update state with the merged shopping lists
+        setShoppingLists(mergedLists);
       } catch (error) {
-        console.error('Error fetching shopping lists:', error);
+        console.error('Error fetching and merging shopping lists:', error);
       }
     };
-
-    fetchShoppingLists();
-  }, []);
+  
+    fetchAndMergeShoppingLists();
+  }, []);;
 
   const handleViewShoppingList = (id: string) => {
     router.push(`/shopping-list?id=${id}`);
