@@ -25,7 +25,10 @@ const FavoritesPage = () => {
         // Fetch remote favorites from MongoDB
         const remoteFavorites: Recipe[] = await (async () => {
           try {
-            const response = await fetch('/api/recipes/favorites');
+            const response = await fetch('/api/recipes/favorites', {
+              method: 'GET',
+              credentials: 'include', // Ensures cookies are sent
+            });
             if (response.ok) {
               return await response.json();
             } else {
@@ -62,6 +65,7 @@ const FavoritesPage = () => {
   
     fetchAndMergeFavorites();
   }, []);
+  
   
 
   const handleRecipeClick = (id: string) => {

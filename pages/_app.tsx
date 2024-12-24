@@ -2,6 +2,7 @@ import { AppProps } from 'next/app';
 import Head from 'next/head';
 import '../app/globals.css';
 import { useEffect } from 'react';
+import { SessionProvider } from 'next-auth/react'; // Import SessionProvider
 
 function MyApp({ Component, pageProps }: AppProps) {
   useEffect(() => {
@@ -60,14 +61,14 @@ function MyApp({ Component, pageProps }: AppProps) {
   }, []);
 
   return (
-    <>
+    <SessionProvider session={pageProps.session}> {/* Wrap the app with SessionProvider */}
       <Head>
         <link rel="manifest" href="/manifest.json?v=3" />
         <link rel="apple-touch-icon" href="/icons/dishcovery_icon-512x512.png" />
         <meta name="theme-color" content="#FFA500" />
       </Head>
       <Component {...pageProps} />
-    </>
+    </SessionProvider>
   );
 }
 
