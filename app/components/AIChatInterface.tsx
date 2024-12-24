@@ -14,10 +14,11 @@ import RecipeSuggestions from '../components/AIChatInterface/RecipeSuggestions';
 import { ChatSession } from '../../types/ChatSession'; // Add this import for the ChatSession type
 import { ChatMessage } from '../../types/ChatMessage';
 import { useRouter } from 'next/navigation';
-import { Heart, CirclePlus } from 'lucide-react'
+import { Heart, CirclePlus, Home } from 'lucide-react'
 import ActionButtons from '../components/AIChatInterface/ActionButtons';
 import LoadingModal from '../components/LoadingModal';
 import RetryModal from '../components/RetryModal'; // Import the RetryModal
+import Link from 'next/link';
 
 
 
@@ -248,7 +249,7 @@ const AIChatInterface = () => {
     <LoadingModal isOpen={isLoading} />
     <div
         className="flex flex-col h-screen bg-fixed bg-cover bg-center text-white"
-        style={{ backgroundImage: "url('/images/summer-deck-2.png')" }}
+        style={{ backgroundImage: "url('/images/family-porch-2.png')" }}
       >
       <Header centralText="" />
         <div className="flex-1 overflow-y-auto p-4 space-y-4">
@@ -295,8 +296,18 @@ const AIChatInterface = () => {
 
         {/* Footer Section with Save Session Button */}
         <Footer
-          actions={['home']}
+          actions={['']}
           contextualActions={[
+            {
+              label: '',
+              icon: (
+                <Link href="/" className="flex flex-col items-center mr-2">
+                  <Home strokeWidth={1.5} size={18} color="white" />
+                  <span className="text-xs mt-1">Home</span>
+                </Link>
+              ),
+              onClick: () => router.push('/'), // Ensures navigation works on click
+            },
             {
               label: isChatSaved ? 'Chat Saved' : 'Save Chat',
               icon: <Heart strokeWidth={1.5} size={18} color={isChatSaved ? '#9d174d' : 'white'} />,
@@ -306,7 +317,7 @@ const AIChatInterface = () => {
               label: 'New Chat',
               icon: <CirclePlus strokeWidth={1.5} size={18} color={'white'} />,
               onClick: handleNewSession,
-            },
+            },                               
           ]}
         />
       </div>

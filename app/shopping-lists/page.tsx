@@ -125,7 +125,7 @@ const ShoppingListsPage = () => {
   return (
     <div
       className="flex flex-col h-screen bg-fixed bg-cover bg-center text-white"
-      style={{ backgroundImage: "url('/images/fresh-store-1.png')" }}
+      style={{ backgroundImage: "url('/images/fresh-store-7.png')" }}
     >
       {/* Header */}
       <Header centralText="Saved Shopping Lists" />
@@ -156,7 +156,7 @@ const ShoppingListsPage = () => {
                   <Trash2 size={16} />
                 </button>
 
-                <h3 className="text-lg font-light mb-2">
+                <h3 className="text-lg font-light text-slate-950 mb-2">
                   Shopping List for{' '}
                   <span className="text-sky-50 font-semibold">
                     {list.recipeTitle || 'Recipe'}

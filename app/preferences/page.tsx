@@ -146,7 +146,7 @@ const PreferencesPage = () => {
 
           {/* Edit Preferences Button */}
           <Link className="flex justify-end" href="/preferencesWalkthrough">
-              <button className="text-xs flex p-2 px-4 bg-pink-800/40 border border-sky-50 shadow-lg ring-1 ring-black/5 rounded-full text-sky-50 items-center gap-2 -mt-2 -mb-2">
+              <button className="text-xs flex p-2 px-4 bg-pink-800/45 border border-sky-50 shadow-lg ring-1 ring-black/5 rounded-full text-sky-50 items-center gap-2 -mt-2 -mb-2">
                 Edit Preferences
                 <FilePenLine className="w-4 h-4" />
               </button>

@@ -76,7 +76,7 @@ const ShoppingListPage = () => {
   return (
     <Suspense fallback={<div>Loading...</div>}>
       <div className="flex flex-col h-screen bg-fixed bg-cover bg-center text-white"
-        style={{ backgroundImage: "url('/images/fresh-store-4.png')" }}
+        style={{ backgroundImage: "url('/images/fresh-store-6.png')" }}
         >
         {/* Header with Back Button */}
         <Header

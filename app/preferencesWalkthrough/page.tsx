@@ -348,7 +348,7 @@ const PreferencesWalkthrough = () => {
       <div className="flex-grow p-8">
       <div className="flex items-center text-lg font-normal mb-4">
               <div className="flex items-center justify-center mr-2">
-                    <Settings strokeWidth={1.5} size={22} className="bg-pink-800/40 p-1 w-8 h-8 border border-white rounded-full flex items-center justify-center mr-2" /> 
+                    <Settings strokeWidth={1.5} size={22} className="bg-pink-800/45 p-1 w-8 h-8 border border-white rounded-full flex items-center justify-center mr-2" /> 
                   </div>
                 <p>Set Your Preferences</p>
             </div>
@@ -604,7 +604,7 @@ const PreferencesWalkthrough = () => {
           {currentStep < steps.length - 1 ? (
             <Button
               size="3"
-              className="text-xs p-2 px-4 bg-pink-800/40 border border-sky-50 shadow-lg ring-1 ring-black/5 rounded-full text-sky-50 ml-auto"
+              className="text-xs p-2 px-4 bg-pink-800/45 border border-sky-50 shadow-lg ring-1 ring-black/5 rounded-full text-sky-50 ml-auto"
               onClick={handleNext}
             >
               Next
@@ -612,7 +612,7 @@ const PreferencesWalkthrough = () => {
           ) : (
             <Button
               size="3"
-              className="text-xs p-2 px-4 bg-pink-800/40 border border-sky-50 shadow-lg ring-1 ring-black/5 rounded-full text-sky-50 ml-auto"
+              className="text-xs p-2 px-4 bg-pink-800/45 border border-sky-50 shadow-lg ring-1 ring-black/5 rounded-full text-sky-50 ml-auto"
               onClick={handleSavePreferences}
             >
               Save Preferences

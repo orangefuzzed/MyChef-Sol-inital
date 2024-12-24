@@ -21,7 +21,7 @@ const RecipeSuggestions: React.FC<RecipeSuggestionsProps> = ({ currentRecipeList
           
 
           <div className="ml-2"> {/* Adds space to accommodate the left-side icon */}
-            <h3 className="text-xl text-slate-950 font-bold">{recipe.recipeTitle}</h3>
+            <h3 className="text-xl text-sky-50 font-bold">{recipe.recipeTitle}</h3>
             <p className="text-amber-400 mb-2">{recipe.rating}</p>
 
             {/* Icons for kcal, time, protein */}

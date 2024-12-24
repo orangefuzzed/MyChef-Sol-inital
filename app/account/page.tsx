@@ -184,13 +184,13 @@ useEffect(() => {
             <>
               <Button
                 onClick={handleCancelClick}
-                className="text-xs flex p-2 px-4 bg-gray-400/30 border border-gray-100 shadow-lg ring-1 ring-black/5 rounded-full text-white items-center gap-2 -mt-2 -mb-2"
+                className="text-xs flex p-2 px-4 bg-slate-950/30 border border-gray-100 shadow-lg ring-1 ring-black/5 rounded-full text-white items-center gap-2 -mt-2 -mb-2"
               >
                 <CircleX className="w-4 h-4" /> Cancel
               </Button>
               <Button
                 onClick={handleSave}
-                className="text-xs flex p-2 px-4 bg-pink-800/30 border border-sky-50 shadow-lg ring-1 ring-black/5 rounded-full text-sky-50 items-center gap-2 -mt-2 -mb-2"
+                className="text-xs flex p-2 px-4 bg-pink-800/45 border border-sky-50 shadow-lg ring-1 ring-black/5 rounded-full text-sky-50 items-center gap-2 -mt-2 -mb-2"
               >
                 <FilePenLine className="w-4 h-4" /> Save
               </Button>

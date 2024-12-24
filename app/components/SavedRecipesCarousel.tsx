@@ -50,7 +50,7 @@ const SavedRecipesCarousel: React.FC<SavedRecipesCarouselProps> = ({ savedRecipe
                   <span>{recipe.protein} protein</span>
                 </div>
               </div>
-              <p className="text-sm text-slate-950">{recipe.description}</p>
+              <p className="text-sm text-sky-50">{recipe.description}</p>
             </div>
           ))}
         </div>

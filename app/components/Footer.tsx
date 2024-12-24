@@ -38,7 +38,7 @@ const Footer: React.FC<FooterProps> = ({ actions, contextualActions }) => {
 
         {/* Contextual Actions */}
       {contextualActions && contextualActions.length > 0 && (
-          <div className="flex gap-16">
+          <div className="flex justify-center gap-16 -mr-4">
             {contextualActions.map((action, index) => (
               <button
                 key={index}

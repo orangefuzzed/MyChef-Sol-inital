@@ -50,7 +50,7 @@ const FavoriteRecipesCarousel: React.FC<FavoriteRecipesCarouselProps> = ({ favor
                   <span>{recipe.protein} protein</span>
                 </div>
               </div>
-              <p className="text-sm text-slate-950">{recipe.description}</p>
+              <p className="text-sm text-sky-50">{recipe.description}</p>
             </div>
           ))}
         </div>
