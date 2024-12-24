@@ -14,7 +14,6 @@ const SAVED_SESSIONS_STORE = { name: 'savedSessions', keyPath: 'sessionId', auto
 // Store configuration for 'chatMessages'
 const CHAT_STORE_NAME = { name: 'chatMessages', keyPath: 'messageId', autoIncrement: false };
 
-// Open IndexedDB connection
 export const openDBWithChat = (): Promise<IDBDatabase> => {
   return new Promise<IDBDatabase>((resolve, reject) => {
     const request = indexedDB.open(DB_NAME, DB_VERSION);
@@ -41,14 +40,23 @@ export const openDBWithChat = (): Promise<IDBDatabase> => {
     };
 
     request.onsuccess = () => {
-      resolve(request.result);
+      const db = request.result;
+
+      if (!db) {
+        console.error('IndexedDB connection failed: database is null');
+        reject(new Error('Failed to open IndexedDB connection.'));
+      } else {
+        resolve(db);
+      }
     };
 
     request.onerror = () => {
+      console.error('Error opening IndexedDB:', request.error);
       reject(request.error);
     };
   });
 };
+
 
 // Save a session to IndexedDB
 export const saveSessionToDB = async (session: ChatSession): Promise<void> => {

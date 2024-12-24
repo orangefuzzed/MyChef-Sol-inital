@@ -44,103 +44,104 @@ export const openDB = (): Promise<IDBDatabase> => {
 
 // Save a recipe to IndexedDB (savedRecipes)
 export const saveRecipeToDB = async (recipe: Recipe): Promise<void> => {
-  const db = await openDB();
-  const transaction = db.transaction(SAVED_RECIPES_STORE, 'readwrite');
-  const store = transaction.objectStore(SAVED_RECIPES_STORE);
-  store.put(recipe);
+  try {
+    const db = await openDB();
+    const transaction = db.transaction(SAVED_RECIPES_STORE, 'readwrite');
+    const store = transaction.objectStore(SAVED_RECIPES_STORE);
 
-  return new Promise<void>((resolve, reject) => {
-    transaction.oncomplete = () => {
-      resolve();
-    };
-    transaction.onerror = () => {
-      reject(transaction.error);
-    };
-  });
+    await new Promise<void>((resolve, reject) => {
+      const request = store.put(recipe);
+      request.onsuccess = () => resolve();
+      request.onerror = () => reject(request.error);
+    });
+  } catch (error) {
+    console.error('Error saving recipe to IndexedDB:', error);
+  }
 };
 
 // Fetch all saved recipes from IndexedDB (savedRecipes)
 export const getSavedRecipesFromDB = async (): Promise<Recipe[]> => {
-  const db = await openDB();
-  const transaction = db.transaction(SAVED_RECIPES_STORE, 'readonly');
-  const store = transaction.objectStore(SAVED_RECIPES_STORE);
-  const request = store.getAll();
+  try {
+    const db = await openDB();
+    const transaction = db.transaction(SAVED_RECIPES_STORE, 'readonly');
+    const store = transaction.objectStore(SAVED_RECIPES_STORE);
 
-  return new Promise<Recipe[]>((resolve, reject) => {
-    request.onsuccess = () => {
-      resolve(request.result as Recipe[]);
-    };
-    request.onerror = () => {
-      reject(request.error);
-    };
-  });
+    return new Promise<Recipe[]>((resolve, reject) => {
+      const request = store.getAll();
+      request.onsuccess = () => resolve(request.result as Recipe[]);
+      request.onerror = () => reject(request.error);
+    });
+  } catch (error) {
+    console.error('Error fetching saved recipes from IndexedDB:', error);
+    return [];
+  }
 };
 
 // Delete a recipe from IndexedDB (savedRecipes)
 export const deleteRecipeFromDB = async (id: string): Promise<void> => {
-  const db = await openDB();
-  const transaction = db.transaction(SAVED_RECIPES_STORE, 'readwrite');
-  const store = transaction.objectStore(SAVED_RECIPES_STORE);
-  store.delete(id);
+  try {
+    const db = await openDB();
+    const transaction = db.transaction(SAVED_RECIPES_STORE, 'readwrite');
+    const store = transaction.objectStore(SAVED_RECIPES_STORE);
 
-  return new Promise<void>((resolve, reject) => {
-    transaction.oncomplete = () => {
-      resolve();
-    };
-    transaction.onerror = () => {
-      reject(transaction.error);
-    };
-  });
+    await new Promise<void>((resolve, reject) => {
+      const request = store.delete(id);
+      request.onsuccess = () => resolve();
+      request.onerror = () => reject(request.error);
+    });
+  } catch (error) {
+    console.error('Error deleting recipe from IndexedDB:', error);
+  }
 };
 
 // Save a recipe to Favorites in IndexedDB (favoriteRecipes)
 export const saveRecipeToFavorites = async (recipe: Recipe): Promise<void> => {
-  const db = await openDB();
-  const transaction = db.transaction(FAVORITES_STORE, 'readwrite');
-  const store = transaction.objectStore(FAVORITES_STORE);
-  store.put(recipe);
+  try {
+    const db = await openDB();
+    const transaction = db.transaction(FAVORITES_STORE, 'readwrite');
+    const store = transaction.objectStore(FAVORITES_STORE);
 
-  return new Promise<void>((resolve, reject) => {
-    transaction.oncomplete = () => {
-      resolve();
-    };
-    transaction.onerror = () => {
-      reject(transaction.error);
-    };
-  });
+    await new Promise<void>((resolve, reject) => {
+      const request = store.put(recipe);
+      request.onsuccess = () => resolve();
+      request.onerror = () => reject(request.error);
+    });
+  } catch (error) {
+    console.error('Error saving recipe to favorites:', error);
+  }
 };
 
 // Fetch all favorite recipes from IndexedDB (favoriteRecipes)
 export const getFavoriteRecipesFromDB = async (): Promise<Recipe[]> => {
-  const db = await openDB();
-  const transaction = db.transaction(FAVORITES_STORE, 'readonly');
-  const store = transaction.objectStore(FAVORITES_STORE);
-  const request = store.getAll();
+  try {
+    const db = await openDB();
+    const transaction = db.transaction(FAVORITES_STORE, 'readonly');
+    const store = transaction.objectStore(FAVORITES_STORE);
 
-  return new Promise<Recipe[]>((resolve, reject) => {
-    request.onsuccess = () => {
-      resolve(request.result as Recipe[]);
-    };
-    request.onerror = () => {
-      reject(request.error);
-    };
-  });
+    return new Promise<Recipe[]>((resolve, reject) => {
+      const request = store.getAll();
+      request.onsuccess = () => resolve(request.result as Recipe[]);
+      request.onerror = () => reject(request.error);
+    });
+  } catch (error) {
+    console.error('Error fetching favorite recipes from IndexedDB:', error);
+    return [];
+  }
 };
 
 // Delete a recipe from Favorites in IndexedDB (favoriteRecipes)
 export const deleteRecipeFromFavorites = async (id: string): Promise<void> => {
-  const db = await openDB();
-  const transaction = db.transaction(FAVORITES_STORE, 'readwrite');
-  const store = transaction.objectStore(FAVORITES_STORE);
-  store.delete(id);
+  try {
+    const db = await openDB();
+    const transaction = db.transaction(FAVORITES_STORE, 'readwrite');
+    const store = transaction.objectStore(FAVORITES_STORE);
 
-  return new Promise<void>((resolve, reject) => {
-    transaction.oncomplete = () => {
-      resolve();
-    };
-    transaction.onerror = () => {
-      reject(transaction.error);
-    };
-  });
+    await new Promise<void>((resolve, reject) => {
+      const request = store.delete(id);
+      request.onsuccess = () => resolve();
+      request.onerror = () => reject(request.error);
+    });
+  } catch (error) {
+    console.error('Error deleting recipe from favorites:', error);
+  }
 };
-

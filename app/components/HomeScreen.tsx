@@ -8,10 +8,15 @@ import AvatarMenu from '../components/AvatarMenu';
 import Footer from '../components/Footer';
 import Header from '../components/Header'; // Import the Header component
 import SavedRecipesCarousel from '../components/SavedRecipesCarousel';
-import FavoriteRecipesCarousel from '../components/FavoriteRecipesCarousel';
 import ShoppingListsCarousel from '../components/ShoppingListsCarousel';
 import GetStartedModal from './GetStartedModal';
 import { ShoppingCart, Bookmark, Heart, ChefHat, ExternalLink } from 'lucide-react';
+import FavoriteRecipesCarousel from '../components/FavoriteRecipesCarousel';
+import { getFavoriteRecipesFromDB } from '../utils/favoritesUtils';
+import { Recipe } from '../../types/Recipe';
+import { getAllSavedShoppingListsFromDB } from '../utils/shoppingListUtils';
+import { ShoppingList } from '../../types/ShoppingList';
+import { getSavedRecipesFromDB } from '../utils/indexedDBUtils'; // Assuming we fetch saved recipes here
 
 
 const HomeScreen: React.FC = () => {
@@ -20,6 +25,47 @@ const HomeScreen: React.FC = () => {
   const [isHamburgerMenuOpen, setIsHamburgerMenuOpen] = useState(false);
   const [isAvatarMenuOpen, setIsAvatarMenuOpen] = useState(false);
   const [activeModalIndex, setActiveModalIndex] = useState<number | null>(null);
+  const [favoriteRecipes, setFavoriteRecipes] = useState<Recipe[]>([]);
+  const [shoppingLists, setShoppingLists] = useState<ShoppingList[]>([]);
+  const [savedRecipes, setSavedRecipes] = useState<Recipe[]>([]);
+
+  useEffect(() => {
+    const fetchFavorites = async () => {
+      try {
+        // Fetch updated favorites from IndexedDB
+        const localFavorites = await getFavoriteRecipesFromDB();
+        setFavoriteRecipes(localFavorites);
+      } catch (error) {
+        console.error('Error fetching favorites from IndexedDB:', error);
+      }
+    };
+
+    const fetchShoppingLists = async () => {
+      try {
+        // Fetch updated shopping lists from IndexedDB
+        const localShoppingLists = (await getAllSavedShoppingListsFromDB()) || []; // Default to an empty array if null
+        setShoppingLists(localShoppingLists);
+      } catch (error) {
+        console.error('Error fetching shopping lists from IndexedDB:', error);
+      }
+    };
+
+    fetchFavorites();
+    fetchShoppingLists();
+  }, []);
+
+  useEffect(() => {
+    const fetchSavedRecipes = async () => {
+      try {
+        const localSavedRecipes = (await getSavedRecipesFromDB()) || []; // Default to an empty array if null
+        setSavedRecipes(localSavedRecipes);
+      } catch (error) {
+        console.error('Error fetching saved recipes from IndexedDB:', error);
+      }
+    };
+
+    fetchSavedRecipes();
+  }, []);
 
   const dummyWalkthroughCards = [
     {
@@ -118,7 +164,7 @@ const HomeScreen: React.FC = () => {
             <p className="text-xl font-light text-sky-50">My Favorite Recipes</p>
           </div>
           <div className="flex gap-4 overflow-x-auto">
-            <FavoriteRecipesCarousel />
+          <FavoriteRecipesCarousel favoriteRecipes={favoriteRecipes} />
           </div>
         </div>
   
@@ -129,7 +175,7 @@ const HomeScreen: React.FC = () => {
             <p className="text-xl font-light text-sky-50">My Saved Recipes</p>
           </div>
           <div className="flex gap-4 overflow-x-auto">
-            <SavedRecipesCarousel />
+          <SavedRecipesCarousel savedRecipes={savedRecipes} />
           </div>
         </div>
   
@@ -140,7 +186,7 @@ const HomeScreen: React.FC = () => {
             <p className="text-xl font-light text-sky-50">My Shopping Lists</p>
           </div>
           <div className="flex gap-4 overflow-x-auto">
-            <ShoppingListsCarousel />
+            <ShoppingListsCarousel shoppingLists={shoppingLists} />
           </div>
         </div>
       </div>
