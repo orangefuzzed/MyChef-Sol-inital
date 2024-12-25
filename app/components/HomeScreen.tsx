@@ -89,7 +89,7 @@ const HomeScreen: React.FC = () => {
     {
       title: "Cook Mode Activated!",
       description: "Follow step-by-step instructions.",
-      modalContent: "Dishcovery's Cook Mode lets you focus on cooking with step-by-step instructions and voice guidance.",
+      modalContent: "Dishcovery's Cook Mode lets you focus on cooking with simple and clear, step-by-step instructions.",
       imageSrc: "/images/man-kids-cooking-4.png", // Example image
     },
     {
