@@ -19,6 +19,7 @@ import ActionButtons from '../components/AIChatInterface/ActionButtons';
 import LoadingModal from '../components/LoadingModal';
 import RetryModal from '../components/RetryModal'; // Import the RetryModal
 import Link from 'next/link';
+import Toast from '../components/Toast'; // Import the Toast component
 
 
 
@@ -38,6 +39,10 @@ const AIChatInterface = () => {
     recipeSuggestionSets,
     setSelectedRecipe,
   } = useRecipeContext(); // Extract RecipeContext
+
+    const [toastVisible, setToastVisible] = useState(false);
+    const [toastMessage, setToastMessage] = useState('');
+    const [toastType, setToastType] = useState<'success' | 'error'>('success');
 
 
   const handleNewSession = () => {
@@ -137,16 +142,16 @@ const AIChatInterface = () => {
 
   // Handle saving session
   const handleSaveSession = async () => {
-  try {
-    const sessionSummary = messages.length > 0 ? messages[0].text.slice(0, 100) : 'No summary available';
+    try {
+      const sessionSummary = messages.length > 0 ? messages[0].text.slice(0, 100) : 'No summary available';
 
-    const sessionObject: ChatSession = {
-      sessionId, // Use the consistent sessionId from state
-      messages: [...messages], // Copy messages array to avoid mutation
-      createdAt: new Date(),
-      sessionSummary, // Create a summary using the first message or a default
-      timestamp: new Date().toISOString(), // Use current time in ISO format for consistency
-    };
+      const sessionObject: ChatSession = {
+        sessionId, // Use the consistent sessionId from state
+        messages: [...messages], // Copy messages array to avoid mutation
+        createdAt: new Date(),
+        sessionSummary, // Create a summary using the first message or a default
+        timestamp: new Date().toISOString(), // Use current time in ISO format for consistency
+      };
 
     // Log the entire session object, each property specifically
     console.log('Session ID:', sessionObject.sessionId);
@@ -154,28 +159,49 @@ const AIChatInterface = () => {
     console.log('Created At:', sessionObject.createdAt);
     console.log('Full Session Object to be Saved:', sessionObject);
 
-    // Attempt to save to IndexedDB
-    await saveSessionToDB(sessionObject); // Pass the explicitly constructed object
+      // Attempt to save to IndexedDB
+      await saveSessionToDB(sessionObject); // Pass the explicitly constructed object
 
-    // Post session to MongoDB
-    const response = await fetch('/api/sessions/save', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(sessionObject),
-    });
+      // Post session to MongoDB
+      const response = await fetch('/api/sessions/save', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(sessionObject),
+      });
 
-    if (!response.ok) {
-      throw new Error('Failed to save session to MongoDB');
+      if (!response.ok) {
+        throw new Error('Failed to save session to MongoDB');
+      }
+
+      console.log('Session saved successfully to MongoDB!');
+      setIsChatSaved(true); // Mark the session as saved
+
+      // Show success toast
+      setToastMessage('Session saved successfully!');
+      setToastType('success');
+      setToastVisible(true);
+
+      // Auto-hide toast
+      setTimeout(() => {
+        setToastVisible(false);
+      }, 3000);
+    } catch (error) {
+      console.error('Error saving session:', error);
+
+      // Show error toast
+      setToastMessage('Failed to save session. Please try again.');
+      setToastType('error');
+      setToastVisible(true);
+
+      // Auto-hide toast
+      setTimeout(() => {
+        setToastVisible(false);
+      }, 3000);
     }
-
-    console.log('Session saved successfully to MongoDB!');
-    setIsChatSaved(true); // Mark the session as saved
-  } catch (error) {
-    console.error('Error saving session:', error);
-  }
   };
+
 
   const [isChatSaved, setIsChatSaved] = useState<boolean>(false);
 
@@ -320,6 +346,10 @@ const AIChatInterface = () => {
             },                               
           ]}
         />
+        {/* Toast Component */}
+      {toastVisible && (
+        <Toast message={toastMessage} type={toastType} onClose={() => setToastVisible(false)} />
+      )}
       </div>
     </>
   );

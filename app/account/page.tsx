@@ -9,6 +9,7 @@ import { Button } from '@radix-ui/themes';
 import styles from './account.module.css';
 import Image from 'next/image';
 import { Settings, User, FilePenLine, MailCheck, Lock, Languages, ImagePlus, CircleX } from 'lucide-react';
+import Toast from '../components/Toast'; // Import the Toast component
 
 
 interface AccountData {
@@ -37,6 +38,11 @@ const AccountPage: React.FC = () => {
   const [isEditing, setIsEditing] = useState(false);
   const [avatarPreview, setAvatarPreview] = useState<string | null>(null);
   const [avatarFile, setAvatarFile] = useState<File | null>(null);
+  const [toastVisible, setToastVisible] = useState(false);
+  const [toastMessage, setToastMessage] = useState('');
+  const [toastType, setToastType] = useState<'success' | 'error' | 'warning'>('success'); // Added 'warning'
+  const [toastActions, setToastActions] = useState<{ label: string; action: () => void }[]>([]); // For interactive buttons
+
 
   const [formData, setFormData] = useState<AccountData>({
     displayName: '',
@@ -110,65 +116,96 @@ useEffect(() => {
     }
   };
 
-  // Save account data with FormData
-  const handleSave = async () => {
-    if (!session?.user?.email) {
-      alert('User not authenticated.');
-      return;
+// Save account data with FormData
+const handleSave = async () => {
+  if (!session?.user?.email) {
+    setToastMessage('User not authenticated.');
+    setToastType('error');
+    setToastVisible(true);
+    setTimeout(() => setToastVisible(false), 3000);
+    return;
+  }
+
+  try {
+    const updatedFormData = {
+      ...formData,
+      userEmail: session.user.email,
+      avatarUrl: avatarPreview || '',
+    };
+
+    const formDataToSend = new FormData();
+    formDataToSend.append('data', JSON.stringify(updatedFormData));
+
+    if (avatarFile) {
+      formDataToSend.append('avatar', avatarFile);
     }
 
-    try {
-      const updatedFormData = {
-        ...formData,
-        userEmail: session.user.email,
-        avatarUrl: avatarPreview || '',
-      };
+    const response = await axios.post('/api/account', formDataToSend, {
+      headers: { 'Content-Type': 'multipart/form-data' },
+    });
 
-      const formDataToSend = new FormData();
-      formDataToSend.append('data', JSON.stringify(updatedFormData));
+    if (response.status === 200) {
+      setToastMessage('Account information saved successfully!');
+      setToastType('success');
+      setToastVisible(true);
 
-      if (avatarFile) {
-        formDataToSend.append('avatar', avatarFile);
+      setIsEditing(false); // Exit editing mode
+
+      // Update session with the new avatar if applicable
+      if (response.data.account?.avatarUrl) {
+        setAvatarPreview(response.data.account.avatarUrl);
+        await update({
+          user: {
+            ...session.user,
+            image: response.data.account.avatarUrl,
+          },
+        });
       }
+    } else {
+      setToastMessage('Failed to save account information.');
+      setToastType('error');
+      setToastVisible(true);
+    }
+  } catch (err) {
+    console.error('Error saving account information:', err);
+    setToastMessage('Failed to save account information. Please try again.');
+    setToastType('error');
+    setToastVisible(true);
+  } finally {
+    // Auto-hide toast after 3 seconds
+    setTimeout(() => setToastVisible(false), 3000);
+  }
+};
 
-      const response = await axios.post('/api/account', formDataToSend, {
-        headers: { 'Content-Type': 'multipart/form-data' },
-      });
+const handleCancelClick = () => {
+  // Show a toast with "Yes" and "No" actions
+  setToastMessage('Are you sure you want to cancel? Unsaved changes will be lost.');
+  setToastType('error');
+  setToastVisible(true);
 
-      if (response.status === 200) {
-        alert('Account information saved successfully!');
+  setToastActions([
+    {
+      label: 'Yes',
+      action: () => {
+        // Reset form data and exit editing mode
+        if (initialFormData) {
+          setFormData(initialFormData);
+        }
         setIsEditing(false);
 
-        // Update session with the new avatar if applicable
-        if (response.data.account?.avatarUrl) {
-          setAvatarPreview(response.data.account.avatarUrl);
-          await update({
-            user: {
-              ...session.user,
-              image: response.data.account.avatarUrl,
-            },
-          });
-        }
-      } else {
-        alert('Failed to save account information.');
-      }
-    } catch (err) {
-      console.error('Error saving account information:', err);
-      alert('Failed to save account information. Please try again.');
-    }
-  };
-
-  const handleCancelClick = () => {
-    const confirmCancel = window.confirm(
-      "Are you sure you want to cancel? Unsaved changes will be lost."
-    );
-    if (confirmCancel && initialFormData) {
-      setFormData(initialFormData); // Reset formData to initial state
-      setIsEditing(false); // Exit editing mode
-    }
-  };
-  
-  
+        // Hide the toast after confirming the action
+        setToastVisible(false);
+      },
+    },
+    {
+      label: 'No',
+      action: () => {
+        // Simply close the toast without taking further action
+        setToastVisible(false);
+      },
+    },
+  ]);
+};
 
 
   return (
@@ -426,7 +463,16 @@ useEffect(() => {
         
       </main>
       <Footer actions={['home', 'send']} />
-      </div>
+
+      {toastVisible && (
+        <Toast
+        message={toastMessage}
+        type={toastType}
+        actions={toastActions} // Pass the dynamic actions
+        onClose={() => setToastVisible(false)}
+        duration={5000} />// Optional: Extend duration to allow enough time for user interaction
+      )}
+    </div>
 
   );
 };
