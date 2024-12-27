@@ -3,6 +3,10 @@
 import React, { useState } from 'react';
 import { signIn } from 'next-auth/react';
 import Image from 'next/image';
+import { Button } from '@radix-ui/themes';
+import { FcGoogle } from 'react-icons/fc';
+import { FaFacebook } from 'react-icons/fa';
+import styles from './LoginScreen.module.css';
 
 const LoginScreen: React.FC = () => {
   const [email, setEmail] = useState('');
@@ -83,8 +87,27 @@ const LoginScreen: React.FC = () => {
         className="w-full px-4 py-2 mt-2 bg-[#00a39e] border border-solid border-[#00f5d0] text-white rounded-full hover:bg-[#00f5d0] transition duration-200"
         disabled={isLoading}
       >
+        
         {isLoading ? 'Logging in...' : 'Log In'}
-      </button>
+        </button>
+        <p className={styles.orText}>or</p>
+        <Button
+          variant="solid"
+          color="gray"
+          className={styles.oauthButton}
+          onClick={() => handleOAuthLogin('google')}
+        >
+          <FcGoogle size={20} className='mr-2' />Log in with Google
+        </Button>
+        <Button
+          variant="solid"
+          color="blue"
+          className={styles.oauthButton}
+          onClick={() => handleOAuthLogin('facebook')}
+        >
+          <FaFacebook size={20} className='mr-2'/>Log in with Facebook
+        </Button>
+      
     </form>
   );
 };
