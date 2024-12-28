@@ -28,10 +28,12 @@ export async function POST(req) {
       familySize: 1,
     };
 
+    // Add new user with default onboarding status
     await db.collection("users").insertOne({
       email,
       password: hashedPassword,
       preferences: defaultPreferences,
+      hasSeenOnboarding: false, // Default onboarding status for new users
     });
 
     return NextResponse.json({ message: "User registered successfully" }, { status: 201 });

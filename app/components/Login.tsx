@@ -58,7 +58,7 @@ const LoginScreen: React.FC = () => {
                 </div>
                 <h2 className="text-lg font-semibold text-center">Login</h2>
               </div>
-            <div className="my-6 border-t border-pink-800"></div>
+            <div className="my-6 border-t border-[#00f5d0]"></div>
       {error && <p className="text-red-500 text-center mb-4">{error}</p>}
       <div className="mb-4">
         <label htmlFor="email" className="block text-white text-sm mb-1">Email</label>

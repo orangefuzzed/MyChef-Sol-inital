@@ -60,7 +60,7 @@ const SignUp: React.FC<SignUpProps> = ({ closeModal }) => {
         </div>
         <h2 className="text-lg font-semibold text-center">Sign Up</h2>
       </div>
-      <div className="my-6 border-t border-pink-800"></div>
+      <div className="my-6 border-t border-[#00f5d0]"></div>
       {error && <p className="text-red-500 text-center mb-4">{error}</p>}
       {successMessage && <p className="p-4 mb-4 bg-[#00a39e] text-white rounded-full border-solid border border-[#00f5d0] text-center">{successMessage}</p>}
       <div className="mb-4">
@@ -92,6 +92,7 @@ const SignUp: React.FC<SignUpProps> = ({ closeModal }) => {
       >
         {isLoading ? 'Signing up...' : 'Sign Up'}
       </button>
+      <p className="text-sm font-light text-center mt-6">Dishcovery does not collect any data from our users. Ever.</p>
     </form>
   );
 };
