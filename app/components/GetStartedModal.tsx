@@ -6,6 +6,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 
 interface CarouselSlide {
   title: string;
+  description?: string;
   content: string;
   content2?: string; // Make this optional in case a slide doesn't have it
   imageSrc?: string;
@@ -55,7 +56,7 @@ const GetStartedModal: React.FC<ModalProps> = ({ isOpen, onClose, slides }) => {
       >
         {/* Modal */}
         <motion.div
-          className="bg-white/90 backdrop-blur-lg border border-slate-200 shadow-lg rounded-2xl w-[90%] max-w-lg p-6 relative"
+          className="bg-slate-950/80 backdrop-blur-lg border border-gray-400 shadow-lg rounded-2xl w-[90%] max-w-lg p-6 relative"
           initial={{ scale: 0.8, opacity: 0 }}
           animate={{ scale: 1, opacity: 1 }}
           exit={{ scale: 0.8, opacity: 0 }}
@@ -64,10 +65,10 @@ const GetStartedModal: React.FC<ModalProps> = ({ isOpen, onClose, slides }) => {
           {/* Close Button */}
           <button
             onClick={onClose}
-            className="absolute top-4 right-4 p-2 z-10 rounded-full bg-slate-200 hover:bg-slate-300 transition"
+            className="absolute top-2 right-2 rounded-full bg-pink-800 transition z-10"
             aria-label="Close modal"
           >
-            <CircleX className="w-5 h-5 text-slate-700" />
+            <CircleX className="w-5 h-5 text-sky-50" />
           </button>
 
           {/* Carousel */}
@@ -85,31 +86,36 @@ const GetStartedModal: React.FC<ModalProps> = ({ isOpen, onClose, slides }) => {
                 <img
                   src={slides[currentSlideIndex].imageSrc}
                   alt={slides[currentSlideIndex].title}
-                  className="w-full h-40 object-contain rounded-lg mb-4"
+                  className="w-full h-60 object-cover rounded-lg mb-4"
                 />
               )}
-              <h2 className="text-2xl font-bold text-slate-900 mb-2">
+              <h2 className="text-lg font-semibold text-center text-sky-50 mb-4">
                 {slides[currentSlideIndex].title}
               </h2>
-              <p className="text-base text-slate-700">
+              <p className="text-sm text-center mt-2 text-sky-50">
+                {slides[currentSlideIndex].description}
+              </p>
+              <p className="text-sm text-center mt-2 text-sky-50">
                 {slides[currentSlideIndex].content}
               </p>
-              <p className="text-base text-slate-700">
+              <p className="text-sm text-center mt-2 text-sky-50">
                 {slides[currentSlideIndex].content2}
               </p>
+              
+          
             </motion.div>
 
             {/* Carousel Controls */}
-            <div className="flex justify-between items-center mt-4 w-full px-8">
+            <div className="flex justify-between items-center mt-6 w-full px-8">
               <button
                 onClick={handlePrevSlide}
-                className="text-pink-800 hover:text-pink-700 transition"
+                className="bg-slate-950/20 py-1 px-4 rounded-full text-sm font-light border border-[#00a39e] text-[#00a39e]"
               >
                 Previous
               </button>
               <button
                 onClick={handleNextSlide}
-                className="text-pink-800 hover:text-pink-700 transition"
+                className="bg-slate-950/20 py-1 px-4 rounded-full text-sm font-light border border-[#00a39e] text-[#00a39e]"
               >
                 Next
               </button>
@@ -122,7 +128,7 @@ const GetStartedModal: React.FC<ModalProps> = ({ isOpen, onClose, slides }) => {
                   key={index}
                   className={`w-2.5 h-2.5 rounded-full ${
                     index === currentSlideIndex
-                      ? 'bg-pink-800'
+                      ? 'bg-lime-500'
                       : 'bg-gray-400'
                   }`}
                 ></div>

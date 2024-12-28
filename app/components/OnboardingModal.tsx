@@ -7,6 +7,7 @@ import { CircleX } from 'lucide-react';
 interface Slide {
   header: string;
   body: string;
+  imageSrc?: string;
 }
 
 interface OnboardingModalProps {
@@ -58,7 +59,7 @@ const OnboardingModal: React.FC<OnboardingModalProps> = ({
       >
         {/* Modal Content */}
         <motion.div
-          className="bg-white/90 backdrop-blur-lg border border-slate-200 shadow-lg rounded-2xl w-[90%] max-w-lg p-6 relative"
+          className="bg-slate-950/80 backdrop-blur-lg border border-gray-400 shadow-lg rounded-2xl w-[90%] max-w-lg p-6 relative"
           initial={{ scale: 0.8, opacity: 0 }}
           animate={{ scale: 1, opacity: 1 }}
           exit={{ scale: 0.8, opacity: 0 }}
@@ -69,10 +70,10 @@ const OnboardingModal: React.FC<OnboardingModalProps> = ({
           {/* Close Button */}
           <button
             onClick={onClose}
-            className="absolute top-4 right-4 p-2 rounded-full bg-slate-200 hover:bg-slate-300 transition z-10"
+            className="absolute top-2 right-2 rounded-full bg-pink-800 transition z-10"
             aria-label="Close onboarding modal"
           >
-            <CircleX className="w-5 h-5 text-slate-700" />
+            <CircleX className="w-5 h-5 text-sky-50" />
           </button>
 
           {/* Slide Content */}
@@ -82,28 +83,36 @@ const OnboardingModal: React.FC<OnboardingModalProps> = ({
             animate={{ opacity: 1, x: 0 }}
             exit={{ opacity: 0, x: -50 }}
             transition={{ duration: 0.3 }}
+            className="flex flex-col items-center space-y-4" // Add flexbox for vertical alignment
           >
+            {slides[currentSlide].imageSrc && (
+                <img
+                  src={slides[currentSlide].imageSrc}
+                  alt={slides[currentSlide].header}
+                  className="w-full h-80 object-contain rounded-lg mb-4"
+                />
+              )}
             <h2
               id="onboarding-header"
-              className="text-xl font-bold text-center text-pink-800 mb-4"
+              className="text-lg font-semibold text-center text-sky-50 mb-4"
             >
               {slides[currentSlide].header}
             </h2>
             <p
               id="onboarding-body"
-              className="text-sm text-center text-slate-600"
+              className="text-sm text-center text-sky-50"
             >
               {slides[currentSlide].body}
             </p>
           </motion.div>
 
           {/* Progress Indicators */}
-          <div className="flex justify-center mt-4" aria-label="Slide progress">
+          <div className="flex justify-center mt-6" aria-label="Slide progress">
             {slides.map((_, index) => (
               <span
                 key={index}
                 className={`h-2 w-2 rounded-full mx-1 ${
-                  index === currentSlide ? 'bg-pink-800' : 'bg-gray-300'
+                  index === currentSlide ? 'bg-lime-500' : 'bg-gray-300'
                 }`}
               ></span>
             ))}
@@ -114,17 +123,17 @@ const OnboardingModal: React.FC<OnboardingModalProps> = ({
             <button
               onClick={prevSlide}
               disabled={currentSlide === 0}
-              className={`py-2 px-4 rounded ${
+              className={`py-1 px-4 rounded-full ${
                 currentSlide === 0
-                  ? 'bg-gray-300 text-gray-600 cursor-not-allowed'
-                  : 'bg-pink-800 text-white hover:bg-pink-700'
+                  ? 'bg-slate-950/20 text-sm font-light border border-gray-600 text-gray-600 cursor-not-allowed'
+                  : 'bg-slate-950/20 text-sm font-light border border-[#00a39e] text-[#00a39e]'
               }`}
             >
               Back
             </button>
             <button
               onClick={nextSlide}
-              className="py-2 px-4 rounded bg-pink-800 text-white hover:bg-pink-700"
+              className="py-1 px-4 text-sm font-light rounded-full bg-slate-950/20 border border-[#00a39e] text-[#00a39e]"
             >
               {currentSlide === slides.length - 1 ? 'Finish' : 'Next'}
             </button>
