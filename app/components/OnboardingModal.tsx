@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { CircleX } from 'lucide-react';
+import { CircleX, CircleArrowLeft, CircleArrowRight } from 'lucide-react';
 
 interface Slide {
   header: string;
@@ -89,7 +89,7 @@ const OnboardingModal: React.FC<OnboardingModalProps> = ({
                 <img
                   src={slides[currentSlide].imageSrc}
                   alt={slides[currentSlide].header}
-                  className="w-full h-80 object-contain rounded-lg mb-4"
+                  className="w-full h-60 object-cover rounded-lg mb-4"
                 />
               )}
             <h2
@@ -106,8 +106,50 @@ const OnboardingModal: React.FC<OnboardingModalProps> = ({
             </p>
           </motion.div>
 
+          {/* Navigation Buttons */}
+            <div className="flex justify-between mt-6">
+            {/* Back Button */}
+            <button
+                onClick={prevSlide}
+                disabled={currentSlide === 0}
+                className={`py-1 px-4 rounded-full flex items-center justify-center ${
+                currentSlide === 0
+                    ? 'bg-slate-950/20 text-sm font-light  text-gray-600 cursor-not-allowed'
+                    : 'bg-slate-950/20 text-sm font-light text-[#00a39e] hover:bg-[#00a39e]/10 transition'
+                }`}
+            >
+                <CircleArrowLeft
+                className={`w-7 h-7 rounded-full ${
+                    currentSlide === 0 ? 'text-gray-600' : 'text-lime-500'
+                }`}
+                />
+            </button>
+
+            {/* Next Button */}
+            <button
+                onClick={nextSlide}
+                disabled={currentSlide === slides.length - 1}
+                className={`py-1 px-4 rounded-full flex items-center justify-center ${
+                currentSlide === slides.length - 1
+                    ? 'bg-slate-950/20 text-sm font-light border border-gray-500 text-gray-500 cursor-not-allowed'
+                    : 'bg-slate-950/20 text-sm font-light text-[#00a39e] hover:bg-[#00a39e]/10 transition'
+                }`}
+            >
+                {currentSlide === slides.length - 1 ? (
+                'Finish'
+                ) : (
+                <CircleArrowRight
+                    className={`w-7 h-7 rounded-full ${
+                    currentSlide === slides.length - 1 ? 'text-gray-600' : 'text-lime-500'
+                    }`}
+                />
+                )}
+            </button>
+            </div>
+
+
           {/* Progress Indicators */}
-          <div className="flex justify-center mt-6" aria-label="Slide progress">
+          <div className="flex justify-center mt-2" aria-label="Slide progress">
             {slides.map((_, index) => (
               <span
                 key={index}
@@ -116,27 +158,6 @@ const OnboardingModal: React.FC<OnboardingModalProps> = ({
                 }`}
               ></span>
             ))}
-          </div>
-
-          {/* Navigation Buttons */}
-          <div className="flex justify-between mt-6">
-            <button
-              onClick={prevSlide}
-              disabled={currentSlide === 0}
-              className={`py-1 px-4 rounded-full ${
-                currentSlide === 0
-                  ? 'bg-slate-950/20 text-sm font-light border border-gray-600 text-gray-600 cursor-not-allowed'
-                  : 'bg-slate-950/20 text-sm font-light border border-[#00a39e] text-[#00a39e]'
-              }`}
-            >
-              Back
-            </button>
-            <button
-              onClick={nextSlide}
-              className="py-1 px-4 text-sm font-light rounded-full bg-slate-950/20 border border-[#00a39e] text-[#00a39e]"
-            >
-              {currentSlide === slides.length - 1 ? 'Finish' : 'Next'}
-            </button>
           </div>
 
           {/* Skip Button */}

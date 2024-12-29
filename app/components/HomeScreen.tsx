@@ -73,47 +73,67 @@ const HomeScreen: React.FC = () => {
     {
       header: 'Welcome to Dishcovery: Cooking reinvented. Magic unlocked.',
       body: 'Dishcovery is powered by Chef kAi, a specially trained, laser focused Ai, who crafts recipes just for you. Using the collective wisdom of chefs, cookbooks, and culinary history, Dishcovery doesn’t just give you a recipe—it creates the perfect recipe, tailored to your needs, your tastes, and your imagination.',
-      imageSrc: "/images/dishcovery-full-logo.png",
+      imageSrc: "/images/dishcovery-full-logo_sm_02.png",
     },
     {
       header: 'Collective Knowledge: Culinary Wisdom from Every Corner of the World',
-      body: 'Dishcovery accesses ALL THE COOKING KNOWLEDGE across cultures, cuisines, history, and techniques. From Julia Child to Chef kAi to your great-grandma’s handwritten apple pie recipe, it’s all there.',
+      body: 'Dishcovery accesses ALL THE COOKING KNOWLEDGE available across cultures, cuisines, history, and techniques. From Julia Child to Emiril Lagasse to Chef kAi to your great-grandma’s handwritten apple pie recipe, it’s all there.',
       imageSrc: "/images/pizza-2.png",
     },
     {
       header: 'Creative Flexibility: Cook Without Limits',
-      body: 'Invent dishes that suit YOU. This isn’t just about “following instructions.” It’s about inventing new ones. Want a lasagna that’s also low-carb, vegetarian, but with a hint of Middle Eastern spices? Dishcovery’s AI doesn’t blink—it generates it on the fly. ',
+      body: 'Invent dishes that suit YOU. This isn’t just about “following instructions.” It’s about inventing new ones. Want a lasagna that’s also low-carb, vegetarian, but with a hint of Middle Eastern spices? Dishcovery’s AI doesn’t blink—it generates it on the fly. (and yes, please, go try this one for yourself!) ',
       imageSrc: "/images/spread-2.png",
     },
     {
       header: 'Context-Aware Magic: Your Pantry, Our Playground',
-      body: 'It’s not just creative—it’s situationally smart. It knows that your pantry has canned tuna, rice, and soy sauce, and it’s about to blow your mind with a 20-minute tuna rice bowl with a soy-miso glaze. That’s not search-and-retrieve—that’s understanding.',
+      body: 'It’s not just creative—it’s situationally smart. Tell Dishcovery your pantry has canned tuna, rice, and soy sauce, and it’s about to blow your mind with a 20-minute tuna rice bowl with a soy-miso glaze. That’s not search-and-retrieve—that’s understanding.',
       imageSrc: "/images/porch-dinner-3.png",
     },
     {
       header: 'Personalization at Its Best: Made for You, and Only You',
-      body: 'This isn’t one-size-fits-all. It’s your size. It remembers what you like, learns your preferences, and serves up dishes tailored just for you. It knows you hate cilantro (don’t we all?), so it keeps that herb far away from your plate.',
+      body: 'This isn’t one-size-fits-all. It’s your size. Dishcovery remembers what you like, learns your preferences, and serves up dishes tailored just for you. It knows you hate anchovies (lol, don’t we all!?), so it keeps those littel fishys far away from your plate.',
       imageSrc: "/images/soup-3.png",
     },
     {
       header: 'Dishcovery’s Ethos: More Than Recipes—It’s Human Connection',
-      body: 'And here’s the kicker, my friend. Dishcovery isn’t just about food—it’s about human connection. It’s a communal experience. Cooking is personal, it’s cultural, it’s creative, and it’s emotional. Dishcovery celebrates that.',
+      body: 'And here’s the kicker: Dishcovery isn’t just about food—it’s about human connection. It’s a communal experience. Cooking is personal, it’s cultural, it’s creative, and it’s emotional. Dishcovery celebrates that.',
       imageSrc: "/images/porch-dinner-1.png",
     },
   ];
 
   const dummyWalkthroughCards = [
     {
-      title: "DISHcover Recipes in Seconds!",
-      description: "Your Culinary Genie Awaits",
+      title: "Why Dishcovery is Different", // SLIDE 0
+      description: "Not a recipe database. A recipe creator.",
+      modalContent: "Create shopping lists and plan your meals for the week—all in one app.",
+      imageSrc: "/images/pizza-1.png",
+      slides: [
+        {
+          title: "Dishcovery is powered by Chef kAi, who crafts recipes just for you.",
+          content: "Using the collective wisdom of chefs, cookbooks, and culinary history, Dishcovery doesn’t just give you a recipe—it creates the perfect recipe, tailored to your needs, your tastes, and your imagination.",
+          content2: "TELL ME MORE⟶",
+          imageSrc: "/images/woman-kids-cooking-1.png",
+        },
+        {
+          title: "What makes Dishcovery magical?",
+          content: "Creative mastery: Every recipe is built with care, precision, and a deep understanding of what makes great food.",
+          content2: "Culinary evolution: It’s not about following a recipe—it’s about creating a dish that feels like it was meant for you.",
+          imageSrc: "/images/family-porch-1.png",
+        },
+      ],
+    },
+    {
+      title: "DISHcover Recipes in Seconds!", // SLIDE 1
+      description: "Your Culinary Genie Awaits!",
       modalContent: "Let Dishcovery’s AI grant your food wishes. Crave something exotic? Need a quick family dinner? Just ask—and watch the magic unfold.",
-      imageSrc: "/images/steak-dinner-1.png", // Example image
+      imageSrc: "/images/steak-dinner-1.png", 
       slides: [
         {
           title: "DISHcover Recipes in Seconds!",
           description: "Your Culinary Genie Awaits",
           content: "Let Dishcovery’s AI grant your food wishes. Crave something exotic? Need a quick family dinner? Just ask—and watch the magic unfold.",
-          content2: "Forget searching for hours—just ask and receive!",
+          content2: "Forget searching for hours—just ask and receive! Check out some PROMPT TIPS⟶",
           imageSrc: "/images/steak-dinner-1.png",
         },
         {
@@ -126,40 +146,67 @@ const HomeScreen: React.FC = () => {
       ],
     },
     {
-      title: "Save Your Favorites",
+      title: "Write the Perfect Prompt", // SLIDE 2
+      description: "Get the most out of Dishcovery.",
+      modalContent: "Learn to write creative prompts like 'Quick and easy dinner ideas' or 'High-protein breakfasts.' Dishcovery will take it from there!",
+      imageSrc: "/images/breakfast-1.png", 
+      slides: [
+        {
+          title: "Write the Perfect Prompt, Get the Perfect Dish.",
+          description: "Get the most from the powerful Dishcovery Ai.",
+          content: "Write creative prompts like 'Quick and easy dinner ideas using pantry staples' or 'High-protein breakfasts with eggs.'",
+          content2: "Dietary restrictions or allergies? No problem! Just add descriptors like 'Gluten free' or 'Non-dairy' and Dishcovery will take it from there! PROMPT TIPS⟶",
+          imageSrc: "/images/breakfast-1.png",
+        },
+        {
+          title: "Recipe Prompt Tips",
+          description: "Tip: combine creative phrases like 'Quick and easy dinner ideas' or 'High-protein breakfasts',",
+          content: "with descriptive words like 'pantry staples', 'Gluten free' or 'Non-dairy'.",
+          content2: "Sample Prompt: 'I need some quick and easy, gluten free, dinner ideas using pantry and refrigerator staples.'",
+          imageSrc: "/images/steak-dinner-2.png",
+        },
+      ],
+    },
+    {
+      title: "Save Your Favorites", // SLIDE 3
       description: "Keep track of recipes you love.",
       modalContent: "Never lose track of your favorite meals. Save recipes to revisit later and share them with friends!",
-      imageSrc: "/images/steak-dinner-1.png", // Example image
+      imageSrc: "/images/steak-dinner-1.png", 
       slides: [
         {
           title: "Save Recipes Effortlessly",
-          content: "Dishcovery makes it easy to bookmark your favorite meals.",
-          content2: "Your personal cookbook is just a tap away.",
-          imageSrc: "/images/steak-dinner-1.png",
+          content: "Never lose track of your favorite meals. Save recipes to revisit later and share them with friends!",
+          content2: "Dishcovery makes it easy to 'Save' (bookmark) and 'Favorite' (heart) your meals and recipes. Your personal cookbook is just a tap away. MORE FEATURES⟶",
+          imageSrc: "/images/breakfast-3.png",
         },
         {
-          title: "Favorites at Your Fingertips",
-          content: "Organize and share recipes with loved ones.",
-          content2: "Because the best meals are the ones you share.",
-          imageSrc: "/images/dinner-2.png",
+          title: "Never lose that Shopping List or Chat Session either!",
+          content: "Dishcovery makes its simple to save your Shopping Lists so you won't forget your missing ingredients.",
+          content2: "Save your recipe 'Chat' and never lose those fantastic recipe suggestions for 'spicy Mexican insprired appetizers'!",
+          imageSrc: "/images/soup-2.png",
         },
       ],
     },
-    // Add similar slides for other cards
     {
-      title: "Plan Your Meals",
-      description: "Make meal planning a breeze.",
-      modalContent: "Create shopping lists and plan your meals for the week—all in one app.",
-      imageSrc: "/images/pizza-1.png",
+      title: "Cook Mode Activated!", // SLIDE 4
+      description: "Easy-to-Follow step-by-step instructions.",
+      modalContent: "Never lose track of your favorite meals. Save recipes to revisit later and share them with friends!",
+      imageSrc: "/images/man-kids-cooking-4.png", 
       slides: [
         {
-          title: "Meal Planning Made Easy",
-          content: "Create your weekly shopping list with a single click.",
-          content2: "No more forgetting ingredients at the store.",
-          imageSrc: "/images/pizza-1.png",
+          title: "Prepare Your Dishcovery Recipes Effortlessly",
+          content: "Dishcovery's Cook Mode lets you focus on cooking with simple and clear, step-by-step instructions.",
+          content2: "Andriod users enjoy automatic screen-wake in Cook Mode - no more tapping your screen with messy fingers! MORE FEATURES⟶",
+          imageSrc: "/images/man-kids-cooking-4.png",
+        },
+        {
+          title: "Coming Soon to Cook Mode:",
+          content: "• Guided Meal Planning: Dynamic AI Pairing, Ingredient Sharing, and User-Driven Customization",
+          content2: "• Cook Mode Timers: Smart Timer Integration, Interactive Alerts and Cross-Device Sync",
+          imageSrc: "/images/chef-cooking-1.png",
         },
       ],
-    },
+    },    
   ];
   
   

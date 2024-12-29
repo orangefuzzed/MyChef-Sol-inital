@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useEffect, useState } from 'react';
-import { CircleX } from 'lucide-react';
+import { CircleX, CircleArrowRight, CircleArrowLeft } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 
 interface CarouselSlide {
@@ -109,15 +109,15 @@ const GetStartedModal: React.FC<ModalProps> = ({ isOpen, onClose, slides }) => {
             <div className="flex justify-between items-center mt-6 w-full px-8">
               <button
                 onClick={handlePrevSlide}
-                className="bg-slate-950/20 py-1 px-4 rounded-full text-sm font-light border border-[#00a39e] text-[#00a39e]"
+                className="bg-slate-950/20 py-1 px-4 rounded-full text-sm font-light text-[#00a39e]"
               >
-                Previous
+                <CircleArrowLeft className="w-5 h-5 text-lime-500" />
               </button>
               <button
                 onClick={handleNextSlide}
-                className="bg-slate-950/20 py-1 px-4 rounded-full text-sm font-light border border-[#00a39e] text-[#00a39e]"
+                className="bg-slate-950/20 py-1 px-4 rounded-full text-sm font-light text-[#00a39e]"
               >
-                Next
+                <CircleArrowRight className="w-5 h-5 text-lime-500" />
               </button>
             </div>
 
