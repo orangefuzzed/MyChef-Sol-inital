@@ -113,7 +113,7 @@ const HomeScreen: React.FC = () => {
           title: "Dishcovery is powered by Chef kAi, who crafts recipes just for you.",
           content: "Using the collective wisdom of chefs, cookbooks, and culinary history, Dishcovery doesn’t just give you a recipe—it creates the perfect recipe, tailored to your needs, your tastes, and your imagination.",
           content2: "TELL ME MORE⟶",
-          imageSrc: "/images/woman-kids-cooking-1.png",
+          imageSrc: "/images/porch-dinner-3.png",
         },
         {
           title: "What makes Dishcovery magical?",
