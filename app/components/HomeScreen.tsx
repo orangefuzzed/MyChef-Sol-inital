@@ -350,19 +350,18 @@ const handleRefreshPrompts = async () => {
             <div className="flex items-center">
               <ChefHat strokeWidth={1.5} className="w-6 h-6 text-[#27ff52] mr-2" />
               <p className="text-xl font-light text-sky-50">Trending Recipes</p>
-            
 
             {/* Refresh Button */}
-            <button
-              onClick={handleRefreshTrending}
-              disabled={isRefreshingTrending} // Disable button while refreshing
-              className="flex items-center text-slate-400 ml-2 z-10"
-            >
-              <RefreshCw
-                className={`w-5 h-5 ${isRefreshingTrending ? 'animate-spin' : ''}`} // Spinner animation while refreshing
-              />
-              <span className="ml-2"></span>
-            </button>
+              <button
+                onClick={handleRefreshTrending}
+                disabled={isRefreshingTrending} // Disable button while refreshing
+                className="flex items-center text-slate-400 ml-2 relative z-10" // Ensure button stays above everything
+              >
+                <RefreshCw
+                  className={`w-5 h-5 ${isRefreshingTrending ? 'animate-spin' : ''}`} // Spinner animation while refreshing
+                />
+                <span className="ml-2"></span>
+              </button>
             </div>
           </div>
 
@@ -383,7 +382,7 @@ const handleRefreshPrompts = async () => {
             <button
               onClick={handleRefreshRecent}
               disabled={isRefreshingRecent} // Disable button while refreshing
-              className="flex items-center text-slate-400 ml-2 z-11"
+              className="flex items-center text-slate-400 ml-2 relative z-10"
             >
               <RefreshCw
                 className={`w-5 h-5 ${isRefreshingRecent ? 'animate-spin' : ''}`} // Spinner animation while refreshing
