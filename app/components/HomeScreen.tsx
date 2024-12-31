@@ -311,7 +311,7 @@ const HomeScreen: React.FC = () => {
           onComplete={handleOnboardingComplete}
         />
   
-        {/* Walkthrough Section 
+        {/* Walkthrough Section */}
         <div className="mb-6">
           <div className="flex items-center mb-4">
             <Rocket strokeWidth={1.5} className="w-6 h-6 text-[#27ff52] mr-2" />
@@ -332,9 +332,9 @@ const HomeScreen: React.FC = () => {
               </div>
             ))}
           </div>
-        </div>*/}
+        </div>
   
-        {/* Render Modals 
+        {/* Render Modals */}
         {dummyWalkthroughCards.map((card, index) => (
           <GetStartedModal
             key={index}
@@ -342,7 +342,7 @@ const HomeScreen: React.FC = () => {
             onClose={() => setActiveModalIndex(null)}
             slides={card.slides}
           />
-        ))}*/}
+        ))}
   
         {/* Trending Recipes Section */}       
         <div className="mb-6">
@@ -352,16 +352,18 @@ const HomeScreen: React.FC = () => {
               <p className="text-xl font-light text-sky-50">Trending Recipes</p>
             </div>
             {/* Refresh Button */}
+            <div className="relative z-40">
             <button
               onClick={handleRefreshTrending}
               disabled={isRefreshingTrending}
-              className="flex items-center text-slate-400 ml-4 pointer-events-auto relative z-40"
+              className="flex items-center text-slate-400 ml-4 pointer-events-auto"
             >
               <RefreshCw
                 className={`w-5 h-5 ${isRefreshingTrending ? 'animate-spin' : ''}`}
               />
               <span className="ml-2 text-slate-400 text-sm">refresh</span>
             </button>
+            </div>
           </div>
           <TrendingRecipesCarousel recipes={trendingRecipes} onRefresh={handleRefreshTrending}/>
         </div>
