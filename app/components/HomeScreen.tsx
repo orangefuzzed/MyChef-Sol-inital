@@ -356,7 +356,7 @@ const handleRefreshPrompts = async () => {
             <button
               onClick={handleRefreshTrending}
               disabled={isRefreshingTrending} // Disable button while refreshing
-              className="flex items-center text-slate-400 ml-2"
+              className="flex items-center text-slate-400 ml-2 z-10"
             >
               <RefreshCw
                 className={`w-5 h-5 ${isRefreshingTrending ? 'animate-spin' : ''}`} // Spinner animation while refreshing
@@ -383,7 +383,7 @@ const handleRefreshPrompts = async () => {
             <button
               onClick={handleRefreshRecent}
               disabled={isRefreshingRecent} // Disable button while refreshing
-              className="flex items-center text-slate-400 ml-2"
+              className="flex items-center text-slate-400 ml-2 z-11"
             >
               <RefreshCw
                 className={`w-5 h-5 ${isRefreshingRecent ? 'animate-spin' : ''}`} // Spinner animation while refreshing
