@@ -376,7 +376,7 @@ const handleRefreshPrompts = async () => {
             <button
               onClick={handleRefreshRecent}
               disabled={isRefreshingRecent}
-              className="flex items-center text-slate-400 ml-4 pointer-events-auto relative z-10"
+              className="flex items-center p-6 rounded-full bg-slate-950/50 border border-pink-800 text-slate-400 ml-4 pointer-events-auto relative z-10"
             >
               <RefreshCw
                 className={`w-5 h-5 ${isRefreshingRecent ? 'animate-spin' : ''}`}
