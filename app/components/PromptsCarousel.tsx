@@ -10,11 +10,6 @@ interface PromptsCarouselProps {
     onRefresh: () => void; // Add a refresh handler as a prop
   }
 
-interface PromptsCarouselProps {
-  prompts: Prompt[];
-  onRefresh: () => void;
-}
-
 const PromptsCarousel: React.FC<PromptsCarouselProps> = ({ prompts, onRefresh }) => {
     const router = useRouter();
   
@@ -25,19 +20,6 @@ const PromptsCarousel: React.FC<PromptsCarouselProps> = ({ prompts, onRefresh })
 
   return (
     <div>
-      {/*<div className="flex items-center justify-between mb-4">
-        <div className="flex items-center">
-          <h2 className="text-xl font-light text-sky-50">Recent Prompts</h2>
-        </div>
-         Refresh Button 
-        <button
-          onClick={onRefresh}
-          className="flex items-center bg-sky-50/30 hover:bg-sky-50/40 text-pink-800 px-3 py-1 rounded-md shadow-md transition ml-6"
-        >
-          <RefreshCw className="w-5 h-5 mr-2" />
-          Refresh
-        </button>
-      </div>*/}
       <div className="flex gap-6 overflow-x-auto scrollbar-hide">
         {prompts.length > 0 ? (
           prompts.map((prompt, index) => (

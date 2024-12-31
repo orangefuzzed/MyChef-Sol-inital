@@ -53,7 +53,7 @@ const HamburgerMenu: React.FC<HamburgerMenuProps> = ({ isOpen, onClose }) => {
   }, [session]);
 
   const menuItems = [
-    { icon: <ChefHat size={20} color={'#fff'} />, text: 'My Dishcoveries', link: '/MyHome' },
+    { icon: <ChefHat size={20} color={'#fff'} />, text: 'My Home', link: '/MyHome' },
     { icon: <Settings size={20} color={'#fff'}/>, text: 'My Preferences', link: '/preferences' },
     { icon: <Bookmark size={20} color={'#fff'} />, text: 'Saved Recipes', link: '/saved-recipes' },
     { icon: <Heart size={20} color={'#fff'} />, text: 'Favorite Recipes', link: '/favorites' },
