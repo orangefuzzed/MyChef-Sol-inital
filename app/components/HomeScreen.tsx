@@ -345,19 +345,7 @@ const HomeScreen: React.FC = () => {
         ))}
   
         {/* Trending Recipes Section */}
-        <div>
-          {/* Refresh Button */}
-          <button
-              onClick={handleRefreshTrending}
-              disabled={isRefreshingTrending}
-              className="flex items-center text-slate-400 ml-4 pointer-events-auto relative"
-            >
-              <RefreshCw
-                className={`w-5 h-5 ${isRefreshingTrending ? 'animate-spin' : ''}`}
-              />
-              <span className="ml-2 text-slate-400 text-sm">refresh</span>
-            </button>
-        </div>
+        
         <div className="mb-6">
           <div className="flex items-center justify-between mb-4 relative">
             <div className="flex items-center">
@@ -380,6 +368,19 @@ const HomeScreen: React.FC = () => {
         </div>
 
         {/* Prompts Section */}
+        <div>
+          {/* Refresh Button */}
+          <button
+              onClick={handleRefreshTrending}
+              disabled={isRefreshingTrending}
+              className="flex items-center text-pink-400 ml-4 pointer-events-auto relative"
+            >
+              <RefreshCw
+                className={`w-5 h-5 ${isRefreshingTrending ? 'animate-spin' : ''}`}
+              />
+              <span className="ml-2 text-slate-400 text-sm">refresh</span>
+            </button>
+        </div>
         <div className="mb-6">
           <div className="flex items-center justify-between mb-4 relative">
             <div className="flex items-center">
