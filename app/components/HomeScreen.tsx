@@ -364,7 +364,7 @@ const HomeScreen: React.FC = () => {
               <ChefHat strokeWidth={1.5} className="w-6 h-6 text-[#27ff52] mr-2" />
               <p className="text-xl font-light text-sky-50">Trending Recipes</p>
             </div>
-            {/* Refresh Button */}
+            {/* Refresh Button 
             <button
               onClick={handleRefreshTrending}
               disabled={isRefreshingTrending}
@@ -374,7 +374,7 @@ const HomeScreen: React.FC = () => {
                 className={`w-5 h-5 ${isRefreshingTrending ? 'animate-spin' : ''}`}
               />
               <span className="ml-2 text-slate-400 text-sm">refresh</span>
-            </button>
+            </button>*/}
           </div>
           <TrendingRecipesCarousel recipes={trendingRecipes} onRefresh={handleRefreshTrending}/>
         </div>
