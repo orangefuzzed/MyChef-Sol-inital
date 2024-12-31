@@ -18,6 +18,7 @@ const RecentRecipesCarousel: React.FC<RecipesCarouselProps> = ({ recipes, onRefr
   };
 
   return (
+    <div>
     <div className="flex gap-6 overflow-x-auto scrollbar-hide">
       {recipes.map((recipe) => (
         <div
@@ -46,6 +47,7 @@ const RecentRecipesCarousel: React.FC<RecipesCarouselProps> = ({ recipes, onRefr
           <p className="text-sm">{recipe.description}</p>
         </div>
       ))}
+    </div>
     </div>
   );
 };

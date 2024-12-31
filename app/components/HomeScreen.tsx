@@ -355,7 +355,7 @@ const HomeScreen: React.FC = () => {
             <button
               onClick={handleRefreshTrending}
               disabled={isRefreshingTrending}
-              className="flex items-center text-slate-400 ml-4 pointer-events-auto relative z-50"
+              className="flex items-center text-slate-400 ml-4 pointer-events-auto relative"
             >
               <RefreshCw
                 className={`w-5 h-5 ${isRefreshingTrending ? 'animate-spin' : ''}`}
@@ -407,7 +407,7 @@ const HomeScreen: React.FC = () => {
               <span className="ml-2 text-slate-400 text-sm">refresh</span>
             </button>
           </div>
-          <RecentRecipesCarousel recipes={recentRecipes} onRefresh={handleRefreshTrending}/>
+          <RecentRecipesCarousel recipes={recentRecipes} onRefresh={handleRefreshRecent}/>
         </div>
       </div>
   
