@@ -291,28 +291,28 @@ const handleRefreshPrompts = async () => {
   }, [status, router]);
 
   return (
-    <div className="flex flex-col h-screen bg-fixed bg-cover bg-center text-white"
-        style={{ backgroundImage: "url('/images/meal-cooking-1.png')" }}
-        >
+    <div
+      className="flex flex-col h-screen bg-fixed bg-cover bg-center text-white"
+      style={{ backgroundImage: "url('/images/meal-cooking-1.png')" }}
+    >
       <Header centralText={`Welcome, ${session?.user?.name || 'Guest'}`} />
-
+  
       {/* Menus */}
       <HamburgerMenu isOpen={isHamburgerMenuOpen} onClose={() => setIsHamburgerMenuOpen(false)} />
-
+  
       {/* Main Content */}
       <div className="flex-grow overflow-y-auto px-6 py-4">
-
         <OnboardingModal
           isOpen={showOnboarding}
-          onClose={handleOnboardingComplete} // Triggered when modal is closed
-          slides={onboardingSlides} // Pass slides for the walkthrough
-          onSkip={handleOnboardingComplete} // Triggered when "Skip" is clicked
-          onComplete={handleOnboardingComplete} // Triggered when "Finish" is clicked
+          onClose={handleOnboardingComplete}
+          slides={onboardingSlides}
+          onSkip={handleOnboardingComplete}
+          onComplete={handleOnboardingComplete}
         />
-
+  
         {/* Walkthrough Section */}
         <div className="mb-6">
-        <div className="flex items-center mb-4">
+          <div className="flex items-center mb-4">
             <Rocket strokeWidth={1.5} className="w-6 h-6 text-[#27ff52] mr-2" />
             <p className="text-xl font-light text-sky-50">Get Started!</p>
           </div>
@@ -321,7 +321,7 @@ const handleRefreshPrompts = async () => {
               <div
                 key={index}
                 className="w-80 bg-white/30 backdrop-blur-lg border border-white shadow-lg rounded-2xl p-6 flex-shrink-0 cursor-pointer hover:shadow-2xl transition"
-                onClick={() => setActiveModalIndex(index)} // Open the modal for this card
+                onClick={() => setActiveModalIndex(index)}
               >
                 <div className="bg-sky-50/30 w-8 h-8 border border-white rounded-full flex items-center justify-center mb-2">
                   <ExternalLink strokeWidth={1.5} className="w-4 h-4 text-black" />
@@ -337,101 +337,85 @@ const handleRefreshPrompts = async () => {
         {dummyWalkthroughCards.map((card, index) => (
           <GetStartedModal
             key={index}
-            isOpen={activeModalIndex === index} // Show the modal only if it's the active card
-            onClose={() => setActiveModalIndex(null)} // Close modal when dismissed
-            slides={card.slides} // Pass the slides specific to this card
+            isOpen={activeModalIndex === index}
+            onClose={() => setActiveModalIndex(null)}
+            slides={card.slides}
           />
         ))}
-
+  
         {/* Trending Recipes Section */}
         <div className="mb-6">
           <div className="flex items-center justify-between mb-4 relative">
-            {/* Left-Side Icon and Title */}
             <div className="flex items-center">
               <ChefHat strokeWidth={1.5} className="w-6 h-6 text-[#27ff52] mr-2" />
               <p className="text-xl font-light text-sky-50">Trending Recipes</p>
-
-            {/* Refresh Button */}
-              <button
-                onClick={handleRefreshTrending}
-                disabled={isRefreshingTrending} // Disable button while refreshing
-                className="flex items-center text-slate-400 ml-4 pointer-events-auto relative z-10" // Ensure button stays above everything
-              >
-                <RefreshCw
-                  className={`w-5 h-5 ${isRefreshingTrending ? 'animate-spin' : ''}`} // Spinner animation while refreshing
-                />
-                <span className="ml-2 text-slate-400 text-sm">refresh</span>
-              </button>
             </div>
-          </div>
-
-          {/* Trending Recipes Carousel */}
-          <TrendingRecipesCarousel recipes={trendingRecipes} />
-        </div>
-
-        {/* Recent Recipes Section */}
-        <div className="mb-6">
-          <div className="flex items-center justify-between mb-4 relative">
-            {/* Left-Side Icon and Title */}
-            <div className="flex items-center">
-              <Clock strokeWidth={1.5} className="w-6 h-6 text-[#27ff52] mr-2" />
-              <p className="text-xl font-light text-sky-50">Recent Recipes</p>
-            
-
             {/* Refresh Button */}
             <button
-              onClick={handleRefreshRecent}
-              disabled={isRefreshingRecent} // Disable button while refreshing
+              onClick={handleRefreshTrending}
+              disabled={isRefreshingTrending}
               className="flex items-center text-slate-400 ml-4 pointer-events-auto relative z-10"
             >
               <RefreshCw
-                className={`w-5 h-5 ${isRefreshingRecent ? 'animate-spin' : ''}`} // Spinner animation while refreshing
+                className={`w-5 h-5 ${isRefreshingTrending ? 'animate-spin' : ''}`}
               />
               <span className="ml-2 text-slate-400 text-sm">refresh</span>
             </button>
-            </div>
           </div>
-
-          {/* Recent Recipes Carousel */}
-          <RecentRecipesCarousel recipes={recentRecipes} />
-        </div>
-
-        <div>
-          {/* Prompts Section */}
-            <div className="mb-6">
-              <div className="flex items-center justify-between mb-4 relative">
-                {/* Left-Side Icon and Title */}
-                <div className="flex items-center">
-                  <BotMessageSquare strokeWidth={1.5} className="w-6 h-6 text-[#27ff52] mr-2" />
-                  <p className="text-xl font-light text-sky-50">Recent Prompts</p>
-                
-
-                  {/* Refresh Button */}
-                  <button
-                    onClick={handleRefreshPrompts}
-                    disabled={isRefreshingPrompts} // Disable button while refreshing
-                    className="flex items-center text-slate-400 ml-4 relative"
-                  >
-                    <RefreshCw
-                      className={`w-5 h-5 ${isRefreshingPrompts ? 'animate-spin' : ''}`} // Spinner animation while refreshing
-                    />
-                    <span className="ml-2 text-slate-400 text-sm">refresh</span>
-                  </button>
-              </div>
-            </div>
-
-                {/* Prompts Carousel */}
-                <PromptsCarousel prompts={prompts} onRefresh={handleRefreshPrompts} />
-              </div>
-          </div>
+          <TrendingRecipesCarousel recipes={trendingRecipes} />
         </div>
   
-        {/* Footer */}
-        <div className="sticky bottom-0 z-10">
-          <Footer actions={['user', 'send']} />
+        {/* Recent Recipes Section */}
+        <div className="mb-6">
+          <div className="flex items-center justify-between mb-4 relative">
+            <div className="flex items-center">
+              <Clock strokeWidth={1.5} className="w-6 h-6 text-[#27ff52] mr-2" />
+              <p className="text-xl font-light text-sky-50">Recent Recipes</p>
+            </div>
+            {/* Refresh Button */}
+            <button
+              onClick={handleRefreshRecent}
+              disabled={isRefreshingRecent}
+              className="flex items-center text-slate-400 ml-4 pointer-events-auto relative z-10"
+            >
+              <RefreshCw
+                className={`w-5 h-5 ${isRefreshingRecent ? 'animate-spin' : ''}`}
+              />
+              <span className="ml-2 text-slate-400 text-sm">refresh</span>
+            </button>
+          </div>
+          <RecentRecipesCarousel recipes={recentRecipes} />
+        </div>
+  
+        {/* Prompts Section */}
+        <div className="mb-6">
+          <div className="flex items-center justify-between mb-4 relative">
+            <div className="flex items-center">
+              <BotMessageSquare strokeWidth={1.5} className="w-6 h-6 text-[#27ff52] mr-2" />
+              <p className="text-xl font-light text-sky-50">Recent Prompts</p>
+            </div>
+            {/* Refresh Button */}
+            <button
+              onClick={handleRefreshPrompts}
+              disabled={isRefreshingPrompts}
+              className="flex items-center text-slate-400 ml-4 pointer-events-auto relative z-10"
+            >
+              <RefreshCw
+                className={`w-5 h-5 ${isRefreshingPrompts ? 'animate-spin' : ''}`}
+              />
+              <span className="ml-2 text-slate-400 text-sm">refresh</span>
+            </button>
+          </div>
+          <PromptsCarousel prompts={prompts} onRefresh={handleRefreshPrompts} />
+        </div>
       </div>
-   </div>    
-  );  
+  
+      {/* Footer */}
+      <div className="sticky bottom-0 z-10">
+        <Footer actions={['user', 'send']} />
+      </div>
+    </div>
+  );   
 };
 
 export default HomeScreen;
