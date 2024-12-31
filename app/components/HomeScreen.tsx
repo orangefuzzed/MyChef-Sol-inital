@@ -344,26 +344,37 @@ const HomeScreen: React.FC = () => {
           />
         ))}
   
-        {/* Trending Recipes Section */}       
-        <div className="mb-6 relative z-10">
-            {/* Refresh Button */}            
-            <button
-                onClick={handleRefreshTrending}
-                disabled={isRefreshingTrending}
-                className="flex items-center text-slate-400 ml-4 pointer-events-auto"
-              >
-                <RefreshCw
-                  className={`w-5 h-5 ${isRefreshingTrending ? 'animate-spin' : ''}`}
-                />
-                <span className="ml-2 text-slate-400 text-sm"></span>
-              </button>
-          </div>
-        <div className="mb-6 relative z-10">          
-          <div className="flex items-center justify-between mb-4">                
+        {/* Trending Recipes Section */}
+        <div>
+          {/* Refresh Button */}
+          <button
+              onClick={handleRefreshTrending}
+              disabled={isRefreshingTrending}
+              className="flex items-center text-slate-400 ml-4 pointer-events-auto relative"
+            >
+              <RefreshCw
+                className={`w-5 h-5 ${isRefreshingTrending ? 'animate-spin' : ''}`}
+              />
+              <span className="ml-2 text-slate-400 text-sm">refresh</span>
+            </button>
+        </div>
+        <div className="mb-6">
+          <div className="flex items-center justify-between mb-4 relative">
             <div className="flex items-center">
               <ChefHat strokeWidth={1.5} className="w-6 h-6 text-[#27ff52] mr-2" />
-              <p className="text-xl font-light text-sky-50">Trending Recipes</p>              
-            </div>                      
+              <p className="text-xl font-light text-sky-50">Trending Recipes</p>
+            </div>
+            {/* Refresh Button */}
+            <button
+              onClick={handleRefreshTrending}
+              disabled={isRefreshingTrending}
+              className="flex items-center text-slate-400 ml-4 pointer-events-auto relative"
+            >
+              <RefreshCw
+                className={`w-5 h-5 ${isRefreshingTrending ? 'animate-spin' : ''}`}
+              />
+              <span className="ml-2 text-slate-400 text-sm">refresh</span>
+            </button>
           </div>
           <TrendingRecipesCarousel recipes={trendingRecipes} onRefresh={handleRefreshTrending}/>
         </div>
@@ -392,7 +403,7 @@ const HomeScreen: React.FC = () => {
   
         {/* Recent Recipes Section */}
         <div className="mb-6">
-          <div className="flex items-center justify-between mb-4 relative z-10">
+          <div className="flex items-center justify-between mb-4 relative">
             <div className="flex items-center">
               <Clock strokeWidth={1.5} className="w-6 h-6 text-[#27ff52] mr-2" />
               <p className="text-xl font-light text-sky-50">Recent Recipes</p>
@@ -401,7 +412,7 @@ const HomeScreen: React.FC = () => {
             <button
               onClick={handleRefreshRecent}
               disabled={isRefreshingRecent}
-              className="flex items-center text-slate-400 ml-4 pointer-events-auto relative z-30"
+              className="flex items-center text-slate-400 ml-4 pointer-events-auto relative"
             >
               <RefreshCw
                 className={`w-5 h-5 ${isRefreshingRecent ? 'animate-spin' : ''}`}
