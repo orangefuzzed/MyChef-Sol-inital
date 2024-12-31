@@ -355,7 +355,7 @@ const HomeScreen: React.FC = () => {
             <button
               onClick={handleRefreshTrending}
               disabled={isRefreshingTrending}
-              className="flex items-center text-slate-400 ml-4 pointer-events-auto relative"
+              className="flex items-center text-pink-400 ml-4 pointer-events-auto relative"
             >
               <RefreshCw
                 className={`w-5 h-5 ${isRefreshingTrending ? 'animate-spin' : ''}`}
