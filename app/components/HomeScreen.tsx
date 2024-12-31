@@ -345,7 +345,7 @@ const handleRefreshPrompts = async () => {
 
         {/* Trending Recipes Section */}
         <div className="mb-6">
-          <div className="flex items-center justify-between mb-4">
+          <div className="flex items-center justify-between mb-4 relative">
             {/* Left-Side Icon and Title */}
             <div className="flex items-center">
               <ChefHat strokeWidth={1.5} className="w-6 h-6 text-[#27ff52] mr-2" />
@@ -355,7 +355,7 @@ const handleRefreshPrompts = async () => {
               <button
                 onClick={handleRefreshTrending}
                 disabled={isRefreshingTrending} // Disable button while refreshing
-                className="flex items-center text-slate-400 ml-2 relative z-10" // Ensure button stays above everything
+                className="flex items-center text-slate-400 ml-4 relative z-10" // Ensure button stays above everything
               >
                 <RefreshCw
                   className={`w-5 h-5 ${isRefreshingTrending ? 'animate-spin' : ''}`} // Spinner animation while refreshing
@@ -371,7 +371,7 @@ const handleRefreshPrompts = async () => {
 
         {/* Recent Recipes Section */}
         <div className="mb-6">
-          <div className="flex items-center justify-between mb-4">
+          <div className="flex items-center justify-between mb-4 relative">
             {/* Left-Side Icon and Title */}
             <div className="flex items-center">
               <Clock strokeWidth={1.5} className="w-6 h-6 text-[#27ff52] mr-2" />
@@ -382,7 +382,7 @@ const handleRefreshPrompts = async () => {
             <button
               onClick={handleRefreshRecent}
               disabled={isRefreshingRecent} // Disable button while refreshing
-              className="flex items-center text-slate-400 ml-2 relative z-10"
+              className="flex items-center text-slate-400 ml-4 relative z-10"
             >
               <RefreshCw
                 className={`w-5 h-5 ${isRefreshingRecent ? 'animate-spin' : ''}`} // Spinner animation while refreshing
@@ -397,40 +397,40 @@ const handleRefreshPrompts = async () => {
         </div>
 
         <div>
-        {/* Prompts Section */}
-          <div className="mb-6">
-            <div className="flex items-center justify-between mb-4">
-              {/* Left-Side Icon and Title */}
-              <div className="flex items-center">
-                <BotMessageSquare strokeWidth={1.5} className="w-6 h-6 text-[#27ff52] mr-2" />
-                <p className="text-xl font-light text-sky-50">Recent Prompts</p>
-              
+          {/* Prompts Section */}
+            <div className="mb-6">
+              <div className="flex items-center justify-between mb-4 relative">
+                {/* Left-Side Icon and Title */}
+                <div className="flex items-center">
+                  <BotMessageSquare strokeWidth={1.5} className="w-6 h-6 text-[#27ff52] mr-2" />
+                  <p className="text-xl font-light text-sky-50">Recent Prompts</p>
+                
 
-              {/* Refresh Button */}
-              <button
-                onClick={handleRefreshPrompts}
-                disabled={isRefreshingPrompts} // Disable button while refreshing
-                className="flex items-center text-slate-400 ml-2"
-              >
-                <RefreshCw
-                  className={`w-5 h-5 ${isRefreshingPrompts ? 'animate-spin' : ''}`} // Spinner animation while refreshing
-                />
-                <span className="ml-2 text-slate-400 text-sm"></span>
-              </button>
+                  {/* Refresh Button */}
+                  <button
+                    onClick={handleRefreshPrompts}
+                    disabled={isRefreshingPrompts} // Disable button while refreshing
+                    className="flex items-center text-slate-400 ml-4 relative"
+                  >
+                    <RefreshCw
+                      className={`w-5 h-5 ${isRefreshingPrompts ? 'animate-spin' : ''}`} // Spinner animation while refreshing
+                    />
+                    <span className="ml-2 text-slate-400 text-sm"></span>
+                  </button>
               </div>
             </div>
 
-              {/* Prompts Carousel */}
-              <PromptsCarousel prompts={prompts} onRefresh={handleRefreshPrompts} />
-            </div>
+                {/* Prompts Carousel */}
+                <PromptsCarousel prompts={prompts} onRefresh={handleRefreshPrompts} />
+              </div>
           </div>
         </div>
   
-      {/* Footer */}
-      <div className="sticky bottom-0 z-10">
-        <Footer actions={['user', 'send']} />
+        {/* Footer */}
+        <div className="sticky bottom-0 z-10">
+          <Footer actions={['user', 'send']} />
       </div>
-    </div>    
+   </div>    
   );  
 };
 
