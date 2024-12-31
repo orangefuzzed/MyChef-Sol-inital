@@ -1,6 +1,6 @@
-import React, { ChangeEvent, useRef } from 'react';
+import React, { ChangeEvent, useRef, useEffect } from 'react';
 import { PaperPlaneIcon } from '@radix-ui/react-icons';
-import { Mic } from 'lucide-react';
+import { useSearchParams } from 'next/navigation';
 
 interface MessageInputProps {
   inputMessage: string;
@@ -18,16 +18,38 @@ const MessageInput: React.FC<MessageInputProps> = ({
   isLoading,
 }) => {
   const textareaRef = useRef<HTMLTextAreaElement>(null); // Reference for the textarea
+  const searchParams = useSearchParams() ?? new URLSearchParams(); // Ensure it's never null
+  const prefilledPrompt = searchParams.get('prompt') || ''; // Default to an empty string if no prompt
+  
+
+  // Pre-fill the input field if there's a prompt in the URL
+  useEffect(() => {
+    if (prefilledPrompt && textareaRef.current) {
+      textareaRef.current.value = prefilledPrompt; // Set the textarea's value
+      textareaRef.current.style.height = 'auto'; // Reset height
+      textareaRef.current.style.height = `${textareaRef.current.scrollHeight}px`; // Adjust height dynamically
+    }
+  }, [prefilledPrompt]);
 
   const handleSendMessageWithReset = () => {
+    if (!inputMessage.trim()) {
+      return; // Prevent sending empty messages
+    }
+  
     handleSendMessage(); // Send the message first
-
+  
+    // Clear the URL's "prompt" parameter after sending
+    const url = new URL(window.location.href);
+    url.searchParams.delete('prompt');
+    window.history.replaceState({}, '', url.toString());
+  
     // Reset textarea height and input value
     if (textareaRef.current) {
       textareaRef.current.style.height = 'auto'; // Reset height
       textareaRef.current.value = ''; // Clear input value
     }
   };
+  
 
   return (
     <div className="relative p-2 mb-2">

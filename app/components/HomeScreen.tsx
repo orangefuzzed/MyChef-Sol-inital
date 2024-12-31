@@ -4,70 +4,29 @@ import React, { useState, useEffect } from 'react';
 import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 import HamburgerMenu from '../components/HamburgerMenu';
-
 import Footer from '../components/Footer';
 import Header from '../components/Header'; // Import the Header component
-import SavedRecipesCarousel from '../components/SavedRecipesCarousel';
-import ShoppingListsCarousel from '../components/ShoppingListsCarousel';
 import GetStartedModal from './GetStartedModal';
-import { ShoppingCart, Bookmark, Heart, ChefHat, ExternalLink } from 'lucide-react';
-import FavoriteRecipesCarousel from '../components/FavoriteRecipesCarousel';
-import { getFavoriteRecipesFromDB } from '../utils/favoritesUtils';
-import { Recipe } from '../../types/Recipe';
-import { getAllSavedShoppingListsFromDB } from '../utils/shoppingListUtils';
-import { ShoppingList } from '../../types/ShoppingList';
-import { getSavedRecipesFromDB } from '../utils/indexedDBUtils'; // Assuming we fetch saved recipes here
+import { ChefHat, ExternalLink, Clock, RefreshCw, Rocket, BotMessageSquare } from 'lucide-react';
 import OnboardingModal from './OnboardingModal';
+import TrendingRecipesCarousel from '../components/TrendingRecipesCarousel';
+import RecentRecipesCarousel from '../components/RecentRecipesCarousel';
+import PromptsCarousel from '../components/PromptsCarousel';
+import { Prompt } from '../../types/Prompt';
 
 
 const HomeScreen: React.FC = () => {
   const { data: session, status } = useSession();
   const router = useRouter();
   const [isHamburgerMenuOpen, setIsHamburgerMenuOpen] = useState(false);
-
   const [activeModalIndex, setActiveModalIndex] = useState<number | null>(null);
-  const [favoriteRecipes, setFavoriteRecipes] = useState<Recipe[]>([]);
-  const [shoppingLists, setShoppingLists] = useState<ShoppingList[]>([]);
-  const [savedRecipes, setSavedRecipes] = useState<Recipe[]>([]);
-  const [showOnboarding, setShowOnboarding] = useState(false);
-
-  useEffect(() => {
-    const fetchFavorites = async () => {
-      try {
-        // Fetch updated favorites from IndexedDB
-        const localFavorites = await getFavoriteRecipesFromDB();
-        setFavoriteRecipes(localFavorites);
-      } catch (error) {
-        console.error('Error fetching favorites from IndexedDB:', error);
-      }
-    };
-
-    const fetchShoppingLists = async () => {
-      try {
-        // Fetch updated shopping lists from IndexedDB
-        const localShoppingLists = (await getAllSavedShoppingListsFromDB()) || []; // Default to an empty array if null
-        setShoppingLists(localShoppingLists);
-      } catch (error) {
-        console.error('Error fetching shopping lists from IndexedDB:', error);
-      }
-    };
-
-    fetchFavorites();
-    fetchShoppingLists();
-  }, []);
-
-  useEffect(() => {
-    const fetchSavedRecipes = async () => {
-      try {
-        const localSavedRecipes = (await getSavedRecipesFromDB()) || []; // Default to an empty array if null
-        setSavedRecipes(localSavedRecipes);
-      } catch (error) {
-        console.error('Error fetching saved recipes from IndexedDB:', error);
-      }
-    };
-
-    fetchSavedRecipes();
-  }, []);
+  const [showOnboarding, setShowOnboarding] = useState(false); 
+  const [trendingRecipes, setTrendingRecipes] = useState([]);
+  const [isRefreshingTrending, setIsRefreshingTrending] = useState(false); // Loading state for Trending Recipes refresh
+  const [recentRecipes, setRecentRecipes] = useState([]);
+  const [isRefreshingRecent, setIsRefreshingRecent] = useState(false); // Loading state for Trending Recipes refresh
+  const [prompts, setPrompts] = useState<Prompt[]>([]);
+  const [isRefreshingPrompts, setIsRefreshingPrompts] = useState(false);
 
   const onboardingSlides = [
     {
@@ -92,7 +51,7 @@ const HomeScreen: React.FC = () => {
     },
     {
       header: 'Personalization at Its Best: Made for You, and Only You',
-      body: 'This isn’t one-size-fits-all. It’s your size. Dishcovery remembers what you like, learns your preferences, and serves up dishes tailored just for you. It knows you hate anchovies (lol, don’t we all!?), so it keeps those littel fishys far away from your plate.',
+      body: 'This isn’t one-size-fits-all. It’s your size. Dishcovery remembers what you like, learns your preferences, and serves up dishes tailored just for you. It knows you hate anchovies (lol, don’t we all!?), so it keeps those little fishies far away from your plate.',
       imageSrc: "/images/soup-3.png",
     },
     {
@@ -209,7 +168,33 @@ const HomeScreen: React.FC = () => {
     },    
   ];
   
-  
+  useEffect(() => {
+    // Fetch trending recipes
+    const fetchTrendingRecipes = async () => {
+      try {
+        const response = await fetch('/api/recipes/trending');
+        const data = await response.json();
+        setTrendingRecipes(data);
+      } catch (error) {
+        console.error('Error fetching trending recipes:', error);
+      }
+    };
+
+    // Fetch recent recipes
+    const fetchRecentRecipes = async () => {
+      try {
+        const response = await fetch('/api/recipes/recent');
+        const data = await response.json();
+        setRecentRecipes(data);
+      } catch (error) {
+        console.error('Error fetching recent recipes:', error);
+      }
+    };
+
+    fetchTrendingRecipes();
+    fetchRecentRecipes();
+  }, []);
+
   useEffect(() => {
     // Check if the user has seen the onboarding flow
     const fetchOnboardingStatus = async () => {
@@ -227,6 +212,60 @@ const HomeScreen: React.FC = () => {
 
     fetchOnboardingStatus();
   }, []);
+  
+// Refresh handler for Recent Recipes
+const handleRefreshRecent = async () => {
+  setIsRefreshingRecent(true); // Start loading
+  try {
+    const response = await fetch('/api/recipes/recent');
+    const data = await response.json();
+    setRecentRecipes(data);
+  } catch (error) {
+    console.error('Error refreshing recent recipes:', error);
+  }
+  setIsRefreshingRecent(false); // End loading
+};
+
+// Refresh handler for Trending Recipes
+const handleRefreshTrending = async () => {
+  setIsRefreshingTrending(true); // Start loading
+  try {
+    const response = await fetch('/api/recipes/trending');
+    const data = await response.json();
+    setTrendingRecipes(data);
+  } catch (error) {
+    console.error('Error refreshing trending recipes:', error);
+  }
+  setIsRefreshingTrending(false); // End loading
+};
+
+// Fetch prompts on component mount
+useEffect(() => {
+  const fetchPrompts = async () => {
+    try {
+      const response = await fetch('/api/prompts');
+      const data = await response.json();
+      setPrompts(data);
+    } catch (error) {
+      console.error('Error fetching prompts:', error);
+    }
+  };
+
+  fetchPrompts();
+}, []);
+
+// Refresh handler
+const handleRefreshPrompts = async () => {
+  setIsRefreshingPrompts(true);
+  try {
+    const response = await fetch('/api/prompts');
+    const data = await response.json();
+    setPrompts(data);
+  } catch (error) {
+    console.error('Error refreshing prompts:', error);
+  }
+  setIsRefreshingPrompts(false);
+};
 
   const handleOnboardingComplete = async () => {
     setShowOnboarding(false);
@@ -256,28 +295,25 @@ const HomeScreen: React.FC = () => {
         style={{ backgroundImage: "url('/images/meal-cooking-1.png')" }}
         >
       <Header centralText={`Welcome, ${session?.user?.name || 'Guest'}`} />
-      
-  
+
       {/* Menus */}
       <HamburgerMenu isOpen={isHamburgerMenuOpen} onClose={() => setIsHamburgerMenuOpen(false)} />
-      
-  
+
       {/* Main Content */}
       <div className="flex-grow overflow-y-auto px-6 py-4">
 
-      <OnboardingModal
-        isOpen={showOnboarding}
-        onClose={handleOnboardingComplete} // Triggered when modal is closed
-        slides={onboardingSlides} // Pass slides for the walkthrough
-        onSkip={handleOnboardingComplete} // Triggered when "Skip" is clicked
-        onComplete={handleOnboardingComplete} // Triggered when "Finish" is clicked
-      />
-
+        <OnboardingModal
+          isOpen={showOnboarding}
+          onClose={handleOnboardingComplete} // Triggered when modal is closed
+          slides={onboardingSlides} // Pass slides for the walkthrough
+          onSkip={handleOnboardingComplete} // Triggered when "Skip" is clicked
+          onComplete={handleOnboardingComplete} // Triggered when "Finish" is clicked
+        />
 
         {/* Walkthrough Section */}
         <div className="mb-6">
         <div className="flex items-center mb-4">
-            <ChefHat strokeWidth={1.5} className="w-6 h-6 text-pink-800 mr-2" />
+            <Rocket strokeWidth={1.5} className="w-6 h-6 text-[#27ff52] mr-2" />
             <p className="text-xl font-light text-sky-50">Get Started!</p>
           </div>
           <div className="flex gap-4 overflow-x-auto">
@@ -307,47 +343,95 @@ const HomeScreen: React.FC = () => {
           />
         ))}
 
-  
-        {/* Favorites Section */}
+        {/* Trending Recipes Section */}
         <div className="mb-6">
-          <div className="flex items-center mb-4">
-            <Heart strokeWidth={1.5} className="w-6 h-6 text-pink-800 mr-2" />
-            <p className="text-xl font-light text-sky-50">My Favorite Recipes</p>
+          <div className="flex items-center justify-between mb-4">
+            {/* Left-Side Icon and Title */}
+            <div className="flex items-center">
+              <ChefHat strokeWidth={1.5} className="w-6 h-6 text-[#27ff52] mr-2" />
+              <p className="text-xl font-light text-sky-50">Trending Recipes</p>
+            
+
+            {/* Refresh Button */}
+            <button
+              onClick={handleRefreshTrending}
+              disabled={isRefreshingTrending} // Disable button while refreshing
+              className="flex items-center text-slate-400 ml-2"
+            >
+              <RefreshCw
+                className={`w-5 h-5 ${isRefreshingTrending ? 'animate-spin' : ''}`} // Spinner animation while refreshing
+              />
+              <span className="ml-2"></span>
+            </button>
+            </div>
           </div>
-          <div className="flex gap-4 overflow-x-auto">
-          <FavoriteRecipesCarousel favoriteRecipes={favoriteRecipes} />
-          </div>
+
+          {/* Trending Recipes Carousel */}
+          <TrendingRecipesCarousel recipes={trendingRecipes} />
         </div>
-  
-        {/* Saved Recipes */}
+
+        {/* Recent Recipes Section */}
         <div className="mb-6">
-          <div className="flex items-center mb-4">
-            <Bookmark strokeWidth={1.5} className="w-6 h-6 text-pink-800 mr-2" />
-            <p className="text-xl font-light text-sky-50">My Saved Recipes</p>
+          <div className="flex items-center justify-between mb-4">
+            {/* Left-Side Icon and Title */}
+            <div className="flex items-center">
+              <Clock strokeWidth={1.5} className="w-6 h-6 text-[#27ff52] mr-2" />
+              <p className="text-xl font-light text-sky-50">Recent Recipes</p>
+            
+
+            {/* Refresh Button */}
+            <button
+              onClick={handleRefreshRecent}
+              disabled={isRefreshingRecent} // Disable button while refreshing
+              className="flex items-center text-slate-400 ml-2"
+            >
+              <RefreshCw
+                className={`w-5 h-5 ${isRefreshingRecent ? 'animate-spin' : ''}`} // Spinner animation while refreshing
+              />
+              <span className="ml-2"></span>
+            </button>
+            </div>
           </div>
-          <div className="flex gap-4 overflow-x-auto">
-          <SavedRecipesCarousel savedRecipes={savedRecipes} />
-          </div>
+
+          {/* Recent Recipes Carousel */}
+          <RecentRecipesCarousel recipes={recentRecipes} />
         </div>
-  
-        {/* Shopping Lists Section */}
+
         <div>
-          <div className="flex items-center mb-4">
-            <ShoppingCart strokeWidth={1.5} className="w-6 h-6 text-pink-800 mr-2" />
-            <p className="text-xl font-light text-sky-50">My Shopping Lists</p>
-          </div>
-          <div className="flex gap-4 overflow-x-auto">
-            <ShoppingListsCarousel shoppingLists={shoppingLists} />
+        {/* Prompts Section */}
+          <div className="mb-6">
+            <div className="flex items-center justify-between mb-4">
+              {/* Left-Side Icon and Title */}
+              <div className="flex items-center">
+                <BotMessageSquare strokeWidth={1.5} className="w-6 h-6 text-[#27ff52] mr-2" />
+                <p className="text-xl font-light text-sky-50">Recent Prompts</p>
+              
+
+              {/* Refresh Button */}
+              <button
+                onClick={handleRefreshPrompts}
+                disabled={isRefreshingPrompts} // Disable button while refreshing
+                className="flex items-center text-slate-400 ml-2"
+              >
+                <RefreshCw
+                  className={`w-5 h-5 ${isRefreshingPrompts ? 'animate-spin' : ''}`} // Spinner animation while refreshing
+                />
+                <span className="ml-2 text-slate-400 text-sm"></span>
+              </button>
+              </div>
+            </div>
+
+              {/* Prompts Carousel */}
+              <PromptsCarousel prompts={prompts} onRefresh={handleRefreshPrompts} />
+            </div>
           </div>
         </div>
-      </div>
   
       {/* Footer */}
-    <div className="sticky bottom-0 z-10">
-      <Footer actions={['user', 'send']} />
-    </div>
-    </div>
-    
+      <div className="sticky bottom-0 z-10">
+        <Footer actions={['user', 'send']} />
+      </div>
+    </div>    
   );  
 };
 

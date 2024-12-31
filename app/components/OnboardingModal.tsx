@@ -120,7 +120,7 @@ const OnboardingModal: React.FC<OnboardingModalProps> = ({
             >
                 <CircleArrowLeft
                 className={`w-7 h-7 rounded-full ${
-                    currentSlide === 0 ? 'text-gray-600' : 'text-lime-500'
+                    currentSlide === 0 ? 'text-gray-600' : 'text-[#27ff52]'
                 }`}
                 />
             </button>
@@ -140,7 +140,7 @@ const OnboardingModal: React.FC<OnboardingModalProps> = ({
                 ) : (
                 <CircleArrowRight
                     className={`w-7 h-7 rounded-full ${
-                    currentSlide === slides.length - 1 ? 'text-gray-600' : 'text-lime-500'
+                    currentSlide === slides.length - 1 ? 'text-gray-600' : 'text-[#27ff52]'
                     }`}
                 />
                 )}
@@ -154,7 +154,7 @@ const OnboardingModal: React.FC<OnboardingModalProps> = ({
               <span
                 key={index}
                 className={`h-2 w-2 rounded-full mx-1 ${
-                  index === currentSlide ? 'bg-lime-500' : 'bg-gray-300'
+                  index === currentSlide ? 'bg-[#27ff52]' : 'bg-gray-300'
                 }`}
               ></span>
             ))}

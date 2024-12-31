@@ -20,7 +20,7 @@ import LoadingModal from '../components/LoadingModal';
 import RetryModal from '../components/RetryModal'; // Import the RetryModal
 import Link from 'next/link';
 import Toast from '../components/Toast'; // Import the Toast component
-
+import { useSearchParams } from 'next/navigation'; // Import this for handling URL parameters
 
 
 const AIChatInterface = () => {
@@ -49,6 +49,10 @@ const AIChatInterface = () => {
     startNewSession(); // Reset the chat context
 };
   
+const searchParams = useSearchParams();
+const prefilledPrompt = searchParams ? searchParams.get('prompt') : null; // Get the prompt from the URL
+
+
   const router = useRouter();
 
   const { startNewSession } = useChat();
@@ -77,7 +81,7 @@ const AIChatInterface = () => {
     }
   }, [sessionId, setMessages]);
 
-    // Handle sending a message and saving it with the correct sessionId
+  // Handle sending a message and saving it with the correct sessionId
   const handleSendMessageClick = async () => {
     if (inputMessage.trim()) {
       // Ensure we have a consistent sessionId
@@ -121,6 +125,12 @@ const AIChatInterface = () => {
   const handleInputChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
     setInputMessage(event.target.value);
   };  
+
+  useEffect(() => {
+    if (prefilledPrompt) {
+      setInputMessage(prefilledPrompt); // Sync prefilled prompt with inputMessage state
+    }
+  }, [prefilledPrompt]);
 
   // Handle Enter key press
     const handleKeyPress = (event: React.KeyboardEvent<HTMLTextAreaElement>) => {

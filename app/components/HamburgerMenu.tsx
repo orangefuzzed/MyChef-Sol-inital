@@ -8,6 +8,7 @@ import {
   Heart,
   ShoppingCart,
   History,
+  SquareUser,
   User,
   LogOut,
   Bookmark,
@@ -52,11 +53,12 @@ const HamburgerMenu: React.FC<HamburgerMenuProps> = ({ isOpen, onClose }) => {
   }, [session]);
 
   const menuItems = [
+    { icon: <SquareUser size={20} color={'#fff'} />, text: 'My Home', link: '/MyHome' },
     { icon: <Settings size={20} color={'#fff'}/>, text: 'My Preferences', link: '/preferences' },
     { icon: <Bookmark size={20} color={'#fff'} />, text: 'Saved Recipes', link: '/saved-recipes' },
     { icon: <Heart size={20} color={'#fff'} />, text: 'Favorite Recipes', link: '/favorites' },
     { icon: <ShoppingCart size={20} color={'#fff'} />, text: 'Shopping Lists', link: '/shopping-lists' },
-    { icon: <History size={20} color={'#fff'} />, text: 'Recent History', link: '/history' },
+    { icon: <History size={20} color={'#fff'} />, text: 'Recent History', link: '/history' },    
     /*{ icon: <Calendar size={20} color={'#fff'} />, text: 'Saved Meal Plans', link: '/saved-meal-plans' },*/
   ];
 
