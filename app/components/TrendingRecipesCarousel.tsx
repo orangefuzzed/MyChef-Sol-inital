@@ -18,6 +18,7 @@ const TrendingRecipesCarousel: React.FC<RecipesCarouselProps> = ({ recipes, onRe
   };
 
   return (
+    <div>
     <div className="flex gap-6 overflow-x-auto scrollbar-hide">
       {recipes.map((recipe) => (
         <div
@@ -46,6 +47,7 @@ const TrendingRecipesCarousel: React.FC<RecipesCarouselProps> = ({ recipes, onRe
           <p className="text-sm">{recipe.description}</p>
         </div>
       ))}
+    </div>
     </div>
   );
 };
