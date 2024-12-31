@@ -311,7 +311,7 @@ const HomeScreen: React.FC = () => {
           onComplete={handleOnboardingComplete}
         />
   
-        {/* Walkthrough Section */}
+        {/* Walkthrough Section 
         <div className="mb-6">
           <div className="flex items-center mb-4">
             <Rocket strokeWidth={1.5} className="w-6 h-6 text-[#27ff52] mr-2" />
@@ -332,9 +332,9 @@ const HomeScreen: React.FC = () => {
               </div>
             ))}
           </div>
-        </div>
+        </div>*/}
   
-        {/* Render Modals */}
+        {/* Render Modals 
         {dummyWalkthroughCards.map((card, index) => (
           <GetStartedModal
             key={index}
@@ -342,7 +342,7 @@ const HomeScreen: React.FC = () => {
             onClose={() => setActiveModalIndex(null)}
             slides={card.slides}
           />
-        ))}
+        ))}*/}
   
         {/* Trending Recipes Section */}       
         <div className="mb-6">
