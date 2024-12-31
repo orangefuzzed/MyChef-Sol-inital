@@ -345,7 +345,7 @@ const HomeScreen: React.FC = () => {
         ))}
   
         {/* Trending Recipes Section */}       
-        <div>
+        <div className="mb-6 relative z-10">
             {/* Refresh Button */}            
             <button
                 onClick={handleRefreshTrending}
