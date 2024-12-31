@@ -354,7 +354,7 @@ const handleRefreshPrompts = async () => {
             <button
               onClick={handleRefreshTrending}
               disabled={isRefreshingTrending}
-              className="flex items-center text-slate-400 ml-4 pointer-events-auto relative z-10"
+              className="flex items-center text-slate-400 ml-4 pointer-events-auto relative z-40"
             >
               <RefreshCw
                 className={`w-5 h-5 ${isRefreshingTrending ? 'animate-spin' : ''}`}
@@ -364,29 +364,7 @@ const handleRefreshPrompts = async () => {
           </div>
           <TrendingRecipesCarousel recipes={trendingRecipes} />
         </div>
-  
-        {/* Recent Recipes Section */}
-        <div className="mb-6">
-          <div className="flex items-center justify-between mb-4 relative">
-            <div className="flex items-center">
-              <Clock strokeWidth={1.5} className="w-6 h-6 text-[#27ff52] mr-2" />
-              <p className="text-xl font-light text-sky-50">Recent Recipes</p>
-            </div>
-            {/* Refresh Button */}
-            <button
-              onClick={handleRefreshRecent}
-              disabled={isRefreshingRecent}
-              className="flex items-center p-6 rounded-full bg-slate-950/50 border border-pink-800 text-slate-400 ml-4 pointer-events-auto relative z-10"
-            >
-              <RefreshCw
-                className={`w-5 h-5 ${isRefreshingRecent ? 'animate-spin' : ''}`}
-              />
-              <span className="ml-2 text-slate-400 text-sm">refresh</span>
-            </button>
-          </div>
-          <RecentRecipesCarousel recipes={recentRecipes} />
-        </div>
-  
+
         {/* Prompts Section */}
         <div className="mb-6">
           <div className="flex items-center justify-between mb-4 relative">
@@ -407,6 +385,28 @@ const handleRefreshPrompts = async () => {
             </button>
           </div>
           <PromptsCarousel prompts={prompts} onRefresh={handleRefreshPrompts} />
+        </div>
+  
+        {/* Recent Recipes Section */}
+        <div className="mb-6">
+          <div className="flex items-center justify-between mb-4 relative">
+            <div className="flex items-center">
+              <Clock strokeWidth={1.5} className="w-6 h-6 text-[#27ff52] mr-2" />
+              <p className="text-xl font-light text-sky-50">Recent Recipes</p>
+            </div>
+            {/* Refresh Button */}
+            <button
+              onClick={handleRefreshRecent}
+              disabled={isRefreshingRecent}
+              className="flex items-center p-6 rounded-full bg-slate-950/50 border border-pink-800 text-slate-400 ml-4 pointer-events-auto relative z-30"
+            >
+              <RefreshCw
+                className={`w-5 h-5 ${isRefreshingRecent ? 'animate-spin' : ''}`}
+              />
+              <span className="ml-2 text-slate-400 text-sm">refresh</span>
+            </button>
+          </div>
+          <RecentRecipesCarousel recipes={recentRecipes} />
         </div>
       </div>
   
