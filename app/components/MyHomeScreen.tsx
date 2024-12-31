@@ -2,7 +2,6 @@
 
 import React, { useState, useEffect } from 'react';
 import { useSession } from 'next-auth/react';
-import { useRouter } from 'next/navigation';
 import HamburgerMenu from '../components/HamburgerMenu';
 import Footer from '../components/Footer';
 import Header from '../components/Header'; // Import the Header component
@@ -189,7 +188,7 @@ const HomeScreen: React.FC = () => {
         {/* Walkthrough Section */}
         <div className="mb-6">
         <div className="flex items-center mb-4">
-            <Rocket strokeWidth={1.5} className="w-6 h-6 text-pink-800 mr-2" />
+            <Rocket strokeWidth={1.5} className="w-6 h-6 text-[#27ff52] mr-2" />
             <p className="text-xl font-light text-sky-50">Get Started!</p>
           </div>
           <div className="flex gap-4 overflow-x-auto">
@@ -222,7 +221,7 @@ const HomeScreen: React.FC = () => {
         {/* Favorites Section */}
         <div className="mb-6">
           <div className="flex items-center mb-4">
-            <Heart strokeWidth={1.5} className="w-6 h-6 text-pink-800 mr-2" />
+            <Heart strokeWidth={1.5} className="w-6 h-6 text-[#27ff52] mr-2" />
             <p className="text-xl font-light text-sky-50">My Favorite Recipes</p>
           </div>
           <div className="flex gap-4 overflow-x-auto">
@@ -233,7 +232,7 @@ const HomeScreen: React.FC = () => {
         {/* Saved Recipes */}
         <div className="mb-6">
           <div className="flex items-center mb-4">
-            <Bookmark strokeWidth={1.5} className="w-6 h-6 text-pink-800 mr-2" />
+            <Bookmark strokeWidth={1.5} className="w-6 h-6 text-[#27ff52] mr-2" />
             <p className="text-xl font-light text-sky-50">My Saved Recipes</p>
           </div>
           <div className="flex gap-4 overflow-x-auto">
@@ -244,7 +243,7 @@ const HomeScreen: React.FC = () => {
         {/* Shopping Lists Section */}
         <div>
           <div className="flex items-center mb-4">
-            <ShoppingCart strokeWidth={1.5} className="w-6 h-6 text-pink-800 mr-2" />
+            <ShoppingCart strokeWidth={1.5} className="w-6 h-6 text-[#27ff52] mr-2" />
             <p className="text-xl font-light text-sky-50">My Shopping Lists</p>
           </div>
           <div className="flex gap-4 overflow-x-auto">

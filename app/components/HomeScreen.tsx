@@ -355,7 +355,7 @@ const HomeScreen: React.FC = () => {
             <button
               onClick={handleRefreshTrending}
               disabled={isRefreshingTrending}
-              className="flex items-center text-pink-400 ml-4"
+              className="flex items-center text-[#27ff52] ml-4"
             >
               <RefreshCw
                 className={`w-5 h-5 ${isRefreshingTrending ? 'animate-spin' : ''}`}
@@ -377,7 +377,7 @@ const HomeScreen: React.FC = () => {
             <button
               onClick={handleRefreshPrompts}
               disabled={isRefreshingPrompts}
-              className="flex items-center text-slate-400 ml-4"
+              className="flex items-center text-[#27ff52] ml-4"
             >
               <RefreshCw
                 className={`w-5 h-5 ${isRefreshingPrompts ? 'animate-spin' : ''}`}
@@ -399,7 +399,7 @@ const HomeScreen: React.FC = () => {
             <button
               onClick={handleRefreshRecent}
               disabled={isRefreshingRecent}
-              className="flex items-center text-slate-400 ml-4"
+              className="flex items-center text-[#27ff52] ml-4"
             >
               <RefreshCw
                 className={`w-5 h-5 ${isRefreshingRecent ? 'animate-spin' : ''}`}

@@ -27,18 +27,45 @@ self.addEventListener('install', event => {
   );
 });
 
-self.addEventListener('fetch', (event) => {
+// Fetch event
+self.addEventListener('fetch', event => {
   const url = new URL(event.request.url);
 
-  // Cache-first strategy for static assets and recipes
-  if (STATIC_ASSETS.includes(url.pathname) || url.pathname.startsWith('/api/recipes/')) {
+  // Stale-while-revalidate for /api/recipes
+  if (url.pathname.startsWith('/api/recipes/')) {
     event.respondWith(
-      caches.match(event.request).then((cachedResponse) => {
+      caches.open(CACHE_NAME).then(async (cache) => {
+        const cachedResponse = await cache.match(event.request);
+  
+        // Perform the network request in the background
+        const networkFetch = fetch(event.request)
+          .then((networkResponse) => {
+            // Only store in cache if it's a GET request
+            if (event.request.method === 'GET') {
+              cache.put(event.request, networkResponse.clone());
+            }
+            return networkResponse;
+          })
+          .catch(() => {
+            // If network fails, use the cached response
+            return cachedResponse;
+          });
+  
+        // If we have a cachedResponse, return it immediately (stale)
+        // and let the network request update the cache in the background.
+        // Otherwise, await the network request if cache is empty.
+        return cachedResponse || networkFetch;
+      })
+    );
+  } else if (STATIC_ASSETS.includes(url.pathname)) {
+    // Cache-first for static assets
+    event.respondWith(
+      caches.match(event.request).then(cachedResponse => {
         if (cachedResponse) {
           return cachedResponse;
         }
-        return fetch(event.request).then((networkResponse) => {
-          return caches.open(CACHE_NAME).then((cache) => {
+        return fetch(event.request).then(networkResponse => {
+          return caches.open(CACHE_NAME).then(cache => {
             cache.put(event.request, networkResponse.clone());
             return networkResponse;
           });
@@ -49,13 +76,13 @@ self.addEventListener('fetch', (event) => {
     // Network-first strategy for chat messages
     event.respondWith(
       fetch(event.request)
-        .then((networkResponse) => {
-          return caches.open(CACHE_NAME).then((cache) => {
+        .then(networkResponse => {
+          return caches.open(CACHE_NAME).then(cache => {
             cache.put(event.request, networkResponse.clone());
             return networkResponse;
           });
         })
-        .catch(() => caches.match(event.request)) // If offline, try to return from cache
+        .catch(() => caches.match(event.request))
     );
   } else {
     // Network-first strategy for other requests
@@ -65,6 +92,7 @@ self.addEventListener('fetch', (event) => {
   }
 });
 
+// Activate event
 self.addEventListener('activate', event => {
   const cacheWhitelist = [CACHE_NAME];
   event.waitUntil(
