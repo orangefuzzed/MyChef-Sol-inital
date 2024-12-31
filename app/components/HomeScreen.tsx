@@ -346,7 +346,7 @@ const HomeScreen: React.FC = () => {
   
         {/* Trending Recipes Section */}       
         <div className="mb-6 relative z-10">
-          <div className="flex items-center justify-between mb-4">
+          <div>
             {/* Refresh Button */}            
             <button
                 onClick={handleRefreshTrending}
@@ -357,7 +357,9 @@ const HomeScreen: React.FC = () => {
                   className={`w-5 h-5 ${isRefreshingTrending ? 'animate-spin' : ''}`}
                 />
                 <span className="ml-2 text-slate-400 text-sm"></span>
-              </button>  
+              </button>
+          </div>
+          <div className="flex items-center justify-between mb-4">                
             <div className="flex items-center">
               <ChefHat strokeWidth={1.5} className="w-6 h-6 text-[#27ff52] mr-2" />
               <p className="text-xl font-light text-sky-50">Trending Recipes</p>              
