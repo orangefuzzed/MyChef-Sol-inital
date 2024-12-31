@@ -255,7 +255,7 @@ const HomeScreen: React.FC = () => {
   
       {/* Footer */}
     <div className="sticky bottom-0 z-10">
-      <Footer actions={['user', 'send']} />
+      <Footer actions={['home', 'send']} />
     </div>
     </div>
     

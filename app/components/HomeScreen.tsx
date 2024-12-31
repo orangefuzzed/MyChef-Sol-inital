@@ -353,12 +353,12 @@ const HomeScreen: React.FC = () => {
             </div>
             {/* Refresh Button */}
             <button
-              onClick={handleRefreshTrending}
-              disabled={isRefreshingTrending}
+              onClick={handleRefreshPrompts}
+              disabled={isRefreshingPrompts}
               className="flex items-center text-slate-400 ml-4 pointer-events-auto relative"
             >
               <RefreshCw
-                className={`w-5 h-5 ${isRefreshingTrending ? 'animate-spin' : ''}`}
+                className={`w-5 h-5 ${isRefreshingPrompts ? 'animate-spin' : ''}`}
               />
               <span className="ml-2 text-slate-400 text-sm">refresh</span>
             </button>
@@ -397,12 +397,12 @@ const HomeScreen: React.FC = () => {
             </div>
             {/* Refresh Button */}
             <button
-              onClick={handleRefreshRecent}
-              disabled={isRefreshingRecent}
+              onClick={handleRefreshPrompts}
+              disabled={isRefreshingPrompts}
               className="flex items-center text-slate-400 ml-4 pointer-events-auto relative"
             >
               <RefreshCw
-                className={`w-5 h-5 ${isRefreshingRecent ? 'animate-spin' : ''}`}
+                className={`w-5 h-5 ${isRefreshingPrompts ? 'animate-spin' : ''}`}
               />
               <span className="ml-2 text-slate-400 text-sm">refresh</span>
             </button>
