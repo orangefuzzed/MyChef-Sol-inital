@@ -346,7 +346,7 @@ const HomeScreen: React.FC = () => {
   
         {/* Trending Recipes Section */}
         <div className="mb-6">
-          <div className="flex items-center justify-between mb-4 relative">
+          <div className="flex items-center justify-between mb-4">
             <div className="flex items-center">
               <ChefHat strokeWidth={1.5} className="w-6 h-6 text-[#27ff52] mr-2" />
               <p className="text-xl font-light text-sky-50">Trending Recipes</p>
@@ -355,7 +355,7 @@ const HomeScreen: React.FC = () => {
             <button
               onClick={handleRefreshTrending}
               disabled={isRefreshingTrending}
-              className="flex items-center text-pink-400 ml-4 pointer-events-auto relative"
+              className="flex items-center text-blue-400 ml-4"
             >
               <RefreshCw
                 className={`w-5 h-5 ${isRefreshingTrending ? 'animate-spin' : ''}`}
@@ -368,7 +368,7 @@ const HomeScreen: React.FC = () => {
 
         {/* Prompts Section */}
         <div className="mb-6">
-          <div className="flex items-center justify-between mb-4 relative">
+          <div className="flex items-center justify-between mb-4">
             <div className="flex items-center">
               <BotMessageSquare strokeWidth={1.5} className="w-6 h-6 text-[#27ff52] mr-2" />
               <p className="text-xl font-light text-sky-50">Recent Prompts</p>
@@ -377,7 +377,7 @@ const HomeScreen: React.FC = () => {
             <button
               onClick={handleRefreshPrompts}
               disabled={isRefreshingPrompts}
-              className="flex items-center text-slate-400 ml-4 pointer-events-auto relative"
+              className="flex items-center text-slate-400 ml-4"
             >
               <RefreshCw
                 className={`w-5 h-5 ${isRefreshingPrompts ? 'animate-spin' : ''}`}
@@ -390,7 +390,7 @@ const HomeScreen: React.FC = () => {
   
         {/* Recent Recipes Section */}
         <div className="mb-6">
-          <div className="flex items-center justify-between mb-4 relative">
+          <div className="flex items-center justify-between mb-4">
             <div className="flex items-center">
               <Clock strokeWidth={1.5} className="w-6 h-6 text-[#27ff52] mr-2" />
               <p className="text-xl font-light text-sky-50">Recent Recipes</p>
@@ -399,7 +399,7 @@ const HomeScreen: React.FC = () => {
             <button
               onClick={handleRefreshRecent}
               disabled={isRefreshingRecent}
-              className="flex items-center text-slate-400 ml-4 pointer-events-auto relative"
+              className="flex items-center text-slate-400 ml-4"
             >
               <RefreshCw
                 className={`w-5 h-5 ${isRefreshingRecent ? 'animate-spin' : ''}`}
