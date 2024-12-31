@@ -7,9 +7,10 @@ import { Flame, Clock, Soup } from 'lucide-react';
 
 interface RecipesCarouselProps {
   recipes: Recipe[]; // Expect a list of recipes as a prop
+  onRefresh?: () => void;
 }
 
-const TrendingRecipesCarousel: React.FC<RecipesCarouselProps> = ({ recipes }) => {
+const TrendingRecipesCarousel: React.FC<RecipesCarouselProps> = ({ recipes, onRefresh }) => {
   const router = useRouter();
 
   const handleRecipeClick = (id: string) => {

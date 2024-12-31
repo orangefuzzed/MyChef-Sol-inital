@@ -167,34 +167,14 @@ const HomeScreen: React.FC = () => {
       ],
     },    
   ];
+
+    // Redirect to login page if not authenticated
+    useEffect(() => {
+      if (status === 'unauthenticated') {
+        router.push('/login');
+      }
+    }, [status, router]);
   
-  useEffect(() => {
-    // Fetch trending recipes
-    const fetchTrendingRecipes = async () => {
-      try {
-        const response = await fetch('/api/recipes/trending');
-        const data = await response.json();
-        setTrendingRecipes(data);
-      } catch (error) {
-        console.error('Error fetching trending recipes:', error);
-      }
-    };
-
-    // Fetch recent recipes
-    const fetchRecentRecipes = async () => {
-      try {
-        const response = await fetch('/api/recipes/recent');
-        const data = await response.json();
-        setRecentRecipes(data);
-      } catch (error) {
-        console.error('Error fetching recent recipes:', error);
-      }
-    };
-
-    fetchTrendingRecipes();
-    fetchRecentRecipes();
-  }, []);
-
   useEffect(() => {
     // Check if the user has seen the onboarding flow
     const fetchOnboardingStatus = async () => {
@@ -212,60 +192,6 @@ const HomeScreen: React.FC = () => {
 
     fetchOnboardingStatus();
   }, []);
-  
-// Refresh handler for Recent Recipes
-const handleRefreshRecent = async () => {
-  setIsRefreshingRecent(true); // Start loading
-  try {
-    const response = await fetch('/api/recipes/recent');
-    const data = await response.json();
-    setRecentRecipes(data);
-  } catch (error) {
-    console.error('Error refreshing recent recipes:', error);
-  }
-  setIsRefreshingRecent(false); // End loading
-};
-
-// Refresh handler for Trending Recipes
-const handleRefreshTrending = async () => {
-  setIsRefreshingTrending(true); // Start loading
-  try {
-    const response = await fetch('/api/recipes/trending');
-    const data = await response.json();
-    setTrendingRecipes(data);
-  } catch (error) {
-    console.error('Error refreshing trending recipes:', error);
-  }
-  setIsRefreshingTrending(false); // End loading
-};
-
-// Fetch prompts on component mount
-useEffect(() => {
-  const fetchPrompts = async () => {
-    try {
-      const response = await fetch('/api/prompts');
-      const data = await response.json();
-      setPrompts(data);
-    } catch (error) {
-      console.error('Error fetching prompts:', error);
-    }
-  };
-
-  fetchPrompts();
-}, []);
-
-// Refresh handler
-const handleRefreshPrompts = async () => {
-  setIsRefreshingPrompts(true);
-  try {
-    const response = await fetch('/api/prompts');
-    const data = await response.json();
-    setPrompts(data);
-  } catch (error) {
-    console.error('Error refreshing prompts:', error);
-  }
-  setIsRefreshingPrompts(false);
-};
 
   const handleOnboardingComplete = async () => {
     setShowOnboarding(false);
@@ -283,12 +209,87 @@ const handleRefreshPrompts = async () => {
     }
   };
 
-  // Redirect to login page if not authenticated
   useEffect(() => {
-    if (status === 'unauthenticated') {
-      router.push('/login');
+    const fetchTrendingRecipes = async () => {
+      try {
+        const response = await fetch('/api/recipes/trending');
+        const data = await response.json();
+        setTrendingRecipes(data);
+      } catch (error) {
+        console.error('Error fetching trending recipes:', error);
+      }
+    };
+  
+    fetchTrendingRecipes();
+  }, []); // Fetch trending recipes on mount
+  
+  useEffect(() => {
+    const fetchRecentRecipes = async () => {
+      try {
+        const response = await fetch('/api/recipes/recent');
+        const data = await response.json();
+        setRecentRecipes(data);
+      } catch (error) {
+        console.error('Error fetching recent recipes:', error);
+      }
+    };
+  
+    fetchRecentRecipes();
+  }, []); // Fetch recent recipes on mount
+
+  // Fetch prompts on component mount
+  useEffect(() => {
+    const fetchPrompts = async () => {
+      try {
+        const response = await fetch('/api/prompts');
+        const data = await response.json();
+        setPrompts(data);
+      } catch (error) {
+        console.error('Error fetching prompts:', error);
+      }
+    };
+
+    fetchPrompts();
+  }, []);
+  
+  // Refresh handler for Recent Recipes
+  const handleRefreshRecent = async () => {
+    setIsRefreshingRecent(true); // Start loading
+    try {
+      const response = await fetch('/api/recipes/recent');
+      const data = await response.json();
+      setRecentRecipes(data);
+    } catch (error) {
+      console.error('Error refreshing recent recipes:', error);
     }
-  }, [status, router]);
+    setIsRefreshingRecent(false); // End loading
+  };
+
+  // Refresh handler for Trending Recipes
+  const handleRefreshTrending = async () => {
+    setIsRefreshingTrending(true); // Start loading
+    try {
+      const response = await fetch('/api/recipes/trending');
+      const data = await response.json();
+      setTrendingRecipes(data);
+    } catch (error) {
+      console.error('Error refreshing trending recipes:', error);
+    }
+    setIsRefreshingTrending(false); // End loading
+  };
+
+  // Refresh handler for Prompts
+  const handleRefreshPrompts = async () => {
+    setIsRefreshingPrompts(true);
+    try {
+      const response = await fetch('/api/prompts');
+      const data = await response.json();
+      setPrompts(data);
+    } catch (error) {
+      console.error('Error refreshing prompts:', error);
+    }
+    setIsRefreshingPrompts(false);
+  };
 
   return (
     <div
@@ -362,7 +363,7 @@ const handleRefreshPrompts = async () => {
               <span className="ml-2 text-slate-400 text-sm">refresh</span>
             </button>
           </div>
-          <TrendingRecipesCarousel recipes={trendingRecipes} />
+          <TrendingRecipesCarousel recipes={trendingRecipes} onRefresh={handleRefreshTrending}/>
         </div>
 
         {/* Prompts Section */}
@@ -406,7 +407,7 @@ const handleRefreshPrompts = async () => {
               <span className="ml-2 text-slate-400 text-sm">refresh</span>
             </button>
           </div>
-          <RecentRecipesCarousel recipes={recentRecipes} />
+          <RecentRecipesCarousel recipes={recentRecipes} onRefresh={handleRefreshTrending}/>
         </div>
       </div>
   
