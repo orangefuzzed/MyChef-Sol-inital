@@ -360,7 +360,7 @@ const handleRefreshPrompts = async () => {
                 <RefreshCw
                   className={`w-5 h-5 ${isRefreshingTrending ? 'animate-spin' : ''}`} // Spinner animation while refreshing
                 />
-                <span className="ml-2 text-slate-400 text-sm"></span>
+                <span className="ml-2 text-slate-400 text-sm">refresh</span>
               </button>
             </div>
           </div>
@@ -387,7 +387,7 @@ const handleRefreshPrompts = async () => {
               <RefreshCw
                 className={`w-5 h-5 ${isRefreshingRecent ? 'animate-spin' : ''}`} // Spinner animation while refreshing
               />
-              <span className="ml-2 text-slate-400 text-sm"></span>
+              <span className="ml-2 text-slate-400 text-sm">refresh</span>
             </button>
             </div>
           </div>
@@ -415,7 +415,7 @@ const handleRefreshPrompts = async () => {
                     <RefreshCw
                       className={`w-5 h-5 ${isRefreshingPrompts ? 'animate-spin' : ''}`} // Spinner animation while refreshing
                     />
-                    <span className="ml-2 text-slate-400 text-sm"></span>
+                    <span className="ml-2 text-slate-400 text-sm">refresh</span>
                   </button>
               </div>
             </div>
