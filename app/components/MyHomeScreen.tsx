@@ -65,7 +65,7 @@ const HomeScreen: React.FC = () => {
     fetchSavedRecipes();
   }, []);
 
-  const dummyWalkthroughCards = [
+  {/*const dummyWalkthroughCards = [
     {
       title: "Why Dishcovery is Different", // SLIDE 0
       description: "Not a recipe database. A recipe creator.",
@@ -170,11 +170,11 @@ const HomeScreen: React.FC = () => {
         },
       ],
     },    
-  ];
+  ];*/}
 
   return (
     <div className="flex flex-col h-screen bg-fixed bg-cover bg-center text-white"
-        style={{ backgroundImage: "url('/images/meal-cooking-1.png')" }}
+        style={{ backgroundImage: "url('/images/soup-6.png')" }}
         >
       <Header centralText={`Welcome, ${session?.user?.name || 'Guest'}`} />
       
@@ -185,7 +185,7 @@ const HomeScreen: React.FC = () => {
       {/* Main Content */}
       <div className="flex-grow overflow-y-auto px-6 py-4">
 
-        {/* Walkthrough Section */}
+        {/* Walkthrough Section 
         <div className="mb-6">
         <div className="flex items-center mb-4">
             <Rocket strokeWidth={1.5} className="w-6 h-6 text-[#27ff52] mr-2" />
@@ -206,9 +206,9 @@ const HomeScreen: React.FC = () => {
               </div>
             ))}
           </div>
-        </div>
+        </div>*/}
   
-        {/* Render Modals */}
+        {/* Render Modals 
         {dummyWalkthroughCards.map((card, index) => (
           <GetStartedModal
             key={index}
@@ -216,12 +216,12 @@ const HomeScreen: React.FC = () => {
             onClose={() => setActiveModalIndex(null)} // Close modal when dismissed
             slides={card.slides} // Pass the slides specific to this card
           />
-        ))}
+        ))}*/}
 
         {/* Favorites Section */}
         <div className="mb-6">
           <div className="flex items-center mb-4">
-            <Heart strokeWidth={1.5} className="w-6 h-6 text-[#27ff52] mr-2" />
+            <Heart strokeWidth={1.5} className="w-6 h-6 text-sky-50 mr-2" />
             <p className="text-xl font-light text-sky-50">My Favorite Recipes</p>
           </div>
           <div className="flex gap-4 overflow-x-auto">
@@ -232,7 +232,7 @@ const HomeScreen: React.FC = () => {
         {/* Saved Recipes */}
         <div className="mb-6">
           <div className="flex items-center mb-4">
-            <Bookmark strokeWidth={1.5} className="w-6 h-6 text-[#27ff52] mr-2" />
+            <Bookmark strokeWidth={1.5} className="w-6 h-6 text-sky-50 mr-2" />
             <p className="text-xl font-light text-sky-50">My Saved Recipes</p>
           </div>
           <div className="flex gap-4 overflow-x-auto">
@@ -243,7 +243,7 @@ const HomeScreen: React.FC = () => {
         {/* Shopping Lists Section */}
         <div>
           <div className="flex items-center mb-4">
-            <ShoppingCart strokeWidth={1.5} className="w-6 h-6 text-[#27ff52] mr-2" />
+            <ShoppingCart strokeWidth={1.5} className="w-6 h-6 text-sky-50 mr-2" />
             <p className="text-xl font-light text-sky-50">My Shopping Lists</p>
           </div>
           <div className="flex gap-4 overflow-x-auto">
