@@ -167,13 +167,6 @@ const HomeScreen: React.FC = () => {
       ],
     },    
   ];
-
-    // Redirect to login page if not authenticated
-    useEffect(() => {
-      if (status === 'unauthenticated') {
-        router.push('/login');
-      }
-    }, [status, router]);
   
   useEffect(() => {
     // Check if the user has seen the onboarding flow
