@@ -286,3 +286,66 @@ html, body {
     opacity: 0;
   }
 }
+
+/* Preferences Toggle Glow */
+.pulse-glow {
+  position: relative;
+  z-index: 1;
+}
+
+.pulse-glow::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 140%;
+  height: 140%;
+  border-radius: 50%;
+  background: rgba(39, 255, 82, 0.2); /* Soft green glow */
+  animation: pulse 1.5s infinite ease-in-out;
+  z-index: -1;
+}
+
+@keyframes pulse {
+  0% {
+    transform: translate(-50%, -50%) scale(1);
+    opacity: 0.6;
+  }
+  100% {
+    transform: translate(-50%, -50%) scale(1.4);
+    opacity: 0;
+  }
+}
+
+/* Preferences Button Wave Effect (Single Fire) */
+.wave-effect {
+  position: relative;
+  z-index: 1;
+  /* overflow: hidden; Ensure wave stays contained */
+}
+
+.wave-effect::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  background: #27ff52c3; /* Soft green wave */
+  z-index: -1;
+  animation: wave-once 1s ease-out; /* One-time wave animation */
+}
+
+@keyframes wave-once {
+  0% {
+    transform: translate(-50%, -50%) scale(1);
+    opacity: 0.6;
+  }
+  100% {
+    transform: translate(-50%, -50%) scale(2);
+    opacity: 0;
+  }
+}

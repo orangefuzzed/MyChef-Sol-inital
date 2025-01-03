@@ -1,9 +1,9 @@
 import React, { ChangeEvent, useRef, useEffect, useState } from 'react';
 import { PaperPlaneIcon} from '@radix-ui/react-icons';
-import {  Milk, MilkOff } from 'lucide-react';
+import {  Wheat, WheatOff } from 'lucide-react';
 import { useSearchParams } from 'next/navigation';
 import Toast from '../../components/Toast';
-import ParticleBurst from '../../components/ParticleBurst';
+
 
 interface MessageInputProps {
   inputMessage: string;
@@ -39,7 +39,7 @@ const MessageInput: React.FC<MessageInputProps> = ({
     togglePreferences();
     triggerParticleBurst();
 
-    const audio = new Audio('/audio/toggle-click.mp3'); // Add your sound file in /public/sounds
+    const audio = new Audio('/audio/toggle-click.wav'); // Add your sound file in /public/sounds
     audio.play();
 
     // Add a toast notification
@@ -155,25 +155,22 @@ const MessageInput: React.FC<MessageInputProps> = ({
             <button
               onClick={() => {
                 handleTogglePreferences(); // Toggle preferences
-                triggerParticleBurst(); // Trigger particle magic
+
               }}
-              className={`ml-2 p-2 rounded-full transition-transform duration-150 ease-out ${
+              className={`ml-2 p-2 rounded-full ${
                 isPreferencesActive
-                  ? 'bg-[#27ff52]/70 border border-sky-50 text-white'
-                  : 'border border-gray-500 bg-slate-950/30 text-gray-500 scale-100'
-              } hover:scale-105 `}
+                  ? 'wave-effect bg-[#27ff52] border border-sky-50 text-white'
+                  : 'border border-gray-500 bg-slate-950/30 text-gray-500'
+              } shadow-lg hover:shadow-xl transition-shadow`}
               disabled={isLoading}
               title="Toggle Preferences"
             >
               {isPreferencesActive ? (
-                <MilkOff strokeWidth={1.5} className="h-6 w-6" />
+                <WheatOff strokeWidth={1.5} color={"black"} className="h-5 w-5" />
               ) : (
-                <Milk strokeWidth={1.5} className="h-6 w-6" />
+                <Wheat strokeWidth={1.5} className="h-5 w-5" />
               )}
             </button>
-
-            {/* Particle Burst */}
-            {isParticlesActive && <ParticleBurst />}
           </div>
       </div>
     </div>
