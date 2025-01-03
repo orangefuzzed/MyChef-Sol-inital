@@ -83,7 +83,7 @@ const HomeScreen: React.FC = () => {
       ],
     },
     {
-      title: "DISHcover Recipes in Seconds!", // SLIDE 1
+      title: "DISHcover Recipes in Seconds", // SLIDE 1
       description: "Your Culinary Genie Awaits!",
       modalContent: "Let Dishcovery’s AI grant your food wishes. Crave something exotic? Need a quick family dinner? Just ask—and watch the magic unfold.",
       imageSrc: "/images/steak-dinner-1.png", 
@@ -291,6 +291,16 @@ const HomeScreen: React.FC = () => {
     setIsRefreshingPrompts(false);
   };
 
+  const handleNextSlide = () => {
+    setCurrentSlideIndex((prevIndex) => Math.min(prevIndex + 1, dummyWalkthroughCards.length - 1));
+  };
+
+  const handlePrevSlide = () => {
+    setCurrentSlideIndex((prevIndex) => Math.max(prevIndex - 1, 0));
+  };
+
+  const [currentSlideIndex, setCurrentSlideIndex] = useState(0);
+
   return (
     <div
       className="flex flex-col h-screen bg-fixed bg-cover bg-center text-white"
@@ -341,6 +351,9 @@ const HomeScreen: React.FC = () => {
             isOpen={activeModalIndex === index}
             onClose={() => setActiveModalIndex(null)}
             slides={card.slides}
+            currentSlideIndex={currentSlideIndex} // Pass current slide index
+            onNext={handleNextSlide} // Add the "onNext" handler
+            onPrev={handlePrevSlide} // Add the "onPrev" handler
           />
         ))}
   

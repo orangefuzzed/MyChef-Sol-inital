@@ -21,6 +21,7 @@ import RetryModal from '../components/RetryModal'; // Import the RetryModal
 import Link from 'next/link';
 import Toast from '../components/Toast'; // Import the Toast component
 import { useSearchParams } from 'next/navigation'; // Import this for handling URL parameters
+import { usePreferencesContext } from '../contexts/PreferencesContext';
 
 
 const AIChatInterface = () => {
@@ -48,7 +49,11 @@ const AIChatInterface = () => {
   const handleNewSession = () => {
     startNewSession(); // Reset the chat context
 };
-  
+const [isPreferencesActive, setIsPreferencesActive] = useState(false); // Toggle state
+const togglePreferences = () => {
+  setIsPreferencesActive((prev) => !prev);
+};
+const { preferences } = usePreferencesContext(); // Access preferences from the new context
 const searchParams = useSearchParams();
 const prefilledPrompt = searchParams ? searchParams.get('prompt') : null; // Get the prompt from the URL
 
@@ -110,7 +115,7 @@ const prefilledPrompt = searchParams ? searchParams.get('prompt') : null; // Get
   
       try {
         // Send the message to the AI and handle response (asynchronously)
-        await handleSendMessage(inputMessage);
+        await handleSendMessage(inputMessage, preferences, isPreferencesActive);
       } catch (error) {
         console.error('Error handling send message:', error);
       } finally {
@@ -327,6 +332,9 @@ const prefilledPrompt = searchParams ? searchParams.get('prompt') : null; // Get
           handleKeyPress={handleKeyPress}
           handleSendMessage={handleSendMessageClick}
           isLoading={isLoading}
+          isPreferencesActive={isPreferencesActive} // New prop
+          preferences={preferences} // New prop
+          togglePreferences={togglePreferences} // New prop
         />
       </>
 

@@ -6,6 +6,7 @@ import { saveRecipeToDatabase } from '../services/claudeService';
 import { saveChatMessageToDB, getLastUserMessageObjectFromDB } from '../utils/indexedDBUtils';
 import { Recipe } from '../../types/Recipe';
 
+
 export const useAIChatHandlers = () => {
   const {
     messages,
@@ -19,7 +20,11 @@ export const useAIChatHandlers = () => {
 
   const { addRecipeSuggestionSet } = useRecipeContext();
 
-  const handleSendMessage = async (inputMessage: string) => {
+  const handleSendMessage = async (
+    inputMessage: string,
+    preferences: any, // Pass preferences as an argument
+    isPreferencesActive: boolean // Pass the toggle state as an argument
+  ) => {
     if (!inputMessage || inputMessage.trim() === '') return;
 
     setIsLoading(true);
@@ -40,8 +45,17 @@ export const useAIChatHandlers = () => {
       await saveChatMessageToDB(newMessage);
 
       const conversationHistory = formatConversationHistory(messages);
-      const fullPrompt = generatePrompt(conversationHistory, inputMessage, 'sendMessage');
 
+      // Generate prompt with or without preferences
+      const fullPrompt = generatePrompt(
+        conversationHistory,
+        inputMessage,
+        'sendMessage',
+        preferences, // Include preferences
+        isPreferencesActive // Include toggle state
+      );
+
+      // Send the generated prompt to Claude API
       const aiResponse = await sendMessageToClaude(fullPrompt, 'recipe suggestions');
       const parsedResponse = parseAIResponse(aiResponse);
 
@@ -72,8 +86,7 @@ export const useAIChatHandlers = () => {
       }
     } catch (error) {
       console.error('Error during sendMessage:', error);
-    
-      // Create a unified error message
+
       const errorMessage: ChatMessage = {
         id: Date.now(),
         messageId: Date.now().toString(),
@@ -83,17 +96,12 @@ export const useAIChatHandlers = () => {
         text: 'Whoa, the kitchen’s a little chaotic right now! Let’s retry that request and get things back on track.',
       };
 
-      // Ensure setMessages works with a callback function
-      setMessages((prevMessages: ChatMessage[]) => {
-        const updatedMessages: ChatMessage[] = [...prevMessages, errorMessage];
-        return updatedMessages;
-      });
-
-      // Update lastAIResponse
+      setMessages((prevMessages: ChatMessage[]) => [...prevMessages, errorMessage]);
       setLastAIResponse(errorMessage);
       handleError(error, setIsLoading);
     }
   };
+  
 
   const handleRegenerateResponse = async () => {
     if (!lastAIResponse || !sessionId) return;

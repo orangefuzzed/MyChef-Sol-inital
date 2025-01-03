@@ -7,8 +7,8 @@ import { motion, AnimatePresence } from 'framer-motion';
 interface CarouselSlide {
   title: string;
   description?: string;
-  content: string;
-  content2?: string; // Make this optional in case a slide doesn't have it
+  content: React.ReactNode; // Updated from 'string' to 'React.ReactNode'
+  content2?: string; // This is fine as-is
   imageSrc?: string;
 }
 
@@ -16,6 +16,9 @@ interface ModalProps {
   isOpen: boolean;
   onClose: () => void;
   slides: CarouselSlide[]; // Array of slides for the carousel
+  currentSlideIndex: number; // Add this to control the slide index from the parent
+  onNext: () => void; // Add this for next slide
+  onPrev: () => void; // Add this for previous slide
 }
 
 const GetStartedModal: React.FC<ModalProps> = ({ isOpen, onClose, slides }) => {
@@ -95,9 +98,9 @@ const GetStartedModal: React.FC<ModalProps> = ({ isOpen, onClose, slides }) => {
               <p className="text-sm text-center mt-2 text-sky-50">
                 {slides[currentSlideIndex].description}
               </p>
-              <p className="text-sm text-center mt-2 text-sky-50">
+              <div className="text-sm text-center mt-2 text-sky-50">
                 {slides[currentSlideIndex].content}
-              </p>
+              </div>
               <p className="text-sm text-center mt-2 text-sky-50">
                 {slides[currentSlideIndex].content2}
               </p>

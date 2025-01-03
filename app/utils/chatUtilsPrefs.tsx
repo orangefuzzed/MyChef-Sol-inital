@@ -1,7 +1,7 @@
-// chatUtils.tsx
+// chatUtilsPrefs.tsx
 
 import { ChatMessage } from '../../types/ChatMessage'; // Assuming there's a ChatMessage type defined
-import { PreferencesContextType } from '../contexts/PreferencesContext'; // Import PreferencesContext
+import { IUserPreferences } from '../../models/userPreferences'; // Import preferences type
 
 export const handleError = (
   error: unknown,
@@ -12,32 +12,26 @@ export const handleError = (
 };
 
 // Utility to generate prompts for AI interaction
-export const generatePrompt = (
+export const generatePromptWithPreferences = (
   conversationHistory: string,
   message: string,
   promptType: string,
-  preferences: PreferencesContextType['preferences'], // Include preferences
-  isPreferencesActive: boolean // Include toggle state
+  preferences?: IUserPreferences // Include preferences as an optional parameter
 ): string => {
-  const preferencesPart = isPreferencesActive
+  // Generate preferences string if preferences exist
+  const preferencesString = preferences
     ? `
       User Preferences:
       - Adventure Scale: ${preferences.adventureScale || 'Not set'}
-      - Dietary Restrictions: ${
-        preferences.dietaryRestrictions.length
-          ? preferences.dietaryRestrictions.join(', ')
-          : 'None'
-      }
-      - Cooking Style: ${
-        preferences.cookingStyle.length ? preferences.cookingStyle.join(', ') : 'None selected'
-      }
+      - Dietary Restrictions: ${preferences.dietaryRestrictions?.join(', ') || 'None'}
+      - Cooking Style: ${preferences.cookingStyle?.join(', ') || 'None'}
     `
-    : ''; // Add preferences only if toggle is active
+    : '';
 
   const commonPromptPart = `
     ${conversationHistory}
+    ${preferencesString}
     Human: ${message}
-    ${preferencesPart} <!-- Add preferences if active -->
     Assistant:
   `;
 
@@ -45,8 +39,8 @@ export const generatePrompt = (
     case 'sendMessage':
       return `
         ${commonPromptPart}
-        Please provide 3 recipe suggestions based on the following user input.
-
+        Please provide 3 recipe suggestions based on the following user input and preferences.
+        
         Respond in the following JSON format:
         {
           "message": "A brief conversational and friendly assistant message introducing the suggestions.",
@@ -55,7 +49,7 @@ export const generatePrompt = (
               "id": "unique_recipe_id",
               "recipeTitle": "Recipe Title",
               "cookTime": "X min"
-              "calories": "X Kcal"
+              "calories: "X Kcal"
               "protein": "X g",
               "rating": "★★★★☆",
               "description": "Brief description",
@@ -64,14 +58,14 @@ export const generatePrompt = (
             }
           ]
         }
-
+        
         Ensure the response is valid JSON with no additional text or commentary outside of the JSON structure. Also ensure that the instructions include the amount of the ingredient in each of the steps.
       `;
     case 'regenerateResponse':
       return `
         ${commonPromptPart}
-        Please generate 4 new and different recipe suggestions for the user's request.
-
+        Please generate 4 new and different recipe suggestions for the user's request, taking preferences into account.
+  
         Respond in the same JSON format as before.
       `;
     case 'continueResponse':
@@ -91,6 +85,7 @@ export const formatConversationHistory = (messages: ChatMessage[]): string => {
     .join('\n');
 };
 
+// Parse AI response
 export const parseAIResponse = (aiResponse: string) => {
   try {
     const parsedResponse = JSON.parse(aiResponse);

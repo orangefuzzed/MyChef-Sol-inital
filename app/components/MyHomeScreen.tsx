@@ -174,7 +174,7 @@ const HomeScreen: React.FC = () => {
 
   return (
     <div className="flex flex-col h-screen bg-fixed bg-cover bg-center text-white"
-        style={{ backgroundImage: "url('/images/soup-6.png')" }}
+        style={{ backgroundImage: "url('/images/pizza-4.png')" }}
         >
       <Header centralText={`Welcome, ${session?.user?.name || 'Guest'}`} />
       
