@@ -1,7 +1,9 @@
 import React, { ChangeEvent, useRef, useEffect, useState } from 'react';
-import { PaperPlaneIcon, GearIcon } from '@radix-ui/react-icons';
+import { PaperPlaneIcon} from '@radix-ui/react-icons';
+import {  Milk, MilkOff } from 'lucide-react';
 import { useSearchParams } from 'next/navigation';
 import Toast from '../../components/Toast';
+import ParticleBurst from '../../components/ParticleBurst';
 
 interface MessageInputProps {
   inputMessage: string;
@@ -35,6 +37,10 @@ const MessageInput: React.FC<MessageInputProps> = ({
   const handleTogglePreferences = () => {
     // Toggle the preferences state
     togglePreferences();
+    triggerParticleBurst();
+
+    const audio = new Audio('/audio/toggle-click.mp3'); // Add your sound file in /public/sounds
+    audio.play();
 
     // Add a toast notification
     const toastMessage = isPreferencesActive
@@ -52,6 +58,14 @@ const MessageInput: React.FC<MessageInputProps> = ({
       setToastList((prev) => prev.filter((toast) => toast.id !== id));
     }, 3000);
   };
+
+  const [isParticlesActive, setIsParticlesActive] = useState(false);
+
+  const triggerParticleBurst = () => {
+    setIsParticlesActive(true);
+    setTimeout(() => setIsParticlesActive(false), 600); // Match particle animation duration
+  };
+
 
   // Pre-fill the input field if there's a prompt in the URL
   useEffect(() => {
@@ -119,26 +133,48 @@ const MessageInput: React.FC<MessageInputProps> = ({
           />
   
           {/* Send Button */}
-          <button
-            onClick={handleSendMessageWithPreferences}
-            className="p-2 rounded-full bg-[#27ff52] text-black shadow-lg hover:shadow-xl transition-shadow ml-2"
-            disabled={isLoading}
-          >
-            <PaperPlaneIcon className="h-4 w-4" />
-          </button>
+            <button
+              onClick={handleSendMessageWithPreferences}
+              className={`p-2 rounded-full transition-all duration-300 ease-in-out ${
+                inputMessage.trim()
+                  ? 'bg-[#27ff52] text-black shadow-lg hover:shadow-xl transform scale-105' // Active state
+                  : 'bg-gray-400 text-gray-700 transform scale-100' // Default state
+              }`}
+              disabled={isLoading}
+            >
+              <PaperPlaneIcon
+                className={`h-4 w-4 transition-transform duration-300 ease-in-out ${
+                  inputMessage.trim() ? 'scale-125' : 'scale-100'
+                }`}
+              />
+            </button>
         </div>
   
         {/* Preferences Toggle Button */}
-        <button
-          onClick={handleTogglePreferences} // Updated toggle handler
-          className={`ml-2 p-2 rounded-full ${
-            isPreferencesActive ? 'bg-slate-950/30 border border-[#27ff52] text-[#27ff52]' : 'border border-gray-500 bg-slate-950/30 text-gray-500'
-          } shadow-lg hover:shadow-xl transition-shadow`}
-          disabled={isLoading}
-          title="Toggle Preferences"
-        >
-          <GearIcon className="h-5 w-5" />
-        </button>
+          <div className="relative">
+            <button
+              onClick={() => {
+                handleTogglePreferences(); // Toggle preferences
+                triggerParticleBurst(); // Trigger particle magic
+              }}
+              className={`ml-2 p-2 rounded-full transition-transform duration-150 ease-out ${
+                isPreferencesActive
+                  ? 'bg-[#27ff52]/70 border border-sky-50 text-white'
+                  : 'border border-gray-500 bg-slate-950/30 text-gray-500 scale-100'
+              } hover:scale-105 `}
+              disabled={isLoading}
+              title="Toggle Preferences"
+            >
+              {isPreferencesActive ? (
+                <MilkOff strokeWidth={1.5} className="h-6 w-6" />
+              ) : (
+                <Milk strokeWidth={1.5} className="h-6 w-6" />
+              )}
+            </button>
+
+            {/* Particle Burst */}
+            {isParticlesActive && <ParticleBurst />}
+          </div>
       </div>
     </div>
   );

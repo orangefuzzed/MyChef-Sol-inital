@@ -173,3 +173,116 @@ html, body {
 .no-scroll {
   overflow: hidden; /* Can be used for modal open states, for example */
 }
+
+/* Add this to your styles.css or equivalent */
+@keyframes glow-pulse {
+  0% {
+    box-shadow: 0 0 8px rgba(39, 255, 82, 0.5);
+  }
+  100% {
+    box-shadow: 0 0 0 rgba(39, 255, 82, 0);
+  }
+}
+
+.animate-glow {
+  animation: glow-pulse 0.4s ease-out;
+}
+
+@keyframes particle-up {
+  0% {
+    transform: translate(0, 0) scale(1);
+    opacity: 1;
+  }
+  100% {
+    transform: translate(50px, -50px) scale(0.5);
+    opacity: 0;
+  }
+}
+
+@keyframes particle-down {
+  0% {
+    transform: translate(0, 0) scale(1);
+    opacity: 1;
+  }
+  100% {
+    transform: translate(-50px, 50px) scale(0.5);
+    opacity: 0;
+  }
+}
+
+@keyframes particle-left {
+  0% {
+    transform: translate(0, 0) scale(1);
+    opacity: 1;
+  }
+  100% {
+    transform: translate(-50px, -50px) scale(0.5);
+    opacity: 0;
+  }
+}
+
+@keyframes particle-right {
+  0% {
+    transform: translate(0, 0) scale(1);
+    opacity: 1;
+  }
+  100% {
+    transform: translate(50px, 50px) scale(0.5);
+    opacity: 0;
+  }
+}
+
+.animate-particle-0 {
+  animation: particle-up 0.6s ease-out forwards;
+}
+
+.animate-particle-1 {
+  animation: particle-down 0.6s ease-out forwards;
+}
+
+.animate-particle-2 {
+  animation: particle-left 0.6s ease-out forwards;
+}
+
+.animate-particle-3 {
+  animation: particle-right 0.6s ease-out forwards;
+}
+
+.animate-particle-4 {
+  animation: particle-up 0.6s ease-out forwards;
+}
+
+.animate-particle-5 {
+  animation: particle-down 0.6s ease-out forwards;
+}
+
+/* Add this to globals.css */
+.pulse-glow {
+  position: relative;
+  z-index: 1;
+}
+
+.pulse-glow::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 120%; /* Slightly larger than the button */
+  height: 120%;
+  border-radius: 50%;
+  background: rgba(39, 255, 82, 0.3); /* Adjust glow color here */
+  animation: pulse 1.5s infinite ease-in-out;
+  z-index: -1; /* Ensures the glow is behind the button */
+}
+
+@keyframes pulse {
+  0% {
+    transform: translate(-50%, -50%) scale(1);
+    opacity: 0.7;
+  }
+  100% {
+    transform: translate(-50%, -50%) scale(1.5);
+    opacity: 0;
+  }
+}

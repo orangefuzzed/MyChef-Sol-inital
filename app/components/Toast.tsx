@@ -31,7 +31,7 @@ const Toast: React.FC<ToastProps> = ({ message, type, actions, onClose, duration
           : 'bg-pink-800/85 border border-pink-500'
       }`}
       style={{
-        bottom: '50px', // Placement from the bottom
+        bottom: '140px', // Placement from the bottom
         left: '0%', // Center horizontally
         transform: 'translateX(-50%)', // Center the toast
       }}
