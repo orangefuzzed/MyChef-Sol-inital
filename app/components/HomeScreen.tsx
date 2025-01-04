@@ -152,7 +152,7 @@ const HomeScreen: React.FC = () => {
           "title": "Your Personal Cookbook",
           "content": "Save your favorite recipes and keep them at your fingertips. Whether it’s that perfect lasagna or a quick weeknight stir-fry, Dishcovery keeps your culinary treasures safe and sound.",
           "content2": "Saved recipes, favorites, and more—your digital recipe box has never looked so good. Bookmark it. Love it. Cook it. 💚",
-          "imageSrc": "/images/dbreakfast-3.png",
+          "imageSrc": "/images/breakfast-3.png",
         },
         {
           "title": "Never Lose a Shopping List Again",

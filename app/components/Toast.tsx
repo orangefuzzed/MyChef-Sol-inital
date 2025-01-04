@@ -21,26 +21,27 @@ const Toast: React.FC<ToastProps> = ({ message, type, actions, onClose, duration
 
   const toastContent = (
     <motion.div
-      initial={{ opacity: 0, translateY: 30 }}
-      animate={{ opacity: 1, translateY: 0 }}
-      exit={{ opacity: 0, translateY: 30 }}
-      role="alert" // Accessibility
-      className={`fixed z-50 flex items-center justify-center p-4 backdrop-blur-lg w-5/6 ml-8 shadow-lg ring-1 ring-black/5 rounded-2xl text-white ${
-        type === 'success'
-          ? 'bg-[#59ED8F]/85 border border-[#27ff52]'
-          : 'bg-pink-800/85 border border-pink-500'
-      }`}
-      style={{
-        bottom: '140px', // Placement from the bottom
-        left: '0%', // Center horizontally
-        transform: 'translateX(-50%)', // Center the toast
-      }}
+    initial={{ opacity: 0, translateY: 20 }}
+    animate={{ opacity: 1, translateY: 0 }}
+    exit={{ opacity: 0, translateY: 20 }}
+    role="alert" // Accessibility
+    className={`fixed z-50 flex items-center justify-center px-8 py-4 backdrop-blur-lg max-w-lg shadow-lg ring-1 ring-black/5 rounded-xl text-white ${
+      type === 'success'
+        ? 'bg-slate-950/55 border border-sky-50'
+        : 'bg-slate-950/55 border border-sky-50'
+    }`}
+    style={{
+      top: '50%', // Vertical center
+      left: '0%', // Horizontal center
+      transform: 'translate(-50%, -50%)', // Perfect centering
+    }}
+    
     >
       {/* Toast Content */}
       <div className="flex flex-col items-center gap-2">
         <div className="flex items-center gap-3">
           {type === 'success' ? (
-            <svg className="w-6 h-6 text-emerald-800" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <svg className="w-6 h-6 text-[#27ff52]" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7" />
             </svg>
           ) : (
