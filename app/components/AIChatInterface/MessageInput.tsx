@@ -137,8 +137,8 @@ const MessageInput: React.FC<MessageInputProps> = ({
               onClick={handleSendMessageWithPreferences}
               className={`p-2 rounded-full transition-all duration-300 ease-in-out ${
                 inputMessage.trim()
-                  ? 'bg-[#27ff52] text-black border border-sky-50 shadow-lg hover:shadow-xl transform scale-105' // Active state
-                  : 'bg-gray-400 text-gray-700 transform scale-100' // Default state
+                  ? 'bg-[#27ff52] text-black border border-sky-50 shadow-lg hover:shadow-xl transform scale-100' // Active state
+                  : 'bg-gray-400 text-gray-700 transform scale-75' // Default state
               }`}
               disabled={isLoading}
             >
