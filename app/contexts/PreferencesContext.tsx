@@ -6,6 +6,8 @@ interface Preferences {
   adventureScale: number;
   dietaryRestrictions: string[];
   cookingStyle: string[];
+  ingredients: string[]; // NEW: Ingredients checkbox selections
+  schedule: string[]; // NEW: Schedule checkbox selections
 }
 
 // Explicitly export PreferencesContextType
@@ -22,6 +24,8 @@ export const PreferencesProvider: React.FC<{ children: React.ReactNode }> = ({ c
     adventureScale: 2,
     dietaryRestrictions: [],
     cookingStyle: [],
+    ingredients: [], // NEW: Initialize empty array for ingredients
+    schedule: [], // NEW: Initialize empty array for schedule
   });
 
   const fetchPreferences = async () => {
@@ -30,7 +34,7 @@ export const PreferencesProvider: React.FC<{ children: React.ReactNode }> = ({ c
       if (response.ok) {
         const data = await response.json();
         if (data.preferences) {
-          setPreferences(data.preferences);
+          setPreferences(data.preferences); // Populate state with fetched preferences
         }
       }
     } catch (error) {

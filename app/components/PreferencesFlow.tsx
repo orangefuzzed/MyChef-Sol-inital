@@ -2,9 +2,10 @@
 
 import React, { useState } from 'react';
 import { usePreferencesContext } from '../contexts/PreferencesContext'; // Import context
-import AdventureScaleSlider from './AdventureScaleSlider';
+import ScheduleCheckBoxes from './ScheduleCheckBoxes';
 import DietaryRestrictions from './DietaryRestrictions';
 import CookingStyleCheckboxes from './CookingStyleCheckboxes';
+import IngredientsCheckBoxes from './IngredientsCheckBoxes';
 import PreferencesPreview from './PreferencesPreview';
 import GetStartedModal from './GetStartedModal';
 import Toast from './../components/Toast'; // Import Toast
@@ -66,18 +67,31 @@ const PreferencesFlow: React.FC<PreferencesFlowProps> = ({ isOpen, onClose }) =>
       ),
     },
     {
-      title: 'Adventure Scale',
+      title: 'How’s Your Schedule?',
       content: (
         <div>
-          <AdventureScaleSlider
-            value={preferences.adventureScale}
+          <ScheduleCheckBoxes
+            selectedOptions={preferences.schedule}
             onChange={(value) =>
-              setPreferences((prev) => ({ ...prev, adventureScale: value }))
+              setPreferences((prev) => ({ ...prev, schedule: value }))
             }
           />
         </div>
       ),
     },
+    {
+        title: 'What’s In your Pantry?',
+        content: (
+          <div>
+            <IngredientsCheckBoxes
+              selectedIngredients={preferences.ingredients}
+              onChange={(value) =>
+                setPreferences((prev) => ({ ...prev, schedule: value }))
+              }
+            />
+          </div>
+        ),
+      },
     {
       title: 'Dietary Restrictions',
       content: (
