@@ -15,12 +15,22 @@ export async function GET() {
     }
 
     const userPreferences = await userPreferencesCollection.findOne({ userEmail: session.user.email });
-    return NextResponse.json({ preferences: userPreferences || {} }, { status: 200 });
+
+    // Ensure all preference fields are returned, even if they are undefined in the database
+    const defaultPreferences = {
+      dietaryRestrictions: [],
+      cookingStyle: [],
+      ingredients: [], // New field
+      schedule: [], // New field
+    };
+
+    return NextResponse.json({ preferences: { ...defaultPreferences, ...userPreferences } }, { status: 200 });
   } catch (error) {
     console.error('Error fetching preferences:', error);
     return NextResponse.json({ error: 'Failed to fetch preferences' }, { status: 500 });
   }
 }
+
 
 export async function POST(request: Request) {
   try {
@@ -37,9 +47,10 @@ export async function POST(request: Request) {
 
     const updatedPreferences = {
       userEmail,
-      adventureScale: body.adventureScale || 2,
-      dietaryRestrictions: body.dietaryRestrictions || [],
+      dietaryRestrictions: body.dietaryRestrictions || [], // Full dynamic list support
       cookingStyle: body.cookingStyle || [],
+      ingredients: body.ingredients || [], // New field
+      schedule: body.schedule || [], // New field
     };
 
     await userPreferencesCollection.updateOne(
@@ -54,3 +65,4 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: 'Failed to save preferences' }, { status: 500 });
   }
 }
+

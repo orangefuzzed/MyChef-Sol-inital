@@ -1,13 +1,14 @@
 'use client';
 
 import React from 'react';
-import { Check, Pizza } from 'lucide-react';
+import { Users, Timer, Ham, WheatOff } from 'lucide-react';
 
 interface PreferencesPreviewProps {
   preferences: {
-    adventureScale: number;
     dietaryRestrictions: string[];
     cookingStyle: string[];
+    schedule: string[]; // New schedule preferences
+    ingredients: string[]; // New pantry preferences
   };
   onSavePreferences: () => void; // Add the prop for saving preferences
 }
@@ -16,27 +17,19 @@ const PreferencesPreview: React.FC<PreferencesPreviewProps> = ({
   preferences,
   onSavePreferences,
 }) => {
-  const adventureLabels = [
-    'Safe & Familiar',
-    'Slightly Adventurous',
-    'Balanced Adventure',
-    'Adventurous',
-    'Wild & Bold',
-  ];
-
   return (
     <div className="p-6 rounded-md">
-      <p className="text-lg font-semibold text-green-400 mb-4">Your Preferences</p>
+      <p className="text-lg font-light text-[#00a39e] mb-4">Review Your Preferences</p>
 
       <div className="space-y-4">
-        {/* Cooking Style */}
+        {/* Who's In Your Kitchen */}
         <div>
-          <h4 className="mb-2 text-sm font-semibold text-gray-200">Cooking Style:</h4>
+          <h4 className="mb-2 text-sm font-semibold text-gray-200">Who's In Your Kitchen?:</h4>
           <div className="space-y-1">
             {preferences.cookingStyle.length ? (
               preferences.cookingStyle.map((style, index) => (
                 <div key={index} className="flex text-sm font-base text-sky-50">
-                  <Check className="w-4 h-4 mr-2 text-green-400" />
+                  <Users className="w-4 h-4 mr-2 text-[#00a39e]" />
                   {style}
                 </div>
               ))
@@ -45,16 +38,42 @@ const PreferencesPreview: React.FC<PreferencesPreviewProps> = ({
             )}
           </div>
         </div>
-      </div>
 
-        {/* Adventure Scale */}
+        {/* How's Your Schedule */}
         <div>
-            <h4 className="my-2 text-sm font-semibold text-gray-200">Adventure Scale:</h4>
-            <div className="flex items-center text-sm font-base text-sky-50">
-                <Pizza className="w-4 h-4 mr-2 text-green-400" /> {/* Pizza icon */}
-                {adventureLabels[preferences.adventureScale - 1] || 'Not set'}
+          <h4 className="my-2 text-sm font-semibold text-gray-200">How's Your Schedule?:</h4>
+          <div className="space-y-1">
+            {preferences.schedule.length ? (
+              preferences.schedule.map((option, index) => (
+                <div key={index} className="flex text-sm font-base text-sky-50">
+                  <Timer className="w-4 h-4 mr-2 text-[#00a39e]" />
+                  {option}
+                </div>
+              ))
+            ) : (
+              <p className="text-sm font-base text-sky-50">None selected</p>
+            )}
+          </div>
+        </div>
+
+        {/* What's in Your Pantry */}
+        <div>
+            <h4 className="my-2 text-sm font-semibold text-gray-200">What's in Your Pantry?:</h4>
+            <div className="space-y-1">
+                {preferences.ingredients && preferences.ingredients.length > 0 ? ( // Safeguard check
+                preferences.ingredients.map((item, index) => (
+                    <div key={index} className="flex text-sm font-base text-sky-50">
+                    <Ham className="w-4 h-4 mr-2 text-[#00a39e]" />
+                    {item}
+                    </div>
+                ))
+                ) : (
+                <p className="text-sm font-base text-sky-50">None selected</p>
+                )}
             </div>
         </div>
+
+
 
         {/* Dietary Restrictions */}
         <div>
@@ -63,7 +82,7 @@ const PreferencesPreview: React.FC<PreferencesPreviewProps> = ({
             {preferences.dietaryRestrictions.length ? (
               preferences.dietaryRestrictions.map((restriction, index) => (
                 <div key={index} className="flex text-sm font-base text-sky-50">
-                  <Check className="w-4 h-4 mr-2 text-green-400" />
+                  <WheatOff className="w-4 h-4 mr-2 text-[#00a39e]" />
                   {restriction}
                 </div>
               ))
@@ -72,12 +91,13 @@ const PreferencesPreview: React.FC<PreferencesPreviewProps> = ({
             )}
           </div>
         </div>
+    </div>
 
       {/* Save Preferences Button */}
       <div className="text-center mt-6">
         <button
           onClick={onSavePreferences}
-          className="mt-6 p-2 px-6 bg-pink-800/50 border border-sky-50 shadow-lg ring-1 ring-black/5 rounded-full text-sm text-sky-50 flex items-center gap-2"
+          className="justify-items-center w-full p-2 px-6 bg-pink-800/50 border border-sky-50 shadow-lg ring-1 ring-black/5 rounded-full text-sm text-sky-50"
         >
           Update Preferences
         </button>

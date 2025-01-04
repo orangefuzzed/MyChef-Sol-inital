@@ -10,36 +10,43 @@ interface IngredientsCheckBoxesProps {
 }
 
 const ingredientsOptions = [
-  'Basic Pantry Staples', // Placeholder text
-  'Some Fancy Stuff', // Replace with actual ingredient options
-  'Take Me on a Culinary Adventure!', // Replace with actual ingredient options
-  'Whatever-I’m Going Shopping!', // Replace with actual ingredient options
+  'Basic Pantry Staples',
+  'Some Fancy Stuff',
+  'Take Me on a Culinary Adventure!',
+  'Whatever—I’m Going Shopping!',
 ];
 
 const IngredientsCheckBoxes: React.FC<IngredientsCheckBoxesProps> = ({
-  selectedIngredients= [],
+  selectedIngredients = [],
   onChange,
 }) => {
-  const handleCheckboxChange = (ingredient: string) => {
-    if (selectedIngredients.includes(ingredient)) {
-      onChange(selectedIngredients.filter((s) => s !== ingredient));
+  const handleCheckboxChange = (ingredient: string, checked: boolean) => {
+    if (checked) {
+      onChange([...selectedIngredients, ingredient]); // Add ingredient
     } else {
-      onChange([...selectedIngredients, ingredient]);
+      onChange(selectedIngredients.filter((s) => s !== ingredient)); // Remove ingredient
     }
   };
 
   return (
+    <div>
+    <h4 className="mb-2 text-lg font-semibold text-gray-200">
+        What’s In your Pantry?
+    </h4>
+    <p className="mb-4 text-sm text-gray-400">
+      Typical Ingredients Considerations...
+    </p>
     <div className="space-y-4">
       {ingredientsOptions.map((ingredient) => (
         <div key={ingredient} className="flex items-center space-x-4">
           <Checkbox.Root
             id={ingredient}
             checked={selectedIngredients.includes(ingredient)}
-            onCheckedChange={() => handleCheckboxChange(ingredient)}
+            onCheckedChange={(checked) => handleCheckboxChange(ingredient, !!checked)} // Pass checked state
             className="w-6 h-6 bg-gray-700 rounded-md flex items-center justify-center border border-gray-500 focus:outline-none focus:ring focus:ring-green-500"
           >
             <Checkbox.Indicator>
-              <Check className="w-4 h-4 text-green-400" />
+              <Check className="w-4 h-4 text-[#00a39e]" />
             </Checkbox.Indicator>
           </Checkbox.Root>
           <label htmlFor={ingredient} className="text-gray-300">
@@ -47,6 +54,7 @@ const IngredientsCheckBoxes: React.FC<IngredientsCheckBoxesProps> = ({
           </label>
         </div>
       ))}
+    </div>
     </div>
   );
 };

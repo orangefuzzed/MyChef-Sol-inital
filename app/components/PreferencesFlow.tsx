@@ -8,6 +8,7 @@ import CookingStyleCheckboxes from './CookingStyleCheckboxes';
 import IngredientsCheckBoxes from './IngredientsCheckBoxes';
 import PreferencesPreview from './PreferencesPreview';
 import GetStartedModal from './GetStartedModal';
+import IntroSlide from './IntroSlide';
 import Toast from './../components/Toast'; // Import Toast
 
 interface PreferencesFlowProps {
@@ -52,9 +53,21 @@ const PreferencesFlow: React.FC<PreferencesFlowProps> = ({ isOpen, onClose }) =>
     }, 3000);
   };
 
+  const handleNextSlide = () => {
+    setCurrentSlideIndex((prevIndex) => Math.min(prevIndex + 1, slides.length - 1));
+  };
+
+  const handlePrevSlide = () => {
+    setCurrentSlideIndex((prevIndex) => Math.max(prevIndex - 1, 0));
+  };
+
   const slides = [
     {
-      title: 'Who’s in Your Kitchen?',
+        title: '',
+        content: <IntroSlide onNext={handleNextSlide} />, // Hook in the intro slide
+      },
+    {
+      title: '',
       content: (
         <div>
           <CookingStyleCheckboxes
@@ -67,7 +80,7 @@ const PreferencesFlow: React.FC<PreferencesFlowProps> = ({ isOpen, onClose }) =>
       ),
     },
     {
-      title: 'How’s Your Schedule?',
+      title: '',
       content: (
         <div>
           <ScheduleCheckBoxes
@@ -80,24 +93,24 @@ const PreferencesFlow: React.FC<PreferencesFlowProps> = ({ isOpen, onClose }) =>
       ),
     },
     {
-        title: 'What’s In your Pantry?',
+        title: '',
         content: (
           <div>
             <IngredientsCheckBoxes
               selectedIngredients={preferences.ingredients}
               onChange={(value) =>
-                setPreferences((prev) => ({ ...prev, schedule: value }))
+                setPreferences((prev) => ({ ...prev, ingredients: value }))
               }
             />
           </div>
         ),
       },
     {
-      title: 'Dietary Restrictions',
+      title: '',
       content: (
         <div>
           <DietaryRestrictions
-            selected={preferences.dietaryRestrictions}
+            selectedRestrictions={preferences.dietaryRestrictions}
             onChange={(value) =>
               setPreferences((prev) => ({ ...prev, dietaryRestrictions: value }))
             }
@@ -117,14 +130,6 @@ const PreferencesFlow: React.FC<PreferencesFlowProps> = ({ isOpen, onClose }) =>
       ),
     },
   ];
-
-  const handleNextSlide = () => {
-    setCurrentSlideIndex((prevIndex) => Math.min(prevIndex + 1, slides.length - 1));
-  };
-
-  const handlePrevSlide = () => {
-    setCurrentSlideIndex((prevIndex) => Math.max(prevIndex - 1, 0));
-  };
 
   return (
     <div>

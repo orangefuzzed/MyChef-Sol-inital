@@ -2,7 +2,8 @@ import { Db } from 'mongodb';
 
 export interface IUserPreferences {
   userEmail: string;
-  adventureScale: number;
+  schedule: string[]; // NEW: "How’s Your Schedule?" preferences
+  ingredients: string[]; // NEW: "What’s in Your Pantry?" preferences
   dietaryRestrictions: string[];
   cookingStyle: string[];
 }

@@ -3,6 +3,7 @@
 import React, { useEffect, useState } from 'react';
 import { CircleX, CircleArrowRight, CircleArrowLeft } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { useSwipeable } from 'react-swipeable'; // Import react-swipeable
 
 interface CarouselSlide {
   title: string;
@@ -24,6 +25,24 @@ interface ModalProps {
 const GetStartedModal: React.FC<ModalProps> = ({ isOpen, onClose, slides }) => {
   const [currentSlideIndex, setCurrentSlideIndex] = useState(0);
 
+  const handleNextSlide = () => {
+    setCurrentSlideIndex((prevIndex) => (prevIndex + 1) % slides.length);
+  };
+
+  const handlePrevSlide = () => {
+    setCurrentSlideIndex((prevIndex) =>
+      prevIndex === 0 ? slides.length - 1 : prevIndex - 1
+    );
+  };
+
+    // Configure swipe gestures
+    const swipeHandlers = useSwipeable({
+      onSwipedLeft: handleNextSlide,
+      onSwipedRight: handlePrevSlide,
+      preventScrollOnSwipe: true,
+      trackMouse: true, // Enable swipe gestures via mouse as well
+    });
+
   // Handle Escape key to close the modal
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
@@ -38,15 +57,6 @@ const GetStartedModal: React.FC<ModalProps> = ({ isOpen, onClose, slides }) => {
 
   if (!isOpen) return null;
 
-  const handleNextSlide = () => {
-    setCurrentSlideIndex((prevIndex) => (prevIndex + 1) % slides.length);
-  };
-
-  const handlePrevSlide = () => {
-    setCurrentSlideIndex((prevIndex) =>
-      prevIndex === 0 ? slides.length - 1 : prevIndex - 1
-    );
-  };
 
   return (
     <AnimatePresence>
@@ -59,6 +69,7 @@ const GetStartedModal: React.FC<ModalProps> = ({ isOpen, onClose, slides }) => {
       >
         {/* Modal */}
         <motion.div
+          {...swipeHandlers} // Attach swipe handlers here
           className="bg-slate-950/80 backdrop-blur-lg border border-gray-400 shadow-lg rounded-2xl w-[90%] max-w-lg p-6 relative"
           initial={{ scale: 0.8, opacity: 0 }}
           animate={{ scale: 1, opacity: 1 }}
@@ -104,8 +115,6 @@ const GetStartedModal: React.FC<ModalProps> = ({ isOpen, onClose, slides }) => {
               <p className="text-sm text-center mt-2 text-sky-50">
                 {slides[currentSlideIndex].content2}
               </p>
-              
-          
             </motion.div>
 
             {/* Carousel Controls */}
@@ -129,7 +138,7 @@ const GetStartedModal: React.FC<ModalProps> = ({ isOpen, onClose, slides }) => {
               {slides.map((_, index) => (
                 <div
                   key={index}
-                  className={`w-2.5 h-2.5 rounded-full ${
+                  className={`w-2 h-2 rounded-full ${
                     index === currentSlideIndex
                       ? 'bg-[#27ff52]'
                       : 'bg-gray-400'

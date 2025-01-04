@@ -22,15 +22,10 @@ export const generatePrompt = (
   const preferencesPart = isPreferencesActive
     ? `
       User Preferences:
-      - Adventure Scale: ${preferences.adventureScale || 'Not set'}
-      - Dietary Restrictions: ${
-        preferences.dietaryRestrictions.length
-          ? preferences.dietaryRestrictions.join(', ')
-          : 'None'
-      }
-      - Cooking Style: ${
-        preferences.cookingStyle.length ? preferences.cookingStyle.join(', ') : 'None selected'
-      }
+      - Schedule: ${preferences.schedule?.join(', ') || 'None'}
+      - Pantry Ingredients: ${preferences.ingredients?.join(', ') || 'None'}
+      - Dietary Restrictions: ${preferences.dietaryRestrictions?.join(', ') || 'None'}
+      - Cooking Style: ${preferences.cookingStyle?.join(', ') || 'None'}
     `
     : ''; // Add preferences only if toggle is active
 

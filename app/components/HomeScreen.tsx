@@ -331,11 +331,11 @@ const HomeScreen: React.FC = () => {
             {dummyWalkthroughCards.map((card, index) => (
               <div
                 key={index}
-                className="w-80 bg-white/30 backdrop-blur-lg border border-white shadow-lg rounded-2xl p-6 flex-shrink-0 cursor-pointer hover:shadow-2xl transition"
+                className="w-80 bg-slate-950/30 backdrop-blur-lg border border-white shadow-lg rounded-2xl p-6 flex-shrink-0 cursor-pointer hover:shadow-2xl transition"
                 onClick={() => setActiveModalIndex(index)}
               >
-                <div className="bg-sky-50/30 w-8 h-8 border border-white rounded-full flex items-center justify-center mb-2">
-                  <ExternalLink strokeWidth={1.5} className="w-4 h-4 text-black" />
+                <div className="bg-[#00a39e]/50 w-8 h-8 border border-white rounded-full flex items-center justify-center mb-2">
+                  <ExternalLink strokeWidth={1.5} className="w-4 h-4 text-sky-50" />
                 </div>
                 <h3 className="text-lg font-bold mb-2">{card.title}</h3>
                 <p className="text-sm">{card.description}</p>

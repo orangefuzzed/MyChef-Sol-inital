@@ -31,6 +31,13 @@ const ScheduleCheckBoxes: React.FC<ScheduleCheckBoxesProps> = ({
   };
 
   return (
+    <div>
+    <h4 className="mb-2 text-lg font-semibold text-gray-200">
+        How’s Your Schedule?
+    </h4>
+    <p className="mb-4 text-sm text-gray-400">
+      Typical Meal Prep Time...
+    </p>
     <div className="space-y-4">
       {scheduleOptions.map((option) => (
         <div key={option} className="flex items-center space-x-4">
@@ -41,7 +48,7 @@ const ScheduleCheckBoxes: React.FC<ScheduleCheckBoxesProps> = ({
             className="w-6 h-6 bg-gray-700 rounded-md flex items-center justify-center border border-gray-500 focus:outline-none focus:ring focus:ring-green-500"
           >
             <Checkbox.Indicator>
-              <Check className="w-4 h-4 text-green-400" />
+              <Check className="w-4 h-4 text-[#00a39e]" />
             </Checkbox.Indicator>
           </Checkbox.Root>
           <label htmlFor={option} className="text-gray-300">
@@ -49,6 +56,7 @@ const ScheduleCheckBoxes: React.FC<ScheduleCheckBoxesProps> = ({
           </label>
         </div>
       ))}
+    </div>
     </div>
   );
 };

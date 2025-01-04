@@ -18,15 +18,16 @@ export const generatePromptWithPreferences = (
   promptType: string,
   preferences?: IUserPreferences // Include preferences as an optional parameter
 ): string => {
-  // Generate preferences string if preferences exist
-  const preferencesString = preferences
-    ? `
+// Generate preferences string if preferences exist
+const preferencesString = preferences
+  ? `
       User Preferences:
-      - Adventure Scale: ${preferences.adventureScale || 'Not set'}
+      - Schedule: ${preferences.schedule?.join(', ') || 'None'}
+      - Pantry Ingredients: ${preferences.ingredients?.join(', ') || 'None'}
       - Dietary Restrictions: ${preferences.dietaryRestrictions?.join(', ') || 'None'}
       - Cooking Style: ${preferences.cookingStyle?.join(', ') || 'None'}
     `
-    : '';
+  : '';
 
   const commonPromptPart = `
     ${conversationHistory}

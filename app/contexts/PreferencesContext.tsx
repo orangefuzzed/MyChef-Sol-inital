@@ -3,12 +3,13 @@
 import React, { createContext, useContext, useState, useEffect, Dispatch, SetStateAction } from 'react';
 
 interface Preferences {
-  adventureScale: number;
-  dietaryRestrictions: string[];
-  cookingStyle: string[];
-  ingredients: string[]; // NEW: Ingredients checkbox selections
-  schedule: string[]; // NEW: Schedule checkbox selections
-}
+
+    dietaryRestrictions: string[];
+    cookingStyle: string[];
+    ingredients: string[]; // Add this
+    schedule: string[]; // Add this too
+  }
+  
 
 // Explicitly export PreferencesContextType
 export interface PreferencesContextType {
@@ -20,13 +21,14 @@ export interface PreferencesContextType {
 const PreferencesContext = createContext<PreferencesContextType | undefined>(undefined);
 
 export const PreferencesProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  const [preferences, setPreferences] = useState<Preferences>({
-    adventureScale: 2,
-    dietaryRestrictions: [],
-    cookingStyle: [],
-    ingredients: [], // NEW: Initialize empty array for ingredients
-    schedule: [], // NEW: Initialize empty array for schedule
-  });
+    const [preferences, setPreferences] = useState<Preferences>({
+
+        dietaryRestrictions: [],
+        cookingStyle: [],
+        ingredients: [], // 🔥 Add this to initialize it properly
+        schedule: [], // 🔥 If "schedule" was added, initialize it here too
+      });
+      
 
   const fetchPreferences = async () => {
     try {

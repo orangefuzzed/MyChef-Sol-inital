@@ -14,7 +14,7 @@ const PreferencesTestPage = () => {
           Click below to launch the preferences flow and customize your Dishcovery experience!
         </p>
         <button
-          className="px-8 py-2 bg-green-500 text-white rounded-full hover:bg-green-400 transition"
+          className="px-8 py-2 bg-green-500 text-white rounded-full hover:bg-[#00a39e] transition"
           onClick={() => setFlowOpen(true)}
         >
           Launch Preferences Flow
