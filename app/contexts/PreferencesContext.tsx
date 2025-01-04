@@ -2,13 +2,14 @@
 
 import React, { createContext, useContext, useState, useEffect, Dispatch, SetStateAction } from 'react';
 
-interface Preferences {
-
+// Add `export` to the Preferences interface
+export interface Preferences {
     dietaryRestrictions: string[];
     cookingStyle: string[];
-    ingredients: string[]; // Add this
-    schedule: string[]; // Add this too
+    ingredients: string[]; // Pantry Ingredients
+    schedule: string[];    // Meal Scheduling
   }
+  
   
 
 // Explicitly export PreferencesContextType
@@ -17,6 +18,7 @@ export interface PreferencesContextType {
   setPreferences: Dispatch<SetStateAction<Preferences>>;
   fetchPreferences: () => void;
 }
+
 
 const PreferencesContext = createContext<PreferencesContextType | undefined>(undefined);
 

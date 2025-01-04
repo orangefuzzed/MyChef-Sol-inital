@@ -1,7 +1,8 @@
 // chatUtils.tsx
 
 import { ChatMessage } from '../../types/ChatMessage'; // Assuming there's a ChatMessage type defined
-import { PreferencesContextType } from '../contexts/PreferencesContext'; // Import PreferencesContext
+import { Preferences } from '../contexts/PreferencesContext'; // Import Preferences directly
+
 
 export const handleError = (
   error: unknown,
@@ -16,31 +17,49 @@ export const generatePrompt = (
   conversationHistory: string,
   message: string,
   promptType: string,
-  preferences: PreferencesContextType['preferences'], // Include preferences
+  preferences: Preferences, // Use the Preferences type here
   isPreferencesActive: boolean // Include toggle state
 ): string => {
-  const preferencesPart = isPreferencesActive
-    ? `
-      User Preferences:
+  // Helper to generate the conversational preferences summary
+  const generatePreferencesSummary = (preferences: Preferences): string => {
+    return `
+      Hey Claude! Here’s what you need to know about me: 
+      - Dietary Restrictions: ${preferences.dietaryRestrictions?.join(', ') || 'None'}
       - Schedule: ${preferences.schedule?.join(', ') || 'None'}
       - Pantry Ingredients: ${preferences.ingredients?.join(', ') || 'None'}
-      - Dietary Restrictions: ${preferences.dietaryRestrictions?.join(', ') || 'None'}
       - Cooking Style: ${preferences.cookingStyle?.join(', ') || 'None'}
-    `
-    : ''; // Add preferences only if toggle is active
+
+      Now, based on this, can you suggest a recipe for ${message}? Make it awesome!
+    `;
+  };
+
+  // Helper to generate the no-preferences version of the prompt
+  const generateNoPreferencesPrompt = (message: string) => {
+    return `
+      Hey Claude! I’m looking for some culinary inspiration today. Here’s my request: 
+      "${message}"
+      
+      What can you whip up that’ll blow me away? Thanks in advance, chef! 🧑‍🍳
+    `;
+  };
+
+  // Determine which prompt to use based on preferences toggle
+  const preferencesPart = isPreferencesActive
+    ? generatePreferencesSummary(preferences)
+    : generateNoPreferencesPrompt(message);
 
   const commonPromptPart = `
     ${conversationHistory}
-    Human: ${message}
-    ${preferencesPart} <!-- Add preferences if active -->
+    ${preferencesPart}
     Assistant:
   `;
 
+  // Prompt type handling
   switch (promptType) {
     case 'sendMessage':
       return `
         ${commonPromptPart}
-        Please provide 3 recipe suggestions based on the following user input.
+        Please provide 3 recipe suggestions based on the user input.
 
         Respond in the following JSON format:
         {
@@ -49,8 +68,8 @@ export const generatePrompt = (
             {
               "id": "unique_recipe_id",
               "recipeTitle": "Recipe Title",
-              "cookTime": "X min"
-              "calories": "X Kcal"
+              "cookTime": "X min",
+              "calories": "X Kcal",
               "protein": "X g",
               "rating": "★★★★☆",
               "description": "Brief description",

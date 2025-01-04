@@ -127,25 +127,47 @@ const HomeScreen: React.FC = () => {
       ],
     },
     {
-      title: "Save Your Favorites", // SLIDE 3
-      description: "Keep track of recipes you love.",
-      modalContent: "Never lose track of your favorite meals. Save recipes to revisit later and share them with friends!",
-      imageSrc: "/images/steak-dinner-1.png", 
+      title: "Customize Your Dishcovery",
+      description: "Set your Preferences and make recipes uniquely yours.",
       slides: [
         {
-          title: "Save Recipes Effortlessly",
-          content: "Never lose track of your favorite meals. Save recipes to revisit later and share them with friends!",
-          content2: "Dishcovery makes it easy to 'Save' (bookmark) and 'Favorite' (heart) your meals and recipes. Your personal cookbook is just a tap away. MORE FEATURES⟶",
-          imageSrc: "/images/breakfast-3.png",
+          "title": "Set Your Preferences with Ease",
+          "content": "Tailor your experience with personalized preferences. Adjust dietary restrictions, choose cooking styles, and even tell us what's in your pantry. We’ll do the rest!",
+          "content2": "Dishcovery’s enhanced Preferences system ensures every recipe is tailored to you. Whether you're gluten-free, keto, or feeding a football team—our recipes match your vibe!",
+          "imageSrc": "/images/soup-6.png",
         },
         {
-          title: "Never lose that Shopping List or Chat Session either!",
-          content: "Dishcovery makes its simple to save your Shopping Lists so you won't forget your missing ingredients.",
-          content2: "Save your recipe 'Chat' and never lose those fantastic recipe suggestions for 'spicy Mexican insprired appetizers'!",
-          imageSrc: "/images/soup-2.png",
+          "title": "Effortless Recipe Customization",
+          "content": "Not feeling adventurous? Short on time? Want to use up those leftover pantry items? Just update your Preferences and let Dishcovery work its magic!",
+          "content2": "Toggle Preferences on or off during your recipe searches to fit your needs. It’s like having your own personal chef—without the attitude. 😉",
+          "imageSrc": "/images/dinner-2.png",
         },
-      ],
-    },
+      ]
+    },  
+    {
+      title: "My Dishcoveries: YOUR Dishcovery Hub",
+      description: "All your favorites, saved in one place.",
+      slides: [
+        {
+          "title": "Your Personal Cookbook",
+          "content": "Save your favorite recipes and keep them at your fingertips. Whether it’s that perfect lasagna or a quick weeknight stir-fry, Dishcovery keeps your culinary treasures safe and sound.",
+          "content2": "Saved recipes, favorites, and more—your digital recipe box has never looked so good. Bookmark it. Love it. Cook it. 💚",
+          "imageSrc": "/images/dbreakfast-3.png",
+        },
+        {
+          "title": "Never Lose a Shopping List Again",
+          "content": "Keep track of all your shopping lists—organized, easy to find, and ready to help you knock out your next grocery run.",
+          "content2": "Whether you’re stocking up for the week or prepping for a dinner party, Dishcovery has your lists covered. Even that random late-night impulse list? Yep, we saved it. 🙌",
+          "imageSrc": "/images/soup-2.png",
+        },
+        {
+          "title": "Relive Your Recipe Chats",
+          "content": "Save your recipe chats for future inspiration. Those spicy Mexican appetizers you loved? That perfect steak marinade? They’re all just a click away.",
+          "content2": "Your recipe chats, saved and searchable. Dishcovery is here to make sure you never lose those sparks of culinary genius!",
+          "imageSrc": "/images/pizza-2.png",
+        }
+      ]
+    },    
     {
       title: "Cook Mode Activated!", // SLIDE 4
       description: "Easy-to-Follow step-by-step instructions.",

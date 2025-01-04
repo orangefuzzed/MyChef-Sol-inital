@@ -9,7 +9,12 @@ const PreferencesToggleMagic: React.FC = () => {
 
   const handleToggle = () => {
     setIsToggled(!isToggled);
+    
+    const audio = new Audio('/audio/toggle-click.wav'); // Add your sound file in /public/sounds
+    audio.play();
+
   };
+
 
   return (
     <motion.div
