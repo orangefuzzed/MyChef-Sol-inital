@@ -53,7 +53,7 @@ const PreferencesFlow: React.FC<PreferencesFlowProps> = ({ isOpen, onClose }) =>
 
   const slides = [
     {
-      title: 'Cooking Style',
+      title: 'Who’s in Your Kitchen?',
       content: (
         <div>
           <CookingStyleCheckboxes

@@ -137,7 +137,7 @@ const MessageInput: React.FC<MessageInputProps> = ({
               onClick={handleSendMessageWithPreferences}
               className={`p-2 rounded-full transition-all duration-300 ease-in-out ${
                 inputMessage.trim()
-                  ? 'bg-[#27ff52] text-black shadow-lg hover:shadow-xl transform scale-105' // Active state
+                  ? 'bg-[#27ff52] text-black border border-sky-50 shadow-lg hover:shadow-xl transform scale-105' // Active state
                   : 'bg-gray-400 text-gray-700 transform scale-100' // Default state
               }`}
               disabled={isLoading}
@@ -157,16 +157,16 @@ const MessageInput: React.FC<MessageInputProps> = ({
                 handleTogglePreferences(); // Toggle preferences
 
               }}
-              className={`ml-2 p-2 rounded-full ${
+              className={`ml-2 p-2 rounded-full  ${
                 isPreferencesActive
-                  ? 'wave-effect bg-[#27ff52] border border-sky-50 text-white'
+                  ? 'wave-pop-effect bg-[#27ff52] border border-sky-50 text-black'
                   : 'border border-gray-500 bg-slate-950/30 text-gray-500'
               } shadow-lg hover:shadow-xl transition-shadow`}
               disabled={isLoading}
               title="Toggle Preferences"
             >
               {isPreferencesActive ? (
-                <WheatOff strokeWidth={1.5} color={"black"} className="h-5 w-5" />
+                <WheatOff strokeWidth={1.5} className="h-5 w-5" />
               ) : (
                 <Wheat strokeWidth={1.5} className="h-5 w-5" />
               )}

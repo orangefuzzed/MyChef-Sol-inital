@@ -10,11 +10,10 @@ interface CookingStyleCheckboxesProps {
 }
 
 const cookingStyles = [
-  'Quick & Easy',
-  'Healthy & Balanced',
-  'I Like a Challenge',
-  'Weekend Masterpiece',
-  'Exotic & Adventurous',
+  'Just Me',
+  'Me + Partner',
+  'Family of 4',
+  'Feeding the Football Team',
 ];
 
 const CookingStyleCheckboxes: React.FC<CookingStyleCheckboxesProps> = ({

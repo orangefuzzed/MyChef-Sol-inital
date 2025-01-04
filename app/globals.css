@@ -331,12 +331,57 @@ html, body {
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  width: 100%;
-  height: 100%;
+  width: 105%;
+  height: 105%;
   border-radius: 50%;
+  border: solid;
+  border-width: 1px;
+  border-color: white;
   background: #27ff52c3; /* Soft green wave */
   z-index: -1;
   animation: wave-once 1s ease-out; /* One-time wave animation */
+}
+
+@keyframes wave-once {
+  0% {
+    transform: translate(-50%, -50%) scale(1);
+    opacity: 0.6;
+  }
+  100% {
+    transform: translate(-50%, -50%) scale(2);
+    opacity: 0;
+  }
+}
+
+/* Combined Pop and Wave Effect */
+.wave-pop-effect {
+  position: relative;
+  z-index: 1;
+  /*overflow: hidden;  Keep wave contained */
+  transform: scale(1); /* Base scale for pop */
+  transition: transform 0.2s ease-out; /* Smooth pop transition */
+}
+
+.wave-pop-effect:hover {
+  transform: scale(1.05); /* Slight pop on hover */
+}
+
+.wave-pop-effect::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 105%;
+  height: 105%;
+  border-radius: 50%;
+  border: solid;
+  border-width: 1px;
+  border-color: #f0f9ff;
+  background: rgba(39, 255, 82, 0.861); /* Soft green wave */
+  z-index: -1;
+  animation: wave-once 1s ease-out; /* One-time wave animation */
+  pointer-events: none; /* Prevent interfering with button clicks */
 }
 
 @keyframes wave-once {
