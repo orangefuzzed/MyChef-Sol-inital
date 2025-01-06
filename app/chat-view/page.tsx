@@ -147,7 +147,9 @@ const ChatViewPage: React.FC = () => {
             <RecipeSuggestions
               currentRecipeList={suggestionSet.suggestions}
               handleRecipeSelect={() => {}} // No selection action needed for saved sessions
+              onPairingsRequest={() => {}} // No selection action needed for saved sessions
             />
+            
           </div>
         ))}
 
