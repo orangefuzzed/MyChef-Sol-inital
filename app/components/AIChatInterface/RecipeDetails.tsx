@@ -187,16 +187,16 @@ const RecipeDetails: React.FC = () => {
         </button>
 
         {/* Toast Messages */}
-      {toastMessage && toastType && (
-        <Toast
-          message={toastMessage}
-          type={toastType}
-          onClose={() => {
-            setToastMessage(null);
-            setToastType(null);
-          }}
-        />
-      )}
+        {toastMessage && toastType && (
+          <Toast
+            message={toastMessage}
+            type={toastType}
+            onClose={() => {
+              setToastMessage(null);
+              setToastType(null);
+            }}
+          />
+        )}
       </div>
       <h2 className="text-xl text-white font-bold">{selectedRecipe.recipeTitle}</h2>
       <div className="rating text-amber-400 mb-2">Rating: {selectedRecipe.rating}</div>

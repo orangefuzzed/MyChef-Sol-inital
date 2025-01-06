@@ -1,14 +1,25 @@
-import React from 'react';
+import React, { useState } from 'react';
 import Link from 'next/link';
 import { Recipe } from '../../../types/Recipe';
-import { Flame, Clock, Soup, ChefHat } from 'lucide-react';
+import { Flame, Clock, Soup, ChefHat, Wine } from 'lucide-react';
 
 interface RecipeSuggestionsProps {
   currentRecipeList: Recipe[];
   handleRecipeSelect: (recipe: Recipe) => void;
+  onPairingsRequest: (message: string) => void; // Pass the request up to the chat interface
 }
 
-const RecipeSuggestions: React.FC<RecipeSuggestionsProps> = ({ currentRecipeList }) => {
+const RecipeSuggestions: React.FC<RecipeSuggestionsProps> = ({ currentRecipeList, onPairingsRequest }) => {
+
+  const [loadingPairings, setLoadingPairings] = useState(false);
+  const [selectedRecipeTitle, setSelectedRecipeTitle] = useState<string | null>(null);
+
+  const handleSuggestPairings = (recipe: Recipe) => {
+    const pairingRequest = `Based on the following recipe, suggest one side dish or side salad (whichever is appropriate), and one drink pairing (if appropriate):
+    - Recipe: ${recipe.recipeTitle}`;
+    onPairingsRequest(pairingRequest); // Send the pairing request to the chat interface
+  };
+
   if (currentRecipeList.length === 0) return null;
 
   return (
@@ -42,17 +53,43 @@ const RecipeSuggestions: React.FC<RecipeSuggestionsProps> = ({ currentRecipeList
 
             <p className="text-slate-950 mb-4">{recipe.description}</p>
 
+            <div className="mt-4">
+            {/* View Recipe Button */}
             <Link
               href={{
                 pathname: `/recipe-view`,
                 query: { id: recipe.id }, // Updated from recipeId to id
               }}
             >
-              <button className="mt-4 p-2 px-6 bg-sky-50/20 border border-gray-300 shadow-lg ring-1 ring-black/5 rounded-full text-ky-50 flex items-center gap-2">
+              <button className="flex items-center justify-center w-full max-w-lg p-2 px-6 bg-sky-50/20 border border-gray-300 shadow-lg ring-1 ring-black/5 rounded-full text-sm font-base text-sky-50 gap-2">
                 View Recipe
                 <ChefHat strokeWidth={1.5} className="w-5 h-5" />
               </button>
             </Link>
+          </div>
+          <div className="mt-4">
+            {/* Suggest Pairings Button */}
+            <button
+              onClick={() => handleSuggestPairings(recipe)}
+              className={`flex items-center justify-center w-full max-w-lg p-2 px-2 bg-sky-50/20 border border-gray-300 shadow-lg ring-1 ring-black/5 rounded-full text-sm font-base text-sky-50 gap-2 ${
+                loadingPairings && selectedRecipeTitle === recipe.recipeTitle ? 'opacity-50 cursor-not-allowed' : ''
+              }`}
+              disabled={loadingPairings && selectedRecipeTitle === recipe.recipeTitle}
+            >
+              {loadingPairings && selectedRecipeTitle === recipe.recipeTitle ? (
+                <>
+                  Loading...
+                  <div className="spinner-border animate-spin inline-block w-4 h-4 border-2 rounded-full ml-2"></div>
+                </>
+              ) : (
+                <>
+                  Suggest Pairings for this Dish
+                  <Wine strokeWidth={1.5} className="w-5 h-5" />
+                </>
+              )}
+            </button>
+          </div>
+
           </div>
         </div>
       ))}
