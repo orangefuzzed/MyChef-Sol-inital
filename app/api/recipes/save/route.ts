@@ -28,7 +28,7 @@ export async function POST(request: Request) {
 
     // Create the recipe document
     const recipeDocument: RecipeDocument = {
-      id: recipe.id, // 
+      id: recipe.id,
       recipeTitle: recipe.recipeTitle,
       description: recipe.description,
       ingredients: recipe.ingredients,
@@ -38,7 +38,11 @@ export async function POST(request: Request) {
       isSuggestion: recipe.isSuggestion ?? false,
       createdAt: new Date(),
       updatedAt: new Date(),
+    
+      // Add category with default fallback
+      category: recipe.category || 'Uncategorized',
     };
+    
 
 
     // Insert or update the recipe

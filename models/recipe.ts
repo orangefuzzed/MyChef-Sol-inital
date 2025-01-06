@@ -6,14 +6,12 @@ export const insertRecipe = async (recipe: RecipeDocument): Promise<void> => {
   const db: Db = await connectToDatabase();
   const collection = db.collection('recipes');
 
-  // Ensure Id is set properly
   const recipeToInsert = {
     ...recipe,
-    id: recipe.id ?? (recipe._id?.toString() ?? ''), 
+    id: recipe.id ?? (recipe._id?.toString() ?? ''),
+    category: recipe.category || 'Uncategorized', // Default to "Uncategorized" if not provided
   };
 
-
-  // If the recipe has an `_id` already, treat it as an update
   if (recipeToInsert._id) {
     await collection.updateOne(
       { _id: recipeToInsert._id },
@@ -24,6 +22,7 @@ export const insertRecipe = async (recipe: RecipeDocument): Promise<void> => {
     await collection.insertOne(recipeToInsert);
   }
 };
+
 
 
 // Convert a plain object into a `RecipeDocument`-typed object, including the MongoDB `_id`.

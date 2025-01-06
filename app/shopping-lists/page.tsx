@@ -57,9 +57,9 @@ const ShoppingListsPage = () => {
         for (const remoteList of remoteLists) {
           if (!localLists.some((localList) => localList.id === remoteList.id)) {
             await saveShoppingListToDB(remoteList.id, { 
-              ingredients: remoteList.items, 
+              ingredients: remoteList.ingredients, 
               totalItems: remoteList.totalItems 
-            }, remoteList.recipeTitle); // Pass all required arguments
+            }, remoteList.id); // Pass all required arguments
           }
         }
   
@@ -138,11 +138,11 @@ const ShoppingListsPage = () => {
               <div
                 key={list.id}
                 className="bg-white/30 backdrop-blur-lg border-white border shadow-lg ring-1 ring-black/5 p-6 rounded-2xl relative"
+                onClick={() => handleViewShoppingList(list.id)}
               >
                 {/* Left-Side Icon */}
                 <div
-                  className="bg-sky-50/30 w-8 h-8 border border-white rounded-full flex items-center justify-center mb-2"
-                  onClick={() => handleViewShoppingList(list.id)}
+                  className="bg-sky-50/30 w-8 h-8 border border-white rounded-full flex items-center justify-center mb-2"          
                 >
                   <ShoppingCart strokeWidth={1.5} className="w-4 h-4 text-black" />
                 </div>
