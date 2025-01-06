@@ -394,3 +394,12 @@ html, body {
     opacity: 0;
   }
 }
+
+html, body {
+  overscroll-behavior: none;
+  touch-action: pan-x pan-y;
+}
+* {
+  -webkit-user-select: none; /* Prevents text selection on Chrome/Android */
+  user-select: none;          /* Standard property for other browsers */
+}

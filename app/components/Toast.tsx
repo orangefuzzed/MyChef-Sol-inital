@@ -25,7 +25,7 @@ const Toast: React.FC<ToastProps> = ({ message, type, actions, onClose, duration
     animate={{ opacity: 1, translateY: 0 }}
     exit={{ opacity: 0, translateY: 20 }}
     role="alert" // Accessibility
-    className={`fixed z-50 flex items-center justify-center px-8 py-4 backdrop-blur-lg -full max-w-2xl shadow-lg ring-1 ring-black/5 rounded-xl text-white ${
+    className={`fixed z-50 flex items-center justify-center px-8 py-4 backdrop-blur-lg w-full max-w-2xl shadow-lg ring-1 ring-black/5 rounded-xl text-white ${
       type === 'success'
         ? 'bg-slate-950/55 border border-sky-50'
         : 'bg-slate-950/55 border border-sky-50'

@@ -4,6 +4,7 @@
   "description": "Your personal AI-driven recipe assistant, meal planner, and culinary companion.",
   "start_url": "/login",
   "display": "standalone",
+  "orientation": "portrait",
   "background_color": "#ffffff",
   "theme_color": "#00a39e",
   "scope": "/",

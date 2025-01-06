@@ -32,6 +32,19 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     }
   }, []);
 
+  if ('ontouchstart' in window) {
+    document.addEventListener('touchstart', (e) => {
+      if (e.touches.length > 1) {
+        e.preventDefault(); // Prevent multi-touch long presses
+      }
+    });
+  
+    document.addEventListener('contextmenu', (e) => {
+      e.preventDefault(); // Disable right-click or long-press menus
+    });
+  }
+  
+
   return (
     <html lang="en" className={montserrat.className}>
       <body>

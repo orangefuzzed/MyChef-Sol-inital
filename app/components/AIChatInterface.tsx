@@ -69,7 +69,20 @@ const handlePairingsRequest = async (pairingRequest: string) => {
   }
 };
 
+useEffect(() => {
+  // Disable pull-to-refresh in this specific component
+  const disablePullToRefresh = (e: TouchEvent) => {
+    if (e.touches.length === 1 && e.touches[0].clientY > 0) {
+      e.preventDefault();
+    }
+  };
 
+  document.addEventListener('touchmove', disablePullToRefresh, { passive: false });
+
+  return () => {
+    document.removeEventListener('touchmove', disablePullToRefresh);
+  };
+}, []);
 
   const router = useRouter();
 
