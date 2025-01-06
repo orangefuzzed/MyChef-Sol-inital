@@ -52,44 +52,42 @@ export const generateShoppingList = (recipe: Recipe): { ingredients: ShoppingLis
   };
 };
 
-// Save a shopping list to IndexedDB
 export const saveShoppingListToDB = async (
   id: string,
-  shoppingList: { ingredients: ShoppingListItem[], totalItems: number },
+  shoppingList: { ingredients: ShoppingListItem[], totalItems: number, checkedItems?: Record<string, boolean> }, // Add `checkedItems`
   recipeTitle: string
 ): Promise<void> => {
   const db = await openShoppingListDB();
   const transaction = db.transaction(SHOPPING_LISTS_STORE, 'readwrite');
   const store = transaction.objectStore(SHOPPING_LISTS_STORE);
-  store.put({ id, shoppingList, recipeTitle });  // Add recipeTitle here
+
+  // Save the entire shopping list with checkedItems
+  store.put({ id, shoppingList, recipeTitle });
 
   return new Promise<void>((resolve, reject) => {
-    transaction.oncomplete = () => {
-      resolve();
-    };
-    transaction.onerror = () => {
-      reject(transaction.error);
-    };
+    transaction.oncomplete = () => resolve();
+    transaction.onerror = () => reject(transaction.error);
   });
 };
-;
+
 
 // Fetch a shopping list from IndexedDB by recipeId
-export const getSavedShoppingListsFromDB = async (id: string): Promise<{ ingredients: ShoppingListItem[], totalItems: number } | null> => {
+export const getSavedShoppingListsFromDB = async (
+  id: string
+): Promise<ShoppingList | null> => {
   const db = await openShoppingListDB();
   const transaction = db.transaction(SHOPPING_LISTS_STORE, 'readonly');
   const store = transaction.objectStore(SHOPPING_LISTS_STORE);
   const request = store.get(id);
 
-  return new Promise<{ ingredients: ShoppingListItem[], totalItems: number } | null>((resolve, reject) => {
+  return new Promise<ShoppingList | null>((resolve, reject) => {
     request.onsuccess = () => {
-      resolve(request.result ? request.result.shoppingList : null);
+      resolve(request.result ? request.result.shoppingList : null); // Ensure it includes checkedItems
     };
-    request.onerror = () => {
-      reject(request.error);
-    };
+    request.onerror = () => reject(request.error);
   });
 };
+
 
 // Fetch all saved shopping lists from IndexedDB
 export const getAllSavedShoppingListsFromDB = async (): Promise<ShoppingList[] | null> => {

@@ -85,8 +85,11 @@ const ShoppingListPage = () => {
 
         {/* Main Content */}
         <div className="flex-grow p-8 overflow-y-auto">
-          <ShoppingList shoppingListData={currentShoppingList} 
-          recipeTitle={selectedRecipe?.recipeTitle || 'Recipe Title Missing'}/>
+          <ShoppingList 
+            shoppingListData={currentShoppingList} 
+            recipeTitle={selectedRecipe?.recipeTitle || 'Recipe Title Missing'}
+            listId={selectedRecipe?.id || 'Unknown List ID'} // Pass listId as a prop
+          />
         </div>
 
         {/* Footer with Save Shopping List Toggle */}

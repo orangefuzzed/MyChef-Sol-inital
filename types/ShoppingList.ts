@@ -3,8 +3,9 @@
 import { ShoppingListItem } from './ShoppingListItem';
 
 export interface ShoppingList {
-  id: string; // Unique identifier for the recipe this shopping list is associated with
-  recipeTitle: string; // Title for the shopping list (e.g., 'Beef Tacos Shopping List')
-  items: ShoppingListItem[]; // Array of shopping list items
-  totalItems: number; // Total number of items in the list
+  id: string;
+  ingredients: ShoppingListItem[];
+  totalItems: number;
+  checkedItems?: Record<string, boolean>; // Add this optional field
+  recipeTitle?: string; // Include the recipe title for completeness
 }
