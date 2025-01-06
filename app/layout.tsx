@@ -16,34 +16,51 @@ const montserrat = Montserrat({
 });
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
-  // Register the service worker when the app is loaded
   useEffect(() => {
+    // Service Worker Registration
     if (typeof window !== 'undefined' && 'serviceWorker' in navigator) {
       window.addEventListener('load', () => {
         navigator.serviceWorker.register('/sw.js').then(
           (registration) => {
-            console.log('Service Worker registered with scope:', registration.scope);
+            if (process.env.NODE_ENV === 'development') {
+              console.log('Service Worker registered with scope:', registration.scope);
+            }
           },
           (err) => {
-            console.error('Service Worker registration failed:', err);
+            if (process.env.NODE_ENV === 'development') {
+              console.error('Service Worker registration failed:', err);
+            }
           }
         );
       });
     }
   }, []);
 
-  if ('ontouchstart' in window) {
-    document.addEventListener('touchstart', (e) => {
+  useEffect(() => {
+    // Multi-Touch and Context Menu Prevention
+    const preventMultiTouch = (e: TouchEvent) => {
       if (e.touches.length > 1) {
         e.preventDefault(); // Prevent multi-touch long presses
       }
-    });
-  
-    document.addEventListener('contextmenu', (e) => {
+    };
+
+    const disableContextMenu = (e: MouseEvent) => {
       e.preventDefault(); // Disable right-click or long-press menus
-    });
-  }
-  
+    };
+
+    if (typeof window !== 'undefined' && 'ontouchstart' in window) {
+      document.addEventListener('touchstart', preventMultiTouch);
+      document.addEventListener('contextmenu', disableContextMenu);
+    }
+
+    // Cleanup Event Listeners
+    return () => {
+      if (typeof window !== 'undefined') {
+        document.removeEventListener('touchstart', preventMultiTouch);
+        document.removeEventListener('contextmenu', disableContextMenu);
+      }
+    };
+  }, []);
 
   return (
     <html lang="en" className={montserrat.className}>
