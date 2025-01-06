@@ -21,45 +21,42 @@ const HomeScreen: React.FC = () => {
   const [favoriteRecipes, setFavoriteRecipes] = useState<Recipe[]>([]);
   const [shoppingLists, setShoppingLists] = useState<ShoppingList[]>([]);
   const [savedRecipes, setSavedRecipes] = useState<Recipe[]>([]);
+  const [loading, setLoading] = useState(true); // Add a loading state for better UX
 
 
   useEffect(() => {
-    const fetchFavorites = async () => {
+    const fetchAllData = async () => {
+      setLoading(true); // Start loading
+
       try {
-        // Fetch updated favorites from IndexedDB
-        const localFavorites = await getFavoriteRecipesFromDB();
-        setFavoriteRecipes(localFavorites);
+        // Fetch all data from IndexedDB in parallel
+        const [localFavorites, localShoppingLists, localSavedRecipes] = await Promise.all([
+          getFavoriteRecipesFromDB(),
+          getAllSavedShoppingListsFromDB(),
+          getSavedRecipesFromDB(),
+        ]);
+
+        // Update state once all fetches complete
+        setFavoriteRecipes(localFavorites || []); // Default to empty array if null
+        setShoppingLists(localShoppingLists || []);
+        setSavedRecipes(localSavedRecipes || []);
       } catch (error) {
-        console.error('Error fetching favorites from IndexedDB:', error);
+        console.error('Error fetching data from IndexedDB:', error);
+      } finally {
+        setLoading(false); // Stop loading
       }
     };
 
-    const fetchShoppingLists = async () => {
-      try {
-        // Fetch updated shopping lists from IndexedDB
-        const localShoppingLists = (await getAllSavedShoppingListsFromDB()) || []; // Default to an empty array if null
-        setShoppingLists(localShoppingLists);
-      } catch (error) {
-        console.error('Error fetching shopping lists from IndexedDB:', error);
-      }
-    };
-
-    fetchFavorites();
-    fetchShoppingLists();
+    fetchAllData();
   }, []);
 
-  useEffect(() => {
-    const fetchSavedRecipes = async () => {
-      try {
-        const localSavedRecipes = (await getSavedRecipesFromDB()) || []; // Default to an empty array if null
-        setSavedRecipes(localSavedRecipes);
-      } catch (error) {
-        console.error('Error fetching saved recipes from IndexedDB:', error);
-      }
-    };
-
-    fetchSavedRecipes();
-  }, []);
+  if (loading) {
+    return (
+      <div className="flex items-center justify-center h-screen text-white">
+        <p>Loading your discoveries...</p>
+      </div>
+    );
+  }
 
   return (
     <div className="flex flex-col h-screen bg-fixed bg-cover bg-center text-white"
