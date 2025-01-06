@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { ShoppingListItem } from '../../../types/ShoppingListItem';
-import { ShoppingCart } from 'lucide-react';
+import { ShoppingCart, ClipboardCopy, FileUp } from 'lucide-react';
 import {
   saveShoppingListToDB,
   deleteShoppingListFromDB,
@@ -117,7 +117,7 @@ const ShoppingList: React.FC<ShoppingListProps> = ({
       <h2 className="text-2xl font-medium text-sky-50 text-center">
         Shopping List for: {recipeTitle}
       </h2>
-      <div className="py-3 flex items-center text-sm text-black before:flex-1 before:border-t before:border-pink-800 before:me-6 after:flex-1 after:border-t after:border-pink-800 after:ms-6 dark:text-white dark:before:border-neutral-600 dark:after:border-neutral-600">
+      <div className="py-3 flex items-center text-sm text-black before:flex-1 before:border-t before:border-[#00f5d0] before:me-6 after:flex-1 after:border-t after:border-[#00f5d0] after:ms-6 dark:text-white dark:before:border-neutral-600 dark:after:border-neutral-600">
         ITEMS
       </div>
       <ul className="list-disc pl-6 space-y-2 text-base">
@@ -127,43 +127,46 @@ const ShoppingList: React.FC<ShoppingListProps> = ({
       </ul>
       <p className="mt-6 font-semibold">Total Items: {shoppingListData.totalItems}</p>
 
-      <div className="mt-4 flex justify-center">
-        <button
-          onClick={handleShoppingListSaveToggle}
-          className={`p-2 px-6 rounded-full flex items-center gap-2 ${
-            isShoppingListSaved ? 'bg-pink-800 text-white' : 'bg-sky-50 text-pink-800'
-          } shadow-md transition-all duration-200`}
-        >
-          {isShoppingListSaved ? 'Delete Shopping List' : 'Save Shopping List'}
-          <ShoppingCart size={20} />
-        </button>
-        <div className="shopping-list-tools mt-6 flex gap-4">
-          {/* Export to Text File Button */}
+      
+      <div className="mt-4 flex items-center">
           <button
-            onClick={() =>
-              exportToTextFile(
-                shoppingListData.ingredients.map((item) => item.name) // Map ingredients to their names
-              )
-            }
-            className="p-2 px-4 bg-sky-600 text-white rounded-lg shadow hover:bg-sky-700"
+            onClick={handleShoppingListSaveToggle}
+            className={`flex items-center justify-center w-full max-w-lg p-2 px-6 border border-gray-300 shadow-lg ring-1 ring-black/5 rounded-full text-sm font-base gap-2 ${
+              isShoppingListSaved ? 'bg-pink-800/65 text-white' : 'bg-sky-50/20 text-pink-800'
+            } shadow-md transition-all duration-200`}
           >
-            Export to File 📄
-          </button>
-
-          {/* Copy to Clipboard Button */}
-          <button
-            onClick={() =>
-              copyToClipboard(
-                shoppingListData.ingredients.map((item) => item.name) // Map ingredients to their names
-              )
-            }
-            className="p-2 px-4 bg-green-600 text-white rounded-lg shadow hover:bg-green-700"
-          >
-            Copy to Clipboard 📋
+            {isShoppingListSaved ? 'Delete Shopping List' : 'Save Shopping List'}
+            <ShoppingCart size={18} strokeWidth={1.5} />
           </button>
         </div>
-      </div>
-    </div>
+        
+          {/* Export to Text File Button */}
+          <div className=" mt-2 flex items-center">
+            <button
+              onClick={() =>
+                exportToTextFile(
+                  shoppingListData.ingredients.map((item) => item.name) // Map ingredients to their names
+                )
+              }
+              className="flex items-center justify-center w-full max-w-lg p-2 px-6 bg-sky-50/20 border border-gray-300 shadow-lg ring-1 ring-black/5 rounded-full text-sm font-base text-pink-800 gap-2"
+            >
+              Export to File <FileUp size={20} strokeWidth={1.5} />
+            </button>
+          </div>
+          {/* Copy to Clipboard Button */}
+          <div className=" mt-2 flex items-center">
+            <button
+              onClick={() =>
+                copyToClipboard(
+                  shoppingListData.ingredients.map((item) => item.name) // Map ingredients to their names
+                )
+              }
+              className="flex items-center justify-center w-full max-w-lg p-2 px-6 bg-sky-50/20 border border-gray-300 shadow-lg ring-1 ring-black/5 rounded-full text-sm font-base text-pink-800 gap-2"
+            >
+              Copy to Clipboard <ClipboardCopy size={20} strokeWidth={1.5} />
+            </button>
+          </div>    
+     </div>
   );
 };
 ShoppingList.defaultProps = {
