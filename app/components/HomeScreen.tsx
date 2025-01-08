@@ -347,7 +347,7 @@ const HomeScreen: React.FC = () => {
         <div className="mb-6">
           <div className="flex items-center mb-4">
             <Rocket strokeWidth={1.5} className="w-6 h-6 text-[#27ff52] mr-2" />
-            <p className="text-xl font-light text-sky-50">Get Started!</p>
+            <p className="text-xl font-light text-sky-50">Get Started & Learn More</p>
           </div>
           <div className="flex gap-4 overflow-x-auto">
             {dummyWalkthroughCards.map((card, index) => (

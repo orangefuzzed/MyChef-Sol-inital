@@ -27,7 +27,7 @@ const RecipeSuggestions: React.FC<RecipeSuggestionsProps> = ({ currentRecipeList
       {currentRecipeList.map((recipe, index) => (
         <div
           key={`${recipe.recipeTitle}-${index}`}
-          className="relative flex items-start bg-white/30 backdrop-blur-lg border-white border shadow-lg ring-1 ring-black/5 py-6 px-8 rounded-3xl mb-4"
+          className="relative flex items-start bg-white/30 backdrop-blur-lg border-white border shadow-lg ring-1 ring-black/5 py-4 px-6 rounded-3xl mb-4"
         >
           
 
@@ -61,7 +61,7 @@ const RecipeSuggestions: React.FC<RecipeSuggestionsProps> = ({ currentRecipeList
                 query: { id: recipe.id }, // Updated from recipeId to id
               }}
             >
-              <button className="flex items-center justify-center w-full max-w-lg p-2 px-6 bg-sky-50/20 border border-gray-300 shadow-lg ring-1 ring-black/5 rounded-full text-sm font-base text-sky-50 gap-2">
+              <button className="flex items-center justify-center w-full max-w-lg p-2 px-6 bg-white/20 border border-gray-300 shadow-lg ring-1 ring-black/5 rounded-full text-sm font-base text-sky-50 gap-2">
                 View Recipe
                 <ChefHat strokeWidth={1.5} className="w-5 h-5" />
               </button>
@@ -71,7 +71,7 @@ const RecipeSuggestions: React.FC<RecipeSuggestionsProps> = ({ currentRecipeList
             {/* Suggest Pairings Button */}
             <button
               onClick={() => handleSuggestPairings(recipe)}
-              className={`flex items-center justify-center w-full max-w-lg p-2 px-2 bg-sky-50/20 border border-gray-300 shadow-lg ring-1 ring-black/5 rounded-full text-sm font-base text-sky-50 gap-2 ${
+              className={`flex items-center justify-center w-full max-w-lg p-2 px-2 bg-white/20 border border-gray-300 shadow-lg ring-1 ring-black/5 rounded-full text-sm font-base text-sky-50 gap-2 ${
                 loadingPairings && selectedRecipeTitle === recipe.recipeTitle ? 'opacity-50 cursor-not-allowed' : ''
               }`}
               disabled={loadingPairings && selectedRecipeTitle === recipe.recipeTitle}

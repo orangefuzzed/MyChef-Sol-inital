@@ -13,6 +13,7 @@ import {
   LogOut,
   Bookmark,
   CircleX,
+  BookHeart,
 } from 'lucide-react';
 import Link from 'next/link';
 import { signOut, useSession } from 'next-auth/react';
@@ -68,12 +69,13 @@ const HamburgerMenu: React.FC<HamburgerMenuProps> = ({ isOpen, onClose }) => {
         onClose(); // Close the menu
       },
     },
+    { icon: <BookHeart size={20} color={'#fff'} />, text: 'My CookBook', link: '/myCookbook' },
     { icon: <ChefHat size={20} color={'#fff'} />, text: 'My Dishcoveries', link: '/MyHome' },
     { icon: <Bookmark size={20} color={'#fff'} />, text: 'Saved Recipes', link: '/saved-recipes' },
     { icon: <Heart size={20} color={'#fff'} />, text: 'Favorite Recipes', link: '/favorites' },
     { icon: <ShoppingCart size={20} color={'#fff'} />, text: 'Shopping Lists', link: '/shopping-lists' },
     { icon: <History size={20} color={'#fff'} />, text: 'Recent History', link: '/history' },
-    /*{ icon: <Calendar size={20} color={'#fff'} />, text: 'Saved Meal Plans', link: '/saved-meal-plans' },*/
+     /*{ icon: <Calendar size={20} color={'#fff'} />, text: 'Saved Meal Plans', link: '/saved-meal-plans' },*/
   ];
 
   if (!portalRoot) return null; // Prevent rendering until portalRoot is set

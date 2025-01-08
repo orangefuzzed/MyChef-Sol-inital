@@ -5,11 +5,13 @@ import Link from 'next/link';
 import { useRecipeContext } from '../../contexts/RecipeContext';
 import { Recipe } from '../../../types/Recipe';
 import { generateShoppingList } from '../../utils/shoppingListUtils';
-import { Flame, Clock, Soup, ShoppingCart, ChefHat, Bookmark, Heart } from 'lucide-react';
+import { BookHeart, Check, Flame, Clock, Soup, ShoppingCart, ChefHat, Bookmark, Heart } from 'lucide-react';
 import Loading from '../../loading'; // Use your existing Loading component
 import { saveRecipeToDB, deleteRecipeFromDB, getSavedRecipesFromDB } from '../../utils/indexedDBUtils';
 import { saveRecipeToFavorites, deleteRecipeFromFavorites, getFavoriteRecipesFromDB } from '../../utils/favoritesUtils';
 import Toast from '../../components/Toast'; // Import your Toast component
+import GetStartedModal from '../GetStartedModal';
+import * as Checkbox from '@radix-ui/react-checkbox';
 
 // Wrapping the entire page in Suspense
 const RecipeDetailsPageWrapper = () => {
@@ -28,13 +30,12 @@ const RecipeDetails: React.FC = () => {
   const [isSaved, setIsSaved] = useState(false);
   const [isFavorited, setIsFavorited] = useState(false);
   const [toastMessage, setToastMessage] = useState<string | null>(null);
-  const [toastType, setToastType] = useState<'success' | 'error' | null>(null);
+  const [toast, setToast] = useState<{ message: string; type: 'success' | 'error' } | null>(null);
 
+  // Update triggerToast:
   const triggerToast = (message: string, type: 'success' | 'error') => {
-    setToastMessage(message);
-    setToastType(type);
+    setToast({ message, type });
   };
-
   useEffect(() => {
     const loadRecipe = async () => {
       if (id) {
@@ -154,16 +155,73 @@ const RecipeDetails: React.FC = () => {
       }
     };
 
-  if (loading) {
-    return <Loading />;
-  }
-
   const handleCreateShoppingList = () => {
     if (selectedRecipe) {
       const shoppingList = generateShoppingList(selectedRecipe);
       setCurrentShoppingList(shoppingList);
     }
   };
+
+  const [isCategoryModalOpen, setCategoryModalOpen] = useState(false);
+
+  const [selectedCategory, setSelectedCategory] = useState('Uncategorized');
+
+  const handleCategorySave = async (e: React.FormEvent) => {
+    e.preventDefault();
+  
+    // Ensure we have all required data
+    if (!selectedRecipe?.id || !selectedCategory) {
+      triggerToast(
+        'Failed to save category. Recipe ID or Category is missing.',
+        'error'
+      );
+      return;
+    }
+  
+    try {
+      const response = await fetch(`/api/recipes/categories`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          recipeId: selectedRecipe.id, // Backend expects this key
+          mainCategory: selectedCategory, // Backend expects this key
+          subCategory: null, // Include subCategory for future-proofing
+        }),
+      });
+  
+      if (!response.ok) {
+        const errorText = await response.text(); // Fetch error text for debugging
+        console.error('Category Save Error:', errorText); // Log error details
+        throw new Error(errorText);
+      }
+  
+      triggerToast(
+        `Recipe successfully added to '${selectedCategory}'!`,
+        'success'
+      );
+      setCategoryModalOpen(false); // Close the modal
+    } catch (error) {
+      console.error('Failed to save category:', error); // Log for debugging
+      triggerToast('Failed to save category. Please try again.', 'error');
+    }
+  };
+   
+
+  const categoryOptions = [    
+    "Main Dishes",
+    "Side Dishes",
+    "Salads",
+    "Desserts",
+    "Appetizers",
+    "Beverages",
+    "Breakfast",
+    "Lunch",
+    "Dinner",
+    "Snacks",
+    "Holiday & Seasonal",
+    "Uncategorized",
+  ];
+  
 
   // Show loading state if still fetching
   if (loading) {
@@ -177,7 +235,7 @@ const RecipeDetails: React.FC = () => {
   return (
     <div className="recipe-details-container bg-white/30 backdrop-blur-lg border-white border shadow-lg ring-1 ring-black/5 p-6 rounded-2xl">
 
-      {/* Save and Favorite Toggles */}
+      {/* Save, MyCookBook and Favorite Toggles */}
       <div className="flex justify-start gap-2 mb-2">
         <button onClick={handleSaveToggle} className="p-2 text-sky-50 hover:text-pink-800">
           <Bookmark strokeWidth={1.5} size={24} color={isSaved ? '#9d174d' : 'white'} />
@@ -185,16 +243,21 @@ const RecipeDetails: React.FC = () => {
         <button onClick={handleFavoriteToggle} className="p-2 text-sky-50 hover:text-pink-800">
           <Heart strokeWidth={1.5} size={24} color={isFavorited ? '#9d174d' : 'white'} />
         </button>
+        <button
+          onClick={() => {
+            setCategoryModalOpen(true); // Trigger the new modal state
+          }}
+          className="p-2 text-sky-50 hover:text-pink-800"
+        >
+          <BookHeart strokeWidth={1.5} size={24} />
+        </button>
 
         {/* Toast Messages */}
-        {toastMessage && toastType && (
+        {toast && (
           <Toast
-            message={toastMessage}
-            type={toastType}
-            onClose={() => {
-              setToastMessage(null);
-              setToastType(null);
-            }}
+            message={toast.message}
+            type={toast.type}
+            onClose={() => setToast(null)}
           />
         )}
       </div>
@@ -252,6 +315,54 @@ const RecipeDetails: React.FC = () => {
           <ShoppingCart strokeWidth={1.5} className="w-5 h-5" />
         </button>
       </Link>
+      {isCategoryModalOpen && (
+        <GetStartedModal
+          isOpen={isCategoryModalOpen}
+          onClose={() => setCategoryModalOpen(false)}
+          currentSlideIndex={0} // Default to the first slide
+          onNext={() => {}} // No-op for 'next'
+          onPrev={() => {}} // No-op for 'prev'
+          slides={[
+            {
+              title: 'Add this recipe to MyCookBook under...',
+              content: (
+                <form
+                  onSubmit={handleCategorySave}
+                  className="space-y-3 p-2"
+                >
+                  <div className="mb-4 space-y-4">
+                    {categoryOptions.map((category) => (
+                      <div key={category} className="flex items-center space-x-4">
+                        <Checkbox.Root
+                          id={category}
+                          checked={selectedCategory === category}
+                          onCheckedChange={() => setSelectedCategory(category)}
+                          className="w-5 h-5 bg-gray-700 rounded-md flex items-center justify-center border border-gray-500 focus:outline-none focus:ring focus:ring-[#00a39e]"
+                        >
+                          <Checkbox.Indicator>
+                            <Check className="w-4 h-4 text-[#00a39e]" />
+                          </Checkbox.Indicator>
+                        </Checkbox.Root>
+                        <label htmlFor={category} className="text-gray-300">
+                          {category}
+                        </label>
+                      </div>
+                    ))}
+                  </div>
+                  <button
+                    type="submit"
+                    className="w-full bg-[#00a39e]/50 border border-sky-50 text-white p-2 rounded-full shadow-md hover:bg-pink-800/50"
+                  >
+                    Save
+                  </button>
+                </form>
+              ),
+            },
+          ]}
+        />
+      )}
+
+
     </div>
   );
 };
