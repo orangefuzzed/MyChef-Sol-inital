@@ -31,11 +31,15 @@ const RecipeDetails: React.FC = () => {
   const [isFavorited, setIsFavorited] = useState(false);
   const [toastMessage, setToastMessage] = useState<string | null>(null);
   const [toast, setToast] = useState<{ message: string; type: 'success' | 'error' } | null>(null);
+  const [isCategorized, setIsCategorized] = useState(false);
+  const [isCategoryModalOpen, setCategoryModalOpen] = useState(false);
+  const [selectedCategory, setSelectedCategory] = useState('');
 
   // Update triggerToast:
   const triggerToast = (message: string, type: 'success' | 'error') => {
     setToast({ message, type });
   };
+
   useEffect(() => {
     const loadRecipe = async () => {
       if (id) {
@@ -78,6 +82,43 @@ const RecipeDetails: React.FC = () => {
       checkIfSaved();
       checkIfFavorited();
     }, [id]);
+
+  // On Component Mount: Check if Recipe is Categorized
+  useEffect(() => {
+    if (!selectedRecipe?.id) return;
+  
+    const checkIfCategorized = async () => {
+      console.log(`Fetching category for recipe ID: ${selectedRecipe.id}`);
+      try {
+        const response = await fetch(
+          `/api/recipes/categories?recipeId=${selectedRecipe.id}`
+        );
+  
+        if (!response.ok) {
+          throw new Error('Failed to fetch category');
+        }
+  
+        const data = await response.json();
+        console.log('Category data fetched:', data);
+  
+        if (data?.mainCategory) {
+          setIsCategorized(true);
+          setSelectedCategory(data.mainCategory); // Pre-select the current category
+          console.log(`Recipe categorized: ${data.mainCategory}`);
+        } else {
+          setIsCategorized(false);
+          setSelectedCategory(''); // Default to empty // Reset to default
+          console.log('Recipe not categorized');
+        }
+      } catch (error) {
+        console.error('Error checking if recipe is categorized:', error);
+      }
+    };
+  
+    checkIfCategorized();
+  }, [selectedRecipe]);
+      
+  
 
     const handleSaveToggle = async () => {
       if (!selectedRecipe || !id) return; // Ensure `id` is not null before proceeding
@@ -162,14 +203,9 @@ const RecipeDetails: React.FC = () => {
     }
   };
 
-  const [isCategoryModalOpen, setCategoryModalOpen] = useState(false);
-
-  const [selectedCategory, setSelectedCategory] = useState('Uncategorized');
-
-  const handleCategorySave = async (e: React.FormEvent) => {
+  const handleSaveCategory = async (e: React.FormEvent) => {
     e.preventDefault();
   
-    // Ensure we have all required data
     if (!selectedRecipe?.id || !selectedCategory) {
       triggerToast(
         'Failed to save category. Recipe ID or Category is missing.',
@@ -183,34 +219,33 @@ const RecipeDetails: React.FC = () => {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          recipeId: selectedRecipe.id, // Backend expects this key
-          mainCategory: selectedCategory, // Backend expects this key
-          subCategory: null, // Include subCategory for future-proofing
+          recipeId: selectedRecipe.id,
+          mainCategory: selectedCategory,
+          subCategory: null, // Optional for now
         }),
       });
   
       if (!response.ok) {
-        const errorText = await response.text(); // Fetch error text for debugging
-        console.error('Category Save Error:', errorText); // Log error details
-        throw new Error(errorText);
+        throw new Error('Failed to save category.');
       }
   
+      setIsCategorized(true); // Ensure the icon updates
       triggerToast(
         `Recipe successfully added to '${selectedCategory}'!`,
         'success'
       );
-      setCategoryModalOpen(false); // Close the modal
+  
+      setCategoryModalOpen(false); // Close modal after saving
     } catch (error) {
-      console.error('Failed to save category:', error); // Log for debugging
+      console.error('Error saving category:', error);
       triggerToast('Failed to save category. Please try again.', 'error');
     }
-  };
-   
+  };    
 
   const categoryOptions = [    
     "Main Dishes",
     "Side Dishes",
-    "Salads",
+    "Soup & Salads",
     "Desserts",
     "Appetizers",
     "Beverages",
@@ -243,13 +278,17 @@ const RecipeDetails: React.FC = () => {
         <button onClick={handleFavoriteToggle} className="p-2 text-sky-50 hover:text-pink-800">
           <Heart strokeWidth={1.5} size={24} color={isFavorited ? '#9d174d' : 'white'} />
         </button>
+
+        {/* Open Modal for Category Selection */}
         <button
-          onClick={() => {
-            setCategoryModalOpen(true); // Trigger the new modal state
-          }}
+          onClick={() => setCategoryModalOpen(true)}
           className="p-2 text-sky-50 hover:text-pink-800"
         >
-          <BookHeart strokeWidth={1.5} size={24} />
+          <BookHeart
+            strokeWidth={1.5}
+            size={24}
+            color={isCategorized ? '#9d174d' : 'white'} // Reflect category state
+          />
         </button>
 
         {/* Toast Messages */}
@@ -315,19 +354,20 @@ const RecipeDetails: React.FC = () => {
           <ShoppingCart strokeWidth={1.5} className="w-5 h-5" />
         </button>
       </Link>
+      {/* Modal for Selecting Categories */}
       {isCategoryModalOpen && (
         <GetStartedModal
           isOpen={isCategoryModalOpen}
           onClose={() => setCategoryModalOpen(false)}
-          currentSlideIndex={0} // Default to the first slide
+          currentSlideIndex={0}
           onNext={() => {}} // No-op for 'next'
           onPrev={() => {}} // No-op for 'prev'
           slides={[
             {
-              title: 'Add this recipe to MyCookBook under...',
+              title: 'Assign this recipe to...',
               content: (
                 <form
-                  onSubmit={handleCategorySave}
+                  onSubmit={handleSaveCategory}
                   className="space-y-3 p-2"
                 >
                   <div className="mb-4 space-y-4">
@@ -361,8 +401,6 @@ const RecipeDetails: React.FC = () => {
           ]}
         />
       )}
-
-
     </div>
   );
 };

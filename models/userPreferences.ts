@@ -6,6 +6,10 @@ export interface IUserPreferences {
   ingredients: string[]; // NEW: "What’s in Your Pantry?" preferences
   dietaryRestrictions: string[];
   cookingStyle: string[];
+  location?: {
+    country?: string; // Optional country
+    measurementSystem?: string; // Optional measurement system
+  };
 }
 
 export const getUserPreferencesCollection = async (db: Db) => {

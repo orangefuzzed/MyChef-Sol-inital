@@ -145,7 +145,7 @@ const HomeScreen: React.FC = () => {
       ]
     },  
     {
-      title: "My Dishcoveries: YOUR Dishcovery Hub",
+      title: "'My Dishcoveries': YOUR Discovery Hub",
       description: "All your favorites, saved in one place.",
       slides: [
         {
@@ -165,6 +165,12 @@ const HomeScreen: React.FC = () => {
           "content": "Save your recipe chats for future inspiration. Those spicy Mexican appetizers you loved? That perfect steak marinade? They’re all just a click away.",
           "content2": "Your recipe chats, saved and searchable. Dishcovery is here to make sure you never lose those sparks of culinary genius!",
           "imageSrc": "/images/pizza-2.png",
+        },
+        {
+          "title": "Introducing: My CookBook",
+          "content": "Organize your recipes like a pro! Create your own personal categories—from 'Holiday Favorites' to 'Weeknight Wonders'—and keep everything exactly where you want it.",
+          "content2": "With My CookBook, Dishcovery is more than just a recipe app. It's your digital sous-chef, serving up your saved recipes and favorites in style. Cook smarter, not harder. 💥",
+          "imageSrc": "/images/soup-6.png",
         }
       ]
     },    

@@ -3,7 +3,7 @@
 import React from 'react';
 import { RecipeCategoryDocument } from '../../types/RecipeCategoryDocument'; // New type!
 import { useRouter } from 'next/navigation';
-import { Fish, Clock } from 'lucide-react';
+import { Carrot, Clock } from 'lucide-react';
 
 interface RecipesCarouselProps {
   recipes: ExtendedRecipeCategoryDocument[]; // Use the extended type
@@ -13,7 +13,7 @@ interface ExtendedRecipeCategoryDocument extends RecipeCategoryDocument {
   recipeTitle: string; // Dynamically add recipeTitle
 }
 
-const MainDishCarousel: React.FC<RecipesCarouselProps> = ({ recipes }) => {
+const AppetizersCarousel: React.FC<RecipesCarouselProps> = ({ recipes }) => {
   const router = useRouter();
 
   const handleRecipeClick = (recipeId: string) => {
@@ -30,7 +30,7 @@ const MainDishCarousel: React.FC<RecipesCarouselProps> = ({ recipes }) => {
           onClick={() => handleRecipeClick(recipe.recipeId)}
         >      
         <div className="flex items-center text-sm text-sky-50 mb-2">
-          <Fish strokeWidth={1.5} className="text-slate-950 bg-sky-50/30 w-7 h-7 p-1 mr-2 border border-white rounded-full flex items-center justify-center" />
+          <Carrot strokeWidth={1.5} className="text-slate-950 bg-sky-50/30 w-7 h-7 p-1 mr-2 border border-white rounded-full flex items-center justify-center" />
           <span>{recipe.mainCategory || 'Uncategorized'}</span>
         </div>
         {/* Use recipeTitle for the title */}
@@ -42,8 +42,9 @@ const MainDishCarousel: React.FC<RecipesCarouselProps> = ({ recipes }) => {
         </div>
       ))}
     </div>
-  </div>
+
+    </div>
   );
 };
 
-export default MainDishCarousel;
+export default AppetizersCarousel;

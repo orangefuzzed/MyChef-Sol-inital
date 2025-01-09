@@ -9,7 +9,7 @@ export const insertRecipe = async (recipe: RecipeDocument): Promise<void> => {
   const recipeToInsert = {
     ...recipe,
     id: recipe.id ?? (recipe._id?.toString() ?? ''),
-    category: recipe.category || 'Uncategorized', // Default to "Uncategorized" if not provided
+    category: recipe.category || null, // No default category
   };
 
   if (recipeToInsert._id) {

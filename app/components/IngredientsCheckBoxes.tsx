@@ -14,8 +14,6 @@ const ingredientsOptions = [
   'Some Fancy Stuff',
   'Take Me on a Culinary Adventure!',
   'Whatever—I’m Going Shopping!',
-  'I prefer Metric System (ml, liters)',
-  'I prefer Imperial System (oz, lbs)'
 ];
 
 const IngredientsCheckBoxes: React.FC<IngredientsCheckBoxesProps> = ({

@@ -4,6 +4,7 @@ import React, { useState } from 'react';
 import { usePreferencesContext } from '../contexts/PreferencesContext'; // Import context
 import ScheduleCheckBoxes from './ScheduleCheckBoxes';
 import DietaryRestrictions from './DietaryRestrictions';
+import LocationPreferences from './LocationPreferences';
 import CookingStyleCheckboxes from './CookingStyleCheckboxes';
 import IngredientsCheckBoxes from './IngredientsCheckBoxes';
 import PreferencesPreview from './PreferencesPreview';
@@ -100,6 +101,35 @@ const PreferencesFlow: React.FC<PreferencesFlowProps> = ({ isOpen, onClose }) =>
               selectedIngredients={preferences.ingredients}
               onChange={(value) =>
                 setPreferences((prev) => ({ ...prev, ingredients: value }))
+              }
+            />
+          </div>
+        ),
+      },
+      {
+        title: '',
+        content: (
+          <div>
+            <LocationPreferences
+              country={preferences.location?.country || ''}
+              measurementSystem={preferences.location?.measurementSystem || ''}
+              onCountryChange={(value) =>
+                setPreferences((prev) => ({
+                  ...prev,
+                  location: {
+                    country: value, // Always defined
+                    measurementSystem: prev.location?.measurementSystem || 'Imperial System (oz, lbs)', // Default if undefined
+                  },
+                }))
+              }
+              onMeasurementSystemChange={(value) =>
+                setPreferences((prev) => ({
+                  ...prev,
+                  location: {
+                    measurementSystem: value, // Always defined
+                    country: prev.location?.country || 'USA', // Default if undefined
+                  },
+                }))
               }
             />
           </div>

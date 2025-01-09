@@ -23,13 +23,16 @@ export const generatePrompt = (
   // Helper to generate the conversational preferences summary
   const generatePreferencesSummary = (preferences: Preferences): string => {
     return `
-      Hey Claude! Here’s what you need to know about me: 
-      - Dietary Restrictions: ${preferences.dietaryRestrictions?.join(', ') || 'None'}
-      - Schedule: ${preferences.schedule?.join(', ') || 'None'}
-      - Pantry Ingredients: ${preferences.ingredients?.join(', ') || 'None'}
-      - Cooking Style: ${preferences.cookingStyle?.join(', ') || 'None'}
+    Hey Claude! Here’s what you need to know about me: 
+    - Dietary Restrictions: ${preferences.dietaryRestrictions?.join(', ') || 'None'}
+    - Schedule: ${preferences.schedule?.join(', ') || 'None'}
+    - Pantry Ingredients: ${preferences.ingredients?.join(', ') || 'None'}
+    - Cooking Style: ${preferences.cookingStyle?.join(', ') || 'None'}
+    - I live in: 
+      - Country: ${preferences.location?.country || 'Not specified'}
+      - Measurement System: ${preferences.location?.measurementSystem || 'Not specified'}
 
-      Now, based on this, can you suggest a recipe for ${message}? Make it awesome!
+    Now, based on this, can you suggest a recipe for ${message}? Make it awesome!
     `;
   };
 

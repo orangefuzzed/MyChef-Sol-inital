@@ -20,17 +20,21 @@ export async function GET() {
     const defaultPreferences = {
       dietaryRestrictions: [],
       cookingStyle: [],
-      ingredients: [], // New field
-      schedule: [], // New field
+      ingredients: [], // Pantry Ingredients
+      schedule: [], // Meal Scheduling
+      location: {
+        country: '', // Default country to an empty string
+        measurementSystem: '', // Default measurement system to an empty string
+      },
     };
 
+    // Merge the fetched preferences with the defaults to ensure all fields are returned
     return NextResponse.json({ preferences: { ...defaultPreferences, ...userPreferences } }, { status: 200 });
   } catch (error) {
     console.error('Error fetching preferences:', error);
     return NextResponse.json({ error: 'Failed to fetch preferences' }, { status: 500 });
   }
 }
-
 
 export async function POST(request: Request) {
   try {
@@ -47,10 +51,14 @@ export async function POST(request: Request) {
 
     const updatedPreferences = {
       userEmail,
-      dietaryRestrictions: body.dietaryRestrictions || [], // Full dynamic list support
+      dietaryRestrictions: body.dietaryRestrictions || [],
       cookingStyle: body.cookingStyle || [],
-      ingredients: body.ingredients || [], // New field
-      schedule: body.schedule || [], // New field
+      ingredients: body.ingredients || [],
+      schedule: body.schedule || [],
+      location: {
+        country: body.location?.country || '', // Use nested "location.country"
+        measurementSystem: body.location?.measurementSystem || '', // Use nested "location.measurementSystem"
+      },
     };
 
     await userPreferencesCollection.updateOne(
@@ -65,4 +73,3 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: 'Failed to save preferences' }, { status: 500 });
   }
 }
-

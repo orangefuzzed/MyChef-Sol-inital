@@ -1,7 +1,7 @@
 'use client';
 
 import React from 'react';
-import { Users, Timer, Ham, WheatOff } from 'lucide-react';
+import { Globe, Ruler, Users, Timer, Ham, WheatOff } from 'lucide-react';
 
 interface PreferencesPreviewProps {
   preferences: {
@@ -9,6 +9,10 @@ interface PreferencesPreviewProps {
     cookingStyle: string[];
     schedule: string[]; // New schedule preferences
     ingredients: string[]; // New pantry preferences
+    location?: {
+      country?: string; // Optional country
+      measurementSystem?: string; // Optional measurement system
+    };
   };
   onSavePreferences: () => void; // Add the prop for saving preferences
 }
@@ -73,6 +77,30 @@ const PreferencesPreview: React.FC<PreferencesPreviewProps> = ({
             </div>
         </div>
 
+        {/* Location Preferences */}
+        <div>
+            <h4 className="my-2 text-sm font-semibold text-gray-200">Location Preferences:</h4>
+            <div className="space-y-1">
+                {preferences.location ? (
+                    <>
+                        {/* Country */}
+                        <div className="flex text-sm font-base text-sky-50">
+                            <Globe className="w-4 h-4 mr-2 text-[#00a39e]" />
+                            <span>Country: {preferences.location.country || 'Not specified'}</span>
+                        </div>
+                        {/* Measurement System */}
+                        <div className="flex text-sm font-base text-sky-50">
+                            <Ruler className="w-4 h-4 mr-2 text-[#00a39e]" />
+                            <span>
+                                Measurement System: {preferences.location.measurementSystem || 'Not specified'}
+                            </span>
+                        </div>
+                    </>
+                ) : (
+                    <p className="text-sm font-base text-sky-50">None selected</p>
+                )}
+            </div>
+        </div>
 
 
         {/* Dietary Restrictions */}

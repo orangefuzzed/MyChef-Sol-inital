@@ -8,6 +8,10 @@ export interface Preferences {
     cookingStyle: string[];
     ingredients: string[]; // Pantry Ingredients
     schedule: string[];    // Meal Scheduling
+    location?: {
+      country?: string; // Optional country
+      measurementSystem?: string; // Optional measurement system
+    };
   }
   
   
@@ -29,6 +33,10 @@ export const PreferencesProvider: React.FC<{ children: React.ReactNode }> = ({ c
         cookingStyle: [],
         ingredients: [], // 🔥 Add this to initialize it properly
         schedule: [], // 🔥 If "schedule" was added, initialize it here too
+        location: {
+          country: '', // Initialize country as an empty string
+          measurementSystem: '', // Initialize measurementSystem as an empty string
+        },
       });
       
 

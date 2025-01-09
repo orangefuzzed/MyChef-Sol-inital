@@ -118,6 +118,9 @@ const GetStartedModal: React.FC<ModalProps> = ({ isOpen, onClose, slides }) => {
             </motion.div>
 
             {/* Carousel Controls */}
+            {/* Conditionally render controls and indicators */}
+        {slides.length > 1 && (
+          <>
             <div className="flex justify-between items-center mt-6 w-full px-8">
               <button
                 onClick={handlePrevSlide}
@@ -146,6 +149,8 @@ const GetStartedModal: React.FC<ModalProps> = ({ isOpen, onClose, slides }) => {
                 ></div>
               ))}
             </div>
+            </>
+          )}
           </div>
         </motion.div>
       </motion.div>

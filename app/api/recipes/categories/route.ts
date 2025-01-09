@@ -19,20 +19,28 @@ export async function GET(request: Request) {
 
     const userEmail = session.user.email;
     const { searchParams } = new URL(request.url);
-    const mainCategory = searchParams.get('mainCategory');
+    const recipeId = searchParams.get('recipeId');
+    const mainCategory = searchParams.get('mainCategory') ? decodeURIComponent(searchParams.get('mainCategory')!) : null;
 
     const collection = db.collection(COLLECTION_NAME);
 
-    let query: any = { userEmail };
+    // Case 1: Fetch by recipeId (single document)
+    if (recipeId) {
+      const category = await collection.findOne({ recipeId, userEmail });
+      if (!category) {
+        return NextResponse.json({ mainCategory: null }); // No default category
+      }
+      return NextResponse.json(category);
+    }
 
-    // If a mainCategory is provided, filter by it
+    // Case 2: Fetch by mainCategory (array of documents)
+    let query: any = { userEmail };
     if (mainCategory) {
       query.mainCategory = mainCategory;
     }
 
     const recipes = await collection.find(query).toArray();
-
-    return NextResponse.json(recipes);
+    return NextResponse.json(recipes); // Return as an array
   } catch (error) {
     console.error('Error fetching categories:', error);
     return NextResponse.json({ error: 'Failed to fetch categories' }, { status: 500 });
