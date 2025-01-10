@@ -82,6 +82,7 @@ const RecipeDetails: React.FC = () => {
       checkIfSaved();
       checkIfFavorited();
     }, [id]);
+    
 
   // On Component Mount: Check if Recipe is Categorized
   useEffect(() => {
@@ -117,10 +118,16 @@ const RecipeDetails: React.FC = () => {
   
     checkIfCategorized();
   }, [selectedRecipe]);
-      
-  
 
-    const handleSaveToggle = async () => {
+  useEffect(() => {
+    if (!id) {
+      console.error('No ID found in query params!');
+    } else {
+      console.log(`Fetched recipe ID: ${id}`);
+    }
+  }, [id]);
+      
+     const handleSaveToggle = async () => {
       if (!selectedRecipe || !id) return; // Ensure `id` is not null before proceeding
   
       try {

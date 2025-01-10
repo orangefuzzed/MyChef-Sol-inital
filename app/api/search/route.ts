@@ -32,6 +32,7 @@ export async function GET(request: Request) {
               { description: { $regex: query, $options: 'i' } }, // Match categories
             ],
           })
+          .project({ recipeTitle: 1, description: 1, id: 1 }) // Include the id field
           .sort({ recipeTitle: 1 }) // Alphabetical sort
           .toArray();
         results = results.concat(items);
@@ -40,47 +41,45 @@ export async function GET(request: Request) {
 
     // Search Prompts
     if (options.includes('prompts')) {
-        const prompts = await db
+      const prompts = await db
         .collection('sessions')
         .aggregate([
-            { $unwind: '$messages' }, // Flatten the messages array
-            { 
-            $match: { 
-                'messages.sender': 'user', // Filter for user-sent messages
-                'messages.text': { $regex: query, $options: 'i' }, // Match query in message text
-            } 
+          { $unwind: '$messages' }, // Flatten the messages array
+          {
+            $match: {
+              'messages.sender': 'user', // Filter for user-sent messages
+              'messages.text': { $regex: query, $options: 'i' }, // Match query in message text
             },
-            { $project: { text: '$messages.text', timestamp: '$messages.timestamp' } }, // Project text and timestamp
-            { $sort: { 'messages.timestamp': -1 } }, // Sort by the latest prompts
+          },
+          { $project: { text: '$messages.text', timestamp: '$messages.timestamp' } }, // Project text and timestamp
+          { $sort: { 'messages.timestamp': -1 } }, // Sort by the latest prompts
         ])
-        
         .toArray();
-    
-        results = results.concat(prompts); // Append prompts to results
-    }
-  
 
-   // Search Recipes (global recipe collection)
-    if (options.includes('recipes')) {
-        const recipesCollection = db.collection('recipes');
-    
-        try {
-        const recipes = await recipesCollection
-            .find({
-            $or: [
-                { recipeTitle: { $regex: query, $options: 'i' } }, // Match by title
-                { description: { $regex: query, $options: 'i' } }, // Match by description
-            ],
-            })
-            .sort({ recipeTitle: 1 }) // Alphabetical sort
-            .toArray();
-    
-        results = results.concat(recipes);
-        } catch (error) {
-        console.error('Error fetching recipes:', error);
-        }
+      results = results.concat(prompts); // Append prompts to results
     }
-  
+
+    // Search Recipes (global recipe collection)
+    if (options.includes('recipes')) {
+      const recipesCollection = db.collection('recipes');
+
+      try {
+        const recipes = await recipesCollection
+          .find({
+            $or: [
+              { recipeTitle: { $regex: query, $options: 'i' } }, // Match by title
+              { description: { $regex: query, $options: 'i' } }, // Match by description
+            ],
+          })
+          .project({ recipeTitle: 1, description: 1, id: 1 }) // Include the id field
+          .sort({ recipeTitle: 1 }) // Alphabetical sort
+          .toArray();
+
+        results = results.concat(recipes);
+      } catch (error) {
+        console.error('Error fetching recipes:', error);
+      }
+    }
 
     // Return combined results
     return NextResponse.json(results, { status: 200 });

@@ -73,7 +73,7 @@ const SearchResultsPage: React.FC = () => {
                 <div
                   key={index}
                   className="bg-white/30 backdrop-blur-lg border-white border shadow-lg ring-1 ring-black/5 p-4 rounded-2xl cursor-pointer hover:shadow-2xl transition"
-                  onClick={() => handleRecipeClick(result.recipeId)}
+                  onClick={() => handleRecipeClick(result.id)}
                 >
                   {/* Icon */}
                   <div className="flex items-center text-sm text-sky-50 mb-2">
