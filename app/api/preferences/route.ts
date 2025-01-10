@@ -25,6 +25,7 @@ export async function GET() {
       location: {
         country: '', // Default country to an empty string
         measurementSystem: '', // Default measurement system to an empty string
+        highAltitude: false,
       },
     };
 
@@ -58,6 +59,7 @@ export async function POST(request: Request) {
       location: {
         country: body.location?.country || '', // Use nested "location.country"
         measurementSystem: body.location?.measurementSystem || '', // Use nested "location.measurementSystem"
+        highAltitude: !!body.location?.highAltitude,
       },
     };
 

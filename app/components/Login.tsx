@@ -90,7 +90,7 @@ const LoginScreen: React.FC = () => {
         
         {isLoading ? 'Logging in...' : 'Log In'}
         </button>
-        <p className={styles.orText}>or</p>
+        {/*<p className={styles.orText}>or</p>
         <Button
           variant="solid"
           color="gray"
@@ -106,7 +106,7 @@ const LoginScreen: React.FC = () => {
           onClick={() => handleOAuthLogin('facebook')}
         >
           <FaFacebook size={20} className='mr-2'/>Log in with Facebook
-        </Button>
+        </Button>*/}
       
     </form>
   );

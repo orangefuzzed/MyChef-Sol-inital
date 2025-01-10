@@ -60,7 +60,7 @@ const SearchResultsPage: React.FC = () => {
   return (
     <div
       className="flex flex-col h-screen bg-fixed bg-cover bg-center text-white"
-      style={{ backgroundImage: "url('/images/steak-dinner-2.png')" }}
+      style={{ backgroundImage: "url('/images/porch-dinner-2.png')" }}
     >
       <Header centralText="Search Results" />
 

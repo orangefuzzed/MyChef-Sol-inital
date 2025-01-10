@@ -11,6 +11,7 @@ export interface Preferences {
     location?: {
       country?: string; // Optional country
       measurementSystem?: string; // Optional measurement system
+      highAltitude?: boolean; // Optional altitude
     };
   }
   
@@ -36,6 +37,7 @@ export const PreferencesProvider: React.FC<{ children: React.ReactNode }> = ({ c
         location: {
           country: '', // Initialize country as an empty string
           measurementSystem: '', // Initialize measurementSystem as an empty string
+          highAltitude: false,
         },
       });
       

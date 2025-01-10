@@ -126,27 +126,33 @@ const OnboardingModal: React.FC<OnboardingModalProps> = ({
             </button>
 
             {/* Next Button */}
-            <button
-                onClick={nextSlide}
-                disabled={currentSlide === slides.length - 1}
-                className={`py-1 px-4 rounded-full flex items-center justify-center ${
-                currentSlide === slides.length - 1
-                    ? 'bg-slate-950/20 text-sm font-light border border-gray-500 text-gray-500 cursor-not-allowed'
-                    : 'bg-slate-950/20 text-sm font-light text-[#00a39e] hover:bg-[#00a39e]/10 transition'
-                }`}
-            >
-                {currentSlide === slides.length - 1 ? (
-                'Finish'
-                ) : (
-                <CircleArrowRight
-                    className={`w-7 h-7 rounded-full ${
-                    currentSlide === slides.length - 1 ? 'text-gray-600' : 'text-[#27ff52]'
-                    }`}
-                />
-                )}
-            </button>
+              <button
+                  onClick={() => {
+                      if (currentSlide === slides.length - 1) {
+                          onComplete(); // Mark onboarding as complete
+                          onSkip(); // Close the modal (or any logic you want here)
+                      } else {
+                          nextSlide(); // Proceed to the next slide
+                      }
+                  }}
+                  disabled={currentSlide === slides.length - 1 && false} // Remove "disabled" for Finish
+                  className={`py-1 px-4 rounded-full flex items-center justify-center ${
+                      currentSlide === slides.length - 1
+                          ? 'bg-[#00a39e]/50 border border-sky-50 text-sm font-base text-sky-50 hover:bg-[#008d84] transition' // Style for the Finish button
+                          : 'bg-slate-950/20 text-sm font-light text-[#00a39e] hover:bg-[#00a39e]/10 transition'
+                  }`}
+              >
+                  {currentSlide === slides.length - 1 ? (
+                      'Finish'
+                  ) : (
+                      <CircleArrowRight
+                          className={`w-7 h-7 rounded-full ${
+                              currentSlide === slides.length - 1 ? 'text-gray-600' : 'text-[#27ff52]'
+                          }`}
+                      />
+                  )}
+              </button>
             </div>
-
 
           {/* Progress Indicators */}
           <div className="flex justify-center mt-2" aria-label="Slide progress">

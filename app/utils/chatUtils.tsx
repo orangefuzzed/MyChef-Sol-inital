@@ -31,6 +31,7 @@ export const generatePrompt = (
     - I live in: 
       - Country: ${preferences.location?.country || 'Not specified'}
       - Measurement System: ${preferences.location?.measurementSystem || 'Not specified'}
+      - High Altitude Adjustment: ${preferences.location?.highAltitude || 'Not specified'}
 
     Now, based on this, can you suggest a recipe for ${message}? Make it awesome!
     `;

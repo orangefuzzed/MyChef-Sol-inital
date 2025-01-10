@@ -8,8 +8,6 @@ import { Menu, CircleArrowLeft } from 'lucide-react'; // Importing icons
 import HamburgerMenu from './HamburgerMenu';
 import styles from './Header.module.css';
 import axios from 'axios';
-import { Search } from 'lucide-react';
-import SearchModal from './SearchModal';
 
 interface HeaderProps {
   centralText: string;
@@ -20,9 +18,6 @@ const Header: React.FC<HeaderProps> = ({ onBackClick }) => {
   const [user, setUser] = useState<{ displayName: string; avatarUrl?: string } | null>(null);
   const [isHamburgerMenuOpen, setIsHamburgerMenuOpen] = useState(false);
   const router = useRouter(); // Next.js router for default navigation
-  const [query, setQuery] = useState(''); // Add state for query
-  const [options, setOptions] = useState<string[]>([]); // Add state for search options
-  const [isSearchModalOpen, setSearchModalOpen] = useState(false);
 
   useEffect(() => {
     const fetchUserData = async () => {
@@ -47,47 +42,17 @@ const Header: React.FC<HeaderProps> = ({ onBackClick }) => {
     }
   };
 
-  const handleSearch = () => {
-    // Redirect to search results page with query and options as parameters
-    const searchParams = new URLSearchParams();
-    searchParams.append('query', query);
-    searchParams.append('options', JSON.stringify(options));
-    router.push(`/search-results?${searchParams.toString()}`);
-    setSearchModalOpen(false); // Close the modal
-  };
-
   return (
     <header className={`${styles.header} header`}>
       <div className="flex justify-between items-center py-1.5 px-4 bg-black/75 border-b border-gray-800 text-white backdrop-blur-lg shadow-lg ring-1 ring-black/5">
-        <div>
+
         {/* Back Button */}
         <button
           onClick={handleBackClick}
           className={`${styles.backButton} text-white`}
         >
           <CircleArrowLeft strokeWidth={1.5} size={24} />
-        </button>
-
-        {/* Search Button*/}
-        <button
-          onClick={() => setSearchModalOpen(true)}
-          className="text-sky-50 ml-3 hover:text-pink-500"
-        >
-          <Search strokeWidth={1.5} size={24} />
-        </button>
-        </div>
-        {/* Search Modal */}
-        {isSearchModalOpen && (
-          <SearchModal
-            isOpen={isSearchModalOpen}
-            onClose={() => setSearchModalOpen(false)}
-            query={query}
-            setQuery={setQuery}
-            options={options}
-            setOptions={setOptions}
-            onSearch={handleSearch}
-          />
-        )}
+        </button>        
       
         {/* Central Greeting */}
         <div className="flex items-center gap-2">

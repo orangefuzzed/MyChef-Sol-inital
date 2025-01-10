@@ -64,9 +64,9 @@ const PreferencesFlow: React.FC<PreferencesFlowProps> = ({ isOpen, onClose }) =>
 
   const slides = [
     {
-        title: '',
-        content: <IntroSlide onNext={handleNextSlide} />, // Hook in the intro slide
-      },
+      title: '',
+      content: <IntroSlide onNext={handleNextSlide} />, // Hook in the intro slide
+    },
     {
       title: '',
       content: (
@@ -94,47 +94,57 @@ const PreferencesFlow: React.FC<PreferencesFlowProps> = ({ isOpen, onClose }) =>
       ),
     },
     {
-        title: '',
-        content: (
-          <div>
-            <IngredientsCheckBoxes
-              selectedIngredients={preferences.ingredients}
-              onChange={(value) =>
-                setPreferences((prev) => ({ ...prev, ingredients: value }))
-              }
-            />
-          </div>
-        ),
-      },
-      {
-        title: '',
-        content: (
-          <div>
-            <LocationPreferences
-              country={preferences.location?.country || ''}
-              measurementSystem={preferences.location?.measurementSystem || ''}
-              onCountryChange={(value) =>
-                setPreferences((prev) => ({
-                  ...prev,
-                  location: {
-                    country: value, // Always defined
-                    measurementSystem: prev.location?.measurementSystem || 'Imperial System (oz, lbs)', // Default if undefined
-                  },
-                }))
-              }
-              onMeasurementSystemChange={(value) =>
-                setPreferences((prev) => ({
-                  ...prev,
-                  location: {
-                    measurementSystem: value, // Always defined
-                    country: prev.location?.country || 'USA', // Default if undefined
-                  },
-                }))
-              }
-            />
-          </div>
-        ),
-      },
+      title: '',
+      content: (
+        <div>
+          <IngredientsCheckBoxes
+            selectedIngredients={preferences.ingredients}
+            onChange={(value) =>
+              setPreferences((prev) => ({ ...prev, ingredients: value }))
+            }
+          />
+        </div>
+      ),
+    },
+    {
+      title: '',
+      content: (
+        <div>
+          <LocationPreferences
+            country={preferences.location?.country || ''}
+            measurementSystem={preferences.location?.measurementSystem || ''}
+            highAltitude={!!preferences.location?.highAltitude} // Ensure boolean
+            onCountryChange={(value) =>
+              setPreferences((prev) => ({
+                ...prev,
+                location: {
+                  ...prev.location,
+                  country: value,
+                },
+              }))
+            }
+            onMeasurementSystemChange={(value) =>
+              setPreferences((prev) => ({
+                ...prev,
+                location: {
+                  ...prev.location,
+                  measurementSystem: value,
+                },
+              }))
+            }
+            onHighAltitudeChange={(value) =>
+              setPreferences((prev) => ({
+                ...prev,
+                location: {
+                  ...prev.location,
+                  highAltitude: !!value, // Ensure boolean
+                },
+              }))
+            }
+          />
+        </div>
+      ),
+    },
     {
       title: '',
       content: (

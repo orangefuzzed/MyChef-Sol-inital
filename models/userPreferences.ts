@@ -9,6 +9,7 @@ export interface IUserPreferences {
   location?: {
     country?: string; // Optional country
     measurementSystem?: string; // Optional measurement system
+    highAltitude?: boolean; // Optional altitude
   };
 }
 
