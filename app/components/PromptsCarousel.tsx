@@ -29,7 +29,7 @@ const PromptsCarousel: React.FC<PromptsCarouselProps> = ({ prompts, onRefresh })
               onClick={() => handlePromptClick(prompt.text)}
             >
               <p className="text-sm text-sky-50">{prompt.text}</p>
-              {/*<span className="text-xs text-gray-400 block mt-2">{new Date(prompt.timestamp).toLocaleString()}</span>*/}
+              
               {/* Use Prompt Button */}
               <button
                 onClick={() => handlePromptClick(prompt.text)}

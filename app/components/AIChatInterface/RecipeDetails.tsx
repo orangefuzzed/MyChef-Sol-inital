@@ -364,7 +364,7 @@ const RecipeDetails: React.FC = () => {
           onPrev={() => {}} // No-op for 'prev'
           slides={[
             {
-              title: 'Assign this recipe to...',
+              title: 'Add this recipe to...',
               content: (
                 <form
                   onSubmit={handleSaveCategory}
@@ -393,7 +393,7 @@ const RecipeDetails: React.FC = () => {
                     type="submit"
                     className="w-full bg-[#00a39e]/50 border border-sky-50 text-white p-2 rounded-full shadow-md hover:bg-pink-800/50"
                   >
-                    Save
+                    Update
                   </button>
                 </form>
               ),
