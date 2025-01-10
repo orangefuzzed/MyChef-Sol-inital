@@ -34,12 +34,12 @@ const SearchModal: React.FC<SearchModalProps> = ({
   onSearch,
 }) => {
 
-    const router = useRouter(); // Next.js router for default navigation
+  const router = useRouter(); // Next.js router for default navigation
 
-    const handleSearch = () => {
-        onClose(); // Close the modal
-        router.push(`/search-results?query=${encodeURIComponent(query)}&options=${JSON.stringify(options)}`);
-      };
+  const handleSearch = () => {
+    onClose(); // Close the modal
+    router.push(`/search-results?query=${encodeURIComponent(query)}&options=${JSON.stringify(options)}`);
+  };
 
   const [portalRoot, setPortalRoot] = useState<HTMLElement | null>(null);
 
@@ -77,13 +77,13 @@ const SearchModal: React.FC<SearchModalProps> = ({
               role="dialog"
             >
               {/* Close Button */}
-                          <button
-                              onClick={onClose}
-                              className="absolute top-2 right-2 rounded-full bg-pink-800 transition z-10"
-                              aria-label="Close modal"
-                          >
-                              <CircleX className="w-5 h-5 text-sky-50" />
-                          </button>
+              <button
+                onClick={onClose}
+                className="absolute top-2 right-2 rounded-full bg-pink-800 transition z-10"
+                aria-label="Close modal"
+              >
+                <CircleX className="w-5 h-5 text-sky-50" />
+              </button>
 
               {/* Modal Header */}
               <h2 className="text-xl text-sky-50 font-bold mb-4 text-center">
@@ -104,7 +104,7 @@ const SearchModal: React.FC<SearchModalProps> = ({
                   value={query}
                   onChange={(e) => setQuery(e.target.value)}
                   placeholder="Search recipes, categories, or prompts..."
-                  className="w-full p-2 rounded-md bg-gray-800 text-white border border-gray-600 focus:outline-none focus:ring focus:ring-[#00a39e]"
+                  className="w-full p-2 rounded-lg bg-gray-800 text-sky-50 text-sm border border-gray-600 focus:outline-none focus:ring focus:ring-[#00a39e]"
                 />
               </div>
 
@@ -125,7 +125,7 @@ const SearchModal: React.FC<SearchModalProps> = ({
                         onCheckedChange={(checked) =>
                           handleCheckboxChange(option.id, !!checked)
                         }
-                        className="mb-2 w-6 h-6 bg-gray-700 rounded-md flex items-center justify-center border border-gray-500"
+                        className="mb-2 w-5 h-5 bg-gray-700 rounded-md flex items-center justify-center border border-gray-500"
                       >
                         <Checkbox.Indicator>
                           <Check className="w-4 h-4 text-[#00a39e]" />
@@ -143,7 +143,7 @@ const SearchModal: React.FC<SearchModalProps> = ({
               <div className="text-center">
                 <button
                   onClick={handleSearch} // Hooked up here!
-                  className="flex items-center justify-center w-full mt-4 p-2 px-6 bg-[#00a39e]/50 border border-sky-50 shadow-lg ring-1 ring-black/5 rounded-full text-sky-50 gap-2"
+                  className="mb-4 flex items-center justify-center w-full mt-4 p-2 px-6 bg-[#00a39e]/50 border border-sky-50 shadow-lg ring-1 ring-black/5 rounded-full text-sky-50 gap-2"
                 >
                   Search
                   <Search strokeWidth={1.5} className="w-5 h-5" />
