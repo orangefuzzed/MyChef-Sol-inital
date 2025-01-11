@@ -15,6 +15,8 @@ const ShoppingListsCarousel: React.FC<ShoppingListsCarouselProps> = ({ shoppingL
   const handleViewShoppingList = (id: string) => {
     router.push(`/shopping-list?id=${id}`);
   };
+  
+  console.log('ShoppingListsCarousel Props:', shoppingLists);
 
   return (
     <div className="p">
@@ -32,12 +34,23 @@ const ShoppingListsCarousel: React.FC<ShoppingListsCarouselProps> = ({ shoppingL
                 <ShoppingCart strokeWidth={1.5} className="w-4 h-4 text-black" />
               </div>
               <h3 className="text-lg font-light text-slate-950 mb-2">
-                  Shopping List for{' '}
-                  <span className="text-sky-50 font-semibold">
-                    {list.recipeTitle || 'Recipe'}
-                  </span>
-                </h3>
-              
+                Shopping List for{' '}
+                <span className="text-sky-50 font-semibold">
+                  {list.recipeTitle || 'Recipe'}
+                </span>
+              </h3>
+              {/* Ensure ingredients are rendered gracefully */}
+              <ul className="list-disc pl-6">
+                {list.ingredients?.length > 0 ? (
+                  list.ingredients.map((item, index) => (
+                    <li key={index} className="text-sky-50">
+                      {item.name}
+                    </li>
+                  ))
+                ) : (
+                  <li className="text-gray-400 italic">No ingredients found</li>
+                )}
+              </ul>
             </div>
           ))}
         </div>

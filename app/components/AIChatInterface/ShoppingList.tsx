@@ -114,7 +114,7 @@ const ShoppingList: React.FC<ShoppingListProps> = ({
         showToast('Oops! Failed to copy. Try again. 😓', 'error'); // Toast for failure too
       });
   };
-  
+
   useEffect(() => {
     const fetchCheckedState = async () => {
       try {
@@ -124,15 +124,15 @@ const ShoppingList: React.FC<ShoppingListProps> = ({
         console.error('Failed to fetch checked state:', error);
       }
     };
-  
+
     fetchCheckedState();
   }, [listId]);
-  
+
 
   const toggleChecked = (itemName: string) => {
     setCheckedItems((prev) => {
       const updated = { ...prev, [itemName]: !prev[itemName] };
-  
+
       // Save the updated state to IndexedDB
       saveShoppingListToDB(
         listId,
@@ -142,11 +142,11 @@ const ShoppingList: React.FC<ShoppingListProps> = ({
         },
         recipeTitle // Pass the recipeTitle as the third argument
       );
-  
+
       return updated;
     });
   };
- 
+
 
   return (
     <div className="shopping-list bg-white/30 backdrop-blur-lg border-white border shadow-lg ring-1 ring-black/5 p-6 rounded-2xl">
@@ -160,9 +160,8 @@ const ShoppingList: React.FC<ShoppingListProps> = ({
         {shoppingListData.ingredients.map((item, index) => (
           <li
             key={index}
-            className={`flex items-center gap-4 ${
-              checkedItems[item.name] ? 'line-through text-gray-500' : ''
-            }`}
+            className={`flex items-center gap-4 ${checkedItems[item.name] ? 'line-through text-gray-500' : ''
+              }`}
           >
             {/* Radix Checkbox */}
             <Checkbox.Root
@@ -179,9 +178,8 @@ const ShoppingList: React.FC<ShoppingListProps> = ({
             {/* Ingredient Label */}
             <label
               htmlFor={item.name}
-              className={`cursor-pointer ${
-                checkedItems[item.name] ? 'text-gray-600' : 'text-white'
-              }`}
+              className={`cursor-pointer ${checkedItems[item.name] ? 'text-gray-600' : 'text-white'
+                }`}
             >
               {item.name}
             </label>
@@ -191,46 +189,45 @@ const ShoppingList: React.FC<ShoppingListProps> = ({
 
       <p className="mt-6 font-semibold">Total Items: {shoppingListData.totalItems}</p>
 
-      
+
       <div className="mt-4 flex items-center">
-          <button
-            onClick={handleShoppingListSaveToggle}
-            className={`flex items-center justify-center w-full max-w-lg p-2 px-6 border border-gray-300 shadow-lg ring-1 ring-black/5 rounded-full text-sm font-base gap-2 ${
-              isShoppingListSaved ? 'bg-pink-800/65 text-white' : 'bg-slate-950/50 text-sky-50'
+        <button
+          onClick={handleShoppingListSaveToggle}
+          className={`flex items-center justify-center w-full max-w-lg p-2 px-6 border border-gray-300 shadow-lg ring-1 ring-black/5 rounded-full text-sm font-base gap-2 ${isShoppingListSaved ? 'bg-pink-800/65 text-white' : 'bg-slate-950/50 text-sky-50'
             } shadow-md transition-all duration-200`}
-          >
-            {isShoppingListSaved ? 'Delete Shopping List' : 'Save Shopping List'}
-            <ShoppingCart size={18} strokeWidth={1.5} />
-          </button>
-        </div>
-        
-          {/* Export to Text File Button */}
-          <div className="mt-2 flex items-center">
-            <button
-              onClick={() =>
-                exportToTextFile(
-                  shoppingListData.ingredients.map((item) => item.name) // Map ingredients to their names
-                )
-              }
-              className="flex items-center justify-center w-full max-w-lg p-2 px-6 bg-slate-950/50 border border-gray-300 shadow-lg ring-1 ring-black/5 rounded-full text-sm font-base text-sky-50 gap-2"
-            >
-              Export to File <FileUp size={20} strokeWidth={1.5} />
-            </button>
-          </div>
-          {/* Copy to Clipboard Button */}
-          <div className="mt-2 flex items-center">
-            <button
-              onClick={() =>
-                copyToClipboard(
-                  shoppingListData.ingredients.map((item) => item.name) // Map ingredients to their names
-                )
-              }
-              className="flex items-center justify-center w-full max-w-lg p-2 px-6 bg-slate-950/50 border border-gray-300 shadow-lg ring-1 ring-black/5 rounded-full text-sm font-base text-sky-50 gap-2"
-            >
-              Copy to Clipboard <ClipboardCopy size={20} strokeWidth={1.5} />
-            </button>
-          </div>    
-     </div>
+        >
+          {isShoppingListSaved ? 'Delete Shopping List' : 'Save Shopping List'}
+          <ShoppingCart size={18} strokeWidth={1.5} />
+        </button>
+      </div>
+
+      {/* Export to Text File Button */}
+      <div className="mt-2 flex items-center">
+        <button
+          onClick={() =>
+            exportToTextFile(
+              shoppingListData.ingredients.map((item) => item.name) // Map ingredients to their names
+            )
+          }
+          className="flex items-center justify-center w-full max-w-lg p-2 px-6 bg-slate-950/50 border border-gray-300 shadow-lg ring-1 ring-black/5 rounded-full text-sm font-base text-sky-50 gap-2"
+        >
+          Export to File <FileUp size={20} strokeWidth={1.5} />
+        </button>
+      </div>
+      {/* Copy to Clipboard Button */}
+      <div className="mt-2 flex items-center">
+        <button
+          onClick={() =>
+            copyToClipboard(
+              shoppingListData.ingredients.map((item) => item.name) // Map ingredients to their names
+            )
+          }
+          className="flex items-center justify-center w-full max-w-lg p-2 px-6 bg-slate-950/50 border border-gray-300 shadow-lg ring-1 ring-black/5 rounded-full text-sm font-base text-sky-50 gap-2"
+        >
+          Copy to Clipboard <ClipboardCopy size={20} strokeWidth={1.5} />
+        </button>
+      </div>
+    </div>
   );
 };
 ShoppingList.defaultProps = {
