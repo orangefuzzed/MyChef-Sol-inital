@@ -133,7 +133,7 @@ const SavedRecipesPage = () => {
 
                 {/* Delete Button */}
                 <button
-                  className="absolute top-4 right-4 bg-red-600 text-white p-2 rounded-full shadow-md hover:bg-red-500 transition"
+                  className="absolute top-4 right-4 bg-red-700/80 text-white p-2 rounded-full shadow-md hover:bg-red-500 transition"
                   onClick={(e) => {
                     e.stopPropagation(); // Prevent bubbling to the card's click handler
                     handleDeleteRecipe(recipe.id);
