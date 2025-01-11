@@ -22,13 +22,22 @@ const ShoppingListsPage = () => {
   const [toastMessage, setToastMessage] = useState('');
   const [toastType, setToastType] = useState<'success' | 'error'>('success');
 
+  const showToast = (message: string, type: 'success' | 'error') => {
+    setToastMessage(message);
+    setToastType(type);
+    setToastVisible(true);
+
+    // Hide the toast automatically after 3 seconds
+    setTimeout(() => setToastVisible(false), 3000);
+  };
+
   useEffect(() => {
     const fetchAndMergeShoppingLists = async () => {
       try {
         // Fetch shopping lists from IndexedDB
         let localLists = await getAllSavedShoppingListsFromDB();
         localLists = localLists || []; // Ensure it's an array
-  
+
         // Fetch shopping lists from MongoDB
         const remoteLists: ShoppingList[] = await (async () => {
           try {
@@ -44,47 +53,34 @@ const ShoppingListsPage = () => {
             return [];
           }
         })();
-  
+
         // Merge shopping lists into a single unique list
         const mergedListsMap = new Map<string, ShoppingList>();
         [...localLists, ...remoteLists].forEach((list) =>
           mergedListsMap.set(list.id, list) // Use `id` as the unique key
         );
-  
+
         const mergedLists = Array.from(mergedListsMap.values());
-  
+
         // Sync missing MongoDB shopping lists into IndexedDB
         for (const remoteList of remoteLists) {
           if (!localLists.some((localList) => localList.id === remoteList.id)) {
-            await saveShoppingListToDB(remoteList.id, { 
-              ingredients: remoteList.ingredients, 
-              totalItems: remoteList.totalItems 
+            await saveShoppingListToDB(remoteList.id, {
+              ingredients: remoteList.ingredients,
+              totalItems: remoteList.totalItems
             }, remoteList.id); // Pass all required arguments
           }
         }
-  
+
         // Update state with the merged shopping lists
         setShoppingLists(mergedLists);
       } catch (error) {
         console.error('Error fetching and merging shopping lists:', error);
       }
     };
-  
+
     fetchAndMergeShoppingLists();
   }, []);
-  ;
-  
-  
-
-
-  const showToast = (message: string, type: 'success' | 'error') => {
-    setToastMessage(message);
-    setToastType(type);
-    setToastVisible(true);
-
-    // Hide the toast automatically after 3 seconds
-    setTimeout(() => setToastVisible(false), 3000);
-  };
 
   const handleDeleteShoppingList = async (id: string) => {
     if (!id) return;
@@ -132,36 +128,56 @@ const ShoppingListsPage = () => {
 
       {/* Main Content */}
       <div className="flex-grow p-8 overflow-y-auto">
-        {shoppingLists.length > 0 ? (
+        {shoppingLists?.length > 0 ? (
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
             {shoppingLists.map((list) => (
               <div
-                key={list.id}
+                key={list.id || `list-${Math.random()}`}
                 className="bg-white/30 backdrop-blur-lg border-white border shadow-lg ring-1 ring-black/5 p-6 rounded-2xl relative"
                 onClick={() => handleViewShoppingList(list.id)}
               >
                 {/* Left-Side Icon */}
-                <div
-                  className="bg-sky-50/30 w-8 h-8 border border-white rounded-full flex items-center justify-center mb-2"          
-                >
+                <div className="bg-sky-50/30 w-8 h-8 border border-white rounded-full flex items-center justify-center mb-2">
                   <ShoppingCart strokeWidth={1.5} className="w-4 h-4 text-black" />
                 </div>
 
                 {/* Delete Button */}
                 <button
                   className="absolute top-4 right-4 bg-red-600 text-white p-2 rounded-full shadow-md hover:bg-red-500 transition"
-                  onClick={() => handleDeleteShoppingList(list.id)}
+                  onClick={(e) => {
+                    e.stopPropagation(); // Prevent triggering `handleViewShoppingList`
+                    handleDeleteShoppingList(list.id);
+                  }}
                   aria-label="Delete Shopping List"
                 >
                   <Trash2 size={16} />
                 </button>
 
+                {/* Shopping List Title */}
                 <h3 className="text-lg font-light text-slate-950 mb-2">
                   Shopping List for{' '}
                   <span className="text-sky-50 font-semibold">
                     {list.recipeTitle || 'Recipe'}
                   </span>
                 </h3>
+
+                {/* Ingredients Preview */}
+                <ul className="mt-4 list-disc pl-6">
+                  {list.ingredients?.length > 0 ? (
+                    list.ingredients.slice(0, 3).map((item, index) => (
+                      <li key={index} className="text-sky-50">
+                        {item.name}
+                      </li>
+                    ))
+                  ) : (
+                    <li className="text-gray-400 italic">No ingredients found</li>
+                  )}
+                </ul>
+
+                {/* Total Items */}
+                <p className="mt-2 text-gray-400 text-sm">
+                  {list.totalItems ? `${list.totalItems} items` : 'No items listed'}
+                </p>
               </div>
             ))}
           </div>
@@ -171,6 +187,7 @@ const ShoppingListsPage = () => {
           </div>
         )}
       </div>
+
 
       {/* Footer */}
       <Footer actions={['home', 'send']} />
