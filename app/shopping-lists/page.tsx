@@ -153,31 +153,13 @@ const ShoppingListsPage = () => {
                   <Trash2 size={16} />
                 </button>
 
-                {/* Shopping List Title */}
+                {/* Shopping List Title Only */}
                 <h3 className="text-lg font-light text-slate-950 mb-2">
                   Shopping List for{' '}
                   <span className="text-sky-50 font-semibold">
                     {list.recipeTitle || 'Recipe'}
                   </span>
                 </h3>
-
-                {/* Ingredients Preview */}
-                <ul className="mt-4 list-disc pl-6">
-                  {list.ingredients?.length > 0 ? (
-                    list.ingredients.slice(0, 3).map((item, index) => (
-                      <li key={index} className="text-sky-50">
-                        {item.name}
-                      </li>
-                    ))
-                  ) : (
-                    <li className="text-gray-400 italic">No ingredients found</li>
-                  )}
-                </ul>
-
-                {/* Total Items */}
-                <p className="mt-2 text-gray-400 text-sm">
-                  {list.totalItems ? `${list.totalItems} items` : 'No items listed'}
-                </p>
               </div>
             ))}
           </div>
@@ -187,6 +169,7 @@ const ShoppingListsPage = () => {
           </div>
         )}
       </div>
+
 
 
       {/* Footer */}
