@@ -131,7 +131,7 @@ const ChatViewPage: React.FC = () => {
       <Header centralText={sessionTitle} />
 
       {/* Main Content */}
-      <div className="flex-grow p-8 overflow-y-auto">
+      <div className="flex-grow p-4 overflow-y-auto">
         <MessageList
           messages={messages}
           /*lastAIResponse={null} // Since we're viewing a past session, lastAIResponse can be null or not needed
