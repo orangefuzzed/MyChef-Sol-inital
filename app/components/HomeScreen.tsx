@@ -187,9 +187,9 @@ const HomeScreen: React.FC = () => {
           imageSrc: "/images/man-kids-cooking-4.png",
         },
         {
-          title: "Coming Soon to Cook Mode:",
-          content: "• Guided Meal Planning: Dynamic AI Pairing, Ingredient Sharing, and User-Driven Customization",
-          content2: "• Cook Mode Timers: Smart Timer Integration, Interactive Alerts and Cross-Device Sync",
+          title: "Newest Cook Mode Features:",
+          content: "NEW • Guided Meal Planning: Dynamic AI Pairing, User-Driven Preference Customization",
+          content2: "NEW • Cook Mode Timers: Smart Timer Integration, Interactive Alerts and Cross-Device Sync",
           imageSrc: "/images/chef-cooking-1.png",
         },
       ],
