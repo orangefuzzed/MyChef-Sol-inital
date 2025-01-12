@@ -144,11 +144,12 @@ const CookMode: React.FC<CookModeProps> = ({ cookModeData, recipeTitle }) => {
                 {timer && (
                   <button
                     onClick={() => handleStartTimer(timer)}
-                    className="ml-1 bg-slate-950/80 rounded-full p-1 border border-sky-50 text-pink-800 hover:text-pink-600"
+                    className="ml-1 bg-slate-950/80 rounded-full p-1 flex items-center justify-center border border-sky-50 text-pink-800 hover:text-pink-600"
                   >
-                    <Timer className="flex items-center justify-center w-5 h-5 text-[#00f5d0]" />
+                    <Timer strokeWidth={2} size={20} className="text-[#00f5d0]" />
                   </button>
                 )}
+
               </div>
             </li>
           );

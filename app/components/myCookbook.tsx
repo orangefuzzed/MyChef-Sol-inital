@@ -5,7 +5,7 @@ import { useSession } from 'next-auth/react';
 import HamburgerMenu from '../components/HamburgerMenu';
 import Footer from '../components/Footer';
 import Header from '../components/Header';
-import { LeafyGreen, Drumstick, Popcorn, Ham, Sandwich, EggFried, Wine, Carrot, CakeSlice, Salad, Fish, Soup } from 'lucide-react';
+import { LeafyGreen, BookHeart, RefreshCw, Drumstick, Popcorn, Ham, Sandwich, EggFried, Wine, Carrot, CakeSlice, Salad, Fish, Soup } from 'lucide-react';
 import MainDishCarousel from '../components/mainDishCarousel';
 import SideDishCarousel from '../components/sideDishCarousel';
 import SaladsCarousel from '../components/saladsCarousel';
@@ -400,6 +400,7 @@ const MyCookBook: React.FC = () => {
 
       {/* Main Content */}
       <div className="flex-grow overflow-y-auto px-6 py-4">
+
         {/* Main Dishes Section */}
         <div className="mb-6">
           <div className="flex items-center justify-between mb-4">

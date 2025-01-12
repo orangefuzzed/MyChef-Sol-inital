@@ -150,28 +150,28 @@ const HomeScreen: React.FC = () => {
       slides: [
         {
           "title": "Your Personal Cookbook",
-          "content": "Save your favorite recipes and keep them at your fingertips. Whether it’s that perfect lasagna or a quick weeknight stir-fry, Dishcovery keeps your culinary treasures safe and sound.",
+          "content": "Quickly save your favorite recipes and keep them at your fingertips. Whether it’s that perfect lasagna or a quick weeknight stir-fry, Dishcovery keeps your culinary treasures safe and sound.",
           "content2": "Saved recipes, favorites, and more—your digital recipe box has never looked so good. Bookmark it. Love it. Cook it. 💚",
           "imageSrc": "/images/breakfast-3.png",
         },
         {
-          "title": "Never Lose a Shopping List Again",
-          "content": "Keep track of all your shopping lists—organized, easy to find, and ready to help you knock out your next grocery run.",
-          "content2": "Whether you’re stocking up for the week or prepping for a dinner party, Dishcovery has your lists covered. Even that random late-night impulse list? Yep, we saved it. 🙌",
+          "title": "Never Forget a Shopping List Again",
+          "content": "Your grocery game, leveled up! Export your shopping list to a text file or copy it to your clipboard in seconds. Seamless integration with your favorite apps? Done and done!",
+          "content2": "Take your list to the store and check off items as you shop—simple, satisfying, and oh-so-organized. Whether you’re meal prepping, hosting friends, or tackling a midnight snack craving, Dishcovery keeps you efficient and stress-free.",
           "imageSrc": "/images/soup-2.png",
+        },
+        {
+          "title": "Welcome to My Dishcoveries",
+          "content": "This isn’t just a recipe collection—it’s YOUR culinary masterpiece. Add your favorite recipes to categories like 'Main Dishes' or 'Desserts', and organize your saved recipes exactly the way you want them.",
+          "content2": "Think of it as your personal Dishcovery 'cook book', perfectly complementing—and organizing—your saved and favorite recipes. Whether you’re building a go-to weekly lineup or crafting a special menu for that unforgettable dinner party, My Dishcoveries has you covered.",
+          "imageSrc": "/images/soup-6.png",
         },
         {
           "title": "Relive Your Recipe Chats",
           "content": "Save your recipe chats for future inspiration. Those spicy Mexican appetizers you loved? That perfect steak marinade? They’re all just a click away.",
-          "content2": "Your recipe chats, saved and searchable. Dishcovery is here to make sure you never lose those sparks of culinary genius!",
+          "content2": "Your recipe chats, saved IN FULL, and easily accessible. Dishcovery is here to make sure you never lose those sparks of culinary genius!",
           "imageSrc": "/images/pizza-2.png",
-        },
-        {
-          "title": "Introducing: My CookBook",
-          "content": "Organize your recipes like a pro! Create your own personal categories—from 'Holiday Favorites' to 'Weeknight Wonders'—and keep everything exactly where you want it.",
-          "content2": "With My CookBook, Dishcovery is more than just a recipe app. It's your digital sous-chef, serving up your saved recipes and favorites in style. Cook smarter, not harder. 💥",
-          "imageSrc": "/images/soup-6.png",
-        }
+        },        
       ]
     },    
     {

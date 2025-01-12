@@ -298,23 +298,6 @@ const RecipeDetails: React.FC = () => {
           />
         </button>
 
-        {/* shopping list button
-        <Link
-          href={{ pathname: `/shopping-list`, query: { id: selectedRecipe.id } }}
-          onClick={handleCreateShoppingList}
-        >
-          <button className="p-2 text-sky-50 hover:text-pink-800">
-            <ShoppingCart size={24} strokeWidth={1.5} className="" />
-          </button>
-        </Link> */}
-
-        {/* cook mode button 
-        <Link href={{ pathname: `/cook-mode`, query: { id: selectedRecipe.id } }}>
-          <button className="p-2 text-sky-50 hover:text-pink-800">
-            <ChefHat size={24} strokeWidth={1.5} className="" />
-          </button>
-        </Link>*/}
-
         {/* Toast Messages */}
         {toast && (
           <Toast
@@ -349,9 +332,9 @@ const RecipeDetails: React.FC = () => {
         href={{ pathname: `/shopping-list`, query: { id: selectedRecipe.id } }}
         onClick={handleCreateShoppingList}
       >
-        <button className="text-xs mt-1 mb-2 px-4 py-1 bg-[#00a39e]/40 border border-sky-50 shadow-lg ring-1 ring-black/5 rounded-full text-sky-50 flex items-center gap-2">
+        <button className="text-sm mt-1 mb-2 px-4 py-1 bg-[#00a39e]/40 border border-sky-50 shadow-lg ring-1 ring-black/5 rounded-full text-sky-50 flex items-center gap-2">
           View Shopping List
-          <ShoppingCart strokeWidth={1.5} size={16} className="" />
+          <ShoppingCart strokeWidth={1.5} size={18} className="" />
         </button>
       </Link>
         <ul className="list-disc list-inside">
@@ -364,9 +347,9 @@ const RecipeDetails: React.FC = () => {
       <section className="instructions mb-6">
         <h3 className="text-2xl text-black font-semibold mb-2">Instructions</h3>
         <Link href={{ pathname: `/cook-mode`, query: { id: selectedRecipe.id } }}>
-          <button className="text-xs mt-1 mb-2 px-4 py-1 bg-[#00a39e]/40 border border-sky-50 shadow-lg ring-1 ring-black/5 rounded-full text-sky-50 flex items-center gap-2">
+          <button className="text-sm mt-1 mb-2 px-4 py-1 bg-[#00a39e]/40 border border-sky-50 shadow-lg ring-1 ring-black/5 rounded-full text-sky-50 flex items-center gap-2">
           View in Cook Mode
-          <ChefHat strokeWidth={1.5} size={16} className="" />
+          <ChefHat strokeWidth={1.5} size={18} className="" />
           </button>
         </Link>
         <ol className="list-decimal list-inside">
@@ -375,24 +358,6 @@ const RecipeDetails: React.FC = () => {
           ))}
         </ol>
       </section>
-
-      {/*<div className="action-buttons flex gap-4 mt-6">
-        <Link href={{ pathname: `/cook-mode`, query: { id: selectedRecipe.id } }}>
-          <button className="mt-4 p-2 px-6 bg-pink-800/50 border border-sky-50 shadow-lg ring-1 ring-black/5 rounded-full text-sky-50 flex items-center gap-2">
-            View in Cook Mode
-            <ChefHat strokeWidth={1.5} className="w-5 h-5" />
-          </button>
-        </Link>
-      </div>
-      <Link
-        href={{ pathname: `/shopping-list`, query: { id: selectedRecipe.id } }}
-        onClick={handleCreateShoppingList}
-      >
-        <button className="mt-4 p-2 px-6 bg-pink-800/50 border border-sky-50 shadow-lg ring-1 ring-black/5 rounded-full text-sky-50 flex items-center gap-2">
-          View Shopping List
-          <ShoppingCart strokeWidth={1.5} className="w-5 h-5" />
-        </button>
-      </Link>*/}
 
       {/* Modal for Selecting Categories */}
       {isCategoryModalOpen && (
