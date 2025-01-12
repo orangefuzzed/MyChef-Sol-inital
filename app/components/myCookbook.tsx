@@ -5,7 +5,7 @@ import { useSession } from 'next-auth/react';
 import HamburgerMenu from '../components/HamburgerMenu';
 import Footer from '../components/Footer';
 import Header from '../components/Header';
-import { LeafyGreen, BookHeart, RefreshCw, Drumstick, Popcorn, Ham, Sandwich, EggFried, Wine, Carrot, CakeSlice, Salad, Fish, Soup } from 'lucide-react';
+import { LeafyGreen, Drumstick, Popcorn, Ham, Sandwich, EggFried, Wine, Carrot, CakeSlice, Salad, Fish, Soup } from 'lucide-react';
 import MainDishCarousel from '../components/mainDishCarousel';
 import SideDishCarousel from '../components/sideDishCarousel';
 import SaladsCarousel from '../components/saladsCarousel';
@@ -19,6 +19,7 @@ import SnacksCarousel from '../components/snacksCarousel';
 import HolidayCarousel from '../components/holidayCarousel';
 import UncategorizedCarousel from '../components/uncategorizedCarousel';
 import { RecipeCategoryDocument } from '../../types/RecipeCategoryDocument';
+import { getAllCategoriesFromDB, saveRecipeToCategory, CategoryRecord, MinimalCategoryRecipe } from '../utils/indexedDBUtils';
 
 const MyCookBook: React.FC = () => {
   const { data: session } = useSession();
@@ -35,10 +36,51 @@ const MyCookBook: React.FC = () => {
   const [snacks, setSnacks] = useState<EnrichedRecipeCategoryDocument[]>([]);
   const [holiday, setHoliday] = useState<EnrichedRecipeCategoryDocument[]>([]);
   const [uncategorized, setUncategorized] = useState<EnrichedRecipeCategoryDocument[]>([]);
+  const [categories, setCategories] = useState<CategoryRecord[]>([]);
 
   interface EnrichedRecipeCategoryDocument extends RecipeCategoryDocument {
     recipeTitle: string;
   }
+
+  useEffect(() => {
+    const fetchAndMergeCategories = async () => {
+      try {
+        // 1. Local
+        const localCats = await getAllCategoriesFromDB(); 
+        // 2. Remote
+        const res = await fetch('/api/recipes/categories'); 
+        const remoteCats: CategoryRecord[] = res.ok ? await res.json() : [];
+  
+        // 3. Merge
+        const mergedMap = new Map<string, CategoryRecord>();
+        [...localCats, ...remoteCats].forEach((record) =>
+          mergedMap.set(record._id, record)
+        );
+        const merged = Array.from(mergedMap.values());
+  
+        // 4. Sync missing remote->local
+        for (const remoteRec of remoteCats) {
+          if (!localCats.some((lc) => lc._id === remoteRec._id)) {
+            // store it offline
+            const recipeDummy = { id: remoteRec.recipeId, recipeTitle: remoteRec.recipeTitle };
+            await saveRecipeToCategory(remoteRec.userEmail, remoteRec.mainCategory, recipeDummy);
+          }
+        }
+  
+        // Optionally sync local->remote if you want two-way
+        // ...
+        
+        // 5. set local state
+        setCategories(merged);
+      } catch (error) {
+        console.error('Error merging categories:', error);
+      }
+    };
+  
+    fetchAndMergeCategories();
+  }, []);
+  
+
 // Fetch main dishes
   useEffect(() => {
     const fetchMainDishes = async () => {

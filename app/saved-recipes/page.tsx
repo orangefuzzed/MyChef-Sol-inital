@@ -62,7 +62,7 @@ const SavedRecipesPage = () => {
   
     fetchAndMergeSavedRecipes();
   }, []);
-  ;
+
 
   const handleRecipeClick = (id: string) => {
     router.push(`/recipe-view?id=${id}`);
