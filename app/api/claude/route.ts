@@ -1,14 +1,9 @@
 import { NextResponse } from 'next/server';
 import axios from 'axios';
 
-{/*interface UserPreferences {
-  [key: string]: string | number | boolean | null;
-}*/}
-
 const CLAUDE_API_KEY = process.env.CLAUDE_API_KEY;
-const CLAUDE_API_URL = 'https://api.anthropic.com/v1/messages'; // Using the correct endpoint
+const CLAUDE_API_URL = 'https://api.anthropic.com/v1/messages';
 
-// Function to generate the core AI prompt based on request type
 const generatePrompt = (message: string, requestType: string) => {
   let corePrompt = `
     You are an intelligent recipe suggestion, meal planning, and cooking assistant. 
@@ -24,14 +19,6 @@ const generatePrompt = (message: string, requestType: string) => {
     - Balance flavor, nutrition, and ease of preparation when suggesting recipes.
     - Use natural, conversational language to engage users.
   `;
-
-  {/*// Optionally, if `preferences` is used
-  if (preferences && Object.keys(preferences).length > 0) {
-    corePrompt += `
-    User preferences to consider:
-    ${JSON.stringify(preferences)}.
-    `;
-  }*/}
 
   // Adjust prompt based on the type of request
   if (requestType === 'shoppingList') {
@@ -60,7 +47,6 @@ const generatePrompt = (message: string, requestType: string) => {
   return corePrompt;
 };
 
-
 export async function POST(request: Request) {
   try {
     const { message, requestType } = await request.json();
@@ -74,12 +60,12 @@ export async function POST(request: Request) {
     const response = await axios.post(
       CLAUDE_API_URL,
       {
-        model: "claude-3-5-sonnet-20240620",
+        model: "claude-3-haiku-20240307",
         max_tokens: 3072,
         messages: [
           {
             role: "user",
-            content: prompt,
+            content: prompt
           }
         ]
       },
@@ -95,6 +81,7 @@ export async function POST(request: Request) {
     console.log('Claude API response status:', response.status);
     console.log('Claude API response data:', JSON.stringify(response.data).slice(0, 200) + '...');
 
+    // Updated to handle the correct response structure
     const reply = response.data.content[0].text;
 
     return NextResponse.json({
@@ -124,4 +111,3 @@ export async function POST(request: Request) {
     }, { status: 500 });
   }
 }
-
