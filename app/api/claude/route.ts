@@ -60,12 +60,12 @@ export async function POST(request: Request) {
     const response = await axios.post(
       CLAUDE_API_URL,
       {
-        model: "claude-3-haiku-20240307",
+        model: "claude-3-5-haiku-20241022",
         max_tokens: 3072,
         messages: [
           {
             role: "user",
-            content: prompt
+            content: prompt,
           }
         ]
       },
