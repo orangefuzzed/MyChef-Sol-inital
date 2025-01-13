@@ -199,7 +199,7 @@ export const useAIChatHandlers = () => {
         Please retry the user's last request:
         "${lastUserMessage.text}"
   
-        Please provide 3 recipe suggestions based on the following user input.
+        Please provide 3 additional recipe suggestions, ensuring they are unique, varied, and avoid duplicating previous suggestions.
           
           Respond in the following JSON format:
           {
