@@ -143,7 +143,7 @@ export const useOpenAIChatHandlers = () => {
           ]
         }
           Please respond in valid JSON only. **No** triple backticks, code fences, or additional commentary outside the JSON object. Ensure your response is strictly parseable by JSON.parse().
-        Also ensure that the instructions include the amount of the ingredient in each of the steps.
+          Also, Please answer with your best recipe ideas, using a fun and imaginative style. Feel free to incorporate unique ingredients or unexpected twists, unless the user's preferences forbid them. Let your creativity shine! Also, please ensure that the instructions include the amount of the ingredient in each of the steps.
       `;
 
       const aiResponse = await sendMessageToOpenai(regeneratePrompt, 'get more suggestions');
@@ -222,7 +222,7 @@ export const useOpenAIChatHandlers = () => {
           ]
         }
           Please respond in valid JSON only. **No** triple backticks, code fences, or additional commentary outside the JSON object. Ensure your response is strictly parseable by JSON.parse().
-        Also ensure that the instructions include the amount of the ingredient in each of the steps.
+          Also, Please answer with your best recipe ideas, using a fun and imaginative style. Feel free to incorporate unique ingredients or unexpected twists, unless the user's preferences forbid them. Let your creativity shine! Also, please ensure that the instructions include the amount of the ingredient in each of the steps.
       `;
 
       // Send to OpenAI

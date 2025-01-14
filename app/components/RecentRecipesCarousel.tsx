@@ -10,7 +10,7 @@ interface RecipesCarouselProps {
   onRefresh?: () => void;
 }
 
-const RecentRecipesCarousel: React.FC<RecipesCarouselProps> = ({ recipes, onRefresh }) => {
+const TrendingRecipesCarousel: React.FC<RecipesCarouselProps> = ({ recipes, onRefresh }) => {
   const router = useRouter();
 
   const handleRecipeClick = (id: string) => {
@@ -53,7 +53,7 @@ const RecentRecipesCarousel: React.FC<RecipesCarouselProps> = ({ recipes, onRefr
         ))}
       </div>
     </div>
-  );  
+  );
 };
 
-export default RecentRecipesCarousel;
+export default TrendingRecipesCarousel;
