@@ -213,7 +213,7 @@ const handleCancelClick = () => {
       style={{ backgroundImage: "url('/images/chef-cooking-2.png')" }}
       >
       <Header centralText="Account Settings" />
-      <main className="flex-grow p-8 overflow-y-auto">
+      <main className="flex-grow p-6 overflow-y-auto">
 
         {/* Editing Action Buttons */}
         <div className="flex justify-end mb-6 space-x-4">

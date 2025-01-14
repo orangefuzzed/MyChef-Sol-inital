@@ -67,7 +67,7 @@ const CookModePage = () => {
         />
 
         {/* Main Content */}
-        <div className="flex-grow p-8 overflow-y-auto">
+        <div className="flex-grow p-6 overflow-y-auto">
           <p>No recipe selected. Please go back and select a recipe.</p>
           <button
             onClick={() => router.push('/recipe-view')}
@@ -94,7 +94,7 @@ const CookModePage = () => {
       />
 
       {/* Main Content */}
-      <div className="flex-grow p-8 overflow-y-auto">
+      <div className="flex-grow p-6 overflow-y-auto">
       <CookMode cookModeData={selectedRecipe.instructions} 
       recipeTitle={selectedRecipe?.recipeTitle || 'Recipe Title Missing'}/>
       </div>

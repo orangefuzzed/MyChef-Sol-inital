@@ -127,7 +127,7 @@ const ShoppingListsPage = () => {
       <Header centralText="Saved Shopping Lists" />
 
       {/* Main Content */}
-      <div className="flex-grow p-8 overflow-y-auto">
+      <div className="flex-grow p-6 overflow-y-auto">
         {shoppingLists?.length > 0 ? (
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
             {shoppingLists.map((list) => (

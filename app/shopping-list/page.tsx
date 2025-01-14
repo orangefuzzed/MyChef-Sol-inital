@@ -57,7 +57,7 @@ const ShoppingListPage = () => {
         <Header centralText="Shopping List" />
 
         {/* Main Content */}
-        <div className="flex-grow p-8 overflow-y-auto">
+        <div className="flex-grow p-6 overflow-y-auto">
           <p>No recipe selected. Please go back and select a recipe.</p>
           <button
             onClick={() => router.push('/ai-chat')}
@@ -84,7 +84,7 @@ const ShoppingListPage = () => {
         />
 
         {/* Main Content */}
-        <div className="flex-grow p-8 overflow-y-auto">
+        <div className="flex-grow p-6 overflow-y-auto">
           <ShoppingList 
             shoppingListData={currentShoppingList} 
             recipeTitle={selectedRecipe?.recipeTitle || 'Recipe Title Missing'}
