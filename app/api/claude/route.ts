@@ -73,14 +73,10 @@ export async function POST(request: Request) {
     const response = await axios.post(
       OPENAI_API_URL,
       {
-        model: "claude-3-5-haiku-20241022",
-        max_tokens: 3072,
-        messages: [
-          {
-            role: "user",
-            content: prompt,
-          }
-        ]
+        model: OPENAI_MODEL_NAME,  // e.g. "gpt-4o-mini-2024-07-18"
+        messages: messages,
+        max_tokens: 7168,    // Adjust as needed
+        temperature: 0.7,    // Adjust as needed
       },
       {
         headers: {

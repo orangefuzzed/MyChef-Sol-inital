@@ -38,7 +38,7 @@ export const generatePrompt = (
       - Measurement System: ${preferences.location?.measurementSystem || 'Not specified'}
       - High Altitude Adjustment: ${preferences.location?.highAltitude || 'Not specified'}
 
-    Now, based on this, can you suggest a recipe for ${message}? Make it awesome!
+    Now, based on this, can you suggest a recipe for ${message}? Please make it mouthwatering, awesome and helpful!!
     `;
   };
 
