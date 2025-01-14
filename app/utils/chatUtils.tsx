@@ -33,7 +33,8 @@ export const generatePrompt = (
       - Measurement System: ${preferences.location?.measurementSystem || 'Not specified'}
       - High Altitude Adjustment: ${preferences.location?.highAltitude || 'Not specified'}
 
-    Now, based on this, can you suggest a recipe for ${message}? Make it awesome!
+     Now, based on this info, can you suggest a recipe for "${message}"? 
+    Please make it mouthwatering and helpful!
     `;
   };
 
@@ -67,7 +68,7 @@ export const generatePrompt = (
 
         Respond in the following JSON format:
         {
-          "message": "A brief conversational and friendly assistant message introducing the suggestions.",
+          "message": "A brief conversational and friendly assistant message introducing the suggestions. Feel free to use a humorous style, add puns or witty remarks.",
           "recipes": [
             {
               "id": "unique_recipe_id",
