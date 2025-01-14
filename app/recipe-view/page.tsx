@@ -64,7 +64,7 @@ const RecipeViewPage = () => {
          />
 
         {/* Main Content */}
-        <div className="flex-grow p-8 overflow-y-auto">
+        <div className="flex-grow p-4 overflow-y-auto">
           <RecipeDetails />
         </div>
 
