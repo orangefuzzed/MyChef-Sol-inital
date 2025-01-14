@@ -18,7 +18,7 @@ export async function POST(request: Request) {
 
       Please respond in the following JSON format:
       {
-        "message": "A brief conversational and friendly assistant message introducing the pairings.",
+        "message": "A brief conversational and friendly assistant message introducing the suggestions. Feel free to use a humorous style, add puns or witty remarks.",
         "pairings": [
           {
             "type": "side",
@@ -37,7 +37,7 @@ export async function POST(request: Request) {
         ]
       }
 
-      Ensure the response is valid JSON with no additional text or commentary outside of the JSON structure.
+      Please respond in valid JSON only. **No** triple backticks, code fences, or additional commentary outside the JSON object. Ensure your response is strictly parseable by JSON.parse().
     `;
 
     const aiResponse = await fetchClaudeResponse(prompt);

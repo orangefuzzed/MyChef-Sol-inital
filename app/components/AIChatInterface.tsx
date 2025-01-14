@@ -8,7 +8,7 @@ import MessageList from '../components/AIChatInterface/MessageList';
 import MessageInput from '../components/AIChatInterface/MessageInput';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
-import { useAIChatHandlers } from '../utils/AIChatHandlers';
+import { useOpenAIChatHandlers } from '../utils/AIChatHandlers';
 import { saveSessionToDB, saveChatMessageToDB } from '../utils/indexedDBUtils'; // Import for saving session
 import RecipeSuggestions from '../components/AIChatInterface/RecipeSuggestions';
 import { ChatSession } from '../../types/ChatSession'; // Add this import for the ChatSession type
@@ -81,7 +81,7 @@ const handlePairingsRequest = async (pairingRequest: string) => {
     handleSendMessage,
     handleRegenerateResponse,
     handleRetry,
-  } = useAIChatHandlers();
+  } = useOpenAIChatHandlers();
 
   // Scroll to bottom when messages update
   const scrollToBottom = () => {

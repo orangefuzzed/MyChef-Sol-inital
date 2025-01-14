@@ -44,7 +44,7 @@ const preferencesString = preferences
         
         Respond in the following JSON format:
         {
-          "message": "A brief conversational and friendly assistant message introducing the suggestions.",
+          "message": "A brief conversational and friendly assistant message introducing the suggestions. Feel free to use a humorous style, add puns or witty remarks.",
           "recipes": [
             {
               "id": "unique_recipe_id",
@@ -60,7 +60,8 @@ const preferencesString = preferences
           ]
         }
         
-        Ensure the response is valid JSON with no additional text or commentary outside of the JSON structure. Also ensure that the instructions include the amount of the ingredient in each of the steps.
+        Please respond in valid JSON only. **No** triple backticks, code fences, or additional commentary outside the JSON object. Ensure your response is strictly parseable by JSON.parse().
+        Also ensure that the instructions include the amount of the ingredient in each of the steps.
       `;
     case 'regenerateResponse':
       return `
