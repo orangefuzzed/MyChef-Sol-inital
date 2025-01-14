@@ -7,6 +7,7 @@ interface Recipe {
   title: string;
   rating?: number;
   protein?: number;
+  carbs?: number;
   description?: string;
   ingredients: string[];
   instructions: string[];
@@ -30,6 +31,9 @@ const RecipeView: React.FC<RecipeViewProps> = ({ recipe }) => {
               )}
               {recipe.protein && (
                 <Text size="3" className="text-gray-300">Protein: {recipe.protein}g per serving</Text>
+              )}
+              {recipe.carbs && (
+                <Text size="3" className="text-gray-300">Carbs: {recipe.carbs}g per serving</Text>
               )}
             </Flex>
             

@@ -3,7 +3,7 @@
 import React from 'react';
 import { Recipe } from '../../types/Recipe'; // Import Recipe type
 import { useRouter } from 'next/navigation';
-import { Flame, Clock, Soup } from 'lucide-react';
+import { Flame, Clock, Soup, Croissant } from 'lucide-react';
 
 interface RecipesCarouselProps {
   recipes: Recipe[]; // Expect a list of recipes as a prop
@@ -23,7 +23,7 @@ const TrendingRecipesCarousel: React.FC<RecipesCarouselProps> = ({ recipes, onRe
         {recipes.map((recipe, index) => (
           <div
             key={`${recipe.id}-${index}`}  // <-- Index appended
-            className="w-64 bg-white/30 backdrop-blur-lg border-white border shadow-lg px-6 pt-6 pb-4 rounded-2xl flex-shrink-0 cursor-pointer hover:shadow-2xl transition"
+            className="w-80 bg-white/30 backdrop-blur-lg border-white border shadow-lg px-6 pt-6 pb-4 rounded-2xl flex-shrink-0 cursor-pointer hover:shadow-2xl transition"
             onClick={() => handleRecipeClick(recipe.id)}
           >
             <h3 className="text-lg font-semibold">{recipe.recipeTitle}</h3>
@@ -43,13 +43,17 @@ const TrendingRecipesCarousel: React.FC<RecipesCarouselProps> = ({ recipes, onRe
                 <Soup className="w-5 h-5 text-pink-800 mb-1" />
                 <span>{recipe.protein} protein</span>
               </div>
+              <div className="flex flex-col items-center text-xs text-slate-700">
+                <Croissant className="w-5 h-5 text-pink-800 mb-1" />
+                <span> {recipe.carbs} carbs</span>
+              </div>
             </div>
             <p className="text-sm">{recipe.description}</p>
           </div>
         ))}
       </div>
     </div>
-  );  
+  );
 };
 
 export default TrendingRecipesCarousel;

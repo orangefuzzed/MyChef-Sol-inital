@@ -86,6 +86,7 @@ export const generatePrompt = (
               "cookTime": "X min",
               "calories": "X Kcal",
               "protein": "X g",
+              "carbs": "X g",
               "rating": "★★★★☆",
               "description": "Brief description",
               "ingredients": ["Ingredient 1", "Ingredient 2"],

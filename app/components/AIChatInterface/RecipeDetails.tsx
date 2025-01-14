@@ -5,7 +5,7 @@ import Link from 'next/link';
 import { useRecipeContext } from '../../contexts/RecipeContext';
 import { Recipe } from '../../../types/Recipe';
 import { generateShoppingList } from '../../utils/shoppingListUtils';
-import { BookHeart, Check, Flame, Clock, Soup, ShoppingCart, ChefHat, Bookmark, Heart } from 'lucide-react';
+import { BookHeart, Check, Flame, Clock, Soup, ShoppingCart, ChefHat, Bookmark, Heart, Croissant } from 'lucide-react';
 import Loading from '../../loading'; // Use your existing Loading component
 import { saveRecipeToDB, deleteRecipeFromDB, getSavedRecipesFromDB } from '../../utils/indexedDBUtils';
 import { saveRecipeToFavorites, deleteRecipeFromFavorites, getFavoriteRecipesFromDB } from '../../utils/favoritesUtils';
@@ -324,19 +324,23 @@ const RecipeDetails: React.FC = () => {
           <Soup className="w-5 h-5 text-pink-800 mb-1" />
           <span> {selectedRecipe.protein} protein</span>
         </div>
+        <div className="flex flex-col items-center text-xs text-black">
+          <Croissant className="w-5 h-5 text-pink-800 mb-1" />
+          <span> {selectedRecipe.carbs} carbs</span>
+        </div>
       </div>
 
       <section className="ingredients mb-6">
         <h3 className="text-2xl text-black font-semibold mb-2">Ingredients</h3>
         <Link
-        href={{ pathname: `/shopping-list`, query: { id: selectedRecipe.id } }}
-        onClick={handleCreateShoppingList}
-      >
-        <button className="text-sm mt-1 mb-2 px-4 py-1 bg-[#00a39e]/40 border border-sky-50 shadow-lg ring-1 ring-black/5 rounded-full text-sky-50 flex items-center gap-2">
-          View Shopping List
-          <ShoppingCart strokeWidth={1.5} size={18} className="" />
-        </button>
-      </Link>
+          href={{ pathname: `/shopping-list`, query: { id: selectedRecipe.id } }}
+          onClick={handleCreateShoppingList}
+        >
+          <button className="text-sm mt-1 mb-2 px-4 py-1 bg-[#00a39e]/40 border border-sky-50 shadow-lg ring-1 ring-black/5 rounded-full text-sky-50 flex items-center gap-2">
+            View Shopping List
+            <ShoppingCart strokeWidth={1.5} size={18} className="" />
+          </button>
+        </Link>
         <ul className="list-disc list-inside">
           {selectedRecipe.ingredients.map((ingredient, index) => (
             <li key={index}>{typeof ingredient === 'string' ? ingredient : ingredient.name}</li>
@@ -348,8 +352,8 @@ const RecipeDetails: React.FC = () => {
         <h3 className="text-2xl text-black font-semibold mb-2">Instructions</h3>
         <Link href={{ pathname: `/cook-mode`, query: { id: selectedRecipe.id } }}>
           <button className="text-sm mt-1 mb-2 px-4 py-1 bg-[#00a39e]/40 border border-sky-50 shadow-lg ring-1 ring-black/5 rounded-full text-sky-50 flex items-center gap-2">
-          View in Cook Mode
-          <ChefHat strokeWidth={1.5} size={18} className="" />
+            View in Cook Mode
+            <ChefHat strokeWidth={1.5} size={18} className="" />
           </button>
         </Link>
         <ol className="list-decimal list-inside">

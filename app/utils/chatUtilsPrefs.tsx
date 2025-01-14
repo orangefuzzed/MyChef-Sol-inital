@@ -49,9 +49,10 @@ const preferencesString = preferences
             {
               "id": "unique_recipe_id",
               "recipeTitle": "Recipe Title",
-              "cookTime": "X min"
-              "calories: "X Kcal"
+              "cookTime": "X min",
+              "calories": "X Kcal",
               "protein": "X g",
+              "carbs": "X g",
               "rating": "★★★★☆",
               "description": "Brief description",
               "ingredients": ["Ingredient 1", "Ingredient 2"],

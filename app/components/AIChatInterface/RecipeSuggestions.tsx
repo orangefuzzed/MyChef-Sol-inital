@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { Recipe } from '../../../types/Recipe';
-import { Flame, Clock, Soup, Wine } from 'lucide-react';
+import { Flame, Clock, Soup, Salad, Croissant } from 'lucide-react';
 
 interface RecipeSuggestionsProps {
   currentRecipeList: Recipe[];
@@ -55,6 +55,10 @@ const RecipeSuggestions: React.FC<RecipeSuggestionsProps> = ({ currentRecipeList
                 <Soup className="w-5 h-5 text-pink-800 mb-1" />
                 <span>{recipe.protein} protein</span>
               </div>
+              <div className="flex flex-col items-center text-xs text-slate-700">
+                    <Croissant className="w-5 h-5 text-pink-800 mb-1" />
+                    <span> {recipe.carbs} carbs</span>
+                  </div>
             </div>
   
             <p className="text-slate-950 mb-4">{recipe.description}</p>
@@ -83,7 +87,7 @@ const RecipeSuggestions: React.FC<RecipeSuggestionsProps> = ({ currentRecipeList
                 ) : (
                   <>
                     Suggest Pairings for this Dish
-                    <Wine strokeWidth={1.5} className="w-5 h-5" />
+                    <Salad strokeWidth={1.5} className="w-5 h-5" />
                   </>
                 )}
               </button>

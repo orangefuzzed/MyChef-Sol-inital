@@ -17,6 +17,7 @@ const RecipeView: React.FC<RecipeViewProps> = ({ currentRecipeList }) => {
           <h3 className="text-xl font-bold">{recipe.recipeTitle}</h3>
           <p className="text-yellow-400">Rating: {recipe.rating}</p>
           <p className="text-gray-400">Protein: {recipe.protein}</p>
+          <p className="text-gray-400">Carbs: {recipe.carbs}</p>
           <p className="mt-2">{recipe.description}</p>
 
           <Link

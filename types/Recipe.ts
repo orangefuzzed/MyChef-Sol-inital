@@ -15,6 +15,7 @@ export interface Recipe {
   cookTime?: number; // Adding rating as an optional property
   rating?: number; // Adding rating as an optional property
   protein?: number; // Adding protein as an optional property
+  carbs?: number; // Adding carbs as an optional property
   createdAt?: Date; // Adding createdAt as optional
   updatedAt?: Date; // Adding updatedAt as optional
 }
