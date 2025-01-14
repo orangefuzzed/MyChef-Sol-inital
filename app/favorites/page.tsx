@@ -166,11 +166,11 @@ const FavoritesPage = () => {
                   </div>
                   <div className="flex flex-col items-center text-xs text-slate-700">
                     <Ham className="w-5 h-5 text-pink-800 mb-1" />
-                    <span>{recipe.protein} protein</span>
+                    <span>{recipe.protein} pro</span>
                   </div>
                   <div className="flex flex-col items-center text-xs text-slate-700">
                     <Pizza className="w-5 h-5 text-pink-800 mb-1" />
-                    <span> {recipe.carbs} carbs</span>
+                    <span> {recipe.carbs} carb</span>
                   </div>
                 </div>
                 <p className="text-sm text-slate-950">{recipe.description}</p>
