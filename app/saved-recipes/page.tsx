@@ -6,7 +6,7 @@ import Footer from '../components/Footer';
 import { getSavedRecipesFromDB, deleteRecipeFromDB, saveRecipeToDB } from '../utils/indexedDBUtils';
 import { useRouter } from 'next/navigation';
 import { Recipe } from '../../types/Recipe';
-import { Flame, Clock, Soup, Bookmark, Trash2, Croissant } from 'lucide-react';
+import { Flame, Bookmark, Trash2, Timer, Ham, Pizza } from 'lucide-react';
 import Toast from '../components/Toast'; // Import the Toast component
 
 const SavedRecipesPage = () => {
@@ -153,15 +153,15 @@ const SavedRecipesPage = () => {
                     <span> {recipe.calories}</span>
                   </div>
                   <div className="flex flex-col items-center text-xs text-slate-700">
-                    <Clock className="w-5 h-5 text-pink-800 mb-1" />
+                    <Timer className="w-5 h-5 text-pink-800 mb-1" />
                     <span> {recipe.cookTime} </span>
                   </div>
                   <div className="flex flex-col items-center text-xs text-slate-700">
-                    <Soup className="w-5 h-5 text-pink-800 mb-1" />
+                    <Ham className="w-5 h-5 text-pink-800 mb-1" />
                     <span> {recipe.protein} protein</span>
                   </div>
                   <div className="flex flex-col items-center text-xs text-slate-700">
-                    <Croissant className="w-5 h-5 text-pink-800 mb-1" />
+                    <Pizza className="w-5 h-5 text-pink-800 mb-1" />
                     <span> {recipe.carbs} carbs</span>
                   </div>
                 </div>

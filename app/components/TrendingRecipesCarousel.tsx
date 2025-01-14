@@ -3,7 +3,7 @@
 import React from 'react';
 import { Recipe } from '../../types/Recipe'; // Import Recipe type
 import { useRouter } from 'next/navigation';
-import { Flame, Clock, Soup, Croissant } from 'lucide-react';
+import { Flame, Timer, Ham, Pizza } from 'lucide-react';
 
 interface RecipesCarouselProps {
   recipes: Recipe[]; // Expect a list of recipes as a prop
@@ -36,15 +36,15 @@ const TrendingRecipesCarousel: React.FC<RecipesCarouselProps> = ({ recipes, onRe
                 <span>{recipe.calories}</span>
               </div>
               <div className="flex flex-col items-center text-xs text-slate-700">
-                <Clock className="w-5 h-5 text-pink-800 mb-1" />
+                <Timer className="w-5 h-5 text-pink-800 mb-1" />
                 <span>{recipe.cookTime}</span>
               </div>
               <div className="flex flex-col items-center text-xs text-slate-700">
-                <Soup className="w-5 h-5 text-pink-800 mb-1" />
+                <Ham className="w-5 h-5 text-pink-800 mb-1" />
                 <span>{recipe.protein} protein</span>
               </div>
               <div className="flex flex-col items-center text-xs text-slate-700">
-                <Croissant className="w-5 h-5 text-pink-800 mb-1" />
+                <Pizza className="w-5 h-5 text-pink-800 mb-1" />
                 <span> {recipe.carbs} carbs</span>
               </div>
             </div>

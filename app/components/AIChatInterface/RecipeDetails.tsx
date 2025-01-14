@@ -5,7 +5,7 @@ import Link from 'next/link';
 import { useRecipeContext } from '../../contexts/RecipeContext';
 import { Recipe } from '../../../types/Recipe';
 import { generateShoppingList } from '../../utils/shoppingListUtils';
-import { BookHeart, Check, Flame, Clock, Soup, ShoppingCart, ChefHat, Bookmark, Heart, Croissant } from 'lucide-react';
+import { BookHeart, Check, Flame, ShoppingCart, ChefHat, Bookmark, Heart, Timer, Ham, Pizza } from 'lucide-react';
 import Loading from '../../loading'; // Use your existing Loading component
 import { saveRecipeToDB, deleteRecipeFromDB, getSavedRecipesFromDB } from '../../utils/indexedDBUtils';
 import { saveRecipeToFavorites, deleteRecipeFromFavorites, getFavoriteRecipesFromDB } from '../../utils/favoritesUtils';
@@ -317,16 +317,16 @@ const RecipeDetails: React.FC = () => {
           <span> {selectedRecipe.calories}</span>
         </div>
         <div className="flex flex-col items-center text-xs text-black">
-          <Clock className="w-5 h-5 text-pink-800 mb-1" />
+          <Timer className="w-5 h-5 text-pink-800 mb-1" />
           <span> {selectedRecipe.cookTime}</span>
         </div>
         <div className="flex flex-col items-center text-xs text-black">
-          <Soup className="w-5 h-5 text-pink-800 mb-1" />
-          <span> {selectedRecipe.protein} protein</span>
+          <Ham className="w-5 h-5 text-pink-800 mb-1" />
+          <span> {selectedRecipe.protein} pro</span>
         </div>
         <div className="flex flex-col items-center text-xs text-black">
-          <Croissant className="w-5 h-5 text-pink-800 mb-1" />
-          <span> {selectedRecipe.carbs} carbs</span>
+          <Pizza className="w-5 h-5 text-pink-800 mb-1" />
+          <span> {selectedRecipe.carbs} carb</span>
         </div>
       </div>
 
