@@ -47,7 +47,7 @@ const preferencesString = preferences
           "message": "A brief conversational and friendly assistant message introducing the suggestions. Feel free to use a humorous style, add puns or witty remarks.",
           "recipes": [
             {
-              "id": "unique_recipe_id",
+              "id": "Use the recipeTitle in snake_case, plus a random 5 digit numer to guarantee uniqueness.",
               "recipeTitle": "Recipe Title",
               "cookTime": "X min",
               "calories": "X Kcal",
