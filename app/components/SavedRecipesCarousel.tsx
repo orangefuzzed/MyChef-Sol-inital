@@ -37,19 +37,19 @@ const SavedRecipesCarousel: React.FC<SavedRecipesCarouselProps> = ({ savedRecipe
               </div>
               {/* Icons for kcal, time, protein */}
               <div className="flex items-center space-x-4 mb-4">
-                <div className="flex flex-col items-center text-xs text-slate-700">
+                <div className="flex flex-col items-center text-xs text-slate-950">
                   <Flame className="w-5 h-5 text-pink-800 mb-1" />
                   <span>{recipe.calories}</span>
                 </div>
-                <div className="flex flex-col items-center text-xs text-slate-700">
+                <div className="flex flex-col items-center text-xs text-slate-950">
                   <Timer className="w-5 h-5 text-pink-800 mb-1" />
                   <span>{recipe.cookTime}</span>
                 </div>
-                <div className="flex flex-col items-center text-xs text-slate-700">
+                <div className="flex flex-col items-center text-xs text-slate-950">
                   <Ham className="w-5 h-5 text-pink-800 mb-1" />
                   <span>{recipe.protein} pro</span>
                 </div>
-                <div className="flex flex-col items-center text-xs text-slate-700">
+                <div className="flex flex-col items-center text-xs text-slate-950">
                   <Pizza className="w-5 h-5 text-pink-800 mb-1" />
                   <span> {recipe.carbs} carb</span>
                 </div>
