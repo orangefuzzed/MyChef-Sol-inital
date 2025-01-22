@@ -2,6 +2,7 @@
 
 import React, { useState } from 'react';
 import Image from 'next/image';
+import { signIn } from 'next-auth/react';
 
 interface SignUpProps {
   closeModal: () => void;
@@ -21,6 +22,7 @@ const SignUp: React.FC<SignUpProps> = ({ closeModal }) => {
     setIsLoading(true);
 
     try {
+      // 1. Create the user in your MongoDB via /api/auth/register
       const response = await fetch('/api/auth/register', {
         method: 'POST',
         headers: {
@@ -33,10 +35,28 @@ const SignUp: React.FC<SignUpProps> = ({ closeModal }) => {
         setSuccessMessage('Account created successfully!');
         setEmail('');
         setPassword('');
-        setTimeout(() => {
-          closeModal(); // Close the modal
-        }, 2000);
+
+        // 2. Immediately log them in using next-auth credentials
+        const loginResult = await signIn('credentials', {
+          redirect: false,  // We'll handle redirect manually
+          email: email,
+          password: password,
+        });
+
+        if (loginResult?.error) {
+          // If signIn fails, show an error or handle it
+          setError(`Login after signup failed: ${loginResult.error}`);
+        } else {
+          // 3. Successfully logged in—redirect or close modal
+          setTimeout(() => {
+            closeModal();
+            // Or route them somewhere, e.g. to home page:
+            window.location.href = '/';
+          }, 1500);
+        }
+
       } else {
+        // If register failed
         const data = await response.json();
         setError(data.message || 'An unexpected error occurred. Please try again.');
       }
