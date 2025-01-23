@@ -117,12 +117,12 @@ export default function LoginPage() {
 
   return (
     <div className="flex items-center justify-center min-h-screen bg-cover bg-center" style={{ backgroundImage: "url('/images/breakfast-2.png')" }}>
-      <div className="bg-white/45 backdrop-blur-lg border border-white shadow-lg rounded-2xl p-6 max-w-md w-full">
+      <div className="m-6 bg-white/45 backdrop-blur-lg border border-white shadow-lg rounded-2xl p-6 max-w-md w-full">
         {step === 'emailEntry' && (
           <>
             <h2 className="text-xl font-semibold mb-4 text-center">Enter Your Payment Email</h2>
             <p className="text-sm text-gray-700 mb-2">
-              Please enter the same email you used for your Stripe subscription.
+              Please enter the same email you used for your subscription payment.
             </p>
             <input
               type="email"

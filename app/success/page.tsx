@@ -36,29 +36,34 @@ export default function SuccessPage() {
   }, []);
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen bg-white">
+    <div
+      className="flex flex-col h-screen bg-fixed bg-cover bg-center text-white"
+      style={{ backgroundImage: "url('/images/fresh-store-7.png')" }}
+    >
+    <div className="flex flex-col items-center justify-center min-h-screen p-6 bg-black">
       {error ? (
         <p className="text-red-600">{error}</p>
       ) : (
         <>
-          <p className="mb-4">{message}</p>
-          <p className="mb-4">Choose your device:</p>
+          <p className="mb-4 text-sky-50">{message}</p>
+          <p className="mb-4 text-sky-50">Choose your device:</p>
           <div className="space-x-4">
             <a
               href="/dishcovery-test-ios_new.html"
-              className="px-4 py-2 bg-blue-500 text-white rounded"
+              className="px-4 py-2 bg-[#00a39e] text-white rounded-full"
             >
               iOS
             </a>
             <a
               href="/dishcovery-test_new.html"
-              className="px-4 py-2 bg-green-500 text-white rounded"
+              className="px-4 py-2 bg-[#00a39e] text-white rounded-full"
             >
               Android
             </a>
           </div>
         </>
       )}
+    </div>
     </div>
   );
 }
