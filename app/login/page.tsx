@@ -134,7 +134,7 @@ export default function LoginPage() {
             {error && <p className="text-red-500 mb-4">{error}</p>}
             <button
               onClick={handleCheckEmail}
-              className="w-full py-2 bg-[#00a39e] text-white rounded hover:bg-[#00f5d0] transition"
+              className="w-full py-2 bg-[#00a39e] border border-solid border-[#00f5d0] text-sky-50 rounded-full"
             >
               Next
             </button>
@@ -155,7 +155,7 @@ export default function LoginPage() {
             {error && <p className="text-red-500 mb-4">{error}</p>}
             <button
               type="submit"
-              className="w-full py-2 bg-[#00a39e] text-white rounded hover:bg-[#00f5d0] transition"
+              className="w-full py-2 bg-[#00a39e] border border-solid border-[#00f5d0] text-sky-50 rounded-full"
             >
               Log In
             </button>
@@ -184,7 +184,7 @@ export default function LoginPage() {
             {error && <p className="text-red-500 mb-4">{error}</p>}
             <button
               type="submit"
-              className="w-full py-2 bg-[#00a39e] text-white rounded hover:bg-[#00f5d0] transition"
+              className="w-full py-2 bg-[#00a39e] border border-solid border-[#00f5d0] text-sky-50 rounded-full"
             >
               Create Account
             </button>
@@ -197,7 +197,7 @@ export default function LoginPage() {
             <p className="text-red-500 text-center">{error}</p>
             <button
               onClick={() => setStep('emailEntry')}
-              className="mt-4 w-full py-2 bg-gray-400 text-white rounded"
+              className="mt-4 w-full bg-[#00a39e] border border-solid border-[#00f5d0] text-sky-50 rounded-full"
             >
               Try again
             </button>
