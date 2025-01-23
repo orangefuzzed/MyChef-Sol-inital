@@ -28,7 +28,7 @@ export default function SuccessPage() {
       })
       .then((data) => {
         // data might be { success: true, email: "somebody@domain.com", ... }
-        setMessage(`Thanks, subscription verified for ${data.email}!`);
+        setMessage(`Thank you, subscription verified for ${data.email}, and welcome to Dishcovery!`);
       })
       .catch((err) => {
         setError(err.message);
@@ -36,23 +36,22 @@ export default function SuccessPage() {
   }, []);
 
   return (
-    <div
-      className="flex flex-col h-screen bg-fixed bg-cover bg-center text-white"
-      style={{ backgroundImage: "url('/images/fresh-store-7.png')" }}
-    >
-    <div className="flex flex-col items-center justify-center min-h-screen p-6 bg-black">
+    
+    <div className="flex flex-col items-center justify-center min-h-screen"
+        style={{ backgroundImage: "url('/images/fresh-store-7.png')" }}
+         >
       {error ? (
         <p className="text-red-600">{error}</p>
       ) : (
         <>
-          <p className="mb-4 text-sky-50">{message}</p>
-          <p className="mb-4 text-sky-50">Choose your device:</p>
+          <p className="m-4 text-sky-50">{message}</p>
+          <p className="mb-4 text-sky-50">Choose your device to continue to install the app:</p>
           <div className="space-x-4">
             <a
               href="/dishcovery-test-ios_new.html"
               className="px-4 py-2 bg-[#00a39e] text-white rounded-full"
             >
-              iOS
+              Apple iOS
             </a>
             <a
               href="/dishcovery-test_new.html"
@@ -64,6 +63,6 @@ export default function SuccessPage() {
         </>
       )}
     </div>
-    </div>
+
   );
 }
