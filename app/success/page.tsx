@@ -28,7 +28,7 @@ export default function SuccessPage() {
             })
             .then((data) => {
                 // data might be { success: true, email: "somebody@domain.com", ... }
-                setMessage(`Thank you, subscription verified for ${data.email}, and welcome to Dishcovery!`);
+                setMessage(`Success! Thank you, subscription verified for ${data.email}. Welcome to Dishcovery!`);
             })
             .catch((err) => {
                 setError(err.message);
@@ -40,8 +40,8 @@ export default function SuccessPage() {
         <div className="flex flex-col h-screen bg-fixed bg-cover bg-center"
             style={{ backgroundImage: "url('/images/soup-4.png')" }}
         >
-            <div className="bg-white/30 backdrop-blur-lg border-white border shadow-lg ring-1 ring-black/5 m-6 p-6 rounded-2xl">
-                <div className="flex items-center text-md font-normal mb-4">
+            <div className="bg-white/45 backdrop-blur-lg border border-white shadow-lg rounded-2xl p-6">
+                <div className="flex items-center justify-center mb-4 space-x-2">
                     {error ? (
                         <p className="text-red-600">{error}</p>
                     ) : (
@@ -51,13 +51,13 @@ export default function SuccessPage() {
                             <div className="space-x-4">
                                 <a
                                     href="/dishcovery-test-ios_new.html"
-                                    className="px-4 py-2 bg-[#00a39e] text-white border border-white rounded-full"
+                                    className="px-4 py-2 bg-[#00a39e] border border-solid border-[#00f5d0] text-sky-50 rounded-full"
                                 >
                                     Apple iOS
                                 </a>
                                 <a
                                     href="/dishcovery-test_new.html"
-                                    className="px-4 py-2 bg-[#00a39e] text-white rounded-full"
+                                    className="px-4 py-2 bg-[#00a39e] border border-solid border-[#00f5d0] text-sky-50 rounded-full"
                                 >
                                     Android
                                 </a>
