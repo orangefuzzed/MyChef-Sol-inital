@@ -50,13 +50,13 @@ export default function SuccessPage() {
                         <p className="text-sky-50">Choose your device to install the app:</p>
                         <div className="flex space-x-4">
                             <a
-                                href="/dishcovery-test-ios_new.html"
+                                href="/dishcovery-install-iOS.html"
                                 className="px-4 py-2 bg-[#00a39e] border border-solid border-[#00f5d0] text-sky-50 rounded-full"
                             >
                                 Apple iOS
                             </a>
                             <a
-                                href="/dishcovery-test_new.html"
+                                href="dishcovery-install-android.html"
                                 className="px-4 py-2 bg-[#00a39e] border border-solid border-[#00f5d0] text-sky-50 rounded-full"
                             >
                                 Android
