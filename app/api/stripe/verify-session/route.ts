@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server';
-import { stripe } from '../../../utils/stripeClient'; // or wherever your Stripe instance is exported
+import { stripe } from '../../../utils/stripeClient'; // your Stripe instance
 import { connectToDatabase } from '@/app/utils/dbConnect';
 
 /**
@@ -20,7 +20,6 @@ export async function GET(request: Request) {
     }
 
     // 2. Retrieve the checkout session from Stripe
-    // Make sure you have your Stripe secret key in your stripeClient.ts or somewhere safe.
     const checkoutSession = await stripe.checkout.sessions.retrieve(sessionId);
 
     if (!checkoutSession) {
@@ -50,25 +49,23 @@ export async function GET(request: Request) {
     let subscriptionStatus = null;
     if (subscriptionId) {
       const subscription = await stripe.subscriptions.retrieve(subscriptionId);
-      subscriptionStatus = subscription.status; // e.g. 'active'
+      subscriptionStatus = subscription.status; // e.g. 'trialing', 'active', etc.
     }
 
     // 4. Connect to Mongo and upsert a record 
     const db = await connectToDatabase();
     const paidUsersCollection = db.collection('paidUsers'); 
-    // or 'subscriptions', or 'users', whichever you prefer
 
-    // We'll store userEmail + subscription status
-    // E.g. if you want to track hasActiveSubscription = (subscriptionStatus === 'active')
-    const hasActiveSubscription = subscriptionStatus === 'active';
+    // If subscriptionStatus is "trialing" or "active", set hasActiveSubscription = true
+    const hasActiveSubscription = (subscriptionStatus === 'active' || subscriptionStatus === 'trialing');
 
-    const result = await paidUsersCollection.updateOne(
+    await paidUsersCollection.updateOne(
       { email }, // filter by email
       {
         $set: {
           stripeCustomerId: customerId,
           stripeSubscriptionId: subscriptionId || null,
-          subscriptionStatus: subscriptionStatus,
+          subscriptionStatus,
           hasActiveSubscription,
           updatedAt: new Date(),
         },
