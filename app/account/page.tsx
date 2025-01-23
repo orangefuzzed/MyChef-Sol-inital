@@ -321,7 +321,7 @@ const AccountPage: React.FC = () => {
           </div>
           <Button
             onClick={() => {
-              window.location.href = "https://billing.stripe.com/p/login/test_28o2bOesG3UC8bS4gg";
+              window.location.href = "https://billing.stripe.com/p/login/4gwaH7aZMbLQ2is9AA";
             }}
             className="w-full justify-center text-xs flex p-2 px-4 bg-pink-800/45 border border-sky-50 shadow-lg ring-1 ring-black/5 rounded-full text-sky-50 items-center gap-2 mt-2 mb-2"
           >
