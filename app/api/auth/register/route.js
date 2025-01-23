@@ -36,6 +36,14 @@ export async function POST(req) {
       hasSeenOnboarding: false, // Default onboarding status for new users
     });
 
+    // Add new user with default createdAccount status
+    await db.collection("users").insertOne({
+      email,
+      password: hashedPassword,
+      preferences: defaultPreferences,
+      hascreatedAccount: false, // Default hascreatedAccount status for new users
+    });
+
     return NextResponse.json({ message: "User registered successfully" }, { status: 201 });
   } catch (error) {
     console.error(error);
