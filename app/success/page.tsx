@@ -38,14 +38,15 @@ export default function SuccessPage() {
   return (
     
     <div className="flex flex-col items-center justify-center min-h-screen"
-        style={{ backgroundImage: "url('/images/fresh-store-7.png')" }}
+        style={{ backgroundImage: "url('/images/soup-4.png')" }}
          >
+     <div className="bg-white/30 backdrop-blur-lg border-white border shadow-lg ring-1 ring-black/5 mb-6 mt-2 p-6 rounded-2xl">
       {error ? (
         <p className="text-red-600">{error}</p>
       ) : (
         <>
-          <p className="m-4 text-sky-50">{message}</p>
-          <p className="mb-4 text-sky-50">Choose your device to continue to install the app:</p>
+          <p className="p-6 text-slate-950">{message}</p>
+          <p className="p-6 text-slate-950">Choose your device to continue to install the app:</p>
           <div className="space-x-4">
             <a
               href="/dishcovery-test-ios_new.html"
@@ -62,7 +63,8 @@ export default function SuccessPage() {
           </div>
         </>
       )}
-    </div>
+     </div>
+   </div>
 
   );
 }
