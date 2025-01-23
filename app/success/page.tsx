@@ -41,19 +41,7 @@ export default function SuccessPage() {
             className="flex items-center justify-center h-screen bg-fixed bg-cover bg-center"
             style={{ backgroundImage: "url('/images/soup-4.png')" }}
         >
-            <div className="
-    bg-white/30 
-    backdrop-blur-lg 
-    border border-white 
-    shadow-lg 
-    ring-1 ring-black/5 
-    m-6 p-6 
-    rounded-2xl 
-    flex flex-col 
-    items-center 
-    text-center 
-    space-y-4
-  ">
+            <div className="bg-white/30 backdrop-blur-lg border border-white shadow-lg ring-1 ring-black/5 m-6 p-6 rounded-2xl flex flex-col items-center text-center space-y-4">                
                 {error ? (
                     <p className="text-red-600">{error}</p>
                 ) : (
