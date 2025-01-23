@@ -1,6 +1,6 @@
 // public/service-worker.js
 
-const CACHE_NAME = 'dishcovery-cache-v7';
+const CACHE_NAME = 'dishcovery-cache-v8';
 const urlsToCache = [
   '/',
   '/manifest.json',
