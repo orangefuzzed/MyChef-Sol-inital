@@ -64,7 +64,7 @@ const Header: React.FC<HeaderProps> = ({ onBackClick }) => {
             className="rounded-full"
           />
           <Text className="text-md text-white">
-            Hiya, {user ? user.displayName || 'Guest' : 'Guest'}!
+            Hiya, {user ? user.displayName || 'New User' : 'New User'}!
           </Text>
         </div>
 
