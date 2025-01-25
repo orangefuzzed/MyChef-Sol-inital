@@ -95,7 +95,7 @@ export default function LoginPage() {
 
   return (
     <div className="flex items-center justify-center min-h-screen bg-cover bg-center" style={{ backgroundImage: "url('/images/breakfast-2.png')" }}>
-      <div className="m-6 bg-white/45 backdrop-blur-lg border border-white shadow-lg rounded-2xl p-6 max-w-md w-full">
+      <div className="absolute top-20 m-6 bg-white/45 backdrop-blur-lg border border-white shadow-lg rounded-2xl p-6 max-w-md w-full">
         <div className="bg-black w-10 h-10 border border-white rounded-full flex items-center justify-center">
           <Image
             src="/images/kAi.png"
