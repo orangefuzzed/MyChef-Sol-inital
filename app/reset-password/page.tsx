@@ -3,7 +3,7 @@
 import React, { useState, useEffect } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import Image from "next/image";
-import Toast from "../components/Toast"; // Import the Toast component
+import Toast from "../components/Toast"; // Import Toast
 
 export default function ResetPasswordPage() {
     const [password, setPassword] = useState("");
@@ -23,7 +23,7 @@ export default function ResetPasswordPage() {
             setToast({ message: "🚨 Invalid password reset link.", type: "error" });
         }
 
-        // Detect if the user is in Safari
+        // Detect Safari and check if it's running outside of the PWA
         const userAgent = navigator.userAgent.toLowerCase();
         if (userAgent.includes("safari") && !userAgent.includes("chrome")) {
             setIsSafari(true);
@@ -120,14 +120,14 @@ export default function ResetPasswordPage() {
                     </form>
                 )}
 
-                {/* SHOW THIS ONLY IF USER IS IN SAFARI */}
+                {/* IF IN SAFARI, SHOW "OPEN IN APP" BUTTON */}
                 {isSafari && (
                     <div className="mt-4 text-center">
                         <p className="text-sm text-gray-700 mb-2">
-                            ⚠️ You are in Safari. To continue in the Dishcovery App:
+                            ⚠️ You are in Safari. To continue, open the Dishcovery App.
                         </p>
                         <button
-                            onClick={() => router.push("dishcoveryai.app/reset-password?token=" + token)}
+                            onClick={() => window.location.replace("https://dishcoveryai.app")}
                             className="w-full py-2 bg-[#00a39e] text-white rounded-full"
                         >
                             Open in Dishcovery App
