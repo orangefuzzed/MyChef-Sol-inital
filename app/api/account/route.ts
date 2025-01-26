@@ -35,20 +35,12 @@ export async function GET() {
 
     return NextResponse.json({ account: accountData }, { status: 200 });
   } catch (error: unknown) {
-    if (error instanceof Error) {
-      console.error('Error fetching account data:', error.message);
-      return NextResponse.json(
-        { error: 'Failed to fetch account data', details: error.message },
-        { status: 500 }
-      );
-    }
-
-    console.error('Unknown error occurred');
-    return NextResponse.json({ error: 'An unknown error occurred' }, { status: 500 });
+    console.error('Error fetching account data:', error instanceof Error ? error.message : 'Unknown error');
+    return NextResponse.json({ error: 'Failed to fetch account data' }, { status: 500 });
   }
 }
 
-// POST handler: Update user account data
+// POST handler: Update user account data (INCLUDING PASSWORD HINT!)
 export async function POST(request: Request) {
   try {
     const db = await connectToDatabase();
@@ -59,7 +51,7 @@ export async function POST(request: Request) {
     }
 
     const userEmail = session.user.email;
-    
+
     // Parse form data
     const formData = await request.formData();
     const dataField = formData.get('data');
@@ -78,6 +70,7 @@ export async function POST(request: Request) {
       language: body.language || '',
       region: body.region || '',
       avatarUrl: body.avatarUrl || '',
+      passwordHint: body.passwordHint || '', // NEW FIELD 💥
     };
 
     const accountsCollection = await getAccountsCollection(db);
@@ -95,13 +88,8 @@ export async function POST(request: Request) {
         const avatarUrl = await uploadAvatarToCloudinary(avatarFile, userEmail, accountsCollection);
         updatedData.avatarUrl = avatarUrl;
       } catch (error: unknown) {
-        if (error instanceof Error) {
-          console.error('Error uploading avatar:', error.message);
-          return NextResponse.json({ error: 'Failed to upload avatar', details: error.message }, { status: 500 });
-        } else {
-          console.error('Unknown error occurred during avatar upload.');
-          return NextResponse.json({ error: 'Failed to upload avatar', details: 'An unknown error occurred.' }, { status: 500 });
-        }
+        console.error('Error uploading avatar:', error instanceof Error ? error.message : 'Unknown error');
+        return NextResponse.json({ error: 'Failed to upload avatar' }, { status: 500 });
       }
     }
 
@@ -118,16 +106,8 @@ export async function POST(request: Request) {
 
     return NextResponse.json({ message: 'Account information saved successfully', account: updatedData }, { status: 200 });
   } catch (error: unknown) {
-    if (error instanceof Error) {
-      console.error('Error fetching account data:', error.message);
-      return NextResponse.json(
-        { error: 'Failed to fetch account data', details: error.message },
-        { status: 500 }
-      );
-    }
-
-    console.error('Unknown error occurred');
-    return NextResponse.json({ error: 'An unknown error occurred' }, { status: 500 });
+    console.error('Error updating account data:', error instanceof Error ? error.message : 'Unknown error');
+    return NextResponse.json({ error: 'Failed to update account data' }, { status: 500 });
   }
 }
 
@@ -144,7 +124,6 @@ async function uploadAvatarToCloudinary(avatarFile: File, userEmail: string, acc
         if (!result) return reject(new Error('No result returned from Cloudinary'));
 
         const avatarUrl = result.secure_url;
-        // Update DB with the new avatarUrl
         await accountsCollection.updateOne({ userEmail }, { $set: { avatarUrl } });
         resolve(avatarUrl);
       }

@@ -5,7 +5,7 @@ import { sendWelcomeEmail } from '../../../../lib/sendEmail';
 
 export async function POST(req) {
   try {
-    const { email, password } = await req.json();
+    const { email, password, passwordHint } = await req.json();
     const client = await clientPromise;
     const db = client.db("recipe-meal-app");
 
@@ -18,7 +18,7 @@ export async function POST(req) {
     // Hash password
     const hashedPassword = await bcrypt.hash(password, 10);
 
-    // Insert new user with default preferences
+    // Default user preferences
     const defaultPreferences = {
       dietaryRestrictions: [],
       cuisinePreferences: [],
@@ -29,21 +29,17 @@ export async function POST(req) {
       familySize: 1,
     };
 
-    // Add new user with default onboarding status
-    await db.collection("users").insertOne({
+    // Create new user (Consolidated into ONE insert)
+    const newUser = {
       email,
       password: hashedPassword,
+      passwordHint, // NEW FIELD! 💥
       preferences: defaultPreferences,
-      hasSeenOnboarding: false, // Default onboarding status for new users
-    });
+      hasSeenOnboarding: false,
+      hasCreatedAccount: true, // Fixed inconsistent casing
+    };
 
-    // Add new user with default createdAccount status
-    await db.collection("users").insertOne({
-      email,
-      password: hashedPassword,
-      preferences: defaultPreferences,
-      hascreatedAccount: false, // Default hascreatedAccount status for new users
-    });
+    await db.collection("users").insertOne(newUser);
 
     // Send welcome email
     await sendWelcomeEmail(email);

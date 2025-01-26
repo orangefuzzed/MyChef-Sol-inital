@@ -8,7 +8,7 @@ import { useSession } from 'next-auth/react';
 import { Button } from '@radix-ui/themes';
 import styles from './account.module.css';
 import Image from 'next/image';
-import { Settings, User, FilePenLine, MailCheck, Lock, Languages, ImagePlus, CircleX } from 'lucide-react';
+import { Settings, User, Lightbulb, FilePenLine, MailCheck, Lock, Languages, ImagePlus, CircleX } from 'lucide-react';
 import Toast from '../components/Toast'; // Import the Toast component
 
 
@@ -16,6 +16,7 @@ interface AccountData {
   displayName: string;
   userEmail: string;
   password: string;
+  passwordHint: string; // NEW FIELD 💥
   linkedAccounts: {
     google: boolean;
     facebook: boolean;
@@ -48,6 +49,7 @@ const AccountPage: React.FC = () => {
     displayName: '',
     userEmail: '',
     password: '',
+    passwordHint: '', // New field
     linkedAccounts: { google: false, facebook: false },
     notificationSettings: { emailNotifications: false, pushNotifications: false },
     privacySettings: { profileVisibility: 'public', dataCollectionOptIn: true },
@@ -69,6 +71,7 @@ const AccountPage: React.FC = () => {
             ...formData, // Keep previous state intact
             displayName: data.account?.displayName || '',
             userEmail: data.account?.userEmail || '',
+            passwordHint: data.account?.passwordHint || '', // Fetch password hint
             linkedAccounts: data.account?.linkedAccounts || formData.linkedAccounts,
             notificationSettings: data.account?.notificationSettings || formData.notificationSettings,
             privacySettings: data.account?.privacySettings || formData.privacySettings,
@@ -319,6 +322,19 @@ const AccountPage: React.FC = () => {
               disabled={!isEditing}
             />
           </div>
+          {/* Password Hint (NEW FIELD!) */}
+          <label htmlFor="passwordHint" className={styles.label}>
+            Password Hint <Lightbulb strokeWidth={1.5} className="inline w-4 h-4 text-yellow-500 ml-1" />
+          </label>
+          <input
+            id="passwordHint"
+            name="passwordHint"
+            type="text"
+            className={styles.input}
+            value={formData.passwordHint}
+            onChange={handleChange}
+            disabled={!isEditing}
+          />
           <Button
             onClick={() => {
               window.location.href = "https://billing.stripe.com/p/login/4gwaH7aZMbLQ2is9AA";

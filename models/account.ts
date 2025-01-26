@@ -5,7 +5,8 @@ export interface IAccount {
   displayName: string;
   avatarUrl?: string;
   // Security Settings
-  passwordHash?: string; // Updated to ensure we use 'passwordHash' consistently
+  passwordHash?: string; // Ensures consistency with hashed passwords
+  passwordHint?: string; // NEW FIELD! 💥 Provides optional password hint
   twoFactorEnabled?: boolean;
   linkedAccounts?: { provider: string; providerId: string }[];
   // Subscription Details
@@ -30,4 +31,4 @@ export const getAccountsCollection = async (db: Db) => {
   return db.collection<IAccount>('accounts');
 };
 
-// You can add CRUD methods here if needed, e.g., createAccount, updateAccount, etc.
+// CRUD methods (optional) can be added here for managing accounts
