@@ -266,6 +266,7 @@ const AccountPage: React.FC = () => {
               onChange={handleChange}
               disabled={!isEditing}
             />
+            <div className="hidden">
             {/* Email Field */}
             <label htmlFor="email" className={styles.label}>
               Email
@@ -279,6 +280,7 @@ const AccountPage: React.FC = () => {
               onChange={handleChange}
               disabled={!isEditing}
             />
+            </div>
             {/* Password Field */}
             <label htmlFor="password" className={styles.label}>
               Password
