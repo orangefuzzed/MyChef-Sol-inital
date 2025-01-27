@@ -61,6 +61,7 @@
   font-size: 1rem;
   border-color: rgb(170, 170, 170);
   outline: #b7032a;
+  width: 100%;
 }
 
 .input:disabled {

@@ -43,7 +43,7 @@ const AccountPage: React.FC = () => {
   const [toastMessage, setToastMessage] = useState('');
   const [toastType, setToastType] = useState<'success' | 'error' | 'warning'>('success'); // Added 'warning'
   const [toastActions, setToastActions] = useState<{ label: string; action: () => void }[]>([]); // For interactive buttons
-
+  const [showPassword, setShowPassword] = useState(false);
 
   const [formData, setFormData] = useState<AccountData>({
     displayName: '',
@@ -217,35 +217,6 @@ const AccountPage: React.FC = () => {
     >
       <Header centralText="Account Settings" />
       <main className="flex-grow p-6 overflow-y-auto">
-
-        {/* Editing Action Buttons */}
-        <div className="flex justify-end mb-6 space-x-4">
-          {isEditing ? (
-            <>
-              <Button
-                onClick={handleCancelClick}
-                className="text-xs flex p-2 px-4 bg-slate-950/30 border border-gray-100 shadow-lg ring-1 ring-black/5 rounded-full text-white items-center gap-2 -mt-2 -mb-2"
-              >
-                <CircleX className="w-4 h-4" /> Cancel
-              </Button>
-              <Button
-                onClick={handleSave}
-                className="text-xs flex p-2 px-4 bg-pink-800/45 border border-sky-50 shadow-lg ring-1 ring-black/5 rounded-full text-sky-50 items-center gap-2 -mt-2 -mb-2"
-              >
-                <FilePenLine className="w-4 h-4" /> Save
-              </Button>
-            </>
-          ) : (
-            <Button
-              onClick={() => setIsEditing(true)}
-              className="text-xs flex p-2 px-4 bg-pink-800/45 border border-sky-50 shadow-lg ring-1 ring-black/5 rounded-full text-sky-50 items-center gap-2 -mt-2 -mb-2"
-            >
-              <FilePenLine className="w-4 h-4" /> Edit Profile
-            </Button>
-          )}
-        </div>
-
-
         <div className="bg-white/30 backdrop-blur-lg border-white border shadow-lg ring-1 ring-black/5 mb-6 mt-2 p-6 rounded-2xl">
           <div className="flex items-center text-md font-normal mb-4">
             <div className="bg-[#00a39e] w-8 h-8 border border-white rounded-full flex items-center justify-center mr-2">
@@ -312,19 +283,30 @@ const AccountPage: React.FC = () => {
             <label htmlFor="password" className={styles.label}>
               Password
             </label>
-            <input
-              id="password"
-              name="password"
-              type="password"
-              className={styles.input}
-              value={isEditing ? formData.password : '******'}
-              onChange={handleChange}
-              disabled={!isEditing}
-            />
+            <div className="relative">
+              <input
+                id="password"
+                name="password"
+                type={showPassword ? 'text' : 'password'} // 🔥 Dynamic Type
+                className={styles.input}
+                value={isEditing ? formData.password : '******'}
+                onChange={handleChange}
+                disabled={!isEditing}
+              />
+              {isEditing && (
+                <button
+                  type="button"
+                  className="absolute right-3 top-1 text-gray-600"
+                  onClick={() => setShowPassword(!showPassword)}
+                >
+                  {showPassword ? '🙈' : '👁️'} {/* Eye Icon for Toggle */}
+                </button>
+              )}
+            </div>
           </div>
           {/* Password Hint (NEW FIELD!) */}
           <label htmlFor="passwordHint" className={styles.label}>
-            Password Hint <Lightbulb strokeWidth={1.5} className="inline w-4 h-4 text-yellow-500 ml-1" />
+            Password Hint <Lightbulb strokeWidth={1.5} className="inline w-4 h-4 text-sky-50 ml-1" />
           </label>
           <input
             id="passwordHint"
@@ -335,6 +317,44 @@ const AccountPage: React.FC = () => {
             onChange={handleChange}
             disabled={!isEditing}
           />
+          {/* Editing Action Buttons */}
+          <div className="flex justify-start mt-4 mb-6 space-x-4">
+            {isEditing ? (
+              <>
+                <Button
+                  onClick={handleCancelClick}
+                  className="text-xs flex p-2 px-4 bg-slate-950/30 border border-gray-100 shadow-lg ring-1 ring-black/5 rounded-full text-white items-center gap-2 -mt-2 -mb-2"
+                >
+                  <CircleX className="w-4 h-4" /> Cancel
+                </Button>
+                <Button
+                  onClick={handleSave}
+                  className="text-xs flex p-2 px-4 bg-pink-800/45 border border-sky-50 shadow-lg ring-1 ring-black/5 rounded-full text-sky-50 items-center gap-2 -mt-2 -mb-2"
+                >
+                  <FilePenLine className="w-4 h-4" /> Save
+                </Button>
+              </>
+            ) : (
+              <Button
+                onClick={() => setIsEditing(true)}
+                className="text-xs flex p-2 px-4 bg-pink-800/45 border border-sky-50 shadow-lg ring-1 ring-black/5 rounded-full text-sky-50 items-center gap-2 -mt-2 -mb-2"
+              >
+                <FilePenLine className="w-4 h-4" /> Edit Profile
+              </Button>
+            )}
+          </div>
+        </div>
+
+        {/* Account Settings Section */}
+        <div className="bg-white/30 backdrop-blur-lg border-white border shadow-lg ring-1 ring-black/5 mb-6 mt-2 p-6 rounded-2xl">
+          <div className="flex items-center text-md font-normal mb-4">
+            <div className="bg-[#00a39e] w-8 h-8 border border-white rounded-full flex items-center justify-center mr-2">
+              <Settings strokeWidth={1.5} className="w-5 h-5 text-white" /> {/* Example icon, you can change this */}
+            </div>
+            <p>Account Settings</p>
+          </div>
+
+          {/*Change or Cancel Account Button */}
           <Button
             onClick={() => {
               window.location.href = "https://billing.stripe.com/p/login/4gwaH7aZMbLQ2is9AA";
@@ -343,42 +363,33 @@ const AccountPage: React.FC = () => {
           >
             <FilePenLine className="w-4 h-4" /> Change or Cancel Subscription
           </Button>
-
-        </div>
-
-        {/* Account Settings Section */}
-        <div className="bg-white/30 backdrop-blur-lg border-white border shadow-lg ring-1 ring-black/5 mb-6 mt-2 p-6 rounded-2xl hidden">
-          <div className="flex items-center text-md font-normal mb-4">
-            <div className="bg-[#00a39e] w-8 h-8 border border-white rounded-full flex items-center justify-center mr-2">
-              <Settings strokeWidth={1.5} className="w-5 h-5 text-white" /> {/* Example icon, you can change this */}
-            </div>
-            <p>Account Settings</p>
-          </div>
-          <div className={styles.sectionContent}>
-            <label htmlFor="linkedAccounts" className={styles.label}>
-              Linked Accounts
-            </label>
-            <div className={styles.checkboxGroup}>
-              <label className={styles.checkboxLabel}>
-                <input
-                  type="checkbox"
-                  name="linkedAccounts.google"
-                  checked={formData.linkedAccounts.google}
-                  onChange={handleChange}
-                  disabled={!isEditing}
-                />
-                Google
+          <div className="bg-white/30 backdrop-blur-lg border-white border shadow-lg ring-1 ring-black/5 mb-6 mt-2 p-6 rounded-2xl hidden">
+            <div className={styles.sectionContent}>
+              <label htmlFor="linkedAccounts" className={styles.label}>
+                Linked Accounts
               </label>
-              <label className={styles.checkboxLabel}>
-                <input
-                  type="checkbox"
-                  name="linkedAccounts.facebook"
-                  checked={formData.linkedAccounts.facebook}
-                  onChange={handleChange}
-                  disabled={!isEditing}
-                />
-                Facebook
-              </label>
+              <div className={styles.checkboxGroup}>
+                <label className={styles.checkboxLabel}>
+                  <input
+                    type="checkbox"
+                    name="linkedAccounts.google"
+                    checked={formData.linkedAccounts.google}
+                    onChange={handleChange}
+                    disabled={!isEditing}
+                  />
+                  Google
+                </label>
+                <label className={styles.checkboxLabel}>
+                  <input
+                    type="checkbox"
+                    name="linkedAccounts.facebook"
+                    checked={formData.linkedAccounts.facebook}
+                    onChange={handleChange}
+                    disabled={!isEditing}
+                  />
+                  Facebook
+                </label>
+              </div>
             </div>
           </div>
         </div>

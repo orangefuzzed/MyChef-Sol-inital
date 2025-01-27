@@ -104,6 +104,16 @@ export async function POST(request: Request) {
       }
     }
 
+    // ✅ Handle password hint update (NEW)
+    if (body.passwordHint) {
+      const usersCollection = db.collection('users');
+      const existingUser = await usersCollection.findOne({ email: userEmail });
+
+      if (existingUser) {
+        await usersCollection.updateOne({ email: userEmail }, { $set: { passwordHint: body.passwordHint } });
+      }
+    }
+
     return NextResponse.json({ message: 'Account information saved successfully', account: updatedData }, { status: 200 });
   } catch (error: unknown) {
     console.error('Error updating account data:', error instanceof Error ? error.message : 'Unknown error');
