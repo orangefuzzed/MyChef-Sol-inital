@@ -23,7 +23,7 @@ export async function GET(request: Request) {
       return NextResponse.json({ error: 'User not found' }, { status: 404 });
     }
 
-    const hasCreatedAccount = user.hasCreatedAccount ?? false; // Default to false if undefined
+    const hasCreatedAccount = user.hasCreatedAccount ?? true; // Default to false if undefined
     return NextResponse.json({ hasCreatedAccount });
   } catch (error: unknown) {
     if (error instanceof Error) {

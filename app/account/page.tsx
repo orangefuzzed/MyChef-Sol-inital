@@ -351,7 +351,7 @@ const AccountPage: React.FC = () => {
             <div className="bg-[#00a39e] w-8 h-8 border border-white rounded-full flex items-center justify-center mr-2">
               <Settings strokeWidth={1.5} className="w-5 h-5 text-white" /> {/* Example icon, you can change this */}
             </div>
-            <p>Account Settings</p>
+            <p>Subscription Settings</p>
           </div>
 
           {/*Change or Cancel Account Button */}

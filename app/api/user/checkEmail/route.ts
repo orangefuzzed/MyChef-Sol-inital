@@ -16,12 +16,23 @@ export async function GET(request: Request) {
   const paid = await db.collection('paidUsers').findOne({ email });
   const hasActiveSubscription = paid?.hasActiveSubscription === true;
 
-  // 2. users
+  // 2. user doc
   const userDoc = await db.collection('users').findOne({ email });
-  const hasCreatedAccount = !!userDoc;
+
+  let docExists = false;
+  let hasCreatedAccount = false;
+  let passwordReset = false;
+
+  if (userDoc) {
+    docExists = true;
+    hasCreatedAccount = userDoc.hasCreatedAccount === true;
+    passwordReset = userDoc.passwordReset === true;
+  }
 
   return NextResponse.json({
     hasActiveSubscription,
+    docExists,
     hasCreatedAccount,
+    passwordReset,
   });
 }
