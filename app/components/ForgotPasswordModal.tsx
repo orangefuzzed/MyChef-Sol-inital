@@ -27,7 +27,7 @@ export default function ForgotPasswordModal({ onClose }: { onClose: () => void }
 
     return (
         <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
-            <div className="absolute top-20 bg-white/45 backdrop-blur-lg border border-white p-6 m-6 rounded-2xl shadow-md w-full max-w-md">
+            <div className="mx-6 mb-60 bg-white/45 backdrop-blur-lg border border-white p-6 m-6 rounded-2xl shadow-md w-full max-w-md">
                 <div className="bg-black w-10 h-10 border border-white rounded-full flex items-center justify-center">
                     <Image
                         src="/images/kAi.png"

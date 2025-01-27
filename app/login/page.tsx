@@ -126,7 +126,7 @@ export default function LoginPage() {
       className="flex items-center justify-center min-h-screen bg-cover bg-center"
       style={{ backgroundImage: "url('/images/breakfast-2.png')" }}
     >
-      <div className="absolute top-20 m-6 bg-white/45 backdrop-blur-lg border border-white shadow-lg rounded-2xl p-6 max-w-md w-full">
+      <div className="mx-6 mb-60 bg-white/45 backdrop-blur-lg border border-white shadow-lg rounded-2xl p-6 max-w-md w-full">
         <div className="bg-black w-10 h-10 border border-white rounded-full flex items-center justify-center">
           <Image src="/images/kAi.png" alt="kai" width={28} height={28} />
         </div>
@@ -241,8 +241,8 @@ export default function LoginPage() {
         {/* NEW: Step "error" */}
         {step === 'error' && (
           <div className="flex flex-col items-center">
-            <h2 className="text-xl font-semibold mb-4 text-slate-950 text-center">Error</h2>
-            <p className="text-pink-800 mb-4">{error}</p>
+            <h2 className="text-xl font-semibold mb-4 text-rose-600 text-center">Error</h2>
+            <p className="text-slate-950 mb-4">{error}</p>
             <button
               onClick={() => {
                 setError('');
