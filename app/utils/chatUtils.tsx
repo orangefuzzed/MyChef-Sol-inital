@@ -73,7 +73,7 @@ export const generatePrompt = (
     case 'sendMessage':
       return `
         ${commonPromptPart}
-        Please provide 3 recipe suggestions based on the user input.
+        Please provide 4 recipe suggestions based on the user input.
 
         Respond in the following JSON format:
         {
